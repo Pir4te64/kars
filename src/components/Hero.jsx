@@ -2,14 +2,12 @@ import React from 'react'
 
 const Hero = () => {
   return (
-    <section className="relative mx-auto" style={{
+    <section className="relative mx-auto px-4 sm:px-6 lg:px-32" style={{
       maxWidth: '1440px',
       width: '100%',
       height: '600px',
       paddingTop: '36px',
-      paddingRight: '120px',
       paddingBottom: '153px',
-      paddingLeft: '120px',
       gap: '26px',
       opacity: 1
     }}>

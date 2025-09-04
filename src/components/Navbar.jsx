@@ -56,7 +56,8 @@ const Navbar = () => {
 
   return (
     <nav className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-white shadow-lg z-50" style={{
-      width: '1440px',
+      width: '100%',
+      maxWidth: '1440px',
       height: '66px',
       paddingTop: '15px',
       paddingRight: '120px',
@@ -112,7 +113,7 @@ const Navbar = () => {
                   gap: '8px',
                   opacity: 1,
                   borderRadius: '30px',
-                  backgroundColor: '#28B7FF',
+                  backgroundColor: '#2664C4',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center'

@@ -6,21 +6,17 @@ const CarSearch = () => {
   return (
     <section id="como-funciona" className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-4xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-8">
-            {/* Left Side - Title and Description */}
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
-                Vendé tu auto de manera fácil y segura
-              </h2>
-              <p className="text-lg text-gray-600 leading-relaxed">
-                Compramos tu auto en 48hs, pagamos al contado y garantizamos la transferencia.
-              </p>
-            </div>
+        <div className="bg-white rounded-2xl shadow-2xl p-8 w-full">
+          {/* Title at the top */}
+          <div className="text-center mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+              Cotizamos tu auto en poco tiempo, ingresa los datos
+            </h2>
+          </div>
 
-            {/* Right Side - Form */}
-            <div>
-              <div className="grid grid-cols-2 gap-4 mb-4">
+          {/* Form - Horizontal layout */}
+          <div className="w-full">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Marca</label>
                   <div className="relative">
@@ -91,23 +87,19 @@ const CarSearch = () => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
-                <p className="text-sm text-gray-500">
-                  ** Compramos autos 2008 en adelante.
-                </p>
-                <button 
-                  onClick={() => navigate('/vende-tu-auto')}
-                  className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200" 
-                  style={{
-                    whiteSpace: 'nowrap',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}
-                >
-                  Cotizar mi auto
-                </button>
-              </div>
+            <div className="flex items-center justify-center sm:justify-end mt-6">
+              <button 
+                onClick={() => navigate('/vende-tu-auto')}
+                className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-full transition-colors duration-200 w-full sm:w-auto" 
+                style={{
+                  whiteSpace: 'nowrap',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                Cotizar mi auto
+              </button>
             </div>
           </div>
         </div>

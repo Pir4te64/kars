@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <style>
+      .kars-text { font-family: Arial, sans-serif; font-weight: bold; font-size: 16px; fill: #1f2937; }
+      .accent { fill: #3b82f6; }
+    </style>
+  </defs>
+  
+  <!-- Fondo circular -->
+  <circle cx="16" cy="16" r="15" fill="white" stroke="#e5e7eb" stroke-width="2"/>
+  
+  <!-- Letra K -->
+  <text x="6" y="22" class="kars-text">K</text>
+  
+  <!-- Letra A -->
+  <text x="12" y="22" class="kars-text">A</text>
+  <!-- Triángulo azul sobre la A -->
+  <polygon points="16,12 18,16 14,16" class="accent"/>
+  
+  <!-- Letra R -->
+  <text x="18" y="22" class="kars-text">R</text>
+  
+  <!-- Letra S -->
+  <text x="24" y="22" class="kars-text">S</text>
+  <!-- Swoosh azul sobre la S -->
+  <path d="M26 14 Q28 12 30 14" stroke="#3b82f6" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>

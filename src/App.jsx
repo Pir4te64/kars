@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
-import CarSearch from './components/CarSearch'
+import CarQuote from './components/CarQuote'
 import Benefits from './components/Benefits'
 import StockSection from './components/StockSection'
 import WhyChooseUs from './components/WhyChooseUs'
@@ -21,7 +21,7 @@ function App() {
           <Route path="/" element={
             <main>
               <Hero />
-              <CarSearch />
+              <CarQuote />
               <Benefits />
               <StockSection />
               <WhyChooseUs />

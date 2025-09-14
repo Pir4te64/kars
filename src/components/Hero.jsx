@@ -50,10 +50,11 @@ const Hero = () => {
           </div>
 
           {/* Right Side - Car and Bubbles */}
-          <div className="relative flex justify-center lg:justify-end" style={{
+          <div className="relative flex justify-center" style={{
             width: '696px',
             height: '444px',
-            opacity: 1
+            opacity: 1,
+            maxWidth: '100%'
           }}>
             
             {/* Car Image */}
@@ -61,8 +62,12 @@ const Hero = () => {
               <img 
                 src="/hero_image_kars.png" 
                 alt="Volkswagen Polo Track" 
-                className="w-full max-w-lg lg:max-w-xl xl:max-w-2xl h-auto"
+                className="h-auto"
                 style={{
+                  width: '100%',
+                  maxWidth: '1000px',
+                  height: 'auto',
+                  objectFit: 'contain',
                   animation: 'slideInFromRight 1.2s ease-out forwards',
                   transform: 'translateX(100%)',
                   opacity: 0
@@ -89,10 +94,11 @@ const Hero = () => {
               width: '320px',
               height: '55px',
               top: '25px',
-              left: '25px',
+              left: '10px',
               borderRadius: '12px',
               padding: '12px',
-              opacity: 1
+              opacity: 1,
+              maxWidth: 'calc(100% - 20px)'
             }}>
               <div className="flex items-center justify-center" style={{ gap: '12px', width: '100%', height: '100%' }}>
                 <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
@@ -126,10 +132,11 @@ const Hero = () => {
               width: '459px',
               height: '55px',
               bottom: '25px',
-              right: '25px',
+              right: '10px',
               borderRadius: '12px',
               padding: '15px',
-              opacity: 1
+              opacity: 1,
+              maxWidth: 'calc(100% - 20px)'
             }}>
               <div className="flex items-center justify-center" style={{ gap: '12px', width: '100%', height: '100%' }}>
                 <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{

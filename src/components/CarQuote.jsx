@@ -3,6 +3,32 @@ import React, { useState } from 'react'
 const CarQuote = () => {
   const [currentStep, setCurrentStep] = useState(1)
   const [selectedCondition, setSelectedCondition] = useState('excelente')
+  
+  // Estados para capturar los datos del formulario
+  const [formData, setFormData] = useState({
+    marca: '',
+    modelo: '',
+    año: '',
+    version: '',
+    kilometraje: '',
+    nombre: '',
+    email: '',
+    ubicacion: ''
+  })
+
+  // Función para guardar los datos y navegar al resultado
+  const handleCompleteQuote = () => {
+    const completeData = {
+      ...formData,
+      estado: selectedCondition
+    }
+    
+    // Guardar en localStorage
+    localStorage.setItem('quoteData', JSON.stringify(completeData))
+    
+    // Navegar a la página de resultado
+    window.location.href = '/quote-result'
+  }
 
   const renderStepContent = () => {
     if (currentStep === 1) {
@@ -114,15 +140,21 @@ const CarQuote = () => {
             border: '1px solid #0D0D0D',
             opacity: 1
           }}>
-            <select className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500" style={{
-              border: 'none',
-              outline: 'none'
-            }}>
-              <option>Marca</option>
-              <option>Volkswagen</option>
-              <option>Toyota</option>
-              <option>Honda</option>
-              <option>Nissan</option>
+            <select 
+              value={formData.marca}
+              onChange={(e) => setFormData({...formData, marca: e.target.value})}
+              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500" 
+              style={{
+                border: 'none',
+                outline: 'none'
+              }}>
+              <option value="">Marca</option>
+              <option value="Volkswagen">Volkswagen</option>
+              <option value="Toyota">Toyota</option>
+              <option value="Honda">Honda</option>
+              <option value="Nissan">Nissan</option>
+              <option value="Chevrolet">Chevrolet</option>
+              <option value="Ford">Ford</option>
             </select>
             <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
               <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,14 +176,21 @@ const CarQuote = () => {
             border: '1px solid #0D0D0D',
             opacity: 1
           }}>
-            <select className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500" style={{
-              border: 'none',
-              outline: 'none'
-            }}>
-              <option>Modelo</option>
-              <option>Polo</option>
-              <option>Golf</option>
-              <option>Jetta</option>
+            <select 
+              value={formData.modelo}
+              onChange={(e) => setFormData({...formData, modelo: e.target.value})}
+              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500" 
+              style={{
+                border: 'none',
+                outline: 'none'
+              }}>
+              <option value="">Modelo</option>
+              <option value="Polo">Polo</option>
+              <option value="Golf">Golf</option>
+              <option value="Jetta">Jetta</option>
+              <option value="Onix">Onix</option>
+              <option value="Cruze">Cruze</option>
+              <option value="Spark">Spark</option>
             </select>
             <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
               <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -173,15 +212,22 @@ const CarQuote = () => {
             border: '1px solid #0D0D0D',
             opacity: 1
           }}>
-            <select className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500" style={{
-              border: 'none',
-              outline: 'none'
-            }}>
-              <option>Año</option>
-              <option>2023</option>
-              <option>2022</option>
-              <option>2021</option>
-              <option>2020</option>
+            <select 
+              value={formData.año}
+              onChange={(e) => setFormData({...formData, año: e.target.value})}
+              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500" 
+              style={{
+                border: 'none',
+                outline: 'none'
+              }}>
+              <option value="">Año</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+              <option value="2020">2020</option>
+              <option value="2019">2019</option>
+              <option value="2018">2018</option>
             </select>
             <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
               <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -212,14 +258,21 @@ const CarQuote = () => {
             border: '1px solid #0D0D0D',
             opacity: 1
           }}>
-            <select className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500" style={{
-              border: 'none',
-              outline: 'none'
-            }}>
-              <option>Versión</option>
-              <option>Track</option>
-              <option>Comfortline</option>
-              <option>Highline</option>
+            <select 
+              value={formData.version}
+              onChange={(e) => setFormData({...formData, version: e.target.value})}
+              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500" 
+              style={{
+                border: 'none',
+                outline: 'none'
+              }}>
+              <option value="">Versión</option>
+              <option value="Track">Track</option>
+              <option value="Comfortline">Comfortline</option>
+              <option value="Highline">Highline</option>
+              <option value="LTZ Automático">LTZ Automático</option>
+              <option value="LT Manual">LT Manual</option>
+              <option value="LS">LS</option>
             </select>
             <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
               <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -241,15 +294,20 @@ const CarQuote = () => {
             border: '1px solid #0D0D0D',
             opacity: 1
           }}>
-            <select className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500" style={{
-              border: 'none',
-              outline: 'none'
-            }}>
-              <option>Kilometraje</option>
-              <option>0 - 10,000 km</option>
-              <option>10,001 - 30,000 km</option>
-              <option>30,001 - 50,000 km</option>
-              <option>50,001 - 80,000 km</option>
+            <select 
+              value={formData.kilometraje}
+              onChange={(e) => setFormData({...formData, kilometraje: e.target.value})}
+              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500" 
+              style={{
+                border: 'none',
+                outline: 'none'
+              }}>
+              <option value="">Kilometraje</option>
+              <option value="0 - 10,000">0 - 10,000 km</option>
+              <option value="10,001 - 30,000">10,001 - 30,000 km</option>
+              <option value="30,001 - 50,000">30,001 - 50,000 km</option>
+              <option value="50,001 - 80,000">50,001 - 80,000 km</option>
+              <option value="45.000">45.000 km</option>
             </select>
             <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
               <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -784,7 +842,9 @@ const CarQuote = () => {
           }}>
             <input 
               type="text" 
-              placeholder="Chevy"
+              placeholder="Nombre y apellido"
+              value={formData.nombre}
+              onChange={(e) => setFormData({...formData, nombre: e.target.value})}
               className="w-full h-full bg-transparent text-gray-500"
               style={{
                 border: 'none',
@@ -825,7 +885,9 @@ const CarQuote = () => {
           }}>
             <input 
               type="email" 
-              placeholder="Lorem"
+              placeholder="Correo electrónico"
+              value={formData.email}
+              onChange={(e) => setFormData({...formData, email: e.target.value})}
               className="w-full h-full bg-transparent text-gray-500"
               style={{
                 border: 'none',
@@ -866,7 +928,9 @@ const CarQuote = () => {
           }}>
             <input 
               type="text" 
-              placeholder="2025"
+              placeholder="Ubicación"
+              value={formData.ubicacion}
+              onChange={(e) => setFormData({...formData, ubicacion: e.target.value})}
               className="w-full h-full bg-transparent text-gray-500"
               style={{
                 border: 'none',
@@ -914,7 +978,7 @@ const CarQuote = () => {
           Volver
         </button>
         <button 
-          onClick={() => setCurrentStep(4)}
+          onClick={handleCompleteQuote}
           style={{
             width: '234px',
             height: '48px',

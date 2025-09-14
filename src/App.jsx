@@ -11,6 +11,7 @@ import CallToAction from './components/CallToAction'
 import Footer from './components/Footer'
 import CarDetail from './components/CarDetail'
 import VendeTuAuto from './components/VendeTuAuto'
+import QuoteResult from './components/QuoteResult'
 
 function App() {
   return (
@@ -29,8 +30,9 @@ function App() {
               <CallToAction />
             </main>
           } />
-                        <Route path="/auto/:id" element={<CarDetail />} />
-              <Route path="/vende-tu-auto" element={<VendeTuAuto />} />
+          <Route path="/auto/:id" element={<CarDetail />} />
+          <Route path="/vende-tu-auto" element={<VendeTuAuto />} />
+          <Route path="/quote-result" element={<QuoteResult />} />
         </Routes>
         <Footer />
       </div>

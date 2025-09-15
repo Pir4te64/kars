@@ -1006,7 +1006,7 @@ const CarQuote = () => {
   )
 
   return (
-    <section className="bg-white flex items-center justify-center" style={{ height: '400px' }}>
+    <section className="bg-white flex items-center justify-center hidden md:flex" style={{ height: '400px' }}>
       <div className="flex items-center" style={{
         width: '1200px',
         height: '400px',

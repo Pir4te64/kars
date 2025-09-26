@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 const Hero = () => {
   const [showQuoteModal, setShowQuoteModal] = useState(false)
   return (
-    <section className="relative bg-white flex items-center justify-center w-full mt-16 md:mt-32 z-10">
+    <section className="relative flex items-center justify-center w-full mt-16 md:mt-32 z-10" style={{ backgroundColor: '#DBDBDB', paddingBottom: '150px' }}>
       <div className="flex items-center" style={{
         width: '1200px',
         height: '444px',

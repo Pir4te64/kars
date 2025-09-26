@@ -32,8 +32,8 @@ const Benefits = () => {
           className="w-12 h-12 object-contain"
         />
       ),
-      title: "Proceso 100% en línea",
-      description: "Sin papeleos complicados, todo desde la comodidad de tu casa"
+      title: "Proceso 100% asegurado",
+      description: "Sin papeleos complicados, todo el asesoramiento para agilizar tus trámites"
     },
     {
       icon: (

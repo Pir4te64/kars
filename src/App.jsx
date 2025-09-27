@@ -12,8 +12,10 @@ import Footer from './components/Footer'
 import CarDetail from './components/CarDetail'
 import VendeTuAuto from './components/VendeTuAuto'
 import QuoteResult from './components/QuoteResult'
+import { useAuth } from './hooks/useAuth'
 
 function App() {
+  const {login} = useAuth()
   return (
     <Router>
       <div className="min-h-screen bg-gray-50">

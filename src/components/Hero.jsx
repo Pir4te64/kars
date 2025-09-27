@@ -106,7 +106,7 @@ const Hero = () => {
               .mobile-hero-container {
                 width: 380px;
                 height: 467px;
-                gap: 22px;
+                gap: 6px;
                 opacity: 1;
               }
               
@@ -120,12 +120,13 @@ const Hero = () => {
               
               .mobile-text-container {
                 width: 380px;
-                height: 140px;
-                gap: 12px;
+                height: 100px;
+                gap: 8px;
                 opacity: 1;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
+                padding: 8px 0;
               }
               
               @media (min-width: 768px) {
@@ -265,7 +266,7 @@ const Hero = () => {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                margin-top: 10px;
+                margin-top: -80px;
               }
               
               @media (min-width: 768px) {

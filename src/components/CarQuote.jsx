@@ -1347,7 +1347,7 @@ const CarQuote = () => {
 
   return (
     <section
-      className="flex items-center justify-center px-4 py-8 md:py-0 mt-16 md:mt-0"
+      className="flex items-center justify-center px-4 py-8 md:py-0 mt-0 md:mt-0"
       style={{ 
         minHeight: "400px",
         background: "linear-gradient(to bottom, #DBDBDB 50%, white 50%)"

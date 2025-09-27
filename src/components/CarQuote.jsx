@@ -1382,8 +1382,11 @@ const CarQuote = () => {
 
   return (
     <section
-      className="bg-white flex items-center justify-center"
-      style={{ height: "400px" }}
+      className="flex items-center justify-center"
+      style={{ 
+        height: "400px",
+        background: "linear-gradient(to bottom, #DBDBDB 50%, white 50%)"
+      }}
     >
       <div
         className="flex items-center"

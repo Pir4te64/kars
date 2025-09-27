@@ -2,7 +2,7 @@ const user = "vicmor601@gmail.com"
 const password = "kars.API2025"
 
 export async function login() {
-  const url = "https://kars-backend-y4w9.vercel.app/api/cars/auth/login";
+  const url = "http://localhost:3001/api/cars/auth/login";
 
   const options = {
     method: "GET",
@@ -23,7 +23,7 @@ export async function login() {
 }
 
 export async function refreshAccessToken(refreshToken: string) {
-  const url = "https://kars-backend-y4w9.vercel.app/api/cars/auth/refresh";
+  const url = "http://localhost:3001/api/cars/auth/refresh";
   console.log(refreshToken);
   
   const options = {

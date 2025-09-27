@@ -1,121 +1,160 @@
-import React from 'react'
-import Navbar from './Navbar'
-import EmailSummary from './EmailSummary'
+import React, { useRef } from "react";
+import * as htmlToImage from "html-to-image";
+import Navbar from "./Navbar";
+import EmailSummary from "./EmailSummary";
 
 const QuoteResult = () => {
   // Obtener los datos del localStorage o de la URL
   const getQuoteData = () => {
-    const savedData = localStorage.getItem('quoteData')
+    const savedData = localStorage.getItem("quoteData");
     if (savedData) {
-      return JSON.parse(savedData)
+      return JSON.parse(savedData);
     }
-    
+
     // Datos por defecto si no hay datos guardados
     return {
-      marca: 'Chevrolet',
-      modelo: 'Onix',
-      año: '2019',
-      version: 'LTZ Automático',
-      kilometraje: '45.000',
-      estado: 'Bueno',
-      nombre: '',
-      email: '',
-      ubicacion: 'Bogotá'
-    }
-  }
+      marca: "Chevrolet",
+      grupo: "Onix",
+      modelo: "Onix",
+      año: "2019",
+      precio: "772",
+      version: "LTZ Automático",
+      kilometraje: "45.000",
+      estado: "Bueno",
+      nombre: "",
+      email: "",
+      ubicacion: "Bogotá",
+    };
+  };
 
-  const quoteData = getQuoteData()
+  const quoteData = getQuoteData();
+
+  // Ref to capture the content we want to export as image
+  const cardRef = useRef(null);
+
+  const handleDownloadImage = async () => {
+    try {
+      if (!cardRef.current) return;
+
+      // Increase quality and scale for sharper image on retina screens
+      const dataUrl = await htmlToImage.toPng(cardRef.current, {
+        cacheBust: true,
+        pixelRatio: 2,
+        backgroundColor: "#ffffff",
+      });
+
+      const link = document.createElement("a");
+      const filename = `cotizacion_${quoteData.marca || "auto"}_${
+        quoteData.modelo || "modelo"
+      }_${quoteData.año || "anio"}.png`;
+      link.download = filename.replace(/\s+/g, "-").toLowerCase();
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error("No se pudo generar la imagen:", err);
+      alert(
+        "No se pudo descargar la imagen en este momento. Por favor, intenta nuevamente."
+      );
+    }
+  };
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      
-      <div className="w-full max-w-7xl mx-auto px-4 pt-24 pb-8">
+
+      <div className="w-full px-4 pt-24 pb-8 mx-auto max-w-7xl">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start items-center mb-6">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center sm:text-left mb-2 sm:mb-0">
+        <div className="flex items-start justify-between mb-6">
+          <h1 className="text-3xl font-bold text-gray-900">
             Resultado de tu cotización
           </h1>
-          <span className="text-gray-500 text-base sm:text-lg">Completado</span>
+          <span className="text-lg text-gray-500">Completado</span>
         </div>
-        
+
         {/* Blue line separator */}
-        <div className="w-full h-1 bg-blue-600 mb-8"></div>
-        
-        {/* Main content card */}
-        <div className="bg-white rounded-lg shadow-lg p-4 sm:p-8 max-w-4xl mx-auto">
-          
+        <div className="w-full h-1 mb-8 bg-blue-600"></div>
+
+        {/* Main content card (wrapped with ref for export) */}
+        <div
+          ref={cardRef}
+          className="max-w-4xl p-8 mx-auto bg-white rounded-lg shadow-lg">
           {/* Estimated Value Header */}
           <div className="flex items-center mb-8">
-            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
-              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            <div className="flex items-center justify-center w-12 h-12 mr-4 bg-green-100 rounded-full">
+              <svg
+                className="w-6 h-6 text-green-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900 mb-1">
+              <h2 className="mb-1 text-xl font-bold text-gray-900">
                 Este es el valor estimado de tu vehículo
               </h2>
-              <p className="text-gray-500 text-sm">
+              <p className="text-sm text-gray-500">
                 Estimación basada en los datos proporcionados
               </p>
             </div>
           </div>
-          
+
           {/* Vehicle Summary */}
           <div className="mb-8">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">
+            <h3 className="mb-4 text-lg font-bold text-gray-900">
               Auto ingresado (resumen):
             </h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {/* Left Column */}
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-700">Marca:</span>
-                  <span className="font-bold text-gray-900">{quoteData.marca}</span>
+                  <span className="font-bold text-gray-900">
+                    {quoteData.marca}
+                  </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-700">Año:</span>
-                  <span className="font-bold text-gray-900">{quoteData.año}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Kilometraje:</span>
-                  <span className="font-bold text-gray-900">{quoteData.kilometraje} km</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Ciudad:</span>
-                  <span className="font-bold text-gray-900">{quoteData.ubicacion}</span>
+                  <span className="text-gray-700">Modelo:</span>
+                  <span className="font-bold text-gray-900">
+                    {quoteData.modelo}
+                  </span>
                 </div>
               </div>
-              
+
               {/* Right Column */}
               <div className="space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-gray-700">Modelo:</span>
-                  <span className="font-bold text-gray-900">{quoteData.modelo}</span>
+                  <span className="text-gray-700">Grupo:</span>
+                  <span className="font-bold text-gray-900">
+                    {quoteData.grupo} km
+                  </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-700">Versión:</span>
-                  <span className="font-bold text-gray-900">{quoteData.version}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Estado:</span>
-                  <span className="font-bold text-gray-900">{quoteData.estado}</span>
+                  <span className="text-gray-700">Año:</span>
+                  <span className="font-bold text-gray-900">
+                    {quoteData.año}
+                  </span>
                 </div>
               </div>
             </div>
           </div>
-          
+
           {/* Estimation */}
-          <div className="text-center mb-8">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">
+          <div className="mb-8 text-center">
+            <h3 className="mb-4 text-lg font-bold text-gray-900">
               Estimación:
             </h3>
-            <div className="text-2xl sm:text-4xl font-bold text-blue-500 mb-2 break-words">
-              $45.000.000 – $48.500.000
+            <div className="mb-2 text-4xl font-bold text-blue-500">
+              ${quoteData.precio}
             </div>
-            <p className="text-gray-500 text-xs sm:text-sm px-4">
-              Nota: Este valor es una estimación inicial. El precio final se confirmará tras la inspección.
+            <p className="text-sm text-gray-500">
+              Nota: Este valor es una estimación inicial. El precio final se
+              confirmará tras la inspección.
             </p>
           </div>
           

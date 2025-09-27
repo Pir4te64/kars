@@ -145,9 +145,10 @@ const Hero = () => {
                 font-family: Poppins;
                 font-weight: 700;
                 font-style: Bold;
-                font-size: 32px;
-                line-height: 40px;
-                letter-spacing: 0%;
+                font-size: 24px;
+                line-height: 32px;
+                letter-spacing: -1px;
+                word-spacing: -2px;
                 vertical-align: middle;
                 text-align: left;
                 margin-bottom: 0;
@@ -171,8 +172,8 @@ const Hero = () => {
                 font-family: Poppins;
                 font-weight: 500;
                 font-style: Medium;
-                font-size: 16px;
-                line-height: 20px;
+                font-size: 13px;
+                line-height: 16px;
                 letter-spacing: 0%;
                 vertical-align: middle;
                 color: black;

@@ -167,46 +167,30 @@ const CarQuote = () => {
       </div>
       {/* Title and Subtitle */}
       <div
-        className="flex flex-col"
+        className="flex flex-col w-full px-4"
         style={{
-          width: "1140px",
-          height: "55px",
           gap: "11px",
-          top: "94.5px",
-          left: "30px",
           opacity: 1,
         }}
       >
         <h2
+          className="text-sm md:text-base font-bold text-center text-gray-900"
           style={{
-            width: "1140px",
-            height: "20px",
             fontFamily: "Poppins",
             fontWeight: 700,
-            fontStyle: "Bold",
-            fontSize: "16px",
             lineHeight: "20px",
             letterSpacing: "0%",
-            textAlign: "center",
-            color: "#0D0D0D",
-            opacity: 1,
           }}
         >
           Cotizamos tu auto en poco tiempo, ingresa los datos
         </h2>
         <p
+          className="text-base md:text-lg text-center text-gray-900"
           style={{
-            width: "1140px",
-            height: "24px",
             fontFamily: "Poppins",
             fontWeight: 400,
-            fontStyle: "Regular",
-            fontSize: "18px",
             lineHeight: "24px",
             letterSpacing: "0%",
-            textAlign: "center",
-            color: "#0D0D0D",
-            opacity: 1,
           }}
         >
           Te acompañamos en cada paso de tu viaje
@@ -217,20 +201,15 @@ const CarQuote = () => {
       <div className="space-y-4" style={{ marginTop: "40px" }}>
         {/* First Row */}
         <div
-          className="flex justify-center mx-auto"
+          className="flex flex-col md:flex-row justify-center mx-auto w-full max-w-4xl gap-2 md:gap-3"
           style={{
-            width: "810px",
-            height: "56px",
-            gap: "10px",
-            top: "220px",
             opacity: 1,
           }}
         >
           {/* Marca */}
           <div
-            className="relative"
+            className="relative w-full md:w-1/3"
             style={{
-              width: "263.3333435058594px",
               height: "56px",
               paddingTop: "12px",
               paddingRight: "16px",
@@ -353,9 +332,8 @@ const CarQuote = () => {
 
           {/* Modelo */}
           <div
-            className="relative"
+            className="relative w-full md:w-1/3"
             style={{
-              width: "263.3333435058594px",
               height: "56px",
               paddingTop: "12px",
               paddingRight: "16px",
@@ -414,20 +392,15 @@ const CarQuote = () => {
 
         {/* Second Row */}
         <div
-          className="flex justify-center items-center mx-auto"
+          className="flex flex-col md:flex-row justify-center items-center mx-auto w-full max-w-4xl gap-2 md:gap-3"
           style={{
-            width: "810px",
-            height: "56px",
-            gap: "10px",
-            top: "280px",
             opacity: 1,
           }}
         >
           {/* Año */}
           <div
-            className="relative"
+            className="relative w-full md:w-1/3"
             style={{
-              width: "263.3333435058594px",
               height: "56px",
               paddingTop: "12px",
               paddingRight: "16px",
@@ -477,10 +450,9 @@ const CarQuote = () => {
           </div>
           {/* Button */}
           <button
-            className="text-white font-bold transition-colors duration-200"
+            className="text-white font-bold transition-colors duration-200 w-full md:w-auto"
             onClick={() => setCurrentStep(2)}
             style={{
-              width: "264px",
               height: "48px",
               paddingTop: "10px",
               paddingRight: "20px",
@@ -634,15 +606,14 @@ const CarQuote = () => {
 
       {/* Condition Cards */}
       <div
-        className="flex justify-center items-center space-x-6"
+        className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6"
         style={{ marginTop: "40px" }}
       >
         {/* Excelente */}
         <div
-          className="cursor-pointer"
+          className="cursor-pointer w-full md:w-80"
           onClick={() => setSelectedCondition("excelente")}
           style={{
-            width: "263px",
             height: "96px",
             paddingTop: "12px",
             paddingRight: "16px",
@@ -736,10 +707,9 @@ const CarQuote = () => {
 
         {/* Bueno */}
         <div
-          className="cursor-pointer"
+          className="cursor-pointer w-full md:w-80"
           onClick={() => setSelectedCondition("bueno")}
           style={{
-            width: "263px",
             height: "96px",
             paddingTop: "12px",
             paddingRight: "16px",
@@ -831,10 +801,9 @@ const CarQuote = () => {
 
         {/* Regular */}
         <div
-          className="cursor-pointer"
+          className="cursor-pointer w-full md:w-80"
           onClick={() => setSelectedCondition("regular")}
           style={{
-            width: "263px",
             height: "96px",
             paddingTop: "12px",
             paddingRight: "16px",
@@ -928,18 +897,16 @@ const CarQuote = () => {
 
       {/* Navigation */}
       <div
-        className="flex justify-between items-center mt-8"
+        className="flex flex-col md:flex-row justify-between items-center mt-8 w-full gap-4"
         style={{
-          width: "1129px",
           height: "48px",
-          justifyContent: "space-between",
           opacity: 1,
         }}
       >
         <button
+          className="w-full md:w-auto"
           onClick={() => setCurrentStep(1)}
           style={{
-            width: "153px",
             height: "28px",
             opacity: 1,
             fontFamily: "Poppins",
@@ -959,9 +926,9 @@ const CarQuote = () => {
           Volver
         </button>
         <button
+          className="w-full md:w-auto"
           onClick={() => setCurrentStep(3)}
           style={{
-            width: "234px",
             height: "48px",
             paddingTop: "10px",
             paddingRight: "20px",
@@ -1136,11 +1103,11 @@ const CarQuote = () => {
 
       {/* Contact Form Fields */}
       <div
-        className="flex justify-center items-center space-x-6"
+        className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6"
         style={{ marginTop: "40px" }}
       >
         {/* Nombre y apellido */}
-        <div className="flex flex-col" style={{ width: "300px" }}>
+        <div className="flex flex-col w-full md:w-80">
           <label
             style={{
               fontFamily: "Poppins",
@@ -1200,7 +1167,7 @@ const CarQuote = () => {
         </div>
 
         {/* Correo electrónico */}
-        <div className="flex flex-col" style={{ width: "300px" }}>
+        <div className="flex flex-col w-full md:w-80">
           <label
             style={{
               fontFamily: "Poppins",
@@ -1260,7 +1227,7 @@ const CarQuote = () => {
         </div>
 
         {/* Ubicación */}
-        <div className="flex flex-col" style={{ width: "300px" }}>
+        <div className="flex flex-col w-full md:w-80">
           <label
             style={{
               fontFamily: "Poppins",
@@ -1322,18 +1289,16 @@ const CarQuote = () => {
 
       {/* Navigation */}
       <div
-        className="flex justify-between items-center mt-8"
+        className="flex flex-col md:flex-row justify-between items-center mt-8 w-full gap-4"
         style={{
-          width: "1129px",
           height: "48px",
-          justifyContent: "space-between",
           opacity: 1,
         }}
       >
         <button
+          className="w-full md:w-auto"
           onClick={() => setCurrentStep(1)}
           style={{
-            width: "153px",
             height: "28px",
             opacity: 1,
             fontFamily: "Poppins",
@@ -1353,9 +1318,9 @@ const CarQuote = () => {
           Volver
         </button>
         <button
+          className="w-full md:w-auto"
           onClick={handleCompleteQuote}
           style={{
-            width: "234px",
             height: "48px",
             paddingTop: "10px",
             paddingRight: "20px",
@@ -1382,32 +1347,30 @@ const CarQuote = () => {
 
   return (
     <section
-      className="flex items-center justify-center"
+      className="flex items-center justify-center px-4 py-8 md:py-0 mt-16 md:mt-0"
       style={{ 
-        height: "400px",
+        minHeight: "400px",
         background: "linear-gradient(to bottom, #DBDBDB 50%, white 50%)"
       }}
     >
       <div
-        className="flex items-center"
+        className="flex items-center w-full max-w-7xl"
         style={{
-          width: "1200px",
-          height: "400px",
           gap: "50px",
           opacity: 1,
         }}
       >
         {/* Form Container */}
         <div
-          className="bg-white w-full"
+          className="bg-white w-full mx-auto"
           style={{
-            width: "1200px",
-            height: "400px",
+            maxWidth: "1200px",
+            minHeight: "400px",
             borderRadius: "12px",
             border: "1px solid #2664C4",
             boxShadow: "0px 2px 3px 0px #0000004D, 0px 6px 10px 4px #00000026",
             opacity: 1,
-            padding: "32px",
+            padding: "16px",
           }}
         >
           {renderStepContent()}

@@ -406,7 +406,7 @@ const Hero = () => {
             </div>
 
             {/* Bottom Right Bubble */}
-            <div className="absolute shadow-lg z-20 mobile-bubble-bottom" style={{
+            <div className="absolute shadow-lg z-20 mobile-bubble-bottom hidden md:block" style={{
               backgroundColor: 'rgba(223, 241, 255, 0.8)',
               width: '459px',
               height: '55px',

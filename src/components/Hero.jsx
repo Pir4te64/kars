@@ -147,8 +147,8 @@ const Hero = () => {
                 font-style: Bold;
                 font-size: 24px;
                 line-height: 32px;
-                letter-spacing: -1px;
-                word-spacing: -2px;
+                letter-spacing: -1.5px;
+                word-spacing: -3px;
                 vertical-align: middle;
                 text-align: left;
                 margin-bottom: 0;

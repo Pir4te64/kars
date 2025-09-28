@@ -105,9 +105,10 @@ const Hero = () => {
               
               .mobile-hero-container {
                 width: 380px;
-                height: 467px;
-                gap: 6px;
+                height: 433px;
+                gap: 22px;
                 opacity: 1;
+                padding: 0 20px;
               }
               
               @media (min-width: 768px) {
@@ -120,13 +121,13 @@ const Hero = () => {
               
               .mobile-text-container {
                 width: 380px;
-                height: 100px;
-                gap: 8px;
+                height: 194px;
+                gap: 19px;
                 opacity: 1;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
-                padding: 8px 20px 8px 10px;
+                padding: 8px 10px 8px 2px;
               }
               
               @media (min-width: 768px) {
@@ -139,16 +140,16 @@ const Hero = () => {
               }
               
               .mobile-title-container {
-                width: 380px;
+                width: 340px;
                 height: 80px;
                 opacity: 1;
                 font-family: Poppins;
                 font-weight: 700;
                 font-style: Bold;
-                font-size: 24px;
-                line-height: 32px;
-                letter-spacing: -1.5px;
-                word-spacing: -8px;
+                font-size: 28px;
+                line-height: 36px;
+                letter-spacing: 0%;
+                word-spacing: -2px;
                 vertical-align: middle;
                 text-align: left;
                 margin-bottom: 0;
@@ -167,16 +168,16 @@ const Hero = () => {
               }
               
               .mobile-subtitle-container {
-                width: 340px;
+                width: 320px;
                 height: 40px;
                 opacity: 1;
                 font-family: Poppins;
                 font-weight: 500;
                 font-style: Medium;
-                font-size: 13px;
-                line-height: 16px;
+                font-size: 10px;
+                line-height: 13px;
                 letter-spacing: 0%;
-                word-spacing: -1px;
+                word-spacing: -2px;
                 vertical-align: middle;
                 color: black;
                 margin: 0;

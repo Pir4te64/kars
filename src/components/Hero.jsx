@@ -176,6 +176,7 @@ const Hero = () => {
                 font-size: 13px;
                 line-height: 16px;
                 letter-spacing: 0%;
+                word-spacing: -1px;
                 vertical-align: middle;
                 color: black;
                 margin: 0;

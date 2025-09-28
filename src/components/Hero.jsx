@@ -126,7 +126,7 @@ const Hero = () => {
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
-                padding: 8px 0;
+                padding: 8px 20px;
               }
               
               @media (min-width: 768px) {
@@ -148,7 +148,7 @@ const Hero = () => {
                 font-size: 24px;
                 line-height: 32px;
                 letter-spacing: -1.5px;
-                word-spacing: -3px;
+                word-spacing: -8px;
                 vertical-align: middle;
                 text-align: left;
                 margin-bottom: 0;
@@ -161,12 +161,13 @@ const Hero = () => {
                   font-size: 56px;
                   line-height: 110%;
                   letter-spacing: -3%;
+                  word-spacing: normal;
                   margin-bottom: 28px;
                 }
               }
               
               .mobile-subtitle-container {
-                width: 380px;
+                width: 340px;
                 height: 40px;
                 opacity: 1;
                 font-family: Poppins;

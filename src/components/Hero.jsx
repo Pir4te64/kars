@@ -126,7 +126,7 @@ const Hero = () => {
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
-                padding: 8px 20px;
+                padding: 8px 20px 8px 10px;
               }
               
               @media (min-width: 768px) {

@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useCarInfo } from "../hooks/useCarInfo";
 import { useNavigate } from "react-router-dom";
 
 const CarQuote = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedCondition, setSelectedCondition] = useState("excelente");
+  const [isModelDropdownOpen, setIsModelDropdownOpen] = useState(false);
+  const modelDropdownRef = useRef(null);
   const navigate = useNavigate();
   const {
     brands,
@@ -16,17 +18,18 @@ const CarQuote = () => {
     loadingModels,
     getModel,
     getGroup,
+    getModelsByBrand,
     getPrice,
   } = useCarInfo();
   // Estados para capturar los datos del formulario
   const [formData, setFormData] = useState({
     marca: "",
-    grupo: "",
-    precio: "",
     modelo: "",
     año: "",
     version: "",
     kilometraje: "",
+    grupo: "",
+    precio: "",
     nombre: "",
     email: "",
     ubicacion: "",
@@ -34,32 +37,23 @@ const CarQuote = () => {
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => {
-      // Si cambia la marca, limpiar modelo y pedir modelos nuevos
-
+      // Si cambia la marca, limpiar modelo y cargar modelos directamente
       if (field === "marca") {
-        getGroup(value);
+        getModelsByBrand(value);
+        setIsModelDropdownOpen(false); // Cerrar dropdown al cambiar marca
         return {
           ...prev,
           marca: value,
-          grupo: "",
-          modelo: "", // Limpiar modelo al cambiar marca
-        };
-      }
-      if (field === "grupo") {
-        getModel(formData.marca, value);
-        console.log(value);
-        return {
-          ...prev,
-          grupo: value,
           modelo: "", // Limpiar modelo al cambiar marca
         };
       }
       if (field === "modelo") {
         console.log(field, value);
         getPrice(value);
+        setIsModelDropdownOpen(false); // Cerrar dropdown al seleccionar modelo
         return {
           ...prev,
-          modelo: value, // Limpiar modelo al cambiar marca
+          modelo: value,
         };
       }
       return {
@@ -69,19 +63,67 @@ const CarQuote = () => {
     });
   };
 
+  // Función para manejar la selección de modelo
+  const handleModelSelect = (model) => {
+    handleInputChange("modelo", model.codia);
+  };
+
+  // Función para obtener el texto del modelo seleccionado
+  const getSelectedModelText = () => {
+    if (!formData.modelo) return "Modelo";
+    const selectedModel = models.find(item => item.codia === formData.modelo);
+    return selectedModel ? selectedModel.description : "Modelo";
+  };
+
+  // Efecto para cerrar el dropdown al hacer clic fuera
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modelDropdownRef.current && !modelDropdownRef.current.contains(event.target)) {
+        setIsModelDropdownOpen(false);
+      }
+    };
+
+    if (isModelDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [isModelDropdownOpen]);
+
   // Función para guardar los datos y navegar al resultado
   const handleCompleteQuote = () => {
     // console.log(formData);
-    formData.precio = years.filter((item) => item.year == formData.año)[0].price
-    formData.marca = brands.filter(
-      (item) => item.id == formData.marca || item.name == formData.marca
-    )[0].name;
-    formData.modelo = models.filter(
-      (item) =>
-        item.codia == formData.modelo || item.description == formData.modelo
-    )[0].description;
+    if (years && years.length > 0 && formData.año) {
+      const yearData = years.filter((item) => item.year == formData.año)[0];
+      if (yearData) {
+        formData.precio = yearData.price;
+      }
+    }
+    
+    if (brands && brands.length > 0 && formData.marca) {
+      const brandData = brands.filter(
+        (item) => item.id == formData.marca || item.name == formData.marca
+      )[0];
+      if (brandData) {
+        formData.marca = brandData.name;
+      }
+    }
+    
+    if (models && models.length > 0 && formData.modelo) {
+      const modelData = models.filter(
+        (item) =>
+          item.codia == formData.modelo || item.description == formData.modelo
+      )[0];
+      if (modelData) {
+        formData.modelo = modelData.description;
+      }
+    }
+    
     // Guardar en localStorage
-
     localStorage.removeItem("quoteData");
     localStorage.setItem("quoteData", JSON.stringify(formData));
 
@@ -199,7 +241,7 @@ const CarQuote = () => {
 
       {/* Form Fields */}
       <div className="space-y-4" style={{ marginTop: "40px" }}>
-        {/* First Row */}
+        {/* First Row - Marca, Modelo, Año */}
         <div
           className="flex flex-col md:flex-row justify-center mx-auto w-full max-w-4xl gap-2 md:gap-3"
           style={{
@@ -267,71 +309,9 @@ const CarQuote = () => {
             </div>
           </div>
 
-          {/* Grupo */}
-          <div
-            className="relative"
-            style={{
-              width: "263.3333435058594px",
-              height: "56px",
-              paddingTop: "12px",
-              paddingRight: "16px",
-              paddingBottom: "12px",
-              paddingLeft: "16px",
-              gap: "4px",
-              borderRadius: "7px",
-              border: "1px solid #0D0D0D",
-              opacity: 1,
-            }}
-          >
-            <select
-              value={formData.grupo}
-              onChange={(e) => handleInputChange("grupo", e.target.value)}
-              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500"
-              style={{
-                border: "none",
-                outline: "none",
-              }}
-              disabled={!formData.marca || loadingGroups}
-            >
-              <option value="">Grupo</option>
-              {formData.marca && Array.isArray(groups) && groups.length > 0 ? (
-                groups.map((group) => (
-                  <option
-                    key={models.id || models.name}
-                    value={models.desciption}
-                  >
-                    {group.name}
-                  </option>
-                ))
-              ) : (
-                <option value="" disabled>
-                  {loadingGroups
-                    ? "Cargando grupos..."
-                    : !formData.marca
-                    ? "Seleccione un grupo primero"
-                    : "No hay grupos disponibles"}
-                </option>
-              )}
-            </select>
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-              <svg
-                className="w-5 h-5 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </div>
-          </div>
-
           {/* Modelo */}
           <div
+            ref={modelDropdownRef}
             className="relative w-full md:w-1/3"
             style={{
               height: "56px",
@@ -343,38 +323,35 @@ const CarQuote = () => {
               borderRadius: "7px",
               border: "1px solid #0D0D0D",
               opacity: 1,
+              cursor: formData.marca && !loadingModels ? "pointer" : "not-allowed",
             }}
           >
-            <select
-              value={formData.modelo}
-              onChange={(e) => handleInputChange("modelo", e.target.value)}
-              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500"
-              style={{
-                border: "none",
-                outline: "none",
+            {/* Dropdown personalizado */}
+            <div
+              className="w-full h-full flex items-center justify-between cursor-pointer"
+              onClick={() => {
+                if (formData.marca && !loadingModels && models.length > 0) {
+                  setIsModelDropdownOpen(!isModelDropdownOpen);
+                }
               }}
-              disabled={!formData.grupo || loadingModels}
+              style={{
+                cursor: formData.marca && !loadingModels && models.length > 0 ? "pointer" : "not-allowed",
+              }}
             >
-              <option value="">Modelo</option>
-              {formData.grupo && Array.isArray(models) && models.length > 0 ? (
-                models.map((item) => (
-                  <option key={item.id || item.codia} value={item.codia}>
-                    {item.description}
-                  </option>
-                ))
-              ) : (
-                <option value="" disabled>
-                  {loadingGroups
-                    ? "Cargando grupos..."
-                    : !formData.group
-                    ? "Seleccione un grupo primero"
-                    : "No hay grupos disponibles"}
-                </option>
-              )}
-            </select>
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <span className={`${formData.modelo ? "text-gray-900" : "text-gray-500"}`}>
+                {loadingModels 
+                  ? "Cargando modelos..." 
+                  : !formData.marca 
+                    ? "Modelo" 
+                    : models.length === 0 
+                      ? "No hay modelos disponibles"
+                      : getSelectedModelText()
+                }
+              </span>
               <svg
-                className="w-5 h-5 text-gray-400"
+                className={`w-5 h-5 transition-transform duration-200 ${
+                  isModelDropdownOpen ? "rotate-180" : ""
+                } ${formData.marca && !loadingModels && models.length > 0 ? "text-gray-600" : "text-gray-400"}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -387,16 +364,32 @@ const CarQuote = () => {
                 />
               </svg>
             </div>
-          </div>
-        </div>
 
-        {/* Second Row */}
-        <div
-          className="flex flex-col md:flex-row justify-center items-center mx-auto w-full max-w-4xl gap-2 md:gap-3"
-          style={{
-            opacity: 1,
-          }}
-        >
+            {/* Dropdown Options */}
+            {isModelDropdownOpen && formData.marca && models.length > 0 && (
+              <div
+                className="absolute top-full left-0 right-0 z-50 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
+                style={{
+                  borderRadius: "7px",
+                  border: "1px solid #0D0D0D",
+                }}
+              >
+                {models.map((item) => (
+                  <div
+                    key={item.id || item.codia}
+                    className="px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors duration-150"
+                    onClick={() => handleModelSelect(item)}
+                    style={{
+                      borderBottom: "1px solid #f3f4f6",
+                    }}
+                  >
+                    <span className="text-gray-900">{item.description}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           {/* Año */}
           <div
             className="relative w-full md:w-1/3"
@@ -448,6 +441,115 @@ const CarQuote = () => {
               </svg>
             </div>
           </div>
+        </div>
+
+        {/* Second Row - Versión, Kilometraje, Button */}
+        <div
+          className="flex flex-col md:flex-row justify-center items-center mx-auto w-full max-w-4xl gap-2 md:gap-3"
+          style={{
+            opacity: 1,
+          }}
+        >
+          {/* Versión */}
+          <div
+            className="relative w-full md:w-1/3"
+            style={{
+              height: "56px",
+              paddingTop: "12px",
+              paddingRight: "16px",
+              paddingBottom: "12px",
+              paddingLeft: "16px",
+              gap: "4px",
+              borderRadius: "7px",
+              border: "1px solid #0D0D0D",
+              opacity: 1,
+            }}
+          >
+            <select
+              value={formData.version}
+              onChange={(e) =>
+                setFormData({ ...formData, version: e.target.value })
+              }
+              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500"
+              style={{
+                border: "none",
+                outline: "none",
+              }}
+            >
+              <option value="">Versión</option>
+              <option value="base">Base</option>
+              <option value="intermedio">Intermedio</option>
+              <option value="alto">Alto</option>
+              <option value="premium">Premium</option>
+            </select>
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <svg
+                className="w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+          </div>
+
+          {/* Kilometraje */}
+          <div
+            className="relative w-full md:w-1/3"
+            style={{
+              height: "56px",
+              paddingTop: "12px",
+              paddingRight: "16px",
+              paddingBottom: "12px",
+              paddingLeft: "16px",
+              gap: "4px",
+              borderRadius: "7px",
+              border: "1px solid #0D0D0D",
+              opacity: 1,
+            }}
+          >
+            <select
+              value={formData.kilometraje}
+              onChange={(e) =>
+                setFormData({ ...formData, kilometraje: e.target.value })
+              }
+              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500"
+              style={{
+                border: "none",
+                outline: "none",
+              }}
+            >
+              <option value="">Kilometraje</option>
+              <option value="0-10000">0 - 10,000 km</option>
+              <option value="10000-25000">10,000 - 25,000 km</option>
+              <option value="25000-50000">25,000 - 50,000 km</option>
+              <option value="50000-75000">50,000 - 75,000 km</option>
+              <option value="75000-100000">75,000 - 100,000 km</option>
+              <option value="100000+">Más de 100,000 km</option>
+            </select>
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <svg
+                className="w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+          </div>
+
           {/* Button */}
           <button
             className="text-white font-bold transition-colors duration-200 w-full md:w-auto"

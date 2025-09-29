@@ -81,6 +81,34 @@ export function useCarInfo() {
     [accessToken]
   );
 
+  // Nueva función para obtener modelos directamente por marca
+  const getModelsByBrand = useCallback(
+    async (brandId) => {
+      if (!accessToken || !brandId) return;
+      setLoadingModels(true);
+      try {
+        // Obtener todos los grupos primero
+        const groupsData = await getGroupHelper(accessToken, brandId);
+        if (Array.isArray(groupsData) && groupsData.length > 0) {
+          // Obtener modelos del primer grupo como fallback
+          const firstGroup = groupsData[0];
+          const data = await getModelHelper(accessToken, brandId, firstGroup.name || firstGroup.id);
+          console.log("Models data:", data);
+          setModels(Array.isArray(data) ? data : []);
+        }
+      } catch (err) {
+        console.error("Error loading models:", err);
+        if (err.message == "TOKEN_EXPIRED") {
+          const response = await refresh();
+          console.log("response", response);
+        }
+      } finally {
+        setLoadingModels(false);
+      }
+    },
+    [accessToken]
+  );
+
   const getPrice = async (codia) => {
     if (!accessToken) return;
     setLoadingYears(true);
@@ -116,5 +144,6 @@ export function useCarInfo() {
     loadingModels,
     getModel,
     getGroup,
+    getModelsByBrand,
   };
 }

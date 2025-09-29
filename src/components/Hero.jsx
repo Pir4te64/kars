@@ -104,7 +104,7 @@ const Hero = () => {
               }
               
               .mobile-hero-container {
-                width: 380px;
+                width: 300px;
                 height: 433px;
                 gap: 22px;
                 opacity: 1;
@@ -120,7 +120,7 @@ const Hero = () => {
               }
               
               .mobile-text-container {
-                width: 380px;
+                width: 300px;
                 height: 194px;
                 gap: 19px;
                 opacity: 1;
@@ -140,7 +140,7 @@ const Hero = () => {
               }
               
               .mobile-title-container {
-                width: 340px;
+                width: 280px;
                 height: 80px;
                 opacity: 1;
                 font-family: Poppins;
@@ -168,7 +168,7 @@ const Hero = () => {
               }
               
               .mobile-subtitle-container {
-                width: 320px;
+                width: 280px;
                 height: 40px;
                 opacity: 1;
                 font-family: Poppins;
@@ -263,7 +263,7 @@ const Hero = () => {
               }
               
               .mobile-car-container {
-                width: 380px;
+                width: 300px;
                 height: 200px;
                 opacity: 1;
                 position: relative;

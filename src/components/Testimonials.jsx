@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from 'react'
 
 const Testimonials = () => {
+  const [isPaused, setIsPaused] = useState(false);
+  const [currentPosition, setCurrentPosition] = useState(0);
+  
+  // Funciones para navegación del carrusel
+  const scrollLeft = () => {
+    setCurrentPosition(prev => Math.max(0, prev - 400));
+  };
+  
+  const scrollRight = () => {
+    setCurrentPosition(prev => Math.min(prev + 400, 400 * (carouselImages.length - 1)));
+  };
+  
   // Carrusel de imágenes - 20 imágenes reales de KARS
   const carouselImages = [
     { id: 1, src: "/carrusel_kars1.jpg", alt: "Cliente con Renault Duster" },
@@ -68,16 +80,38 @@ const Testimonials = () => {
         </div>
 
         {/* Carrusel de imágenes */}
-        <div className="mb-16 overflow-hidden relative">
+        <div className="mb-16 overflow-hidden relative group">
+          {/* Flecha izquierda */}
+          <button
+            onClick={scrollLeft}
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 hover:text-gray-900 rounded-full p-3 shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+            style={{ marginTop: '-32px' }}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          
+          {/* Flecha derecha */}
+          <button
+            onClick={scrollRight}
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 hover:text-gray-900 rounded-full p-3 shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+            style={{ marginTop: '-32px' }}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+          
           <div 
-            className="flex gap-4"
+            className="flex gap-4 transition-transform duration-500 ease-in-out"
             style={{
-              animation: 'scroll 50s linear infinite',
-              width: 'calc(200% + 2rem)'
+              transform: `translateX(-${currentPosition}px)`,
+              width: 'max-content'
             }}
           >
-            {/* Duplicamos las imágenes para crear un loop infinito */}
-            {[...carouselImages, ...carouselImages].map((image, index) => (
+            {/* Imágenes del carrusel */}
+            {carouselImages.map((image, index) => (
               <div key={`${image.id}-${index}`} className="flex-shrink-0">
                 {/* Contenedor tipo ventana - Rectangular vertical */}
                 <div className="relative w-80 h-96 bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105">

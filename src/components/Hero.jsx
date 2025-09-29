@@ -11,7 +11,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative z-10 w-full pt-16 pb-24 bg-neutral-200 md:pt-32">
+    <section className="relative z-10 w-full pt-24 pb-24 bg-neutral-200 md:pt-32">
       <div className="container px-4 mx-auto max-w-7xl">
         <div className="grid items-center gap-10 md:gap-12 lg:grid-cols-2">
           {/* Left: Texto */}

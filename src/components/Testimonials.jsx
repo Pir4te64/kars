@@ -44,7 +44,7 @@ const Testimonials = () => {
       id: 3,
       name: "María González",
       image: "https://via.placeholder.com/80x80/dc2626/ffffff?text=MG",
-      content: "AutoVenta me ayudó a encontrar exactamente lo que buscaba. El proceso fue transparente y rápido.",
+      content: "KARS me ayudó a encontrar exactamente lo que buscaba. El proceso fue transparente y rápido.",
       rating: 5
     }
   ]
@@ -104,17 +104,10 @@ const Testimonials = () => {
         <div className="grid md:grid-cols-3 gap-8">
           {testimonials.map((testimonial) => (
             <div key={testimonial.id} className="bg-white rounded-2xl p-6 group hover:scale-105 transition-all duration-200">
-              <div className="flex items-center mb-4">
-                <img
-                  src={testimonial.image}
-                  alt={testimonial.name}
-                  className="w-16 h-16 rounded-full mr-4"
-                />
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    {testimonial.name}
-                  </h3>
-                </div>
+              <div className="mb-4">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {testimonial.name}
+                </h3>
               </div>
 
               <div className="flex items-center mb-4">

@@ -61,7 +61,7 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <button onClick={handleLogoClick} className="cursor-pointer">
-              <Logo className="h-10" />
+              <Logo className="h-16" />
             </button>
           </div>
 

@@ -8,7 +8,7 @@ const Logo = ({ className = "text-2xl", variant = "default" }) => {
       <img 
         src={logoSrc} 
         alt="KARS - Tu concesionario de confianza" 
-        className="h-16 w-auto"
+        className="h-28 w-auto"
       />
     </div>
   )

@@ -55,13 +55,13 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="absolute top-0 z-50 w-full h-16 px-4 py-4 transform -translate-x-1/2 bg-white shadow-lg left-1/2 max-w-7xl md:px-32">
+    <nav className="absolute top-0 z-50 w-full h-20 px-4 py-4 transform -translate-x-1/2 bg-white shadow-lg left-1/2 max-w-7xl md:px-32">
       <div className="w-full h-full">
         <div className="flex items-center justify-between h-full">
           {/* Logo */}
           <div className="flex-shrink-0">
             <button onClick={handleLogoClick} className="cursor-pointer">
-              <Logo className="h-16" />
+              <Logo className="h-28" />
             </button>
           </div>
 

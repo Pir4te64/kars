@@ -50,7 +50,7 @@ export default function Footer() {
               <Logo className="h-32" variant="white" />
             </div>
             <p className="text-white mb-8 max-w-2xl leading-relaxed">
-              We offer a comprehensive suite of digital marketing services that cover all aspects of
+              We offers a comprehensive suite of digital marketing services that cover all aspects of
               our online presence. From SEO and social media marketing to content creation and PPC
               advertising, they have the expertise and resources to handle our diverse marketing needs.
             </p>

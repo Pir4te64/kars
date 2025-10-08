@@ -1,40 +1,52 @@
-import type { VehiclePost, ListVehiclePostsFetchResponse } from '@/types'
-
-const API_BASE_URL = 'https://kars-backend-y4w9.vercel.app/api'
+import type { VehiclePost } from '@/types'
+import { getVehiclesFromSupabase, getVehicleById } from './supabase'
 
 export async function getVehiclePosts(limit = 1000): Promise<VehiclePost[]> {
   try {
-    const res = await fetch(`${API_BASE_URL}/vehicle-posts?limit=${limit}`, {
-      next: { revalidate: 60 }, // ISR: revalidate every 60 seconds
-    })
+    const vehicles = await getVehiclesFromSupabase(limit)
 
-    if (!res.ok) {
-      throw new Error(`HTTP error! status: ${res.status}`)
-    }
-
-    const data: ListVehiclePostsFetchResponse = await res.json()
-    return data.data
+    // Mapear de SupabaseVehicle a VehiclePost
+    return vehicles.map(vehicle => ({
+      id: vehicle.id,
+      titulo: vehicle.titulo,
+      marca: vehicle.marca,
+      modelo: vehicle.modelo,
+      anio: vehicle.anio.toString(),
+      precio: vehicle.precio,
+      kilometraje: vehicle.kilometraje,
+      combustible: vehicle.combustible,
+      transmision: vehicle.transmision,
+      images_urls: vehicle.images_urls,
+      descripcion: vehicle.descripcion,
+    }))
   } catch (error) {
-    console.error('Error fetching vehicle posts:', error)
+    console.error('Error fetching vehicle posts from Supabase:', error)
     throw error
   }
 }
 
 export async function getVehiclePostById(id: string): Promise<VehiclePost | null> {
   try {
-    const res = await fetch(`${API_BASE_URL}/vehicle-posts/${id}`, {
-      next: { revalidate: 60 }, // ISR: revalidate every 60 seconds
-    })
+    const vehicle = await getVehicleById(id)
 
-    if (!res.ok) {
-      if (res.status === 404) return null
-      throw new Error(`HTTP error! status: ${res.status}`)
+    if (!vehicle) return null
+
+    // Mapear de SupabaseVehicle a VehiclePost
+    return {
+      id: vehicle.id,
+      titulo: vehicle.titulo,
+      marca: vehicle.marca,
+      modelo: vehicle.modelo,
+      anio: vehicle.anio.toString(),
+      precio: vehicle.precio,
+      kilometraje: vehicle.kilometraje,
+      combustible: vehicle.combustible,
+      transmision: vehicle.transmision,
+      images_urls: vehicle.images_urls,
+      descripcion: vehicle.descripcion,
     }
-
-    const data = await res.json()
-    return data.data || null
   } catch (error) {
-    console.error('Error fetching vehicle post by id:', error)
+    console.error('Error fetching vehicle post by id from Supabase:', error)
     throw error
   }
 }

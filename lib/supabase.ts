@@ -31,7 +31,7 @@ export interface SupabaseVehicle {
 // Helper function to fetch vehicles from Supabase
 export async function getVehiclesFromSupabase(limit = 1000): Promise<SupabaseVehicle[]> {
   const { data, error } = await supabase
-    .from('vehicles')
+    .from('vehicle_posts')
     .select('*')
     .order('created_at', { ascending: false })
     .limit(limit)
@@ -47,7 +47,7 @@ export async function getVehiclesFromSupabase(limit = 1000): Promise<SupabaseVeh
 // Helper function to get a single vehicle by ID
 export async function getVehicleById(id: string): Promise<SupabaseVehicle | null> {
   const { data, error } = await supabase
-    .from('vehicles')
+    .from('vehicle_posts')
     .select('*')
     .eq('id', id)
     .single()

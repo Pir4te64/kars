@@ -12,9 +12,7 @@ next-env.d.ts
 /build
 /dist
 
-# Env files
-.env*.local
-.env
+
 
 # Vercel
 .vercel

@@ -1,8 +1,10 @@
-/** @type {import('tailwindcss').Config} */
-export default {
+import type { Config } from 'tailwindcss'
+
+const config: Config = {
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -18,12 +20,14 @@ export default {
           500: '#64748b',
           600: '#475569',
           700: '#334155',
-        }
+        },
       },
-                  fontFamily: {
-              sans: ['Poppins', 'system-ui', 'sans-serif'],
-            }
+      fontFamily: {
+        sans: ['var(--font-poppins)', 'system-ui', 'sans-serif'],
+      },
     },
   },
   plugins: [],
 }
+
+export default config

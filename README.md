@@ -1,168 +1,92 @@
-# 🚗 KARS - Sitio Web de Venta de Automóviles
+# KARS - Plataforma de Compra y Venta de Autos
 
-Un sitio web moderno y responsive para un concesionario de automóviles, construido con React, Vite y TailwindCSS.
+Proyecto migrado exitosamente de Vite/React a **Next.js 14 (App Router)** con TypeScript, optimizado para SSR/ISR, SEO y performance.
 
-## ✨ Características
+## 🚀 Tecnologías
 
-- **Diseño Responsive**: Optimizado para todos los dispositivos
-- **Componentes Modulares**: Arquitectura limpia y mantenible
-- **TailwindCSS**: Estilos modernos y consistentes
-- **Navegación Suave**: Experiencia de usuario fluida
-- **SEO Optimizado**: Meta tags y estructura semántica
-
-## 🛠️ Tecnologías Utilizadas
-
-- **React 18** - Biblioteca de interfaz de usuario
-- **Vite** - Herramienta de construcción rápida
-- **TailwindCSS** - Framework de CSS utilitario
-- **PostCSS** - Procesador de CSS
-- **Autoprefixer** - Compatibilidad entre navegadores
+- **Next.js 14** - App Router con TypeScript
+- **React 18** - Server & Client Components
+- **Tailwind CSS** - Estilos y diseño responsive
+- **TypeScript** - Tipado estricto
+- **ISR** - Revalidación incremental (60s)
 
 ## 📁 Estructura del Proyecto
 
 ```
-car-dealer-website/
-├── src/
-│   ├── components/
-│   │   ├── Navbar.jsx          # Navegación principal
-│   │   ├── Hero.jsx            # Sección principal
-│   │   ├── Benefits.jsx        # Módulo de beneficios
-│   │   ├── StockSection.jsx    # Vehículos disponibles
-│   │   ├── WhyChooseUs.jsx     # Razones para elegirnos
-│   │   ├── Testimonials.jsx    # Testimonios de clientes
-│   │   ├── CallToAction.jsx    # Llamadas a la acción
-│   │   └── Footer.jsx          # Pie de página
-│   ├── pages/                  # Páginas adicionales (futuro)
-│   ├── assets/                 # Imágenes y recursos
-│   ├── App.jsx                 # Componente principal
-│   ├── main.jsx                # Punto de entrada
-│   └── index.css               # Estilos globales
-├── public/                     # Archivos estáticos
-├── index.html                  # HTML principal
-├── package.json                # Dependencias y scripts
-├── vite.config.js              # Configuración de Vite
-├── tailwind.config.js          # Configuración de Tailwind
-├── postcss.config.js           # Configuración de PostCSS
-└── README.md                   # Este archivo
+kars/
+├── app/                      # Next.js App Router
+│   ├── layout.tsx           # Layout raíz con Poppins font
+│   ├── page.tsx             # Home page (SSR)
+│   ├── globals.css          # Estilos globales
+│   ├── sitemap.ts           # Sitemap dinámico
+│   ├── robots.ts            # Robots.txt
+│   ├── not-found.tsx        # Página 404
+│   ├── error.tsx            # Error boundary
+│   ├── autos/[id]/page.tsx  # Detalle de auto (ISR)
+│   ├── cotizar/             # Cotización
+│   ├── vende-tu-auto/       # Vender auto
+│   └── api/                 # API Routes
+├── components/              # Componentes
+├── lib/                     # Server utilities
+├── hooks/                   # React Hooks
+├── types/                   # TypeScript types
+└── public/                  # Assets estáticos
 ```
 
-## 🚀 Instalación y Configuración
+## 🛠️ Instalación y Desarrollo
 
-### Prerrequisitos
+### Instalación
 
-- **Node.js** (versión 16 o superior)
-- **npm** (incluido con Node.js)
-
-### Pasos de Instalación
-
-1. **Clonar o descargar el proyecto**
-   ```bash
-   cd car-dealer-website
-   ```
-
-2. **Instalar dependencias**
-   ```bash
-   npm install
-   ```
-
-3. **Ejecutar en modo desarrollo**
-   ```bash
-   npm run dev
-   ```
-
-4. **Abrir en el navegador**
-   - El proyecto se abrirá automáticamente en `http://localhost:5173`
-   - O navega manualmente a esa URL
-
-### Scripts Disponibles
-
-- `npm run dev` - Inicia el servidor de desarrollo
-- `npm run build` - Construye la aplicación para producción
-- `npm run preview` - Previsualiza la versión de producción
-- `npm run lint` - Ejecuta el linter de código
-
-## 🎨 Personalización
-
-### Colores
-
-Los colores principales se pueden modificar en `tailwind.config.js`:
-
-```javascript
-colors: {
-  primary: {
-    50: '#eff6ff',
-    500: '#3b82f6',
-    600: '#2563eb',
-    700: '#1d4ed8',
-  }
-}
+```bash
+npm install
 ```
 
-### Fuentes
+### Variables de Entorno
 
-La fuente principal (Inter) se puede cambiar en `tailwind.config.js` y `index.html`.
+Crea `.env.local`:
 
-### Imágenes
+```env
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
 
-Reemplaza los placeholders de `https://via.placeholder.com/` con tus propias imágenes en la carpeta `src/assets/`.
+### Desarrollo
 
-## 📱 Responsive Design
+```bash
+npm run dev
+```
 
-El sitio está optimizado para:
-- **Mobile**: 320px - 768px
-- **Tablet**: 768px - 1024px
-- **Desktop**: 1024px+
+Abre [http://localhost:3000](http://localhost:3000)
 
-## 🔧 Configuración de TailwindCSS
-
-El proyecto incluye:
-- **TailwindCSS 3.3+** con configuración personalizada
-- **PostCSS** con autoprefixer
-- **Componentes personalizados** en `index.css`
-- **Colores personalizados** para la marca
-
-## 📦 Construcción para Producción
+### Build de Producción
 
 ```bash
 npm run build
+npm start
 ```
 
-Los archivos optimizados se generarán en la carpeta `dist/`.
+## 📍 Rutas Principales
 
-## 🌐 Despliegue
+- `/` - Home (SSR + ISR)
+- `/autos/[id]` - Detalle (ISR 60s)
+- `/cotizar` - Cotización
+- `/vende-tu-auto` - Vender auto
+- `/api/vehicles` - API vehículos
 
-El proyecto se puede desplegar en:
-- **Vercel** (recomendado)
-- **Netlify**
-- **GitHub Pages**
-- **Cualquier servidor web estático**
+## 🚢 Deploy en Vercel
 
-## 🤝 Contribución
+```bash
+vercel --prod
+```
 
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+Configura `NEXT_PUBLIC_APP_URL` en Vercel Dashboard.
+
+## 📝 Decisiones Técnicas
+
+**Server Components:** Benefits, Footer, AboutSection  
+**Client Components:** Navbar, Hero, StockSection, Forms  
+**ISR:** 60s revalidation para stock y detalle  
+**SEO:** Sitemap dinámico, metadata, robots.txt
 
 ## 📄 Licencia
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
-
-## 📞 Soporte
-
-Si tienes alguna pregunta o necesitas ayuda:
-- 📧 Email: info@kars.com
-- 📱 Teléfono: +1 (555) 123-4567
-- 🌐 Sitio web: www.kars.com
-
-## 🙏 Agradecimientos
-
-- **TailwindCSS** por el increíble framework de CSS
-- **Vite** por la herramienta de construcción rápida
-- **React** por la biblioteca de interfaz de usuario
-- **Heroicons** por los iconos SVG utilizados
-
----
-
-**¡Disfruta construyendo tu sitio web de concesionario de automóviles! 🚗✨**
+Privado

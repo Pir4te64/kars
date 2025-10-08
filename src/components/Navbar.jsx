@@ -55,7 +55,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="absolute top-0 z-50 w-full h-20 px-4 py-4 transform -translate-x-1/2 bg-white shadow-lg left-1/2 max-w-7xl md:px-32">
+    <nav className="absolute top-0 z-50 w-full h-20 px-4 py-4 transform -translate-x-1/2 bg-white shadow-lg left-1/2 max-w-7xl sm:px-6 md:px-8 lg:px-12">
       <div className="w-full h-full">
         <div className="flex items-center justify-between h-full">
           {/* Logo */}
@@ -104,10 +104,10 @@ const Navbar = () => {
           <div className="lg:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 text-gray-700 transition-colors duration-200 hover:text-primary-600 focus:outline-none focus:text-primary-600"
+              className="p-3 text-gray-700 transition-colors duration-200 hover:text-primary-600 focus:outline-none focus:text-primary-600"
               aria-label="Toggle menu">
               <svg
-                className="w-6 h-6"
+                className="w-7 h-7"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor">

@@ -58,7 +58,7 @@ const Footer = () => {
                 <a
                   key={social.name}
                   href={social.href}
-                  className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black hover:bg-gray-200 transition-colors duration-200"
+                  className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full flex items-center justify-center text-black hover:bg-gray-200 transition-colors duration-200"
                   aria-label={social.name}
                 >
                   {social.icon}
@@ -69,7 +69,7 @@ const Footer = () => {
 
           {/* Right Section - Contact */}
           <div className="md:ml-auto md:pl-12">
-            <h4 className="text-xl font-semibold text-primary-600 mb-6">Contact</h4>
+            <h4 className="text-lg sm:text-xl font-semibold text-primary-600 mb-6">Contact</h4>
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
                 <svg className="w-5 h-5 text-primary-600 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">

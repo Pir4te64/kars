@@ -1,20 +1,27 @@
-import React, { useState, useEffect } from 'react'
+'use client';
 
-const Testimonials = () => {
-  const [isPaused, setIsPaused] = useState(false);
+import { useState } from 'react';
+import Image from 'next/image';
+
+interface CarouselImage {
+  id: number;
+  src: string;
+  alt: string;
+}
+
+interface Testimonial {
+  id: number;
+  name: string;
+  image: string;
+  content: string;
+  rating: number;
+}
+
+export default function Testimonials() {
   const [currentPosition, setCurrentPosition] = useState(0);
-  
-  // Funciones para navegación del carrusel
-  const scrollLeft = () => {
-    setCurrentPosition(prev => Math.max(0, prev - 400));
-  };
-  
-  const scrollRight = () => {
-    setCurrentPosition(prev => Math.min(prev + 400, 400 * (carouselImages.length - 1)));
-  };
-  
+
   // Carrusel de imágenes - 20 imágenes reales de KARS
-  const carouselImages = [
+  const carouselImages: CarouselImage[] = [
     { id: 1, src: "/carrusel_kars1.jpg", alt: "Cliente con Renault Duster" },
     { id: 2, src: "/carrusel_kars2.jpg", alt: "Pareja con Chevrolet" },
     { id: 3, src: "/carrusel_kars3.jpg", alt: "Familia con Ford Focus" },
@@ -37,7 +44,16 @@ const Testimonials = () => {
     { id: 20, src: "/carrusel_kars20.jpg", alt: "Mujer con auto rojo" }
   ];
 
-  const testimonials = [
+  // Funciones para navegación del carrusel
+  const scrollLeft = () => {
+    setCurrentPosition(prev => Math.max(0, prev - 400));
+  };
+
+  const scrollRight = () => {
+    setCurrentPosition(prev => Math.min(prev + 400, 400 * (carouselImages.length - 1)));
+  };
+
+  const testimonials: Testimonial[] = [
     {
       id: 1,
       name: "Ana Martínez",
@@ -59,15 +75,15 @@ const Testimonials = () => {
       content: "KARS me ayudó a encontrar exactamente lo que buscaba. El proceso fue transparente y rápido.",
       rating: 5
     }
-  ]
+  ];
 
-  const renderStars = (rating) => {
+  const renderStars = (rating: number) => {
     return [...Array(rating)].map((_, i) => (
       <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
       </svg>
-    ))
-  }
+    ));
+  };
 
   return (
     <section id="testimonios" className="py-20 bg-gray-50">
@@ -84,7 +100,7 @@ const Testimonials = () => {
           {/* Flecha izquierda */}
           <button
             onClick={scrollLeft}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 hover:text-gray-900 rounded-full p-2 sm:p-3 shadow-lg opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 hover:text-gray-900 rounded-full p-3 shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
             style={{ marginTop: '-32px' }}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,15 +111,15 @@ const Testimonials = () => {
           {/* Flecha derecha */}
           <button
             onClick={scrollRight}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 hover:text-gray-900 rounded-full p-2 sm:p-3 shadow-lg opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 hover:text-gray-900 rounded-full p-3 shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
             style={{ marginTop: '-32px' }}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
-          
-          <div 
+
+          <div
             className="flex gap-4 transition-transform duration-500 ease-in-out"
             style={{
               transform: `translateX(-${currentPosition}px)`,
@@ -114,18 +130,18 @@ const Testimonials = () => {
             {carouselImages.map((image, index) => (
               <div key={`${image.id}-${index}`} className="flex-shrink-0">
                 {/* Contenedor tipo ventana - Rectangular vertical */}
-                <div className="relative w-72 sm:w-80 md:w-96 h-72 sm:h-96 bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <img
+                <div className="relative w-80 h-96 bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105">
+                  <Image
                     src={image.src}
                     alt={image.alt}
-                    className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
+                    fill
+                    className="object-cover object-center transition-transform duration-300 hover:scale-105"
                     style={{
                       objectFit: 'cover',
-                      objectPosition: 'center center',
-                      minHeight: '100%',
-                      minWidth: '100%'
+                      objectPosition: 'center center'
                     }}
                     loading="lazy"
+                    sizes="320px"
                   />
                   {/* Borde sutil para definir la ventana */}
                   <div className="absolute inset-0 border border-gray-200 rounded-xl pointer-events-none"></div>
@@ -135,7 +151,7 @@ const Testimonials = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
           {testimonials.map((testimonial) => (
             <div key={testimonial.id} className="bg-white rounded-2xl p-6 group hover:scale-105 transition-all duration-200">
               <div className="mb-4">
@@ -149,14 +165,12 @@ const Testimonials = () => {
               </div>
 
               <blockquote className="text-gray-900 leading-relaxed">
-                "{testimonial.content}"
+                &ldquo;{testimonial.content}&rdquo;
               </blockquote>
             </div>
           ))}
         </div>
       </div>
     </section>
-  )
+  );
 }
-
-export default Testimonials

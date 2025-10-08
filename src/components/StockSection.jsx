@@ -18,7 +18,7 @@ const StockSection = () => {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
           {loading ? (
             <div className="col-span-4 text-center py-10">Cargando...</div>
           ) : error ? (
@@ -33,7 +33,7 @@ const StockSection = () => {
             cars.slice(0, limit).map((post) => (
               <div
                 key={post.id}
-                className="bg-white rounded-2xl shadow-lg p-6 group hover:scale-105 transition-all duration-200"
+                className="bg-white rounded-2xl shadow-lg p-4 sm:p-5 md:p-6 group hover:scale-105 transition-all duration-200"
               >
                 <div className="relative mb-4">
                   <div className="w-full h-48 bg-gray-100 rounded-xl flex items-center justify-center">
@@ -90,7 +90,7 @@ const StockSection = () => {
         {cars.length > limit && (
           <div className="text-center mt-12">
             <button
-              className="bg-white text-gray-900 font-semibold py-3 px-8 rounded-full border border-gray-700 hover:bg-gray-50 transition-colors duration-200 shadow-sm"
+              className="bg-white text-gray-900 font-semibold py-2 px-6 sm:py-3 sm:px-8 text-sm sm:text-base rounded-full border border-gray-700 hover:bg-gray-50 transition-colors duration-200 shadow-sm"
               onClick={() => setLimit(limit + 8)}
             >
               Ver más

@@ -1,191 +1,158 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { getBrands, getGroups, getModels } from "@/lib/car-quote";
-import { useAuth } from "./useAuth";
 
 interface Brand {
   id: number;
   name: string;
-  [key: string]: any;
-}
-
-interface Group {
-  id: number;
-  name: string;
-  [key: string]: any;
+  brand_id?: number;
 }
 
 interface Model {
-  id: number;
-  name: string;
+  id?: number;
+  name?: string;
   description: string;
   codia: string;
-  list_price?: boolean;
-  prices?: boolean;
-  [key: string]: any;
+  brand_id?: number;
 }
 
 interface YearPrice {
   year: number;
   price: string;
-  [key: string]: any;
+}
+
+interface ModelFeature {
+  codia: number;
+  version: string;
+  year: number;
 }
 
 export function useCarInfo() {
-  const { tokens, refreshAccessToken } = useAuth();
-  const accessToken = tokens?.accessToken;
   const [brands, setBrands] = useState<Brand[]>([]);
   const [loadingBrands, setLoadingBrands] = useState(false);
-  const [groups, setGroups] = useState<Group[]>([]);
-  const [loadingGroups, setLoadingGroups] = useState(false);
   const [models, setModels] = useState<Model[]>([]);
   const [loadingModels, setLoadingModels] = useState(false);
   const [years, setYears] = useState<YearPrice[]>([]);
   const [loadingYears, setLoadingYears] = useState(false);
+  const [versions, setVersions] = useState<ModelFeature[]>([]);
+  const [loadingVersions, setLoadingVersions] = useState(false);
 
+  // Cargar marcas al iniciar
   useEffect(() => {
-    if (brands.length <= 0 && accessToken) {
+    if (brands.length === 0) {
       getBrandsData();
     }
-  }, [accessToken]);
+  }, []);
 
   const getBrandsData = useCallback(async () => {
-    if (!accessToken) return;
     setLoadingBrands(true);
     try {
-      const data = await getBrands(accessToken);
-      setBrands(Array.isArray(data) ? data : []);
-    } catch (err: any) {
-      if (err.message === "TOKEN_EXPIRED") {
-        const response = await refreshAccessToken();
-        console.log("response", response);
-      }
+      // Obtener año y mes actual
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth() + 1; // getMonth() retorna 0-11
+
+      const response = await fetch(`/api/infoauto?path=/brands/${year}/${month}/`);
+      if (!response.ok) throw new Error('Error al cargar marcas');
+      const data = await response.json();
+
+      // Mapear los datos de InfoAuto al formato esperado
+      const mappedBrands = data.map((brand: any) => ({
+        id: brand.id,
+        name: brand.name,
+        brand_id: brand.id,
+      }));
+
+      setBrands(mappedBrands.sort((a: Brand, b: Brand) => a.name.localeCompare(b.name)));
+    } catch (err) {
+      console.error('Error loading brands:', err);
+      setBrands([]);
     } finally {
       setLoadingBrands(false);
     }
-  }, [accessToken]);
+  }, []);
 
-  const getGroup = useCallback(
-    async (brandId: string) => {
-      if (!accessToken || !brandId) return;
-      setLoadingGroups(true);
+  const getModelsByBrand = useCallback(async (brandId: string) => {
+    if (!brandId) return;
+    setLoadingModels(true);
+    try {
+      const response = await fetch(`/api/infoauto?path=/brands/${brandId}/models/`);
+      if (!response.ok) throw new Error('Error al cargar modelos');
+      const data = await response.json();
 
-      try {
-        const data = await getGroups(accessToken, brandId);
-        setGroups(Array.isArray(data) ? data : []);
-      } catch (err: any) {
-        if (err.message === "TOKEN_EXPIRED") {
-          const response = await refreshAccessToken();
-          console.log("response", response);
-        }
-      } finally {
-        setLoadingGroups(false);
-      }
-    },
-    [accessToken]
-  );
+      // Mapear los datos de InfoAuto al formato esperado
+      const mappedModels = data.map((model: any) => ({
+        id: model.codia,
+        description: model.name,
+        codia: model.codia.toString(),
+        name: model.name,
+        brand_id: model.brand_id,
+      }));
 
-  const getModel = useCallback(
-    async (brandId: string, group: string) => {
-      if (!accessToken || !brandId || !group) return;
-      setLoadingModels(true);
-      try {
-        const data = await getModels(accessToken, brandId, group);
-        console.log(data);
+      setModels(mappedModels.sort((a: Model, b: Model) => a.description.localeCompare(b.description)));
+    } catch (err) {
+      console.error('Error loading models:', err);
+      setModels([]);
+    } finally {
+      setLoadingModels(false);
+    }
+  }, []);
 
-        setModels(Array.isArray(data) ? data : []);
-      } catch (err: any) {
-        if (err.message === "TOKEN_EXPIRED") {
-          const response = await refreshAccessToken();
-          console.log("response", response);
-        }
-      } finally {
-        setLoadingModels(false);
-      }
-    },
-    [accessToken]
-  );
-
-  const getModelsByBrand = useCallback(
-    async (brandId: string) => {
-      if (!accessToken || !brandId) return;
-      setLoadingModels(true);
-      try {
-        const groupsData = await getGroups(accessToken, brandId);
-        if (Array.isArray(groupsData) && groupsData.length > 0) {
-          const firstGroup = groupsData[0];
-          const data = await getModels(
-            accessToken,
-            brandId,
-            firstGroup.name || String(firstGroup.id)
-          );
-          console.log("Models data:", data);
-          setModels(Array.isArray(data) ? data : []);
-        }
-      } catch (err: any) {
-        console.error("Error loading models:", err);
-        if (err.message === "TOKEN_EXPIRED") {
-          const response = await refreshAccessToken();
-          console.log("response", response);
-        }
-      } finally {
-        setLoadingModels(false);
-      }
-    },
-    [accessToken]
-  );
-
-  const getPrice = async (codia: string) => {
-    if (!accessToken) return;
+  const getPrice = useCallback(async (codia: string) => {
+    if (!codia) return;
     setLoadingYears(true);
     try {
-      const car = models.filter((item) => item.codia === codia)[0];
+      const response = await fetch(`/api/infoauto?path=/models/${codia}/prices/`);
+      if (!response.ok) throw new Error('Error al cargar precios');
+      const data = await response.json();
 
-      // Call the API helper from lib/car-quote.ts
-      const API_BASE_URL = "https://kars-backend-y4w9.vercel.app/api";
-      const res = await fetch(
-        `${API_BASE_URL}/brands/${car.codia}/price?isNew=${car.list_price}&isOld=${car.prices}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-          cache: "no-store",
-        }
-      );
+      // Mapear los datos de InfoAuto al formato esperado
+      const mappedYears = data.map((item: any) => ({
+        year: item.year,
+        price: item.price ? `$${item.price.toLocaleString()}` : 'Consultar',
+      }));
 
-      if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          throw new Error("TOKEN_EXPIRED");
-        }
-        throw new Error("Error al obtener el precio");
-      }
+      // Ordenar por año descendente y eliminar duplicados
+      const uniqueYears = Array.from(
+        new Map(mappedYears.map((item: YearPrice) => [item.year, item])).values()
+      ).sort((a: YearPrice, b: YearPrice) => b.year - a.year);
 
-      const data = await res.json();
-      setYears(data.data.price);
-      return data;
-    } catch (err: any) {
-      if (err.message === "TOKEN_EXPIRED") {
-        const response = await refreshAccessToken();
-        console.log("response", response);
-      }
+      setYears(uniqueYears);
+    } catch (err) {
+      console.error('Error loading prices:', err);
+      setYears([]);
     } finally {
       setLoadingYears(false);
     }
-  };
+  }, []);
+
+  const getVersions = useCallback(async (codia: string) => {
+    if (!codia) return;
+    setLoadingVersions(true);
+    try {
+      const response = await fetch(`/api/infoauto?path=/models/${codia}/features/`);
+      if (!response.ok) throw new Error('Error al cargar versiones');
+      const data = await response.json();
+      setVersions(data);
+    } catch (err) {
+      console.error('Error loading versions:', err);
+      setVersions([]);
+    } finally {
+      setLoadingVersions(false);
+    }
+  }, []);
 
   return {
-    getPrice,
     brands,
     models,
-    groups,
     years,
+    versions,
     loadingBrands,
     loadingModels,
-    loadingGroups,
-    getModel,
-    getGroup,
+    loadingYears,
+    loadingVersions,
     getModelsByBrand,
+    getPrice,
+    getVersions,
   };
 }

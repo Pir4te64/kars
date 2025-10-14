@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/Vic/Documents/**)",
+      "Read(//c/Users/Vic/**)",
+      "Bash(find:*)",
+      "Read(//d/2025/Backkarz/**)",
+      "Read(//d/2025/Backkarz//**)",
+      "Bash(mkdir:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)",
+      "Bash(curl -s \"http://localhost:3000/api/infoauto?path=/brands/2025/1/\")",
+      "Bash(curl -s -u \"vicmor601@gmail.com:XhqOsuVIK1MeXpAB\" \"https://api.infoauto.com.ar/cars/pub/brands/2025/1/\")",
+      "Bash(curl -s -u \"vicmor601@gmail.com:XhqOsuVIK1MeXpAB\" \"https://api.infoauto.com.ar/cars/pub/brands/2025/01/\")",
+      "Bash(curl -s -u \"vicmor601@gmail.com:XhqOsuVIK1MeXpAB\" \"https://api.infoauto.com.ar/cars/pub/brands/\")",
+      "Bash(curl -s \"http://localhost:3000/api/infoauto?path=/brands/\")",
+      "Bash(curl -s \"http://localhost:3000/api/infoauto?path=/brands/2024/12/\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

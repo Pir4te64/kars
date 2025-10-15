@@ -12,13 +12,10 @@ export default function VendeTuAutoPage() {
   const {
     brands,
     models,
-    groups,
     years,
     loadingBrands,
-    loadingGroups,
     loadingModels,
-    getModel,
-    getGroup,
+    getModelsByBrand,
     getPrice,
   } = useCarInfo();
 
@@ -46,7 +43,7 @@ export default function VendeTuAutoPage() {
       // Si cambia la marca, limpiar modelo y pedir modelos nuevos
 
       if (field === "marca") {
-        getGroup(value);
+        getModelsByBrand(value);
         return {
           ...prev,
           marca: value,
@@ -54,12 +51,11 @@ export default function VendeTuAutoPage() {
           modelo: "", // Limpiar modelo al cambiar marca
         };
       }
-      if (field === "group") {
-        getModel(formData.marca, value);
+      if (field === "grupo") {
+        // Grupo field - no longer used with InfoAuto API
         return {
           ...prev,
           grupo: value,
-          modelo: "", // Limpiar modelo al cambiar marca
         };
       }
       if (field === "modelo") {
@@ -67,7 +63,7 @@ export default function VendeTuAutoPage() {
         getPrice(value);
         return {
           ...prev,
-          modelo: value, // Limpiar modelo al cambiar marca
+          modelo: value,
         };
       }
       return {
@@ -175,36 +171,19 @@ export default function VendeTuAutoPage() {
                 </div>
               </div>
             </div>
-            {/* grupo */}
-            <div>
+            {/* grupo - Disabled with InfoAuto API */}
+            <div style={{ display: 'none' }}>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Grupo
               </label>
               <div className="relative">
                 <select
                   value={formData.grupo}
-                  onChange={(e) => handleInputChange("group", e.target.value)}
+                  onChange={(e) => handleInputChange("grupo", e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg appearance-none bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  disabled={!formData.marca || loadingGroups}
+                  disabled={true}
                 >
                   <option value="">Seleccione</option>
-                  {formData.marca &&
-                  Array.isArray(groups) &&
-                  groups.length > 0 ? (
-                    groups.map((group) => (
-                      <option key={group.id || group.name} value={group.name}>
-                        {group.name}
-                      </option>
-                    ))
-                  ) : (
-                    <option value="" disabled>
-                      {loadingGroups
-                        ? "Cargando grupos..."
-                        : !formData.marca
-                        ? "Seleccione un grupo primero"
-                        : "No hay grupos disponibles"}
-                    </option>
-                  )}
                 </select>
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                   <svg
@@ -233,10 +212,10 @@ export default function VendeTuAutoPage() {
                   value={formData.modelo}
                   onChange={(e) => handleInputChange("modelo", e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg appearance-none bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  disabled={!formData.grupo || loadingModels}
+                  disabled={!formData.marca || loadingModels}
                 >
                   <option value="">Seleccione</option>
-                  {formData.grupo &&
+                  {formData.marca &&
                   Array.isArray(models) &&
                   models.length > 0 ? (
                     models.map((model) => (
@@ -248,7 +227,7 @@ export default function VendeTuAutoPage() {
                     <option value="" disabled>
                       {loadingModels
                         ? "Cargando modelos..."
-                        : !formData.grupo
+                        : !formData.marca
                         ? "Seleccione una marca primero"
                         : "No hay modelos disponibles"}
                     </option>

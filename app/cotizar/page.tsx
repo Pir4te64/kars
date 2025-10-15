@@ -17,13 +17,9 @@ export default function CotizarPage() {
   const {
     brands,
     models,
-    groups,
     years,
     loadingBrands,
-    loadingGroups,
     loadingModels,
-    getModel,
-    getGroup,
     getModelsByBrand,
     getPrice,
   } = useCarInfo();

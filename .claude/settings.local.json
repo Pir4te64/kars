@@ -16,7 +16,11 @@
       "Bash(curl -s \"http://localhost:3000/api/infoauto?path=/brands/\")",
       "Bash(curl -s \"http://localhost:3000/api/infoauto?path=/brands/2024/12/\")",
       "Bash(npx tsc:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "WebFetch(domain:api.infoauto.com.ar)",
+      "Bash(for month in 05 06 07 08 09)",
+      "Bash(do echo \"Testing 2024/$month:\")",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []

@@ -1,13 +1,15 @@
+"use client"
+
 import React, { useState, useEffect, useRef } from "react";
 import { useCarInfo } from "../hooks/useCarInfo";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 const CarQuote = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedCondition, setSelectedCondition] = useState("excelente");
   const [isModelDropdownOpen, setIsModelDropdownOpen] = useState(false);
   const modelDropdownRef = useRef(null);
-  const navigate = useNavigate();
+  const router = useRouter();
   const {
     brands,
     models,
@@ -71,26 +73,29 @@ const CarQuote = () => {
   // Función para obtener el texto del modelo seleccionado
   const getSelectedModelText = () => {
     if (!formData.modelo) return "Modelo";
-    const selectedModel = models.find(item => item.codia === formData.modelo);
+    const selectedModel = models.find((item) => item.codia === formData.modelo);
     return selectedModel ? selectedModel.description : "Modelo";
   };
 
   // Efecto para cerrar el dropdown al hacer clic fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (modelDropdownRef.current && !modelDropdownRef.current.contains(event.target)) {
+      if (
+        modelDropdownRef.current &&
+        !modelDropdownRef.current.contains(event.target)
+      ) {
         setIsModelDropdownOpen(false);
       }
     };
 
     if (isModelDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      document.addEventListener('touchstart', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("touchstart", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('touchstart', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
     };
   }, [isModelDropdownOpen]);
 
@@ -103,7 +108,7 @@ const CarQuote = () => {
         formData.precio = yearData.price;
       }
     }
-    
+
     if (brands && brands.length > 0 && formData.marca) {
       const brandData = brands.filter(
         (item) => item.id == formData.marca || item.name == formData.marca
@@ -112,7 +117,7 @@ const CarQuote = () => {
         formData.marca = brandData.name;
       }
     }
-    
+
     if (models && models.length > 0 && formData.modelo) {
       const modelData = models.filter(
         (item) =>
@@ -122,13 +127,13 @@ const CarQuote = () => {
         formData.modelo = modelData.description;
       }
     }
-    
+
     // Guardar en localStorage
     localStorage.removeItem("quoteData");
     localStorage.setItem("quoteData", JSON.stringify(formData));
 
     // Navegar a la página de resultado
-    navigate('/quote-result')
+    router.push('/cotizar/resultado')
   };
 
   const renderStepContent = () => {
@@ -275,15 +280,11 @@ const CarQuote = () => {
             >
               <option value="">Marca</option>
               {brands && brands.length > 0 ? (
-                brands.map((brand) =>
-                  ["FORD", "HONDA", "PEUGEOT", "CHEVROLET"].includes(
-                    brand.name
-                  ) ? (
-                    <option key={brand.id || brand.name} value={brand.id}>
-                      {brand.name}
-                    </option>
-                  ) : null
-                )
+                brands.map((brand) => (
+                  <option key={brand.id || brand.name} value={brand.id}>
+                    {brand.name}
+                  </option>
+                ))
               ) : (
                 <option value="" disabled>
                   {loadingBrands
@@ -323,7 +324,8 @@ const CarQuote = () => {
               borderRadius: "7px",
               border: "1px solid #0D0D0D",
               opacity: 1,
-              cursor: formData.marca && !loadingModels ? "pointer" : "not-allowed",
+              cursor:
+                formData.marca && !loadingModels ? "pointer" : "not-allowed",
             }}
           >
             {/* Dropdown personalizado */}
@@ -335,23 +337,33 @@ const CarQuote = () => {
                 }
               }}
               style={{
-                cursor: formData.marca && !loadingModels && models.length > 0 ? "pointer" : "not-allowed",
+                cursor:
+                  formData.marca && !loadingModels && models.length > 0
+                    ? "pointer"
+                    : "not-allowed",
               }}
             >
-              <span className={`${formData.modelo ? "text-gray-900" : "text-gray-500"}`}>
-                {loadingModels 
-                  ? "Cargando modelos..." 
-                  : !formData.marca 
-                    ? "Modelo" 
-                    : models.length === 0 
-                      ? "No hay modelos disponibles"
-                      : getSelectedModelText()
-                }
+              <span
+                className={`${
+                  formData.modelo ? "text-gray-900" : "text-gray-500"
+                }`}
+              >
+                {loadingModels
+                  ? "Cargando modelos..."
+                  : !formData.marca
+                  ? "Modelo"
+                  : models.length === 0
+                  ? "No hay modelos disponibles"
+                  : getSelectedModelText()}
               </span>
               <svg
                 className={`w-5 h-5 transition-transform duration-200 ${
                   isModelDropdownOpen ? "rotate-180" : ""
-                } ${formData.marca && !loadingModels && models.length > 0 ? "text-gray-600" : "text-gray-400"}`}
+                } ${
+                  formData.marca && !loadingModels && models.length > 0
+                    ? "text-gray-600"
+                    : "text-gray-400"
+                }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -1450,9 +1462,9 @@ const CarQuote = () => {
   return (
     <section
       className="flex items-center justify-center px-4 py-8 md:py-0 mt-0 md:mt-0"
-      style={{ 
+      style={{
         minHeight: "400px",
-        background: "linear-gradient(to bottom, #e5e5e5 50%, white 50%)"
+        background: "linear-gradient(to bottom, #e5e5e5 50%, white 50%)",
       }}
     >
       <div

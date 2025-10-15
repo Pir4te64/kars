@@ -19,7 +19,6 @@ export function useCarInfo() {
 
   useEffect(() => {
     brands.length <= 0 && getBrands();
-    console.log("Activando", accessToken);
   }, [accessToken]);
 
   const getBrands = useCallback(async () => {
@@ -30,11 +29,8 @@ export function useCarInfo() {
 
       setBrands(Array.isArray(data) ? data : []);
     } catch (err) {
-      if (err.message == "TOKEN_EXPIRED") {
-        const response = await refresh();
-        console.log("response", response);
+      await refresh();
         
-      }
     } finally {
       setLoadingBrands(false);
     }
@@ -52,7 +48,6 @@ export function useCarInfo() {
       } catch (err) {
         if (err.message == "TOKEN_EXPIRED") {
           const response = await refresh();
-          console.log("response", response);
         }
       } finally {
         setLoadingGroup(false);
@@ -73,7 +68,6 @@ export function useCarInfo() {
       } catch (err) {
         if (err.message == "TOKEN_EXPIRED") {
           const response = await refresh();
-          console.log("response", response);
         }
       } finally {
         setLoadingModels(false);
@@ -94,14 +88,12 @@ export function useCarInfo() {
           // Obtener modelos del primer grupo como fallback
           const firstGroup = groupsData[0];
           const data = await getModelHelper(accessToken, brandId, firstGroup.name || firstGroup.id);
-          console.log("Models data:", data);
           setModels(Array.isArray(data) ? data : []);
         }
       } catch (err) {
         console.error("Error loading models:", err);
         if (err.message == "TOKEN_EXPIRED") {
           const response = await refresh();
-          console.log("response", response);
         }
       } finally {
         setLoadingModels(false);
@@ -127,7 +119,6 @@ export function useCarInfo() {
     } catch (err) {
       if(err.message == "TOKEN_EXPIRED"){
         const response = await refresh()
-        console.log("response", response);
         
       }
     } finally {
@@ -144,6 +135,7 @@ export function useCarInfo() {
     loadingBrands,
     loadingGroups,
     loadingModels,
+    loadingYears,
     getModel,
     getGroup,
     getModelsByBrand,

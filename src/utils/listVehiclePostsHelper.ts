@@ -3,7 +3,7 @@ import { Datum, listVehiclePostsFetchResponse } from "../types/CarInfo";
 
 export async function listVehiclePosts(limit = 25): Promise<Datum[]> {
   try {
-    const url = `https://kars-backend.vercel.app/api/vehicle-posts?limit=${1000}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/vehicle-posts?limit=${1000}`;
     const response: listVehiclePostsFetchResponse = await fetch(url).then(
       (data) => {
         return data.json();

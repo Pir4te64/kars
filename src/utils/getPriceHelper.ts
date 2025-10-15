@@ -7,7 +7,7 @@ export default async function getPriceHelper(
   isOld: boolean,
   token: string
 ) {
-  const url = `https://kars-backend.vercel.app/api/brands/${codia}/price?isNew=${isNew}&isOld=${isOld}`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/brands/${codia}/price?isNew=${isNew}&isOld=${isOld}`;
   try {
     const response = await fetch(url, {
       headers: {
@@ -18,10 +18,11 @@ export default async function getPriceHelper(
     }).then((data) => {
       return data.json();
     });
-
+    console.log("price", response);
+    
     return response;
   } catch (error: any) {
-    console.log(error);
+    console.log(error.message);
 
     if (
       error.response &&

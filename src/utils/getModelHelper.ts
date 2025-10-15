@@ -5,7 +5,7 @@ export default async function getModelHelper(
   brandId: string,
   group: string
 ) {
-  const url = `https://kars-backend.vercel.app/api/brands/${brandId}/models?query_string=${group}`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/brands/${brandId}/models?query_string=${group}`;
   try {
     const response = await fetch(url, {
       headers: {

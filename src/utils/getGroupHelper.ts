@@ -1,7 +1,7 @@
 // utils/getBrands.js
 
 export default async function getGroupHelper(token: string, brandId: string) {
-  const url = `https://kars-backend.vercel.app/api/brands/${brandId}/groups`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/brands/${brandId}/groups`;
   try {
     const response = await fetch(url, {
       headers: {
@@ -12,7 +12,7 @@ export default async function getGroupHelper(token: string, brandId: string) {
     }).then((data) => {
       return data.json();
     });
-
+    
     return response;
   } catch (error: any) {
     if (

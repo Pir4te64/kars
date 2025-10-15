@@ -1,6 +1,6 @@
 export async function getVehiclePostById(id: string) {
   try {
-    const url = `https://kars-backend.vercel.app/api/vehicle-posts/${id}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/vehicle-posts/${id}`;
     const response = await fetch(url).then((data)=>{
       return data.json()
     })

@@ -2,8 +2,10 @@
 
 
 export default async function getBrandHelper(token: string) {
-  const url = "https://kars-backend.vercel.app/api/brands/";
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/brands/`;
+
   try {
+    
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -13,10 +15,12 @@ export default async function getBrandHelper(token: string) {
     }).then((data) => {
       return data.json();
     });
-
+    if (
+      response.message && response.message == 'TOKEN_EXPIRED') {
+      throw new Error("TOKEN_EXPIRED");
+    }
     return response;
   } catch (error: any) {
-    console.log("error.response", error.response);
 
     if (
       error.response &&

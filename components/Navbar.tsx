@@ -90,7 +90,7 @@ export default function Navbar() {
                 onClick={() => router.push('/vende-tu-auto')}
                 className="px-5 py-2 text-sm font-medium text-white transition-colors duration-200 rounded-full bg-primary-600 hover:bg-primary-700"
               >
-                Vende tu auto 
+                Vende tu auto
               </button>
               <button
                 onClick={() => handleNavItemClick('Vehículos en venta')}

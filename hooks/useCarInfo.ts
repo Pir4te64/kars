@@ -27,7 +27,21 @@ interface ModelFeature {
   year: number;
 }
 
-export function useCarInfo() {
+interface UseCarInfoReturn {
+  brands: Brand[];
+  models: Model[];
+  years: YearPrice[];
+  versions: ModelFeature[];
+  loadingBrands: boolean;
+  loadingModels: boolean;
+  loadingYears: boolean;
+  loadingVersions: boolean;
+  getModelsByBrand: (brandId: string) => Promise<void>;
+  getPrice: (codia: string) => Promise<void>;
+  getVersions: (codia: string) => Promise<void>;
+}
+
+export function useCarInfo(): UseCarInfoReturn {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [loadingBrands, setLoadingBrands] = useState(false);
   const [models, setModels] = useState<Model[]>([]);
@@ -52,7 +66,7 @@ export function useCarInfo() {
       const year = now.getFullYear();
       const month = now.getMonth() + 1; // getMonth() retorna 0-11
 
-      const response = await fetch(`https://kars-backend.vercel.app/api/infoauto?path=/brands/${year}/${month}/`);
+      const response = await fetch(`/api/infoauto?path=/brands/${year}/${month}/`);
       if (!response.ok) throw new Error('Error al cargar marcas');
       const data = await response.json();
 
@@ -76,7 +90,7 @@ export function useCarInfo() {
     if (!brandId) return;
     setLoadingModels(true);
     try {
-      const response = await fetch(`https://kars-backend.vercel.app/api/infoauto?path=/brands/${brandId}/models/`);
+      const response = await fetch(`/api/infoauto?path=/brands/${brandId}/models/`);
       if (!response.ok) throw new Error('Error al cargar modelos');
       const data = await response.json();
 
@@ -102,7 +116,7 @@ export function useCarInfo() {
     if (!codia) return;
     setLoadingYears(true);
     try {
-      const response = await fetch(`https://kars-backend.vercel.app/api/infoauto?path=/models/${codia}/prices/`);
+      const response = await fetch(`/api/infoauto?path=/models/${codia}/prices/`);
       if (!response.ok) throw new Error('Error al cargar precios');
       const data = await response.json();
 
@@ -130,7 +144,7 @@ export function useCarInfo() {
     if (!codia) return;
     setLoadingVersions(true);
     try {
-      const response = await fetch(`https://kars-backend.vercel.app/api/infoauto?path=/models/${codia}/features/`);
+      const response = await fetch(`/api/infoauto?path=/models/${codia}/features/`);
       if (!response.ok) throw new Error('Error al cargar versiones');
       const data = await response.json();
       setVersions(data);

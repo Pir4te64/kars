@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { useCarInfo } from '@/src/hooks/useCarInfo'
+import { useCarInfo } from '@/hooks/useCarInfo'
 
 interface FormData {
   marca: string

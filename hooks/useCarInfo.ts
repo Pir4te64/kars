@@ -27,7 +27,21 @@ interface ModelFeature {
   year: number;
 }
 
-export function useCarInfo() {
+interface UseCarInfoReturn {
+  brands: Brand[];
+  models: Model[];
+  years: YearPrice[];
+  versions: ModelFeature[];
+  loadingBrands: boolean;
+  loadingModels: boolean;
+  loadingYears: boolean;
+  loadingVersions: boolean;
+  getModelsByBrand: (brandId: string) => Promise<void>;
+  getPrice: (codia: string) => Promise<void>;
+  getVersions: (codia: string) => Promise<void>;
+}
+
+export function useCarInfo(): UseCarInfoReturn {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [loadingBrands, setLoadingBrands] = useState(false);
   const [models, setModels] = useState<Model[]>([]);
@@ -113,11 +127,11 @@ export function useCarInfo() {
       }));
 
       // Ordenar por año descendente y eliminar duplicados
-      const uniqueYears = Array.from(
-        new Map(mappedYears.map((item: YearPrice) => [item.year, item])).values()
-      ).sort((a: YearPrice, b: YearPrice) => b.year - a.year);
+      const yearMap = new Map(mappedYears.map((item: YearPrice) => [item.year, item]));
+      const uniqueYears = Array.from(yearMap.values()) as YearPrice[];
+      const sortedYears = uniqueYears.sort((a, b) => b.year - a.year);
 
-      setYears(uniqueYears);
+      setYears(sortedYears);
     } catch (err) {
       console.error('Error loading prices:', err);
       setYears([]);

@@ -14,7 +14,9 @@
       "Bash(curl -s -u \"vicmor601@gmail.com:XhqOsuVIK1MeXpAB\" \"https://api.infoauto.com.ar/cars/pub/brands/2025/01/\")",
       "Bash(curl -s -u \"vicmor601@gmail.com:XhqOsuVIK1MeXpAB\" \"https://api.infoauto.com.ar/cars/pub/brands/\")",
       "Bash(curl -s \"http://localhost:3000/api/infoauto?path=/brands/\")",
-      "Bash(curl -s \"http://localhost:3000/api/infoauto?path=/brands/2024/12/\")"
+      "Bash(curl -s \"http://localhost:3000/api/infoauto?path=/brands/2024/12/\")",
+      "Bash(npx tsc:*)",
+      "Bash(curl:*)"
     ],
     "deny": [],
     "ask": []

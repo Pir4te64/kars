@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { VehiclePost } from '@/types'
+import { useVehiclePosts } from '@/hooks/useVehiclePosts'
 
 interface CarDetailClientProps {
   carData: VehiclePost
@@ -12,6 +13,7 @@ interface CarDetailClientProps {
 
 export default function CarDetailClient({ carData, featuredCars }: CarDetailClientProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const { cars } = useVehiclePosts(1000);
 
   // Map the carData to car object
   const car = {
@@ -315,7 +317,7 @@ export default function CarDetailClient({ carData, featuredCars }: CarDetailClie
           </h2>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {featuredCars.slice(0, 4).map((post) => (
+            {cars.slice(0, 4).map((post) => (
               <div
                 key={post.id}
                 className="p-6 transition-all duration-200 bg-white shadow-lg rounded-2xl group hover:scale-105">

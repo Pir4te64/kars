@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { useCarInfo } from "@/hooks/useCarInfo";
+import { useCarInfo } from "@/src/hooks/useCarInfo";
 
 export default function VendeTuAutoPage() {
   const router = useRouter();

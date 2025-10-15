@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { useCarInfo } from "@/hooks/useCarInfo";
+import { useCarInfo } from "@/src/hooks/useCarInfo";
 import type { Metadata } from "next";
 
 export default function CotizarPage() {

@@ -19,6 +19,7 @@ export function useCarInfo() {
 
   useEffect(() => {
     brands.length <= 0 && getBrands();
+    console.log("Activando", accessToken);
   }, [accessToken]);
 
   const getBrands = useCallback(async () => {
@@ -141,6 +142,7 @@ export function useCarInfo() {
     groups,
     years,
     loadingBrands,
+    loadingGroups,
     loadingModels,
     getModel,
     getGroup,

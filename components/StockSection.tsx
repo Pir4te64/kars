@@ -15,7 +15,7 @@ export default function StockSection({ initialCars }: StockSectionProps) {
 
   if (!initialCars || initialCars.length === 0) {
     return (
-      <section id="vehiculos-en-venta" className="py-20 bg-gray-50">
+      <section id="vehículos-en-venta" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center py-10">No hay vehículos disponibles.</div>
         </div>
@@ -24,7 +24,7 @@ export default function StockSection({ initialCars }: StockSectionProps) {
   }
 
   return (
-    <section id="vehiculos-en-venta" className="py-20 bg-gray-50">
+    <section id="vehículos-en-venta" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-left mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">

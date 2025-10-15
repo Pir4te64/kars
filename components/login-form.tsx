@@ -55,7 +55,7 @@ export function LoginForm({
         throw new Error("No fue posible sincronizar la sesión");
       }
 
-      router.replace(destination);
+      router.replace(destination as any);
       router.refresh();
     } catch (err) {
       const message = err instanceof Error ? err.message : "Error desconocido";

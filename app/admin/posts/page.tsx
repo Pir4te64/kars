@@ -818,7 +818,7 @@ export default function PostsListPage() {
                                 </DropdownMenuItem>
                                 <DropdownMenuItem asChild>
                                   <Link
-                                    href={`/admin/posts/edit/${post.id}`}
+                                    href={`/admin/posts/edit/${post.id}` as any}
                                     className="flex items-center gap-2">
                                     <Edit className="h-4 w-4" />
                                     Editar post

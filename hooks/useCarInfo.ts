@@ -61,12 +61,8 @@ export function useCarInfo(): UseCarInfoReturn {
   const getBrandsData = useCallback(async () => {
     setLoadingBrands(true);
     try {
-      // Obtener año y mes actual
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = now.getMonth() + 1; // getMonth() retorna 0-11
+      const response = await fetch(`/api/infoauto?path=/brands/&page_size=100`);
 
-      const response = await fetch(`/api/infoauto?path=/brands/${year}/${month}/`);
       if (!response.ok) throw new Error('Error al cargar marcas');
       const data = await response.json();
 

@@ -1,10 +1,16 @@
-import axios from "axios";
+import { log } from "console";
 import { Datum, listVehiclePostsFetchResponse } from "../types/CarInfo";
 
 export async function listVehiclePosts(limit = 25): Promise<Datum[]> {
   try {
-    const url = `https://kars-backend-y4w9.vercel.app/api/vehicle-posts?limit=${1000}`;
-    const response: listVehiclePostsFetchResponse = (await axios.get(url)).data
+    const url = `https://kars-backend.vercel.app/api/vehicle-posts?limit=${1000}`;
+    const response: listVehiclePostsFetchResponse = await fetch(url).then(
+      (data) => {
+        return data.json();
+      }
+    );
+    console.log(response);
+    
     return response.data;
   } catch (error: any) {
     throw new Error(

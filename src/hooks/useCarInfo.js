@@ -141,6 +141,7 @@ export function useCarInfo() {
     groups,
     years,
     loadingBrands,
+    loadingGroups,
     loadingModels,
     getModel,
     getGroup,

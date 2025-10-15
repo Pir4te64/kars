@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
-import { useVehiclePosts, useVehiclePostById } from "../hooks/useVehiclePosts";
+import { useVehiclePosts, useVehiclePostById } from "../../hooks/useVehiclePosts";
 
 const CarDetail = () => {
   const { id } = useParams();
@@ -24,7 +24,7 @@ const CarDetail = () => {
       </div>
     );
   }
-
+  
   // Mapear los datos del carData (Datum)
   const car = {
     id: carData.id,

@@ -11,6 +11,8 @@ export function useAuth() {
 
   // Al iniciar, restauramos tokens guardados
   useEffect(() => {
+    console.log("Activando");
+    
     const storedAccess = localStorage.getItem(ACCESS_KEY);
     const storedRefresh = localStorage.getItem(REFRESH_KEY);
 

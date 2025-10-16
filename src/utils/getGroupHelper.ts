@@ -12,8 +12,9 @@ export default async function getGroupHelper(token: string, brandId: string) {
     }).then((data) => {
       return data.json();
     });
-
-    return response;
+    console.log(response.data);
+    
+    return response.data;
   } catch (error: any) {
     if (
       error.response &&

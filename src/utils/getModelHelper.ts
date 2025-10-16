@@ -16,8 +16,9 @@ export default async function getModelHelper(
     }).then((data) => {
       return data.json();
     });
-
-    return response;
+    console.log(response);
+    
+    return response.data;
   } catch (error: any) {
     if (
       error.response &&

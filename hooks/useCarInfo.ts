@@ -61,9 +61,14 @@ export function useCarInfo(): UseCarInfoReturn {
   const getBrandsData = useCallback(async () => {
     setLoadingBrands(true);
     try {
-      const response = await fetch(`/api/infoauto?path=/brands/&page_size=100`);
+      // Usar el backend optimizado en lugar del frontend API route
+      const response = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001"
+        }/api/brands`
+      );
 
-      if (!response.ok) throw new Error('Error al cargar marcas');
+      if (!response.ok) throw new Error("Error al cargar marcas");
       const data = await response.json();
 
       // Mapear los datos de InfoAuto al formato esperado
@@ -73,9 +78,11 @@ export function useCarInfo(): UseCarInfoReturn {
         brand_id: brand.id,
       }));
 
-      setBrands(mappedBrands.sort((a: Brand, b: Brand) => a.name.localeCompare(b.name)));
+      setBrands(
+        mappedBrands.sort((a: Brand, b: Brand) => a.name.localeCompare(b.name))
+      );
     } catch (err) {
-      console.error('Error loading brands:', err);
+      console.error("Error loading brands:", err);
       setBrands([]);
     } finally {
       setLoadingBrands(false);
@@ -86,8 +93,12 @@ export function useCarInfo(): UseCarInfoReturn {
     if (!brandId) return;
     setLoadingModels(true);
     try {
-      const response = await fetch(`/api/infoauto?path=/brands/${brandId}/models/`);
-      if (!response.ok) throw new Error('Error al cargar modelos');
+      const response = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001"
+        }/api/brands/${brandId}/models`
+      );
+      if (!response.ok) throw new Error("Error al cargar modelos");
       const data = await response.json();
 
       // Mapear los datos de InfoAuto al formato esperado
@@ -99,9 +110,13 @@ export function useCarInfo(): UseCarInfoReturn {
         brand_id: model.brand_id,
       }));
 
-      setModels(mappedModels.sort((a: Model, b: Model) => a.description.localeCompare(b.description)));
+      setModels(
+        mappedModels.sort((a: Model, b: Model) =>
+          a.description.localeCompare(b.description)
+        )
+      );
     } catch (err) {
-      console.error('Error loading models:', err);
+      console.error("Error loading models:", err);
       setModels([]);
     } finally {
       setLoadingModels(false);
@@ -112,24 +127,37 @@ export function useCarInfo(): UseCarInfoReturn {
     if (!codia) return;
     setLoadingYears(true);
     try {
-      const response = await fetch(`/api/infoauto?path=/models/${codia}/prices/`);
-      if (!response.ok) throw new Error('Error al cargar precios');
+      const response = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001"
+        }/api/brands/${codia}/price?isNew=true&isOld=true`
+      );
+      if (!response.ok) throw new Error("Error al cargar precios");
       const data = await response.json();
 
-      // Mapear los datos de InfoAuto al formato esperado
-      const mappedYears = data.map((item: any) => ({
+      // Procesar la respuesta del backend optimizado
+      const priceData = data.data;
+      const allPrices = [
+        ...(priceData.listPrice || []),
+        ...(priceData.price || []),
+      ];
+
+      // Mapear los datos al formato esperado
+      const mappedYears = allPrices.map((item: any) => ({
         year: item.year,
-        price: item.price ? `$${item.price.toLocaleString()}` : 'Consultar',
+        price: item.price ? `$${item.price.toLocaleString()}` : "Consultar",
       }));
 
       // Ordenar por año descendente y eliminar duplicados
-      const yearMap = new Map(mappedYears.map((item: YearPrice) => [item.year, item]));
+      const yearMap = new Map(
+        mappedYears.map((item: YearPrice) => [item.year, item])
+      );
       const uniqueYears = Array.from(yearMap.values()) as YearPrice[];
       const sortedYears = uniqueYears.sort((a, b) => b.year - a.year);
 
       setYears(sortedYears);
     } catch (err) {
-      console.error('Error loading prices:', err);
+      console.error("Error loading prices:", err);
       setYears([]);
     } finally {
       setLoadingYears(false);
@@ -140,12 +168,14 @@ export function useCarInfo(): UseCarInfoReturn {
     if (!codia) return;
     setLoadingVersions(true);
     try {
-      const response = await fetch(`/api/infoauto?path=/models/${codia}/features/`);
-      if (!response.ok) throw new Error('Error al cargar versiones');
+      const response = await fetch(
+        `/api/infoauto?path=/models/${codia}/features/`
+      );
+      if (!response.ok) throw new Error("Error al cargar versiones");
       const data = await response.json();
       setVersions(data);
     } catch (err) {
-      console.error('Error loading versions:', err);
+      console.error("Error loading versions:", err);
       setVersions([]);
     } finally {
       setLoadingVersions(false);

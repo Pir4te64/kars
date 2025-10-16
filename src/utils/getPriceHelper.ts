@@ -1,6 +1,5 @@
 // utils/getBrands.js
 
-
 export default async function getPriceHelper(
   codia: string,
   isNew: boolean,
@@ -19,7 +18,7 @@ export default async function getPriceHelper(
       return data.json();
     });
     console.log("price", response);
-    
+
     return response;
   } catch (error: any) {
     console.log(error.message);

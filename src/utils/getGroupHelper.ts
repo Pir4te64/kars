@@ -12,7 +12,7 @@ export default async function getGroupHelper(token: string, brandId: string) {
     }).then((data) => {
       return data.json();
     });
-    
+
     return response;
   } catch (error: any) {
     if (

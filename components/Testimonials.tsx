@@ -56,7 +56,7 @@ export default function Testimonials() {
   const testimonials: Testimonial[] = [
     {
       id: 1,
-      name: "Ana Martínez ",
+      name: "Ana Martínez",
       image: "https://via.placeholder.com/80x80/3b82f6/ffffff?text=AM",
       content: "El seguimiento en tiempo real me da mucha tranquilidad. Muy recomendado.",
       rating: 5

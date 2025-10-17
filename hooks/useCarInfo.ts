@@ -1,55 +1,23 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-
-interface Brand {
-  id: number;
-  name: string;
-  brand_id?: number;
-}
-
-interface Model {
-  id?: number;
-  name?: string;
-  description: string;
-  codia: string;
-  brand_id?: number;
-}
-
-interface YearPrice {
-  year: number;
-  price: string;
-}
-
-interface ModelFeature {
-  codia: number;
-  version: string;
-  year: number;
-}
-
-interface UseCarInfoReturn {
-  brands: Brand[];
-  models: Model[];
-  years: YearPrice[];
-  versions: ModelFeature[];
-  loadingBrands: boolean;
-  loadingModels: boolean;
-  loadingYears: boolean;
-  loadingVersions: boolean;
-  getModelsByBrand: (brandId: string) => Promise<void>;
-  getPrice: (codia: string) => Promise<void>;
-  getVersions: (codia: string) => Promise<void>;
-}
+import type {
+  Brand,
+  Model,
+  YearPrice,
+  ModelFeature,
+  UseCarInfoReturn,
+} from "@/types/car";
 
 export function useCarInfo(): UseCarInfoReturn {
   const [brands, setBrands] = useState<Brand[]>([]);
-  const [loadingBrands, setLoadingBrands] = useState(false);
+  const [loadingBrands, setLoadingBrands] = useState<boolean>(false);
   const [models, setModels] = useState<Model[]>([]);
-  const [loadingModels, setLoadingModels] = useState(false);
+  const [loadingModels, setLoadingModels] = useState<boolean>(false);
   const [years, setYears] = useState<YearPrice[]>([]);
-  const [loadingYears, setLoadingYears] = useState(false);
+  const [loadingYears, setLoadingYears] = useState<boolean>(false);
   const [versions, setVersions] = useState<ModelFeature[]>([]);
-  const [loadingVersions, setLoadingVersions] = useState(false);
+  const [loadingVersions, setLoadingVersions] = useState<boolean>(false);
 
   // Cargar marcas al iniciar
   useEffect(() => {

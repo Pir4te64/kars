@@ -37,7 +37,7 @@ export default function AboutSection() {
 Cada vehículo tiene su historia, y cada cliente, nuestro compromiso.
 
 Eleginos por nuestra atención, quedate por nuestra propuesta.
-.
+
               </p>
             </div>
           </div>

@@ -31,21 +31,20 @@ export default function AboutSection() {
             </h3>
             <div className="space-y-4 leading-relaxed text-gray-700">
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.
+              Con más de 20 años en el mercado, somos una empresa 100% argentina, con un equipo local que te atiende directamente, sin intermediarios ni call centers en el exterior. Sabemos lo que tu auto representa y queremos ayudarte a obtener lo mejor por él.
+
               </p>
               <p>
-                Duis aute irure dolor in reprehenderit in voluptate velit esse
-                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                cupidatat non proident, sunt in culpa qui officia deserunt
-                mollit anim id est laborum.
+              Nuestra forma de trabajar nos permite estar cerca de vos, entender lo que buscás y ofrecerte una cotización justa que realmente valore tu auto. Trabajamos con flexibilidad y atención para darte la mejor propuesta, sin intermediarios ni complicaciones.
+
               </p>
               <p>
-                Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-                accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-                quae ab illo inventore veritatis.
+              En KARS valoramos tanto a las personas como a los autos. Por eso te acompañamos con transparencia y calidez en cada paso, para que tu experiencia sea cómoda, segura y confiable.
+
+Cada vehículo tiene su historia, y cada cliente, nuestro compromiso.
+
+Eleginos por nuestra atención, quedate por nuestra propuesta.
+.
               </p>
             </div>
           </div>
@@ -54,7 +53,7 @@ export default function AboutSection() {
           <div className="relative">
             <div className="overflow-hidden shadow-xl rounded-2xl">
               <Image
-                src="/about.jpg"
+                src="/about.png"
                 alt="Showroom de la concesionaria"
                 width={600}
                 height={384}

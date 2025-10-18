@@ -8,6 +8,7 @@ import WhyChooseUs from '@/components/WhyChooseUs'
 import Testimonials from '@/components/Testimonials'
 import CallToAction from '@/components/CallToAction'
 import AboutSection from '@/components/AboutSection'
+import LocationSection from '@/components/LocationSection'
 import Footer from '@/components/Footer'
 import { getVehiclePosts } from '@/lib/vehicles'
 import type { VehiclePost } from '@/types'
@@ -54,6 +55,7 @@ export default async function HomePage() {
         <Testimonials />
         <CallToAction />
         <AboutSection />
+        <LocationSection />
       </main>
       <Footer />
     </>

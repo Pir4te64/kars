@@ -49,11 +49,7 @@ export default function Footer() {
             <div className="mb-6">
               <Logo className="h-32" variant="white" />
             </div>
-            <p className="text-white mb-8 max-w-2xl leading-relaxed">
-              We offers a comprehensive suite of digital marketing services that cover all aspects of
-              our online presence. From SEO and social media marketing to content creation and PPC
-              advertising, they have the expertise and resources to handle our diverse marketing needs.
-            </p>
+           
             <div className="flex space-x-4">
               {socialLinks.map((social) => (
                 <a

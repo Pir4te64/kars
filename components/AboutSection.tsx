@@ -10,14 +10,7 @@ export default function AboutSection() {
             <span style={{ color: "rgb(38, 100, 196)" }}>Nosotros</span>{" "}
             <span style={{ color: "#000" }}>/ Nuestra Historia</span>
           </h2>
-          <p
-            className="max-w-3xl mx-auto text-lg leading-relaxed"
-            style={{ color: "#000" }}>
-            Somos una concesionaria líder en el mercado automotriz con más de 15
-            años de experiencia. Nos especializamos en ofrecer vehículos de la
-            más alta calidad, brindando un servicio excepcional y construyendo
-            relaciones duraderas con nuestros clientes.
-          </p>
+         
         </div>
 
         {/* Main Content Grid */}

@@ -12,6 +12,8 @@ import type {
 export function useCarInfo(): UseCarInfoReturn {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [loadingBrands, setLoadingBrands] = useState<boolean>(false);
+  const [groups, setGroups] = useState<any[]>([]);
+  const [loadingGroups, setLoadingGroups] = useState<boolean>(false);
   const [models, setModels] = useState<Model[]>([]);
   const [loadingModels, setLoadingModels] = useState<boolean>(false);
   const [years, setYears] = useState<YearPrice[]>([]);
@@ -57,39 +59,79 @@ export function useCarInfo(): UseCarInfoReturn {
     }
   }, []);
 
-  const getModelsByBrand = useCallback(async (brandId: string) => {
+  const getGroup = useCallback(async (brandId: string) => {
     if (!brandId) return;
-    setLoadingModels(true);
+    setLoadingGroups(true);
     try {
       const response = await fetch(
         `${
           process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001"
-        }/api/brands/${brandId}/models`
+        }/api/brands/${brandId}/groups`
       );
-      if (!response.ok) throw new Error("Error al cargar modelos");
+      if (!response.ok) throw new Error("Error al cargar grupos");
       const data = await response.json();
 
       // Mapear los datos de InfoAuto al formato esperado
-      const mappedModels = data.map((model: any) => ({
-        id: model.codia,
-        description: model.name,
-        codia: model.codia.toString(),
-        name: model.name,
-        brand_id: model.brand_id,
+      const mappedGroups = data.map((group: any) => ({
+        id: group.codia,
+        name: group.name,
+        codia: group.codia.toString(),
       }));
 
-      setModels(
-        mappedModels.sort((a: Model, b: Model) =>
-          a.description.localeCompare(b.description)
-        )
+      setGroups(
+        mappedGroups.sort((a: any, b: any) => a.name.localeCompare(b.name))
       );
     } catch (err) {
-      console.error("Error loading models:", err);
-      setModels([]);
+      console.error("Error loading groups:", err);
+      setGroups([]);
     } finally {
-      setLoadingModels(false);
+      setLoadingGroups(false);
     }
   }, []);
+
+  const getModelsByBrand = useCallback(
+    async (brandId: string, groupId: string) => {
+      console.log("getModelsByBrand llamado con:", brandId, groupId);
+      if (!brandId || !groupId) {
+        console.log("getModelsByBrand: faltan parámetros");
+        return;
+      }
+      setLoadingModels(true);
+      try {
+        const url = `${
+          process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001"
+        }/api/brands/${brandId}/groups/${groupId}/models`;
+        console.log("Fetching models from:", url);
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Error al cargar modelos");
+        const data = await response.json();
+
+        console.log("Datos de modelos recibidos:", data);
+
+        // Mapear los datos de InfoAuto al formato esperado
+        const mappedModels = data.map((model: any) => ({
+          id: model.codia,
+          description: model.name,
+          codia: model.codia.toString(),
+          name: model.name,
+          brand_id: model.brand_id,
+        }));
+
+        console.log("Modelos mapeados:", mappedModels);
+        setModels(
+          mappedModels.sort((a: Model, b: Model) =>
+            a.description.localeCompare(b.description)
+          )
+        );
+      } catch (err) {
+        console.error("Error loading models:", err);
+        setModels([]);
+      } finally {
+        setLoadingModels(false);
+      }
+    },
+    []
+  );
 
   const getPrice = useCallback(async (codia: string) => {
     if (!codia) return;
@@ -150,16 +192,29 @@ export function useCarInfo(): UseCarInfoReturn {
     }
   }, []);
 
+  // Alias para compatibilidad con el componente
+  const getModel = useCallback(
+    async (brandId: string, groupId: string) => {
+      console.log("getModel llamado con:", brandId, groupId);
+      return getModelsByBrand(brandId, groupId);
+    },
+    [getModelsByBrand]
+  );
+
   return {
     brands,
+    groups,
     models,
     years,
     versions,
     loadingBrands,
+    loadingGroups,
     loadingModels,
     loadingYears,
     loadingVersions,
+    getGroup,
     getModelsByBrand,
+    getModel,
     getPrice,
     getVersions,
   };

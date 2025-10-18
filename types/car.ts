@@ -12,6 +12,12 @@ export interface Model {
   brand_id?: number;
 }
 
+export interface Group {
+  id?: number;
+  name: string;
+  codia?: string;
+}
+
 export interface YearPrice {
   year: number;
   price: string;
@@ -25,14 +31,18 @@ export interface ModelFeature {
 
 export interface UseCarInfoReturn {
   brands: Brand[];
+  groups: Group[];
   models: Model[];
   years: YearPrice[];
   versions: ModelFeature[];
   loadingBrands: boolean;
+  loadingGroups: boolean;
   loadingModels: boolean;
   loadingYears: boolean;
   loadingVersions: boolean;
-  getModelsByBrand: (brandId: string) => Promise<void>;
+  getGroup: (brandId: string) => Promise<void>;
+  getModelsByBrand: (brandId: string, groupId: string) => Promise<void>;
+  getModel: (brandId: string, groupId: string) => Promise<void>;
   getPrice: (codia: string) => Promise<void>;
   getVersions: (codia: string) => Promise<void>;
 }

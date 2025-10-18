@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useCarInfo } from "@/src/hooks/useCarInfo";
+import type { Brand, Model, Group, YearPrice } from "@/types/car";
 
 interface FormData {
   marca: string;
@@ -42,6 +43,12 @@ export default function CarQuoteSection() {
     getPrice,
   } = useCarInfo();
 
+  // Tipos explícitos para evitar errores de TypeScript
+  const typedBrands: Brand[] = brands || [];
+  const typedModels: Model[] = models || [];
+  const typedGroups: Group[] = groups || [];
+  const typedYears: YearPrice[] = years || [];
+
   const [formData, setFormData] = useState({
     marca: "",
     grupo: "",
@@ -69,12 +76,33 @@ export default function CarQuoteSection() {
         };
       }
       if (field === "grupo") {
-        getModel(formData.marca, value);
-        console.log(value);
+        // Buscar el grupo seleccionado para obtener su name
+        console.log("field bro y el value", field, value);
+        const selectedGroup = typedGroups.find(
+          (group: Group) => group.name === value
+        );
+        console.log("=== DEBUG GRUPO ===");
+        console.log("Grupo seleccionado:", value);
+        console.log("Marca actual (prev.marca):", prev.marca);
+        console.log("selectedGroup:", selectedGroup);
+        console.log("Grupos disponibles:", typedGroups);
+        if (selectedGroup) {
+          console.log(
+            "Ejecutando getModel con marca:",
+            prev.marca,
+            "y grupo (name):",
+            selectedGroup.name
+          );
+          getModel(prev.marca, selectedGroup.id);
+        } else {
+          console.log(
+            "ERROR: No se encontró el grupo seleccionado en el array"
+          );
+        }
         return {
           ...prev,
           grupo: value,
-          modelo: "", // Limpiar modelo al cambiar marca
+          modelo: "", // Limpiar modelo al cambiar grupo
         };
       }
       if (field === "modelo") {
@@ -96,19 +124,25 @@ export default function CarQuoteSection() {
     setIsModelDropdownOpen(!isModelDropdownOpen);
     handleInputChange("modelo", model.codia);
   };
-  const handleGroupSelect = (group: { codia: string; name: string }) => {
+  const handleGroupSelect = (group: Group) => {
+    console.log("handleGroupSelect llamado con:", group);
     setIsGroupDropdownOpen(!isGroupDropdownOpen);
     handleInputChange("grupo", group.name);
   };
 
   const getSelectedModelText = () => {
     if (!formData.modelo) return "Modelo";
-    const selectedModel = models.find((item) => item.codia === formData.modelo);
+    const selectedModel = typedModels.find(
+      (item) => item.codia === formData.modelo
+    );
     return selectedModel ? selectedModel.description : "Modelo";
   };
   const getSelectedGroupText = () => {
+    console.log("grupo seleccionado");
     if (!formData.grupo) return "Grupo";
-    const selectedGroup = groups.find((item) => item.name === formData.grupo);
+    const selectedGroup = typedGroups.find(
+      (item) => item.name === formData.grupo
+    );
     return selectedGroup ? selectedGroup.name : "Grupo";
   };
 
@@ -157,8 +191,8 @@ export default function CarQuoteSection() {
   const handleCompleteQuote = () => {
     const updatedFormData = { ...formData };
 
-    if (years && years.length > 0 && formData.año) {
-      const yearData = years.find(
+    if (typedYears && typedYears.length > 0 && formData.año) {
+      const yearData = typedYears.find(
         (item) => Number(item.year) === Number(formData.año)
       );
       if (yearData) {
@@ -166,8 +200,8 @@ export default function CarQuoteSection() {
       }
     }
 
-    if (brands && brands.length > 0 && formData.marca) {
-      const brandData = brands.find(
+    if (typedBrands && typedBrands.length > 0 && formData.marca) {
+      const brandData = typedBrands.find(
         (item) =>
           item.id.toString() === formData.marca || item.name === formData.marca
       );
@@ -175,16 +209,16 @@ export default function CarQuoteSection() {
         updatedFormData.marca = brandData.name;
       }
     }
-    if (groups && groups.length > 0 && formData.grupo) {
-      const groupData = groups.find(
+    if (typedGroups && typedGroups.length > 0 && formData.grupo) {
+      const groupData = typedGroups.find(
         (item) => item.codia === formData.grupo || item.name === formData.grupo
       );
       if (groupData) {
         updatedFormData.grupo = groupData.name;
       }
     }
-    if (models && models.length > 0 && formData.modelo) {
-      const modelData = models.find(
+    if (typedModels && typedModels.length > 0 && formData.modelo) {
+      const modelData = typedModels.find(
         (item) =>
           item.codia === formData.modelo || item.description === formData.modelo
       );
@@ -209,31 +243,26 @@ export default function CarQuoteSection() {
               currentStep >= 1
                 ? "border-2 border-blue-600 bg-white"
                 : "border-2 border-gray-300 bg-white"
-            }`}
-          >
+            }`}>
             <div
               className={`w-2 h-2 rounded-full ${
                 currentStep >= 1 ? "bg-blue-600" : "bg-gray-300"
-              }`}
-            ></div>
+              }`}></div>
           </div>
           <div
             className={`w-16 h-0.5 ${
               currentStep >= 2 ? "bg-blue-600" : "bg-gray-200"
-            }`}
-          ></div>
+            }`}></div>
           <div
             className={`w-8 h-8 rounded-full flex items-center justify-center ${
               currentStep >= 2
                 ? "border-2 border-blue-600 bg-white"
                 : "border-2 border-gray-300 bg-white"
-            }`}
-          >
+            }`}>
             <div
               className={`w-2 h-2 rounded-full ${
                 currentStep >= 2 ? "bg-blue-600" : "bg-gray-300"
-              }`}
-            ></div>
+              }`}></div>
           </div>
         </div>
       </div>
@@ -241,8 +270,7 @@ export default function CarQuoteSection() {
       {/* Title and Subtitle */}
       <div
         className="flex flex-col w-full px-4"
-        style={{ gap: "11px", opacity: 1 }}
-      >
+        style={{ gap: "11px", opacity: 1 }}>
         <h2 className="text-sm md:text-base font-bold text-center text-gray-900">
           Cotizamos tu auto en poco tiempo, ingresa los datos
         </h2>
@@ -268,18 +296,16 @@ export default function CarQuoteSection() {
               borderRadius: "7px",
               border: "1px solid #0D0D0D",
               opacity: 1,
-            }}
-          >
+            }}>
             <select
               value={formData.marca}
               onChange={(e) => handleInputChange("marca", e.target.value)}
               className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500"
               style={{ border: "none", outline: "none" }}
-              disabled={loadingBrands}
-            >
+              disabled={loadingBrands}>
               <option value="">Marca</option>
-              {brands && brands.length > 0 ? (
-                brands.map((brand) => (
+              {typedBrands && typedBrands.length > 0 ? (
+                typedBrands.map((brand) => (
                   <option key={brand.id || brand.name} value={brand.id}>
                     {brand.name}
                   </option>
@@ -297,8 +323,7 @@ export default function CarQuoteSection() {
                 className="w-5 h-5 text-gray-400"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+                viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -324,32 +349,33 @@ export default function CarQuoteSection() {
               opacity: 1,
               cursor:
                 formData.marca && !loadingGroups ? "pointer" : "not-allowed",
-            }}
-          >
+            }}>
             <div
               className="w-full h-full flex items-center justify-between cursor-pointer"
               onClick={() => {
-                if (formData.marca && !loadingGroups && groups.length > 0) {
+                if (
+                  formData.marca &&
+                  !loadingGroups &&
+                  typedGroups.length > 0
+                ) {
                   setIsGroupDropdownOpen(!isGroupDropdownOpen);
                 }
               }}
               style={{
                 cursor:
-                  formData.marca && !loadingGroups && groups.length > 0
+                  formData.marca && !loadingGroups && typedGroups.length > 0
                     ? "pointer"
                     : "not-allowed",
-              }}
-            >
+              }}>
               <span
                 className={`${
                   formData.grupo ? "text-gray-900" : "text-gray-500"
-                }`}
-              >
+                }`}>
                 {loadingGroups
-                  ? "Cargando grupos..."
+                  ? "Cargando Modelos..."
                   : !formData.marca
-                  ? "Grupo"
-                  : groups.length === 0
+                  ? "Modelo"
+                  : typedGroups.length === 0
                   ? "No hay grupos disponibles"
                   : getSelectedGroupText()}
               </span>
@@ -357,14 +383,13 @@ export default function CarQuoteSection() {
                 className={`w-5 h-5 transition-transform duration-200 ${
                   isGroupDropdownOpen ? "rotate-180" : ""
                 } ${
-                  formData.marca && !loadingGroups && groups.length > 0
+                  formData.marca && !loadingGroups && typedGroups.length > 0
                     ? "text-gray-600"
                     : "text-gray-400"
                 }`}
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+                viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -373,23 +398,23 @@ export default function CarQuoteSection() {
                 />
               </svg>
             </div>
-            {isGroupDropdownOpen && formData.marca && groups.length > 0 && (
-              <div
-                className="absolute top-full left-0 right-0 z-50 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
-                style={{ borderRadius: "7px", border: "1px solid #0D0D0D" }}
-              >
-                {groups.map((item) => (
-                  <div
-                    key={item.id || item.codia}
-                    className="px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors duration-150"
-                    onClick={() => handleGroupSelect(item)}
-                    style={{ borderBottom: "1px solid #f3f4f6" }}
-                  >
-                    <span className="text-gray-900">{item.name}</span>
-                  </div>
-                ))}
-              </div>
-            )}
+            {isGroupDropdownOpen &&
+              formData.marca &&
+              typedGroups.length > 0 && (
+                <div
+                  className="absolute top-full left-0 right-0 z-50 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
+                  style={{ borderRadius: "7px", border: "1px solid #0D0D0D" }}>
+                  {typedGroups.map((item) => (
+                    <div
+                      key={item.id || item.codia}
+                      className="px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors duration-150"
+                      onClick={() => handleGroupSelect(item)}
+                      style={{ borderBottom: "1px solid #f3f4f6" }}>
+                      <span className="text-gray-900">{item.name}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
           </div>
           {/* Modelo */}
           <div
@@ -406,33 +431,46 @@ export default function CarQuoteSection() {
               border: "1px solid #0D0D0D",
               opacity: 1,
               cursor:
-                formData.grupo && !loadingModels ? "pointer" : "not-allowed",
-            }}
-          >
+                formData.grupo && !loadingModels && typedModels.length > 0
+                  ? "pointer"
+                  : "not-allowed",
+            }}>
             <div
               className="w-full h-full flex items-center justify-between cursor-pointer"
               onClick={() => {
-                if (formData.grupo && !loadingModels && models.length > 0) {
+                console.log("=== CLICK EN MODELO ===");
+                console.log("formData.grupo:", formData.grupo);
+                console.log("loadingModels:", loadingModels);
+                console.log("models.length:", typedModels.length);
+                console.log("models:", typedModels);
+                if (
+                  formData.grupo &&
+                  !loadingModels &&
+                  typedModels.length > 0
+                ) {
+                  console.log("Abriendo dropdown de modelos");
                   setIsModelDropdownOpen(!isModelDropdownOpen);
+                } else {
+                  console.log(
+                    "No se puede abrir dropdown - condiciones no cumplidas"
+                  );
                 }
               }}
               style={{
                 cursor:
-                  formData.grupo && !loadingModels && models.length > 0
+                  formData.grupo && !loadingModels && typedModels.length > 0
                     ? "pointer"
                     : "not-allowed",
-              }}
-            >
+              }}>
               <span
                 className={`${
                   formData.modelo ? "text-gray-900" : "text-gray-500"
-                }`}
-              >
+                }`}>
                 {loadingModels
-                  ? "Cargando modelos..."
+                  ? "Cargando Versiones..."
                   : !formData.grupo
-                  ? "Modelo"
-                  : models.length === 0
+                  ? "Version"
+                  : typedModels.length === 0
                   ? "No hay modelos disponibles"
                   : getSelectedModelText()}
               </span>
@@ -440,14 +478,13 @@ export default function CarQuoteSection() {
                 className={`w-5 h-5 transition-transform duration-200 ${
                   isModelDropdownOpen ? "rotate-180" : ""
                 } ${
-                  formData.grupo && !loadingModels && models.length > 0
+                  formData.grupo && !loadingModels && typedModels.length > 0
                     ? "text-gray-600"
                     : "text-gray-400"
                 }`}
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+                viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -457,23 +494,23 @@ export default function CarQuoteSection() {
               </svg>
             </div>
 
-            {isModelDropdownOpen && formData.grupo && models.length > 0 && (
-              <div
-                className="absolute top-full left-0 right-0 z-50 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
-                style={{ borderRadius: "7px", border: "1px solid #0D0D0D" }}
-              >
-                {models.map((item) => (
-                  <div
-                    key={item.id || item.codia}
-                    className="px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors duration-150"
-                    onClick={() => handleModelSelect(item)}
-                    style={{ borderBottom: "1px solid #f3f4f6" }}
-                  >
-                    <span className="text-gray-900">{item.description}</span>
-                  </div>
-                ))}
-              </div>
-            )}
+            {isModelDropdownOpen &&
+              formData.grupo &&
+              typedModels.length > 0 && (
+                <div
+                  className="absolute top-full left-0 right-0 z-50 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
+                  style={{ borderRadius: "7px", border: "1px solid #0D0D0D" }}>
+                  {typedModels.map((item) => (
+                    <div
+                      key={item.id || item.codia}
+                      className="px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors duration-150"
+                      onClick={() => handleModelSelect(item)}
+                      style={{ borderBottom: "1px solid #f3f4f6" }}>
+                      <span className="text-gray-900">{item.description}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
           </div>
         </div>
 
@@ -494,8 +531,7 @@ export default function CarQuoteSection() {
               opacity: 1,
               cursor:
                 formData.modelo && !loadingYears ? "pointer" : "not-allowed",
-            }}
-          >
+            }}>
             <select
               value={formData.año}
               onChange={(e) =>
@@ -508,13 +544,12 @@ export default function CarQuoteSection() {
                 cursor:
                   formData.modelo && !loadingYears ? "pointer" : "not-allowed",
               }}
-              disabled={!formData.modelo || loadingYears}
-            >
-              {formData.modelo && years.length > 0 ? (
+              disabled={!formData.modelo || loadingYears}>
+              {formData.modelo && typedYears.length > 0 ? (
                 <>
                   <option value="">Año</option>
 
-                  {years.map((year) => (
+                  {typedYears.map((year) => (
                     <option key={year.year} value={year.year}>
                       {year.year}
                     </option>
@@ -523,9 +558,9 @@ export default function CarQuoteSection() {
               ) : (
                 <option value="" disabled>
                   {loadingYears
-                    ? "Cargando años..."
+                    ? "Cargando Años..."
                     : !formData.modelo
-                    ? "Seleccione un modelo primero"
+                    ? "Año"
                     : "No hay años disponibles"}
                 </option>
               )}
@@ -535,8 +570,7 @@ export default function CarQuoteSection() {
                 className="w-5 h-5 text-gray-400"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+                viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -548,7 +582,7 @@ export default function CarQuoteSection() {
           </div>
 
           {/* Versión */}
-          <div
+          {/* <div
             className="relative w-full md:w-1/3"
             style={{
               height: "56px",
@@ -560,16 +594,14 @@ export default function CarQuoteSection() {
               borderRadius: "7px",
               border: "1px solid #0D0D0D",
               opacity: 1,
-            }}
-          >
+            }}>
             <select
               value={formData.version}
               onChange={(e) =>
                 setFormData({ ...formData, version: e.target.value })
               }
               className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500"
-              style={{ border: "none", outline: "none" }}
-            >
+              style={{ border: "none", outline: "none" }}>
               <option value="">Versión</option>
               <option value="base">Base</option>
               <option value="intermedio">Intermedio</option>
@@ -581,8 +613,7 @@ export default function CarQuoteSection() {
                 className="w-5 h-5 text-gray-400"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+                viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -591,7 +622,7 @@ export default function CarQuoteSection() {
                 />
               </svg>
             </div>
-          </div>
+          </div> */}
 
           {/* Kilometraje */}
           <div
@@ -606,16 +637,14 @@ export default function CarQuoteSection() {
               borderRadius: "7px",
               border: "1px solid #0D0D0D",
               opacity: 1,
-            }}
-          >
+            }}>
             <select
               value={formData.kilometraje}
               onChange={(e) =>
                 setFormData({ ...formData, kilometraje: e.target.value })
               }
               className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500"
-              style={{ border: "none", outline: "none" }}
-            >
+              style={{ border: "none", outline: "none" }}>
               <option value="">Kilometraje</option>
               <option value="0-10000">0 - 10,000 km</option>
               <option value="10000-25000">10,000 - 25,000 km</option>
@@ -629,8 +658,7 @@ export default function CarQuoteSection() {
                 className="w-5 h-5 text-gray-400"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+                viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -657,8 +685,7 @@ export default function CarQuoteSection() {
               border: "1px solid #2664C4",
               backgroundColor: "#2664C4",
               opacity: 1,
-            }}
-          >
+            }}>
             Comenzar cotización
           </button>
         </div>
@@ -673,14 +700,12 @@ export default function CarQuoteSection() {
         <div className="flex items-center space-x-4">
           <div
             className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-blue-600"
-            style={{ backgroundColor: "#2664C4" }}
-          >
+            style={{ backgroundColor: "#2664C4" }}>
             <svg
               className="w-4 h-4 text-white"
               fill="none"
               stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+              viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -699,8 +724,7 @@ export default function CarQuoteSection() {
       {/* Title and Subtitle */}
       <div
         className="flex flex-col w-full px-4"
-        style={{ gap: "11px", opacity: 1 }}
-      >
+        style={{ gap: "11px", opacity: 1 }}>
         <h2 className="text-sm md:text-base font-bold text-center text-gray-900">
           Cotizamos tu auto en poco tiempo, ingresa los datos
         </h2>
@@ -712,8 +736,7 @@ export default function CarQuoteSection() {
       {/* Contact Form Fields */}
       <div
         className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6"
-        style={{ marginTop: "40px" }}
-      >
+        style={{ marginTop: "40px" }}>
         {/* Nombre y apellido */}
         <div className="flex flex-col w-full md:w-80">
           <label className="font-medium text-sm text-gray-900 mb-2">
@@ -731,8 +754,7 @@ export default function CarQuoteSection() {
               borderRadius: "7px",
               border: "1px solid #0D0D0D",
               backgroundColor: "white",
-            }}
-          >
+            }}>
             <input
               type="text"
               placeholder="Nombre y apellido"
@@ -754,7 +776,8 @@ export default function CarQuoteSection() {
           <div
             className="relative"
             style={{
-              width: "300px",
+              width: "100%",
+              maxWidth: "300px",
               height: "56px",
               paddingTop: "12px",
               paddingRight: "16px",
@@ -763,8 +786,7 @@ export default function CarQuoteSection() {
               borderRadius: "7px",
               border: "1px solid #0D0D0D",
               backgroundColor: "white",
-            }}
-          >
+            }}>
             <input
               type="email"
               placeholder="Correo electrónico"
@@ -786,7 +808,8 @@ export default function CarQuoteSection() {
           <div
             className="relative"
             style={{
-              width: "300px",
+              width: "100%",
+              maxWidth: "300px",
               height: "56px",
               paddingTop: "12px",
               paddingRight: "16px",
@@ -795,8 +818,7 @@ export default function CarQuoteSection() {
               borderRadius: "7px",
               border: "1px solid #0D0D0D",
               backgroundColor: "white",
-            }}
-          >
+            }}>
             <input
               type="text"
               placeholder="Ubicación"
@@ -815,8 +837,7 @@ export default function CarQuoteSection() {
       <div className="flex flex-col md:flex-row justify-between items-center mt-8 w-full gap-4">
         <button
           className="w-full md:w-auto font-medium text-sm text-gray-900 bg-transparent border-none cursor-pointer"
-          onClick={() => setCurrentStep(1)}
-        >
+          onClick={() => setCurrentStep(1)}>
           Volver
         </button>
         <button
@@ -838,8 +859,7 @@ export default function CarQuoteSection() {
             fontWeight: "normal",
             fontSize: "16px",
             cursor: "pointer",
-          }}
-        >
+          }}>
           Siguiente
         </button>
       </div>
@@ -852,12 +872,10 @@ export default function CarQuoteSection() {
       style={{
         minHeight: "400px",
         background: "linear-gradient(to bottom, #e5e5e5 50%, white 50%)",
-      }}
-    >
+      }}>
       <div
         className="flex items-center w-full max-w-7xl"
-        style={{ gap: "50px", opacity: 1 }}
-      >
+        style={{ gap: "50px", opacity: 1 }}>
         <div
           className="bg-white w-full mx-auto"
           style={{
@@ -868,8 +886,7 @@ export default function CarQuoteSection() {
             boxShadow: "0px 2px 3px 0px #0000004D, 0px 6px 10px 4px #00000026",
             opacity: 1,
             padding: "16px",
-          }}
-        >
+          }}>
           {currentStep === 1 ? renderStep1() : renderStep2()}
         </div>
       </div>

@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
 import getBrandHelper from "../utils/getBrandHelper";
-// Nuevo helper para modelos
 import getModelHelper from "../utils/getModelHelper";
 import getGroupHelper from "../utils/getGroupHelper";
 import { useAuth } from "./useAuth";
@@ -11,14 +10,16 @@ export function useCarInfo() {
   const [brands, setBrands] = useState([]);
   const [loadingBrands, setLoadingBrands] = useState(false);
   const [groups, setGroups] = useState([]);
-  const [loadingGroups, setLoadingGroup] = useState(false);
+  const [loadingGroups, setLoadingGroups] = useState(false);
   const [models, setModels] = useState([]);
   const [loadingModels, setLoadingModels] = useState(false);
   const [years, setYears] = useState([]);
   const [loadingYears, setLoadingYears] = useState(false);
 
   useEffect(() => {
-    brands.length <= 0 && getBrands();
+    if (brands.length <= 0 && accessToken) {
+      getBrands();
+    }
   }, [accessToken]);
 
   const getBrands = useCallback(async () => {
@@ -26,105 +27,114 @@ export function useCarInfo() {
     setLoadingBrands(true);
     try {
       const data = await getBrandHelper(accessToken);
-
       setBrands(Array.isArray(data) ? data : []);
     } catch (err) {
-      await refresh();
-        
+      console.error("Error loading brands:", err);
+      if (err.message === "TOKEN_EXPIRED") {
+        await refresh();
+      }
     } finally {
       setLoadingBrands(false);
     }
-  }, [accessToken]);
+  }, [accessToken, refresh]);
 
-  // Obtener modelos según la marca seleccionada
+  // Obtener grupos según la marca seleccionada
   const getGroup = useCallback(
-    async (brandName) => {
-      if (!accessToken || !brandName) return;
-      setLoadingGroup(true);
+    async (brandId) => {
+      if (!accessToken || !brandId) {
+        console.log("getGroup: Missing parameters", { accessToken: !!accessToken, brandId });
+        return;
+      }
+      
+      console.log("getGroup called with brandId:", brandId);
+      
+      setLoadingGroups(true);
+      // Limpiar modelos cuando cambia la marca
+      setModels([]);
 
       try {
-        const data = await getGroupHelper(accessToken, brandName);
+        const data = await getGroupHelper(accessToken, brandId);
+        console.log("Groups data received:", data);
         setGroups(Array.isArray(data) ? data : []);
       } catch (err) {
-        if (err.message == "TOKEN_EXPIRED") {
-          const response = await refresh();
+        console.error("Error in getGroup:", err);
+        if (err.message === "TOKEN_EXPIRED") {
+          await refresh();
         }
       } finally {
-        setLoadingGroup(false);
+        setLoadingGroups(false);
       }
     },
-    [accessToken]
+    [accessToken, refresh]
   );
 
+  // Obtener modelos según la marca y grupo seleccionados
+  // IMPORTANTE: groupId debe ser el campo "id" del grupo, NO el "name"
   const getModel = useCallback(
-    async (brandName, group) => {
-      if (!accessToken || !brandName || !group) return;
+    async (brandId, groupId) => {
+      console.log("=== getModel LLAMADO ===");
+      console.log("brandId:", brandId);
+      console.log("groupId (debe ser el ID, no el name):", groupId);
+      console.log("accessToken existe:", !!accessToken);
+
+      if (!accessToken || !brandId || !groupId) {
+        console.log("getModel: Faltan parámetros, retornando");
+        return;
+      }
+
       setLoadingModels(true);
+      console.log("getModel: Iniciando fetch de modelos...");
+
       try {
-        const data = await getModelHelper(accessToken, brandName, group);
-        console.log(data);
+        const data = await getModelHelper(accessToken, brandId, groupId);
+        console.log("getModel: Datos recibidos:", data);
+        console.log("getModel: Cantidad de modelos:", data?.length);
 
         setModels(Array.isArray(data) ? data : []);
+        console.log("getModel: Modelos seteados exitosamente");
       } catch (err) {
-        if (err.message == "TOKEN_EXPIRED") {
-          const response = await refresh();
+        console.error("getModel: Error al obtener modelos:", err);
+        if (err.message === "TOKEN_EXPIRED") {
+          await refresh();
         }
       } finally {
         setLoadingModels(false);
+        console.log("getModel: Finalizado (loadingModels = false)");
       }
     },
-    [accessToken]
+    [accessToken, refresh]
   );
 
-  // Nueva función para obtener modelos directamente por marca
-  const getModelsByBrand = useCallback(
-    async (brandId) => {
-      if (!accessToken || !brandId) return;
-      setLoadingModels(true);
-      try {
-        // Obtener todos los grupos primero
-        const groupsData = await getGroupHelper(accessToken, brandId);
-        if (Array.isArray(groupsData) && groupsData.length > 0) {
-          // Obtener modelos del primer grupo como fallback
-          const firstGroup = groupsData[0];
-          const data = await getModelHelper(accessToken, brandId, firstGroup.name || firstGroup.id);
-          setModels(Array.isArray(data) ? data : []);
-        }
-      } catch (err) {
-        console.error("Error loading models:", err);
-        if (err.message == "TOKEN_EXPIRED") {
-          const response = await refresh();
-        }
-      } finally {
-        setLoadingModels(false);
-      }
-    },
-    [accessToken]
-  );
-
-  const getPrice = async (codia) => {
-    if (!accessToken) return;
+  const getPrice = useCallback(async (codia) => {
+    if (!accessToken || !codia) return;
+    
     setLoadingYears(true);
     try {
-      const car = models.filter((item) => item.codia == codia)[0];
+      const car = models.find((item) => item.codia === codia);
+      
+      if (!car) {
+        console.error("Car not found with codia:", codia);
+        return;
+      }
 
       const data = await getPriceHelper(
         car.codia,
-        car.list_price,
-        car.prices,
+        car.list_price || false,
+        car.prices || false,
         accessToken
       );
-      setYears(data.data.price);
+      
+      setYears(data?.data?.price || []);
       return data;
     } catch (err) {
-      if(err.message == "TOKEN_EXPIRED"){
-        const response = await refresh()
-        
+      console.error("Error loading price:", err);
+      if (err.message === "TOKEN_EXPIRED") {
+        await refresh();
       }
     } finally {
       setLoadingYears(false);
     }
-  };
+  }, [accessToken, models, refresh]);
 
   return {
     getPrice,
@@ -138,6 +148,5 @@ export function useCarInfo() {
     loadingYears,
     getModel,
     getGroup,
-    getModelsByBrand,
   };
 }

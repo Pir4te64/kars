@@ -268,21 +268,19 @@ export default function CarQuoteSection() {
       </div>
 
       {/* Title and Subtitle */}
-      <div
-        className="flex flex-col w-full px-4"
-        style={{ gap: "11px", opacity: 1 }}>
-        <h2 className="text-sm md:text-base font-bold text-center text-gray-900">
+      <div className="flex flex-col w-full px-4">
+        <h2 className="text-base md:text-lg font-bold text-center text-gray-900 mb-2">
           Cotizamos tu auto en poco tiempo, ingresa los datos
         </h2>
-        <p className="text-base md:text-lg text-center text-gray-900">
+        <p className="text-sm md:text-base text-center text-gray-900">
           Te acompañamos en cada paso de tu viaje
         </p>
       </div>
 
       {/* Form Fields */}
-      <div className="space-y-4" style={{ marginTop: "40px" }}>
+      <div className="space-y-4 w-full" style={{ marginTop: "40px" }}>
         {/* First Row - Marca, Modelo, Año */}
-        <div className="flex flex-col md:flex-row justify-center mx-auto w-full max-w-4xl gap-2 md:gap-3">
+        <div className="flex flex-col md:flex-row justify-center mx-auto w-full max-w-4xl gap-3 md:gap-3 px-2 sm:px-0">
           {/* Marca */}
           <div
             className="relative w-full md:w-1/3"
@@ -300,7 +298,7 @@ export default function CarQuoteSection() {
             <select
               value={formData.marca}
               onChange={(e) => handleInputChange("marca", e.target.value)}
-              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500"
+              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500 text-sm md:text-base"
               style={{ border: "none", outline: "none" }}
               disabled={loadingBrands}>
               <option value="">Marca</option>
@@ -368,7 +366,7 @@ export default function CarQuoteSection() {
                     : "not-allowed",
               }}>
               <span
-                className={`${
+                className={`text-sm md:text-base ${
                   formData.grupo ? "text-gray-900" : "text-gray-500"
                 }`}>
                 {loadingGroups
@@ -410,7 +408,7 @@ export default function CarQuoteSection() {
                       className="px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors duration-150"
                       onClick={() => handleGroupSelect(item)}
                       style={{ borderBottom: "1px solid #f3f4f6" }}>
-                      <span className="text-gray-900">{item.name}</span>
+                      <span className="text-gray-900 text-sm md:text-base">{item.name}</span>
                     </div>
                   ))}
                 </div>
@@ -463,7 +461,7 @@ export default function CarQuoteSection() {
                     : "not-allowed",
               }}>
               <span
-                className={`${
+                className={`text-sm md:text-base ${
                   formData.modelo ? "text-gray-900" : "text-gray-500"
                 }`}>
                 {loadingModels
@@ -506,7 +504,7 @@ export default function CarQuoteSection() {
                       className="px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors duration-150"
                       onClick={() => handleModelSelect(item)}
                       style={{ borderBottom: "1px solid #f3f4f6" }}>
-                      <span className="text-gray-900">{item.description}</span>
+                      <span className="text-gray-900 text-sm md:text-base">{item.description}</span>
                     </div>
                   ))}
                 </div>
@@ -515,7 +513,7 @@ export default function CarQuoteSection() {
         </div>
 
         {/* Second Row - Versión, Kilometraje, Button */}
-        <div className="flex flex-col md:flex-row justify-center items-center mx-auto w-full max-w-4xl gap-2 md:gap-3">
+        <div className="flex flex-col md:flex-row justify-center items-center mx-auto w-full max-w-4xl gap-3 md:gap-3 px-2 sm:px-0">
           {/* Año */}
           <div
             className="relative w-full md:w-1/3"
@@ -537,7 +535,7 @@ export default function CarQuoteSection() {
               onChange={(e) =>
                 setFormData({ ...formData, año: e.target.value })
               }
-              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500"
+              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500 text-sm md:text-base"
               style={{
                 border: "none",
                 outline: "none",
@@ -643,7 +641,7 @@ export default function CarQuoteSection() {
               onChange={(e) =>
                 setFormData({ ...formData, kilometraje: e.target.value })
               }
-              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500"
+              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500 text-sm md:text-base"
               style={{ border: "none", outline: "none" }}>
               <option value="">Kilometraje</option>
               <option value="0-10000">0 - 10,000 km</option>
@@ -671,20 +669,18 @@ export default function CarQuoteSection() {
 
           {/* Button */}
           <button
-            className="text-white font-bold transition-colors duration-200 w-full md:w-auto"
+            className="text-white font-bold transition-colors duration-200 w-full md:w-auto whitespace-nowrap"
             onClick={() => setCurrentStep(2)}
             style={{
               height: "48px",
+              minHeight: "48px",
               paddingTop: "10px",
               paddingRight: "20px",
               paddingBottom: "10px",
               paddingLeft: "20px",
-              gap: "10px",
               borderRadius: "60px",
-              borderWidth: "1px",
               border: "1px solid #2664C4",
               backgroundColor: "#2664C4",
-              opacity: 1,
             }}>
             Comenzar cotización
           </button>
@@ -722,30 +718,27 @@ export default function CarQuoteSection() {
       </div>
 
       {/* Title and Subtitle */}
-      <div
-        className="flex flex-col w-full px-4"
-        style={{ gap: "11px", opacity: 1 }}>
-        <h2 className="text-sm md:text-base font-bold text-center text-gray-900">
+      <div className="flex flex-col w-full px-4">
+        <h2 className="text-base md:text-lg font-bold text-center text-gray-900 mb-2">
           Cotizamos tu auto en poco tiempo, ingresa los datos
         </h2>
-        <p className="text-base md:text-lg text-center text-gray-900">
+        <p className="text-sm md:text-base text-center text-gray-900">
           Tus datos de contacto
         </p>
       </div>
 
       {/* Contact Form Fields */}
       <div
-        className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6"
+        className="flex flex-col md:flex-row justify-center items-stretch gap-4 md:gap-6 w-full px-4"
         style={{ marginTop: "40px" }}>
         {/* Nombre y apellido */}
-        <div className="flex flex-col w-full md:w-80">
+        <div className="flex flex-col w-full md:flex-1 md:max-w-xs">
           <label className="font-medium text-sm text-gray-900 mb-2">
             Nombre y apellido
           </label>
           <div
-            className="relative"
+            className="relative w-full"
             style={{
-              width: "300px",
               height: "56px",
               paddingTop: "12px",
               paddingRight: "16px",
@@ -769,15 +762,13 @@ export default function CarQuoteSection() {
         </div>
 
         {/* Correo electrónico */}
-        <div className="flex flex-col w-full md:w-80">
+        <div className="flex flex-col w-full md:flex-1 md:max-w-xs">
           <label className="font-medium text-sm text-gray-900 mb-2">
             Correo electrónico
           </label>
           <div
-            className="relative"
+            className="relative w-full"
             style={{
-              width: "100%",
-              maxWidth: "300px",
               height: "56px",
               paddingTop: "12px",
               paddingRight: "16px",
@@ -801,15 +792,13 @@ export default function CarQuoteSection() {
         </div>
 
         {/* Ubicación */}
-        <div className="flex flex-col w-full md:w-80">
+        <div className="flex flex-col w-full md:flex-1 md:max-w-xs">
           <label className="font-medium text-sm text-gray-900 mb-2">
             Ubicación
           </label>
           <div
-            className="relative"
+            className="relative w-full"
             style={{
-              width: "100%",
-              maxWidth: "300px",
               height: "56px",
               paddingTop: "12px",
               paddingRight: "16px",
@@ -834,25 +823,23 @@ export default function CarQuoteSection() {
       </div>
 
       {/* Navigation */}
-      <div className="flex flex-col md:flex-row justify-between items-center mt-8 w-full gap-4">
+      <div className="flex flex-col-reverse md:flex-row justify-between items-center mt-8 w-full gap-4 px-4">
         <button
-          className="w-full md:w-auto font-medium text-sm text-gray-900 bg-transparent border-none cursor-pointer"
+          className="w-full md:w-auto font-medium text-sm text-gray-900 bg-transparent border-none cursor-pointer py-2"
           onClick={() => setCurrentStep(1)}>
           Volver
         </button>
         <button
-          className="w-full md:w-auto"
+          className="w-full md:w-auto whitespace-nowrap"
           onClick={handleCompleteQuote}
           style={{
             height: "48px",
+            minHeight: "48px",
             paddingTop: "10px",
             paddingRight: "20px",
             paddingBottom: "10px",
             paddingLeft: "20px",
-            gap: "10px",
-            opacity: 1,
             borderRadius: "60px",
-            borderWidth: "1px",
             backgroundColor: "#2664C4",
             border: "1px solid #2664C4",
             color: "white",
@@ -869,24 +856,20 @@ export default function CarQuoteSection() {
   return (
     <section
       id="vende-tu-auto"
-      className="flex items-center justify-center px-4 py-8 md:py-0 mt-0 md:mt-0"
+      className="flex items-center justify-center px-4 py-8 md:py-12"
       style={{
         minHeight: "400px",
         background: "linear-gradient(to bottom, #e5e5e5 50%, white 50%)",
       }}>
-      <div
-        className="flex items-center w-full max-w-7xl"
-        style={{ gap: "50px", opacity: 1 }}>
+      <div className="flex items-center w-full max-w-7xl">
         <div
-          className="bg-white w-full mx-auto"
+          className="bg-white w-full mx-auto px-4 sm:px-6 md:px-8 py-6 md:py-8"
           style={{
             maxWidth: "1200px",
             minHeight: "400px",
             borderRadius: "12px",
             border: "1px solid #2664C4",
             boxShadow: "0px 2px 3px 0px #0000004D, 0px 6px 10px 4px #00000026",
-            opacity: 1,
-            padding: "16px",
           }}>
           {currentStep === 1 ? renderStep1() : renderStep2()}
         </div>

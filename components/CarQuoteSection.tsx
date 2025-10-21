@@ -868,6 +868,7 @@ export default function CarQuoteSection() {
 
   return (
     <section
+      id="vende-tu-auto"
       className="flex items-center justify-center px-4 py-8 md:py-0 mt-0 md:mt-0"
       style={{
         minHeight: "400px",

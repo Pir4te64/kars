@@ -3,15 +3,15 @@ import React from 'react'
 const WhyChooseUs = () => {
   const stats = [
     {
-      number: "+10 años",
+      number: "+20 años",
       description: "AÑOS EN EL MERCADO"
     },
     {
-      number: "+600 AUTOS",
+      number: "+1500 AUTOS",
       description: "ENCONTRARON NUEVO DUEÑO"
     },
     {
-      number: "+54 MODELOS",
+      number: "+50 MODELOS",
       description: "DE AUTOS EN STOCK"
     }
   ]

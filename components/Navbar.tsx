@@ -87,10 +87,10 @@ export default function Navbar() {
           <div className="hidden lg:block">
             <div className="flex items-center space-x-4">
               <button
-                onClick={() => router.push('/vende-tu-auto')}
+                onClick={() => handleNavItemClick('Vende tu auto')}
                 className="px-5 py-2 text-sm font-medium text-white transition-colors duration-200 rounded-full bg-primary-600 hover:bg-primary-700"
               >
-                Vende tu auto 
+                Vende tu auto
               </button>
               <button
                 onClick={() => handleNavItemClick('Vehículos en venta')}
@@ -154,7 +154,7 @@ export default function Navbar() {
             <div className="space-y-3">
               <button
                 onClick={() => {
-                  router.push('/vende-tu-auto')
+                  handleNavItemClick('Vende tu auto')
                   setIsMenuOpen(false)
                 }}
                 className="flex items-center justify-center w-full px-4 py-3 font-medium text-white transition-colors duration-200 rounded-lg bg-primary-600 hover:bg-primary-700"

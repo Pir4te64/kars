@@ -20,7 +20,8 @@
       "WebFetch(domain:api.infoauto.com.ar)",
       "Bash(for month in 05 06 07 08 09)",
       "Bash(do echo \"Testing 2024/$month:\")",
-      "Bash(done)"
+      "Bash(done)",
+      "WebSearch"
     ],
     "deny": [],
     "ask": []

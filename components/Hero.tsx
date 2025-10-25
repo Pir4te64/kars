@@ -2,99 +2,122 @@
 
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import CarQuoteSection from './CarQuoteSection'
 
 export default function Hero() {
   const [showQuoteModal, setShowQuoteModal] = useState(false)
-  const [carVisible, setCarVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    const t = setTimeout(() => setCarVisible(true), 50)
-    return () => clearTimeout(t)
+    const timer = setTimeout(() => setIsVisible(true), 100)
+    return () => clearTimeout(timer)
   }, [])
 
-  return (
-    <section className="relative z-10 w-full pt-24 pb-24 bg-neutral-200 md:pt-32">
-      <div className="container px-4 mx-auto max-w-7xl">
-        <div className="grid items-center gap-10 md:gap-12 lg:grid-cols-2">
-          {/* Left: Texto */}
-          <div className="flex flex-col justify-center">
-            <h1 className="font-bold tracking-tight text-left text-4xl leading-[1.1] sm:text-5xl md:text-6xl">
-              <span className="block text-black">Dale un giro a tu</span>
-              <span className="block text-blue-500">camino</span>
-            </h1>
+  const scrollToCotizador = () => {
+    const cotizadorElement = document.getElementById('vende-tu-auto')
+    if (cotizadorElement) {
+      cotizadorElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
 
-            <p className="mt-4 max-w-md text-left text-sm sm:text-base md:text-lg text-black">
-              Entrega tu carro usado y súbete hoy mismo al auto que siempre soñaste.
+  return (
+    <section className="relative w-full flex items-start justify-center bg-gradient-to-br from-slate-200 via-slate-300 to-slate-200 overflow-hidden z-0 pt-0 pb-0">
+
+      {/* Card principal única - estilo 1.jpg */}
+      <div className={`
+        relative w-full max-w-full
+        bg-gradient-to-br from-slate-100 via-slate-200 to-slate-100
+        shadow-2xl overflow-visible
+        transition-all duration-1000 ease-out
+        ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}
+      `}>
+
+        {/* Grid de 2 columnas: Texto Izquierda - Auto Derecha */}
+        <div className="grid lg:grid-cols-2 min-h-screen">
+
+          {/* COLUMNA IZQUIERDA - Texto y CTAs */}
+          <div className="relative z-10 flex flex-col justify-center items-center p-8 md:p-12 space-y-8 pt-32">
+
+            {/* Título Principal */}
+            <div className={`
+              space-y-4 transition-all duration-700 delay-400 text-left max-w-lg w-full lg:w-auto lg:ml-auto lg:mr-12
+              ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+            `}>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] text-slate-900">
+                Dale un giro a<br />
+                tu <span className="text-blue-600">camino</span>
+              </h1>
+            </div>
+
+            {/* Descripción */}
+            <p className={`
+              text-base md:text-lg text-slate-700 leading-relaxed max-w-md text-left w-full lg:w-auto lg:ml-auto lg:mr-12
+              transition-all duration-700 delay-600
+              ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+            `}>
+              Tu próxima historia arranca con nosotros.
             </p>
 
-            {/* CTA solo en móvil */}
-            <div className="mt-6 md:hidden">
+            {/* Botones CTA */}
+            <div className={`
+              flex flex-wrap gap-4 items-center justify-start w-full lg:w-auto lg:ml-auto lg:mr-12
+              transition-all duration-700 delay-800
+              ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+            `}>
               <button
-                onClick={() => setShowQuoteModal(true)}
-                className="w-full rounded-full px-4 py-3 sm:px-6 sm:py-4 text-base sm:text-lg font-semibold text-white shadow-lg transition-transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#2664C4]"
+                onClick={() => {
+                  const autosSection = document.getElementById('autos-disponibles')
+                  if (autosSection) {
+                    autosSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  }
+                }}
+                className="bg-slate-800 hover:bg-slate-900 text-white px-8 py-4 rounded-full font-bold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5"
               >
-                Comenzar mi nuevo viaje
+                Autos disponibles
               </button>
             </div>
-          </div>
 
-          {/* Right: Auto + Burbujas */}
-          <div className="relative flex items-center justify-center">
-            <div className="relative w-full max-w-3xl md:max-w-4xl aspect-[16/10] md:aspect-[16/9]">
-              {/* Burbuja superior izquierda */}
-              <div className="absolute z-20 flex items-center gap-3 px-3 py-2 shadow left-2 top-2 rounded-xl bg-sky-100/100 md:left-3 md:top-4 md:px-4 md:py-3">
-                <div className="flex items-center justify-center w-10 h-10 bg-green-100 rounded-full">
-                  <Image
-                    src="/planes_de_pago_a_tu_medida.png"
-                    alt="Planes de pago"
-                    width={24}
-                    height={24}
-                    className="w-6 h-6"
-                  />
-                </div>
-                <p className="whitespace-nowrap text-xs sm:text-sm md:text-base font-semibold leading-5">
-                  <span className="text-black">PLANES DE </span>
-                  <span className="text-green-600">PAGO A TU MEDIDA</span>
-                </p>
-              </div>
-
-              {/* Imagen del auto */}
-              <Image
-                src="/hero_image_kars.png"
-                alt="Volkswagen Polo Track"
-                width={1200}
-                height={800}
-                className={[
-                  'absolute inset-0 h-full w-full object-contain transition-all duration-700 ease-out',
-                  carVisible ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0',
-                ].join(' ')}
-                priority
-              />
-
-              {/* Burbuja inferior derecha (solo ≥ md) */}
-              <div className="absolute z-20 items-center hidden gap-3 px-4 py-3 shadow bottom-3 right-2 rounded-xl bg-sky-100/80 md:flex">
-                <div className="flex items-center justify-center w-10 h-10 rounded-full">
-                  <Image
-                    src="/volante_tu_usado_vale_mas.png"
-                    alt="Volante"
-                    width={24}
-                    height={24}
-                    className="w-6 h-6"
-                  />
-                </div>
-                <p className="whitespace-nowrap text-base font-semibold leading-5">
-                  <span className="text-[#2664C4]">TU USADO VALE MÁS </span>
-                  <span className="text-black">de lo que imaginas</span>
-                </p>
-              </div>
+            {/* Horario de atención */}
+            <div className={`
+              text-xs text-slate-600 pt-4
+              transition-all duration-700 delay-1000
+              ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+            `}>
             </div>
           </div>
+
+          {/* COLUMNA DERECHA - Auto */}
+          <div className="relative flex items-center justify-start lg:pl-0 overflow-hidden pt-32 -mt-[30%]">
+
+            {/* Imagen del auto */}
+            <div className={`
+              relative w-full h-full
+              transition-all duration-1000 delay-300
+              ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'}
+            `}>
+              <Image
+                src="/hero_image_kars.png"
+                alt="Vehículo Kars"
+                fill
+                className="object-contain object-left scale-75"
+                priority
+              />
+            </div>
+
+            {/* Overlay gradient para mezclar auto con fondo */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-slate-200/50 pointer-events-none"></div>
+          </div>
+        </div>
+
+        {/* Cotizador integrado */}
+        <div className="absolute bottom-8 left-0 right-0 px-4 z-30">
+          <CarQuoteSection />
         </div>
       </div>
 
-      {/* Modal de cotización (móvil) */}
+      {/* Modal de cotización - SIN MODIFICAR */}
       {showQuoteModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 md:hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
           <div className="w-full max-w-md overflow-y-auto bg-white rounded-2xl">
             <div className="flex items-center justify-between p-4 border-b">
               <h3 className="text-lg font-bold text-gray-900">
@@ -149,9 +172,7 @@ export default function Hero() {
                 </div>
 
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    Kilometraje
-                  </label>
+                  <label className="block mb-2 text-sm font-medium text-gray-700">Kilometraje</label>
                   <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-transparent focus:ring-2 focus:ring-blue-500">
                     <option value="">Seleccione</option>
                     <option value="0 - 10,000">0 - 10,000 km</option>

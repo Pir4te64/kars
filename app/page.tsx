@@ -1,7 +1,6 @@
 import { Metadata } from 'next'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
-import CarQuoteSection from '@/components/CarQuoteSection'
 import Benefits from '@/components/Benefits'
 import StockSection from '@/components/StockSection'
 import WhyChooseUs from '@/components/WhyChooseUs'
@@ -47,7 +46,6 @@ export default async function HomePage() {
       <Navbar />
       <main>
         <Hero />
-        <CarQuoteSection />
         <Benefits />
         <StockSection initialCars={cars} />
         <WhyChooseUs />

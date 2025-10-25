@@ -14,12 +14,12 @@ export default function EmailSummary() {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-4 sm:p-8 max-w-4xl mx-auto mt-8">
+    <div className="bg-gradient-to-br from-white via-slate-50 to-white rounded-3xl shadow-xl p-6 sm:p-10 max-w-4xl mx-auto mt-12">
       {/* Header */}
-      <div className="flex items-center mb-6">
-        <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-600 rounded-full flex items-center justify-center mr-2 sm:mr-3 flex-shrink-0">
+      <div className="text-center mb-8">
+        <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-slate-800 to-slate-700 rounded-full mb-4">
           <svg
-            className="w-4 h-4 sm:w-5 sm:h-5 text-white"
+            className="w-7 h-7 text-white"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -32,16 +32,19 @@ export default function EmailSummary() {
             />
           </svg>
         </div>
-        <h3 className="text-base sm:text-lg font-bold text-gray-900">
-          Enviar resumen a tu correo
+        <h3 className="text-xl sm:text-2xl font-black text-slate-800 mb-2">
+          Recibe tu cotización por email
         </h3>
+        <p className="text-sm text-slate-600">
+          Te enviaremos un resumen completo a tu correo
+        </p>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Email Input */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-semibold text-slate-700 mb-2">
             Correo electrónico
           </label>
           <div className="relative">
@@ -49,34 +52,31 @@ export default function EmailSummary() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="ejemplo@correo.com"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              placeholder="tu@email.com"
+              className="w-full px-5 py-4 border border-slate-300 rounded-2xl focus:ring-2 focus:ring-slate-400 focus:border-transparent outline-none bg-white transition-all"
               required
             />
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-              <span className="text-gray-400 text-lg">@</span>
-            </div>
           </div>
         </div>
 
         {/* Checkbox */}
-        <div className="flex items-center">
+        <div className="flex items-start bg-slate-50 p-4 rounded-2xl border border-slate-200">
           <input
             type="checkbox"
             id="wantEstimate"
             checked={wantEstimate}
             onChange={(e) => setWantEstimate(e.target.checked)}
-            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            className="w-5 h-5 text-slate-800 border-slate-300 rounded focus:ring-slate-500 mt-0.5"
           />
-          <label htmlFor="wantEstimate" className="ml-2 text-sm text-gray-700">
-            Quiero recibir mi estimado por correo
+          <label htmlFor="wantEstimate" className="ml-3 text-sm text-slate-700 font-medium">
+            Sí, quiero recibir mi cotización detallada por correo electrónico
           </label>
         </div>
 
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white font-bold py-3 px-4 sm:px-6 rounded-full hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-sm sm:text-base"
+          className="w-full bg-gradient-to-r from-slate-800 to-slate-700 text-white font-bold py-4 px-6 rounded-full hover:scale-105 hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
         >
           Enviar a mi correo
         </button>

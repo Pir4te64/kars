@@ -53,7 +53,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="absolute top-0 z-50 w-full h-20 px-4 py-4 transform -translate-x-1/2 bg-white shadow-lg left-1/2 max-w-7xl sm:px-6 md:px-8 lg:px-12">
+    <nav className="absolute top-0 z-50 w-full h-20 px-4 py-4 transform -translate-x-1/2 bg-white shadow-lg left-1/2 max-w-7xl sm:px-6 md:px-8 lg:px-12 rounded-b-[2.5rem]">
       <div className="w-full h-full">
         <div className="flex items-center justify-between h-full">
           {/* Logo */}

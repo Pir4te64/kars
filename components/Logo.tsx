@@ -1,23 +1,24 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 interface LogoProps {
   className?: string
   variant?: 'default' | 'white'
 }
 
-export default function Logo({ className = 'text-2xl', variant = 'default' }: LogoProps) {
+export default function Logo({ className = 'text-2xl ml-60', variant = 'default' }: LogoProps) {
   const logoSrc = variant === 'white' ? '/logo_kars_blanco.png' : '/logo_kars_negro.png'
 
   return (
-    <div className={className}>
+    <Link href="/" className={`cursor-pointer ${className}`}>
       <Image
         src={logoSrc}
         alt="KARS - Tu concesionario de confianza"
         width={128}
         height={128}
-        className="h-32 w-auto"
+        className="h-40 w-auto"
         priority
       />
-    </div>
+    </Link>
   )
 }

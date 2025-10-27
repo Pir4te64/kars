@@ -108,7 +108,7 @@ export default function StockSection({ initialCars }: StockSectionProps) {
                     window.scrollTo({ top: 0, behavior: 'smooth' })
                     router.push(`/autos/${post.id}`)
                   }}
-                  className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
+                  className="w-full bg-slate-200 hover:bg-slate-300 text-slate-900 font-bold py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
                 >
                   <span>Ver unidad</span>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -84,6 +84,21 @@ export default function QuoteResultPage() {
     }
   };
 
+  // Calcular los 3 tipos de venta
+  const calcularTiposVenta = () => {
+    const precioBase = parseFloat(quoteData?.precio || "0");
+
+    return {
+      consignacion: precioBase, // Precio normal
+      permuta: precioBase * 0.95, // 5% menos
+      inmediata: precioBase * 0.90, // 10% menos
+    };
+  };
+
+  const formatearPrecio = (precio: number) => {
+    return precio.toFixed(0);
+  };
+
   if (!quoteData) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50">
@@ -102,9 +117,9 @@ export default function QuoteResultPage() {
   return (
     <div className="h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 overflow-hidden">
       <Navbar />
-      <div className="w-full h-full px-4 pt-24 pb-6 mx-auto max-w-7xl flex flex-col">
+      <div className="w-full h-full px-4 pt-16 pb-8 mx-auto max-w-7xl flex flex-col">
         {/* Header */}
-        <div className="text-center mb-3">
+        <div className="text-center mb-4">
           <h1 className="text-xl md:text-2xl font-black text-slate-800 mb-0.5">
             Tu cotización está lista
           </h1>
@@ -116,10 +131,10 @@ export default function QuoteResultPage() {
         {/* Main content card */}
         <div
           ref={cardRef}
-          className="flex-1 mx-auto w-full max-w-6xl bg-gradient-to-br from-white via-slate-50 to-white rounded-2xl shadow-xl overflow-hidden flex flex-col"
+          className="flex-1 mx-auto w-full max-w-6xl bg-gradient-to-br from-white via-slate-50 to-white rounded-2xl shadow-xl overflow-hidden flex flex-col mb-8"
         >
           {/* Estimated Value Header */}
-          <div className="bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 py-2 px-4">
+          <div className="bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 py-3 px-4">
             <div className="flex items-center justify-center gap-2">
               <div className="flex items-center justify-center w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex-shrink-0">
                 <svg
@@ -147,7 +162,7 @@ export default function QuoteResultPage() {
             </div>
           </div>
 
-          <div className="flex-1 p-4 overflow-hidden">
+          <div className="flex-1 p-4 md:p-6 overflow-hidden">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full">
               {/* LEFT COLUMN - Vehicle Details & Price */}
               <div className="flex flex-col">
@@ -193,50 +208,107 @@ export default function QuoteResultPage() {
                   </div>
                 </div>
 
-                {/* Estimation */}
-                <div className="flex-1">
-                  <div className="bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 rounded-xl p-3 text-center h-full flex flex-col justify-center">
-                    <h3 className="text-xs font-black text-white/80 mb-2">
-                      Estimación de valor
-                    </h3>
+                {/* Tipos de Venta */}
+                <div className="flex-1 overflow-y-auto">
+                  <h3 className="text-sm font-black text-slate-800 mb-2">
+                    Opciones de venta
+                  </h3>
 
-                    {/* Precio en USD */}
-                    <div className="mb-2">
-                      <div className="text-3xl md:text-4xl font-black text-white mb-0.5">
-                        ${quoteData.precio}
+                  <div className="grid grid-cols-1 gap-2">
+                    {/* Consignación - Precio Normal */}
+                    <div className="bg-gradient-to-br from-blue-600 via-blue-500 to-blue-600 rounded-lg p-3 text-white shadow-md">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="text-sm font-bold">Consignación</h4>
+                        <span className="text-xs bg-white/30 px-2 py-0.5 rounded-full font-semibold">
+                          Mejor precio
+                        </span>
                       </div>
-                      <div className="text-white/60 text-xs font-medium">USD</div>
+                      <div className="mb-1">
+                        <div className="text-xl font-black">
+                          ${formatearPrecio(calcularTiposVenta().consignacion)}
+                        </div>
+                        {dollarBlue && !dollarLoading && !dollarError && (
+                          <div className="text-sm font-bold text-white/90">
+                            {convertToPesos(formatearPrecio(calcularTiposVenta().consignacion))}
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-xs text-white/90">
+                        Precio completo, pagas al vender
+                      </p>
                     </div>
 
-                    {/* Precio en Pesos Argentinos */}
+                    {/* Permuta - 5% menos */}
+                    <div className="bg-gradient-to-br from-slate-700 via-slate-600 to-slate-700 rounded-lg p-3 text-white shadow-md">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="text-sm font-bold">Permuta</h4>
+                        <span className="text-xs bg-white/30 px-2 py-0.5 rounded-full font-semibold">
+                          -5%
+                        </span>
+                      </div>
+                      <div className="mb-1">
+                        <div className="text-xl font-black">
+                          ${formatearPrecio(calcularTiposVenta().permuta)}
+                        </div>
+                        {dollarBlue && !dollarLoading && !dollarError && (
+                          <div className="text-sm font-bold text-white/90">
+                            {convertToPesos(formatearPrecio(calcularTiposVenta().permuta))}
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-xs text-white/90">
+                        Cambia tu auto por otro
+                      </p>
+                    </div>
+
+                    {/* Compra Inmediata - 10% menos */}
+                    <div className="bg-gradient-to-br from-green-600 via-green-500 to-green-600 rounded-lg p-3 text-white shadow-md">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="text-sm font-bold">Compra inmediata</h4>
+                        <span className="text-xs bg-white/30 px-2 py-0.5 rounded-full font-semibold">
+                          -10%
+                        </span>
+                      </div>
+                      <div className="mb-1">
+                        <div className="text-xl font-black">
+                          ${formatearPrecio(calcularTiposVenta().inmediata)}
+                        </div>
+                        {dollarBlue && !dollarLoading && !dollarError && (
+                          <div className="text-sm font-bold text-white/90">
+                            {convertToPesos(formatearPrecio(calcularTiposVenta().inmediata))}
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-xs text-white/90">
+                        Dinero en el momento
+                      </p>
+                    </div>
+
+                    {/* Nota de conversión en pesos */}
                     {dollarBlue && !dollarLoading && !dollarError && (
-                      <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2 mb-2">
-                        <div className="text-lg font-black text-white mb-0.5">
-                          {convertToPesos(quoteData.precio)}
-                        </div>
-                        <div className="text-xs text-white/60">
-                          <span className="font-medium">Dólar Blue:</span>{" "}
-                          {formatDollarBlue()}
-                        </div>
+                      <div className="bg-slate-50 rounded-lg p-2 border border-slate-200 text-center">
+                        <p className="text-xs text-slate-600">
+                          <span className="font-semibold">Dólar Blue:</span> {formatDollarBlue()}
+                        </p>
                       </div>
                     )}
 
                     {/* Estados de carga y error */}
                     {dollarLoading && (
-                      <div className="mb-1 text-xs text-white/60">
-                        Cargando cotización...
+                      <div className="bg-slate-50 rounded-lg p-2 border border-slate-200 text-center">
+                        <p className="text-xs text-slate-600">
+                          Cargando cotización...
+                        </p>
                       </div>
                     )}
 
                     {dollarError && (
-                      <div className="mb-1 text-xs text-red-300">
-                        Error al cargar cotización
+                      <div className="bg-red-50 rounded-lg p-2 border border-red-200 text-center">
+                        <p className="text-xs text-red-600">
+                          Error al cargar cotización
+                        </p>
                       </div>
                     )}
-
-                    <p className="text-xs text-white/50">
-                      Estimación inicial. Precio final tras inspección.
-                    </p>
                   </div>
                 </div>
               </div>
@@ -249,7 +321,7 @@ export default function QuoteResultPage() {
 
                 <div className="space-y-3">
                   {/* Button - WhatsApp */}
-                  <button className="w-full bg-gradient-to-r from-green-600 to-green-500 text-white py-3 px-4 rounded-full flex items-center justify-center hover:scale-105 hover:shadow-xl transition-all duration-300 font-bold text-sm">
+                  <button className="w-full bg-gradient-to-r from-green-600 to-green-500 text-white py-2.5 px-4 rounded-full flex items-center justify-center hover:scale-105 hover:shadow-xl transition-all duration-300 font-bold text-sm">
                     <svg
                       className="w-4 h-4 mr-2 flex-shrink-0"
                       fill="currentColor"
@@ -263,7 +335,7 @@ export default function QuoteResultPage() {
                   {/* Button - Nueva Cotización */}
                   <button
                     onClick={() => router.push('/')}
-                    className="w-full bg-white text-slate-900 border-2 border-slate-300 py-3 px-4 rounded-full flex items-center justify-center hover:bg-slate-50 hover:border-slate-400 transition-all duration-300 font-bold text-sm"
+                    className="w-full bg-white text-slate-900 border-2 border-slate-300 py-2.5 px-4 rounded-full flex items-center justify-center hover:bg-slate-50 hover:border-slate-400 transition-all duration-300 font-bold text-sm"
                   >
                     <svg
                       className="w-4 h-4 mr-2 flex-shrink-0"
@@ -282,7 +354,7 @@ export default function QuoteResultPage() {
                   </button>
 
                   {/* Email form - compact inline version */}
-                  <div className="bg-slate-50 rounded-xl p-3 border border-slate-200 mt-4">
+                  <div className="bg-slate-50 rounded-lg p-3 border border-slate-200 mt-4">
                     <p className="text-xs font-semibold text-slate-700 mb-2 text-center">
                       Recibe tu cotización por email
                     </p>

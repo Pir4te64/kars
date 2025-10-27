@@ -47,15 +47,15 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur border-b border-gray-100">
-      <div className="px-4">
-        <div className="flex items-center justify-between h-16">
+      <div className="px-4 sm:px-6 md:px-12">
+        <div className="relative flex items-center justify-between h-20">
           {/* Logo */}
-          <div className="flex items-center">
+          <div className="flex items-center justify-center flex-shrink-0">
             <Logo />
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex lg:items-center lg:space-x-6">
+          {/* Desktop Navigation - Centered */}
+          <div className="hidden lg:flex lg:items-center lg:space-x-6 lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2">
             {navItems.slice(0, 4).map((item) => (
               <button
                 key={item}
@@ -65,20 +65,22 @@ export default function Navbar() {
                 {item}
               </button>
             ))}
-            <div className="flex items-center space-x-3">
-              <button
-                onClick={() => handleNavItemClick('Vende tu auto')}
-                className="px-5 py-2 text-sm font-medium text-white transition-colors duration-200 rounded-full bg-primary-600 hover:bg-primary-700"
-              >
-                Vende tu auto
-              </button>
-              <button
-                onClick={() => handleNavItemClick('Vehículos en venta')}
-                className="px-5 py-2 text-sm font-medium text-gray-900 transition-colors duration-200 bg-white border border-gray-800 rounded-full hover:bg-gray-50"
-              >
-                Vehículos en venta
-              </button>
-            </div>
+          </div>
+
+          {/* Action Buttons - Right Side */}
+          <div className="hidden lg:flex lg:items-center lg:space-x-3">
+            <button
+              onClick={() => handleNavItemClick('Vende tu auto')}
+              className="px-5 py-2 text-sm font-medium text-white transition-colors duration-200 rounded-full bg-primary-600 hover:bg-primary-700"
+            >
+              Vende tu auto
+            </button>
+            <button
+              onClick={() => handleNavItemClick('Vehículos en venta')}
+              className="px-5 py-2 text-sm font-medium text-gray-900 transition-colors duration-200 bg-white border border-gray-800 rounded-full hover:bg-gray-50"
+            >
+              Vehículos en venta
+            </button>
           </div>
 
           {/* Mobile menu button */}
@@ -120,9 +122,9 @@ export default function Navbar() {
                 ))}
               </div>
 
-              <div className="my-4 border-t border-gray-200"></div>
+              <div className="my-4 border-t mr-52 border-gray-200"></div>
 
-              <div className="space-y-3">
+              <div className="space-y-3 mr-70">
                 <button
                   onClick={() => {
                     handleNavItemClick('Vende tu auto')

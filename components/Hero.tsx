@@ -37,7 +37,7 @@ export default function Hero() {
         <div className="grid lg:grid-cols-2 h-full">
 
           {/* COLUMNA IZQUIERDA - Texto y CTAs */}
-          <div className="relative z-10 flex flex-col justify-start items-center lg:items-start p-4 sm:p-6 md:p-12 pt-16   sm:pt-18 md:pt-28 h-full">
+          <div className="relative z-10 flex flex-col justify-start items-center lg:items-start p-4 sm:p-6 md:p-12 pt-24 sm:pt-28 md:pt-36 h-full">
 
             {/* Contenedor con ancho consistente para alinear todos los elementos */}
             <div className="w-full max-w-lg mx-auto lg:mx-0 lg:ml-auto lg:mr-12 space-y-3 sm:space-y-4 md:space-y-6 text-center lg:text-left">
@@ -113,7 +113,7 @@ export default function Hero() {
         </div>
 
         {/* Cotizador integrado (desktop y mobile) */}
-        <div className="absolute bottom-8 left-0 right-0 px-4 z-30">
+        <div className="absolute bottom-24 sm:bottom-8 md:bottom-16 left-0 right-0 px-4 z-30">
           <CarQuoteSection />
         </div>
       </div>

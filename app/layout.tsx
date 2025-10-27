@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Poppins } from 'next/font/google'
 import './globals.css'
 import { Toaster } from "@/components/ui/sonner"
@@ -20,6 +20,13 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'es_MX',
   },
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  viewportFit: 'cover'
 }
 
 export default function RootLayout({

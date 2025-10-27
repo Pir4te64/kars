@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import CarQuoteSection from './CarQuoteSection'
 
 export default function Hero() {
@@ -21,11 +22,11 @@ export default function Hero() {
   }
 
   return (
-    <section className="relative w-full flex items-start justify-center bg-gradient-to-br from-slate-200 via-slate-300 to-slate-200 overflow-hidden z-0 pt-0 pb-0">
+    <section className="relative w-full h-screen flex items-start justify-center bg-gradient-to-br from-slate-200 via-slate-300 to-slate-200 overflow-hidden z-0 pt-0 pb-0">
 
       {/* Card principal única - estilo 1.jpg */}
       <div className={`
-        relative w-full max-w-full
+        relative w-full h-full max-w-full
         bg-gradient-to-br from-slate-100 via-slate-200 to-slate-100
         shadow-2xl overflow-visible
         transition-all duration-1000 ease-out
@@ -33,61 +34,62 @@ export default function Hero() {
       `}>
 
         {/* Grid de 2 columnas: Texto Izquierda - Auto Derecha */}
-        <div className="grid lg:grid-cols-2 min-h-screen">
+        <div className="grid lg:grid-cols-2 h-full">
 
           {/* COLUMNA IZQUIERDA - Texto y CTAs */}
-          <div className="relative z-10 flex flex-col justify-center items-center p-8 md:p-12 space-y-8 pt-32">
+          <div className="relative z-10 flex flex-col justify-start items-center lg:items-start p-4 sm:p-6 md:p-12 pt-16   sm:pt-18 md:pt-28 h-full">
 
-            {/* Título Principal */}
-            <div className={`
-              space-y-4 transition-all duration-700 delay-400 text-left max-w-lg w-full lg:w-auto lg:ml-auto lg:mr-12
-              ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
-            `}>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] text-slate-900">
+            {/* Contenedor con ancho consistente para alinear todos los elementos */}
+            <div className="w-full max-w-lg mx-auto lg:mx-0 lg:ml-auto lg:mr-12 space-y-3 sm:space-y-4 md:space-y-6 text-center lg:text-left">
+              {/* Título Principal */}
+              <h1 className={`
+                text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] text-slate-900
+                transition-all duration-700 delay-400
+                ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+              `}>
                 Dale un giro a<br />
                 tu <span className="text-blue-600">camino</span>
               </h1>
-            </div>
 
-            {/* Descripción */}
-            <p className={`
-              text-base md:text-lg text-slate-700 leading-relaxed max-w-md text-left w-full lg:w-auto lg:ml-auto lg:mr-12
-              transition-all duration-700 delay-600
-              ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
-            `}>
-              Tu próxima historia arranca con nosotros.
-            </p>
+              {/* Descripción */}
+              <p className={`
+                text-sm sm:text-base md:text-lg text-slate-700 leading-relaxed
+                transition-all duration-700 delay-600
+                ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+              `}>
+                Tu próxima historia arranca con nosotros.
+              </p>
 
-            {/* Botones CTA */}
-            <div className={`
-              flex flex-wrap gap-4 items-center justify-start w-full lg:w-auto lg:ml-auto lg:mr-12
-              transition-all duration-700 delay-800
-              ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
-            `}>
-              <button
-                onClick={() => {
-                  const autosSection = document.getElementById('autos-disponibles')
-                  if (autosSection) {
-                    autosSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                  }
-                }}
-                className="bg-slate-800 hover:bg-slate-900 text-white px-8 py-4 rounded-full font-bold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5"
-              >
-                Autos disponibles
-              </button>
+              {/* Botones CTA */}
+              <div className={`
+                transition-all duration-700 delay-800
+                ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+              `}>
+                <button
+                  onClick={() => {
+                    const autosSection = document.getElementById('autos-disponibles')
+                    if (autosSection) {
+                      autosSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                    }
+                  }}
+                  className="bg-slate-800 hover:bg-slate-900 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5"
+                >
+                  Autos disponibles
+                </button>
+              </div>
             </div>
 
             {/* Horario de atención */}
             <div className={`
-              text-xs text-slate-600 pt-4
+              hidden sm:block text-xs text-slate-600 pt-2 sm:pt-4
               transition-all duration-700 delay-1000
               ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
             `}>
             </div>
           </div>
 
-          {/* COLUMNA DERECHA - Auto */}
-          <div className="relative flex items-center justify-start lg:pl-0 overflow-hidden pt-32 -mt-[30%]">
+          {/* COLUMNA DERECHA - Auto (oculto en móvil) */}
+          <div className="relative hidden lg:flex items-start justify-start lg:pl-0 overflow-hidden pt-2 sm:pt-6 md:pt-24 md:-mt-[15%]">
 
             {/* Imagen del auto */}
             <div className={`
@@ -99,8 +101,9 @@ export default function Hero() {
                 src="/hero_image_kars.png"
                 alt="Vehículo Kars"
                 fill
-                className="object-contain object-left scale-75"
+                className="object-contain object-left object-top scale-100 md:scale-75"
                 priority
+                sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, 50vw"
               />
             </div>
 
@@ -109,7 +112,7 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Cotizador integrado */}
+        {/* Cotizador integrado (desktop y mobile) */}
         <div className="absolute bottom-8 left-0 right-0 px-4 z-30">
           <CarQuoteSection />
         </div>

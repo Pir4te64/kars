@@ -1,12 +1,12 @@
-import Image from 'next/image';
+import Image from 'next/image'
 
 export default function AboutSection() {
   return (
-    <section id="nosotros" className="py-20 bg-gray-50">
+    <section id="nosotros" className="py-12 sm:py-16 md:py-20 bg-gray-50">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         {/* Header Section */}
         <div className="mb-16 text-center">
-          <h2 className="mb-4 text-4xl font-bold md:text-5xl">
+          <h2 className="mb-4 text-3xl sm:text-4xl md:text-5xl font-bold">
             <span style={{ color: "rgb(38, 100, 196)" }}>Nosotros</span>{" "}
             <span style={{ color: "#000" }}>/ Nuestra Historia</span>
           </h2>
@@ -50,14 +50,16 @@ Eleginos por nuestra atención, quedate por nuestra propuesta.
                 alt="Showroom de la concesionaria"
                 width={600}
                 height={384}
-                className="object-cover w-full h-96"
+                className="object-cover w-full h-72 sm:h-96"
+                sizes="(max-width: 1024px) 100vw, 600px"
+                priority={false}
               />
             </div>
             <div
               className="absolute p-6 shadow-lg -bottom-6 -right-6 rounded-2xl"
               style={{ backgroundColor: "rgb(38, 100, 196)" }}>
               <p className="text-lg font-bold text-white">Showroom Moderno</p>
-              <p className="text-blue-100">Más de 200 vehículos</p>
+              <p className="text-sm sm:text-base text-blue-100">Más de 200 vehículos</p>
             </div>
           </div>
         </div>

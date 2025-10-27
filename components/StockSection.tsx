@@ -37,7 +37,7 @@ export default function StockSection({ initialCars }: StockSectionProps) {
 
   if (!initialCars || initialCars.length === 0) {
     return (
-      <section id="autos-disponibles" className="py-20 bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50">
+      <section id="autos-disponibles" className="pt-8 pb-20 bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center py-10 text-slate-600">No hay vehículos disponibles.</div>
         </div>
@@ -46,7 +46,7 @@ export default function StockSection({ initialCars }: StockSectionProps) {
   }
 
   return (
-    <section id="autos-disponibles" className="py-20 bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50">
+    <section id="autos-disponibles" className="pt-8 pb-20 bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black mb-2">
@@ -58,7 +58,7 @@ export default function StockSection({ initialCars }: StockSectionProps) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 md:gap-6">
           {initialCars.slice(0, limit).map((post, index) => (
             <div
               key={post.id}

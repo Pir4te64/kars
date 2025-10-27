@@ -12,7 +12,9 @@ export default function CallToAction() {
               alt="Buscar auto"
               width={700}
               height={320}
-              className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500"
+              className="w-full h-56 sm:h-80 object-cover group-hover:scale-110 transition-transform duration-500"
+              sizes="(max-width: 640px) 100vw, 700px"
+              priority={false}
             />
             <div className="absolute inset-0 z-20 flex flex-col justify-center items-start text-left text-white p-8">
               <h3 className="text-3xl md:text-4xl font-bold mb-4">
@@ -37,7 +39,9 @@ export default function CallToAction() {
               alt="Vender auto"
               width={700}
               height={320}
-              className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500"
+              className="w-full h-56 sm:h-80 object-cover group-hover:scale-110 transition-transform duration-500"
+              sizes="(max-width: 640px) 100vw, 700px"
+              priority={false}
             />
             <div className="absolute inset-0 z-20 flex flex-col justify-center items-start text-left text-white p-8">
               <h3 className="text-3xl md:text-4xl font-bold mb-4">

@@ -235,41 +235,9 @@ export default function CarQuoteSection() {
 
   const renderStep1 = () => (
     <>
-      {/* Progress Indicator */}
-      <div className="flex items-center justify-center mb-4">
-        <div className="flex items-center space-x-4">
-          <div
-            className={`w-8 h-8 rounded-full flex items-center justify-center ${
-              currentStep >= 1
-                ? "border-2 border-slate-700 bg-slate-700"
-                : "border-2 border-slate-300 bg-white"
-            }`}>
-            <div
-              className={`w-2 h-2 rounded-full ${
-                currentStep >= 1 ? "bg-white" : "bg-slate-300"
-              }`}></div>
-          </div>
-          <div
-            className={`w-16 h-0.5 ${
-              currentStep >= 2 ? "bg-slate-700" : "bg-slate-200"
-            }`}></div>
-          <div
-            className={`w-8 h-8 rounded-full flex items-center justify-center ${
-              currentStep >= 2
-                ? "border-2 border-slate-700 bg-slate-700"
-                : "border-2 border-slate-300 bg-white"
-            }`}>
-            <div
-              className={`w-2 h-2 rounded-full ${
-                currentStep >= 2 ? "bg-white" : "bg-slate-300"
-              }`}></div>
-          </div>
-        </div>
-      </div>
-
       {/* Title and Subtitle */}
-      <div className="flex flex-col w-full px-4">
-        <h2 className="text-lg md:text-xl font-black text-center text-slate-800 mb-1">
+      <div className="flex flex-col w-full px-2 md:px-4">
+        <h2 className="text-base md:text-xl font-black text-center text-slate-800 mb-0.5 md:mb-1">
           Cotiza tu auto
         </h2>
         <p className="text-xs md:text-sm text-center text-slate-600">
@@ -278,14 +246,14 @@ export default function CarQuoteSection() {
       </div>
 
       {/* Form Fields */}
-      <div className="space-y-2 w-full" style={{ marginTop: "16px" }}>
+      <div className="space-y-1.5 md:space-y-2 w-full" style={{ marginTop: "8px" }}>
         {/* First Row - Marca, Grupo, Modelo */}
-        <div className="flex flex-col md:flex-row justify-center items-stretch mx-auto w-full max-w-4xl gap-3 md:gap-3 px-2 sm:px-0">
+        <div className="flex flex-col md:flex-row justify-center items-stretch mx-auto w-full max-w-4xl gap-2 md:gap-3 px-2 sm:px-0">
           {/* Marca */}
           <div
             className="relative w-full md:w-1/3"
             style={{
-              height: "48px",
+              height: "40px",
               borderRadius: "12px",
               border: "1px solid rgba(148, 163, 184, 0.3)",
               backgroundColor: "rgba(248, 250, 252, 0.5)",
@@ -332,7 +300,7 @@ export default function CarQuoteSection() {
             ref={groupDropdownRef}
             className="relative w-full md:w-1/3"
             style={{
-              height: "48px",
+              height: "40px",
               borderRadius: "12px",
               border: "1px solid rgba(148, 163, 184, 0.3)",
               backgroundColor: "rgba(248, 250, 252, 0.5)",
@@ -392,7 +360,7 @@ export default function CarQuoteSection() {
               formData.marca &&
               typedGroups.length > 0 && (
                 <div
-                  className="absolute bottom-full left-0 right-0 z-50 mb-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
+                  className="absolute bottom-full left-0 right-0 z-50 mb-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 sm:max-h-60 overflow-y-auto"
                   style={{ borderRadius: "12px", border: "1px solid rgba(148, 163, 184, 0.3)", boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)" }}>
                   {typedGroups.map((item) => (
                     <div
@@ -400,7 +368,7 @@ export default function CarQuoteSection() {
                       className="px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors duration-150"
                       onClick={() => handleGroupSelect(item)}
                       style={{ borderBottom: "1px solid #f3f4f6" }}>
-                      <span className="text-gray-900 text-sm md:text-base">{item.name}</span>
+                      <span className="text-gray-900 text-xs sm:text-sm md:text-base">{item.name}</span>
                     </div>
                   ))}
                 </div>
@@ -411,7 +379,7 @@ export default function CarQuoteSection() {
             ref={modelDropdownRef}
             className="relative w-full md:w-1/3"
             style={{
-              height: "48px",
+              height: "40px",
               borderRadius: "12px",
               border: "1px solid rgba(148, 163, 184, 0.3)",
               backgroundColor: "rgba(248, 250, 252, 0.5)",
@@ -484,7 +452,7 @@ export default function CarQuoteSection() {
               formData.grupo &&
               typedModels.length > 0 && (
                 <div
-                  className="absolute bottom-full left-0 right-0 z-50 mb-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
+                  className="absolute bottom-full left-0 right-0 z-50 mb-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 sm:max-h-60 overflow-y-auto"
                   style={{ borderRadius: "12px", border: "1px solid rgba(148, 163, 184, 0.3)", boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)" }}>
                   {typedModels.map((item) => (
                     <div
@@ -501,12 +469,12 @@ export default function CarQuoteSection() {
         </div>
 
         {/* Second Row - Año, Kilometraje, Button */}
-        <div className="flex flex-col md:flex-row justify-center items-stretch mx-auto w-full max-w-4xl gap-3 md:gap-3 px-2 sm:px-0">
+        <div className="flex flex-col md:flex-row justify-center items-stretch mx-auto w-full max-w-4xl gap-2 md:gap-3 px-2 sm:px-0">
           {/* Año */}
           <div
             className="relative w-full md:w-1/3"
             style={{
-              height: "48px",
+              height: "40px",
               borderRadius: "12px",
               border: "1px solid rgba(148, 163, 184, 0.3)",
               backgroundColor: "rgba(248, 250, 252, 0.5)",
@@ -611,7 +579,7 @@ export default function CarQuoteSection() {
           <div
             className="relative w-full md:w-1/3"
             style={{
-              height: "48px",
+              height: "40px",
               borderRadius: "12px",
               border: "1px solid rgba(148, 163, 184, 0.3)",
               backgroundColor: "rgba(248, 250, 252, 0.5)",
@@ -650,15 +618,15 @@ export default function CarQuoteSection() {
 
           {/* Button */}
           <button
-            className="text-slate-900 font-bold transition-all duration-300 w-full md:w-1/3 whitespace-nowrap hover:scale-105 hover:shadow-lg text-sm"
+            className="text-slate-900 font-bold transition-all duration-300 w-full md:w-1/3 whitespace-nowrap hover:scale-105 hover:shadow-lg text-xs md:text-sm"
             onClick={() => setCurrentStep(2)}
             style={{
-              height: "48px",
-              minHeight: "48px",
+              height: "40px",
+              minHeight: "40px",
               paddingTop: "8px",
-              paddingRight: "20px",
+              paddingRight: "16px",
               paddingBottom: "8px",
-              paddingLeft: "20px",
+              paddingLeft: "16px",
               borderRadius: "60px",
               border: "none",
               backgroundColor: "white",
@@ -673,38 +641,12 @@ export default function CarQuoteSection() {
 
   const renderStep2 = () => (
     <>
-      {/* Progress Indicator */}
-      <div className="flex items-center justify-center mb-4">
-        <div className="flex items-center space-x-4">
-          <div
-            className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-slate-700"
-            style={{ backgroundColor: "#334155" }}>
-            <svg
-              className="w-4 h-4 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={3}
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-          </div>
-          <div className="w-16 h-0.5 bg-slate-700"></div>
-          <div className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-slate-700 bg-slate-700">
-            <div className="w-2 h-2 rounded-full bg-white"></div>
-          </div>
-        </div>
-      </div>
-
       {/* Title and Subtitle */}
       <div className="flex flex-col w-full px-4">
         <h2 className="text-xl md:text-2xl font-black text-center text-slate-800 mb-2">
           Casi listo
         </h2>
-        <p className="text-sm md:text-base text-center text-slate-600">
+        <p className="text-xs md:text-base text-center text-slate-600">
           Tus datos de contacto
         </p>
       </div>
@@ -825,14 +767,14 @@ export default function CarQuoteSection() {
   return (
     <section
       id="vende-tu-auto"
-      className="flex items-center justify-center px-2 py-2"
+      className="flex items-center justify-center px-2 sm:px-4 py-2 sm:py-3"
       style={{
         minHeight: "auto",
         background: "transparent",
       }}>
       <div className="flex items-center w-full max-w-7xl">
         <div
-          className="bg-gradient-to-br from-slate-100 via-white to-slate-50 w-full mx-auto px-3 sm:px-4 md:px-5 py-3 md:py-4"
+          className="bg-gradient-to-br from-slate-100 via-white to-slate-50 w-full mx-auto px-2 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 rounded-xl md:rounded-2xl"
           style={{
             maxWidth: "1100px",
             minHeight: "auto",

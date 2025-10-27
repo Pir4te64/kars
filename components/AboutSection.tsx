@@ -55,12 +55,7 @@ Eleginos por nuestra atención, quedate por nuestra propuesta.
                 priority={false}
               />
             </div>
-            <div
-              className="absolute p-6 shadow-lg -bottom-6 -right-6 rounded-2xl"
-              style={{ backgroundColor: "rgb(38, 100, 196)" }}>
-              <p className="text-lg font-bold text-white">Showroom Moderno</p>
-              <p className="text-sm sm:text-base text-blue-100">Más de 200 vehículos</p>
-            </div>
+            
           </div>
         </div>
       </div>

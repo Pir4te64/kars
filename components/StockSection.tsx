@@ -37,7 +37,7 @@ export default function StockSection({ initialCars }: StockSectionProps) {
 
   if (!initialCars || initialCars.length === 0) {
     return (
-      <section id="autos-disponibles" className="pt-8 pb-20 bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50">
+      <section id="autos-disponibles" className="pt-8 pb-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center py-10 text-slate-600">No hay vehículos disponibles.</div>
         </div>
@@ -46,7 +46,7 @@ export default function StockSection({ initialCars }: StockSectionProps) {
   }
 
   return (
-    <section id="autos-disponibles" className="pt-8 pb-20 bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50">
+    <section id="autos-disponibles" className="pt-8 pb-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black mb-2">
@@ -64,7 +64,7 @@ export default function StockSection({ initialCars }: StockSectionProps) {
               key={post.id}
               ref={(el) => { cardsRef.current[index] = el }}
               data-index={index}
-              className={`bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-xl p-5 group hover:scale-105 hover:border-slate-300 transition-all duration-500 ${
+              className={`bg-slate-50 border border-slate-200 rounded-2xl shadow-sm hover:shadow-xl p-5 group hover:scale-105 hover:border-slate-300 transition-all duration-500 ${
                 visibleCards.has(index)
                   ? 'opacity-100 translate-y-0'
                   : 'opacity-0 translate-y-12'
@@ -72,7 +72,7 @@ export default function StockSection({ initialCars }: StockSectionProps) {
               style={{ transitionDelay: `${(index % 4) * 100}ms` }}
             >
               <div className="relative mb-4">
-                <div className="w-full h-48 bg-slate-50 rounded-xl flex items-center justify-center overflow-hidden border border-slate-200">
+                <div className="w-full h-48 bg-white rounded-xl flex items-center justify-center overflow-hidden border border-slate-200">
                   {post.images_urls && post.images_urls[0] ? (
                     <Image
                       src={post.images_urls[0]}
@@ -104,11 +104,8 @@ export default function StockSection({ initialCars }: StockSectionProps) {
                   <span className="font-medium">{post.transmision}</span>
                 </div>
                 <button
-                  onClick={() => {
-                    window.scrollTo({ top: 0, behavior: 'smooth' })
-                    router.push(`/autos/${post.id}`)
-                  }}
-                  className="w-full bg-slate-200 hover:bg-slate-300 text-slate-900 font-bold py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
+                  onClick={() => router.push(`/autos/${post.id}`)}
+                  className="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
                 >
                   <span>Ver unidad</span>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

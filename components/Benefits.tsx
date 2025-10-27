@@ -49,12 +49,11 @@ export default function Benefits() {
     <section id="beneficios" className="py-10 md:py-20 bg-white mt-32 md:mt-0 relative z-30">
       <div className="max-w-sm md:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-left mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
             <span className="text-gray-900">Beneficios</span>{' '}
             <span className="text-primary-600">principales</span>
           </h2>
           <p className="text-gray-600 text-base md:text-lg leading-relaxed max-w-4xl">
-            Vende o compra tu auto sin perder tiempo. Te ofrecemos un proceso rápido, transparente y seguro, con tasaciones justas y opciones de pago inmediato. Aquí encuentras todo lo que necesitas para hacer un buen negocio, sin complicaciones.
           </p>
         </div>
 

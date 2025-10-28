@@ -48,7 +48,7 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur border-b border-gray-100">
       <div className="px-4 sm:px-6 md:px-12">
-        <div className="relative flex items-center justify-between h-20">
+        <div className="relative flex items-center justify-between h-16 sm:h-20 md:h-24">
           {/* Logo */}
           <div className="flex items-center justify-center flex-shrink-0">
             <Logo />

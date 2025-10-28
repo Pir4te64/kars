@@ -47,7 +47,7 @@ export default function Hero() {
                 transition-all duration-700 delay-400
                 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
               `}>
-                Dale un giro a<br />
+                Dale un giro a
                 tu <span className="text-blue-600">camino</span>
               </h1>
 

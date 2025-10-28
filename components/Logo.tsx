@@ -6,7 +6,7 @@ interface LogoProps {
   variant?: 'default' | 'white'
 }
 
-export default function Logo({ className = 'text-2xl ml-60', variant = 'default' }: LogoProps) {
+export default function Logo({ className = '', variant = 'default' }: LogoProps) {
   const logoSrc = variant === 'white' ? '/logo_kars_blanco.png' : '/logo_kars_negro.png'
 
   return (
@@ -16,7 +16,7 @@ export default function Logo({ className = 'text-2xl ml-60', variant = 'default'
         alt="KARS - Tu concesionario de confianza"
         width={128}
         height={128}
-        className="h-40 w-auto"
+        className="h-12 sm:h-16 md:h-20 lg:h-24 w-auto"
         priority
       />
     </Link>

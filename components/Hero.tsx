@@ -22,7 +22,7 @@ export default function Hero() {
   }
 
   return (
-    <section className="relative w-full h-screen flex items-start justify-center bg-gradient-to-br from-slate-200 via-slate-300 to-slate-200 overflow-hidden z-0 pt-0 pb-0">
+    <section className="relative w-full h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] md:h-[calc(100vh-6rem)] flex items-start justify-center bg-gradient-to-br from-slate-200 via-slate-300 to-slate-200 overflow-hidden z-0 pt-0 pb-0">
 
       {/* Card principal única - estilo 1.jpg */}
       <div className={`

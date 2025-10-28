@@ -216,7 +216,7 @@ export default function QuoteResultPage() {
 
                   <div className="grid grid-cols-1 gap-2">
                     {/* Consignación - Precio Normal */}
-                    <div className="bg-gradient-to-br from-blue-600 via-blue-500 to-blue-600 rounded-lg p-3 text-white shadow-md">
+                    <div className="bg-gradient-to-br from-slate-700 via-slate-600 to-slate-700 rounded-lg p-3 text-white shadow-md">
                       <div className="flex items-center justify-between mb-2">
                         <h4 className="text-sm font-bold">Consignación</h4>
                         <span className="text-xs bg-white/30 px-2 py-0.5 rounded-full font-semibold">
@@ -262,7 +262,7 @@ export default function QuoteResultPage() {
                     </div>
 
                     {/* Compra Inmediata - 10% menos */}
-                    <div className="bg-gradient-to-br from-green-600 via-green-500 to-green-600 rounded-lg p-3 text-white shadow-md">
+                    <div className="bg-gradient-to-br from-slate-700 via-slate-600 to-slate-700 rounded-lg p-3 text-white shadow-md">
                       <div className="flex items-center justify-between mb-2">
                         <h4 className="text-sm font-bold">Compra inmediata</h4>
                         <span className="text-xs bg-white/30 px-2 py-0.5 rounded-full font-semibold">

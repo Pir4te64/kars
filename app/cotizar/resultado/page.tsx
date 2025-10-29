@@ -84,19 +84,66 @@ export default function QuoteResultPage() {
     }
   };
 
-  // Calcular los 3 tipos de venta
+  // Convertir precio de InfoAuto (en miles de pesos sin 3 ceros) a precio real
+  const obtenerPrecioBasePesos = () => {
+    // 1. Precio de InfoAuto (ej: "772")
+    const precioInfoAuto = parseFloat(quoteData?.precio || "0");
+
+    // 2. Restar 17%
+    const precioConDescuento = precioInfoAuto * 0.87;
+
+    // 3. Multiplicar por 1000 para obtener pesos reales
+    const precioEnPesos = precioConDescuento * 1000;
+
+    return precioEnPesos;
+  };
+
+  // Convertir pesos a dólares
+  const convertirPesosADolares = (precioEnPesos: number): number => {
+    if (!dollarBlue || !dollarBlue.venta) return 0;
+    return precioEnPesos / dollarBlue.venta;
+  };
+
+  // Calcular los 3 tipos de venta (en pesos)
   const calcularTiposVenta = () => {
-    const precioBase = parseFloat(quoteData?.precio || "0");
+    const precioBasePesos = obtenerPrecioBasePesos();
 
     return {
-      consignacion: precioBase, // Precio normal
-      permuta: precioBase * 0.95, // 5% menos
-      inmediata: precioBase * 0.90, // 10% menos
+      consignacion: {
+        pesos: precioBasePesos,
+        dolares: convertirPesosADolares(precioBasePesos)
+      },
+      permuta: {
+        pesos: precioBasePesos * 0.95,
+        dolares: convertirPesosADolares(precioBasePesos * 0.95)
+      },
+      inmediata: {
+        pesos: precioBasePesos * 0.90,
+        dolares: convertirPesosADolares(precioBasePesos * 0.90)
+      }
     };
   };
 
   const formatearPrecio = (precio: number) => {
     return precio.toFixed(0);
+  };
+
+  const formatearPrecioPesos = (precio: number) => {
+    return new Intl.NumberFormat('es-AR', {
+      style: 'currency',
+      currency: 'ARS',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(precio);
+  };
+
+  const formatearPrecioDolares = (precio: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(precio);
   };
 
   if (!quoteData) {
@@ -224,12 +271,18 @@ export default function QuoteResultPage() {
                         </span>
                       </div>
                       <div className="mb-1">
-                        <div className="text-xl font-black">
-                          ${formatearPrecio(calcularTiposVenta().consignacion)}
-                        </div>
-                        {dollarBlue && !dollarLoading && !dollarError && (
-                          <div className="text-sm font-bold text-white/90">
-                            {convertToPesos(formatearPrecio(calcularTiposVenta().consignacion))}
+                        {dollarBlue && !dollarLoading && !dollarError ? (
+                          <>
+                            <div className="text-xl font-black">
+                              {formatearPrecioDolares(calcularTiposVenta().consignacion.dolares)}
+                            </div>
+                            <div className="text-sm font-bold text-white/90">
+                              {formatearPrecioPesos(calcularTiposVenta().consignacion.pesos)}
+                            </div>
+                          </>
+                        ) : (
+                          <div className="text-xl font-black">
+                            {formatearPrecioPesos(calcularTiposVenta().consignacion.pesos)}
                           </div>
                         )}
                       </div>
@@ -247,12 +300,18 @@ export default function QuoteResultPage() {
                         </span>
                       </div>
                       <div className="mb-1">
-                        <div className="text-xl font-black">
-                          ${formatearPrecio(calcularTiposVenta().permuta)}
-                        </div>
-                        {dollarBlue && !dollarLoading && !dollarError && (
-                          <div className="text-sm font-bold text-white/90">
-                            {convertToPesos(formatearPrecio(calcularTiposVenta().permuta))}
+                        {dollarBlue && !dollarLoading && !dollarError ? (
+                          <>
+                            <div className="text-xl font-black">
+                              {formatearPrecioDolares(calcularTiposVenta().permuta.dolares)}
+                            </div>
+                            <div className="text-sm font-bold text-white/90">
+                              {formatearPrecioPesos(calcularTiposVenta().permuta.pesos)}
+                            </div>
+                          </>
+                        ) : (
+                          <div className="text-xl font-black">
+                            {formatearPrecioPesos(calcularTiposVenta().permuta.pesos)}
                           </div>
                         )}
                       </div>
@@ -270,12 +329,18 @@ export default function QuoteResultPage() {
                         </span>
                       </div>
                       <div className="mb-1">
-                        <div className="text-xl font-black">
-                          ${formatearPrecio(calcularTiposVenta().inmediata)}
-                        </div>
-                        {dollarBlue && !dollarLoading && !dollarError && (
-                          <div className="text-sm font-bold text-white/90">
-                            {convertToPesos(formatearPrecio(calcularTiposVenta().inmediata))}
+                        {dollarBlue && !dollarLoading && !dollarError ? (
+                          <>
+                            <div className="text-xl font-black">
+                              {formatearPrecioDolares(calcularTiposVenta().inmediata.dolares)}
+                            </div>
+                            <div className="text-sm font-bold text-white/90">
+                              {formatearPrecioPesos(calcularTiposVenta().inmediata.pesos)}
+                            </div>
+                          </>
+                        ) : (
+                          <div className="text-xl font-black">
+                            {formatearPrecioPesos(calcularTiposVenta().inmediata.pesos)}
                           </div>
                         )}
                       </div>
@@ -288,8 +353,9 @@ export default function QuoteResultPage() {
                     {dollarBlue && !dollarLoading && !dollarError && (
                       <div className="bg-slate-50 rounded-lg p-2 border border-slate-200 text-center">
                         <p className="text-xs text-slate-600">
-                          <span className="font-semibold">Dólar Blue:</span> {formatDollarBlue()}
+                          <span className="font-semibold">Cotización Dólar Blue:</span> {formatDollarBlue()}
                         </p>
+                       
                       </div>
                     )}
 

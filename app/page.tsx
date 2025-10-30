@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
+import HeroV2 from '@/components/HeroV2'
 import Benefits from '@/components/Benefits'
 import StockSection from '@/components/StockSection'
 import WhyChooseUs from '@/components/WhyChooseUs'
@@ -45,7 +46,13 @@ export default async function HomePage() {
     <>
       <Navbar />
       <main>
-        <Hero />
+        {/* Mobile: HeroV2 (sin imagen del auto). Desktop: Hero original intacto */}
+        <div className="md:hidden">
+          <HeroV2 />
+        </div>
+        <div className="hidden md:block">
+          <Hero />
+        </div>
         <Benefits />
         <StockSection initialCars={cars} />
         <WhyChooseUs />

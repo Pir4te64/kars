@@ -16,7 +16,7 @@ export default function Logo({ className = '', variant = 'default' }: LogoProps)
         alt="KARS - Tu concesionario de confianza"
         width={128}
         height={128}
-        className="h-12 sm:h-16 md:h-20 lg:h-24 w-auto"
+        className="h-16 sm:h-16 md:h-20 lg:h-24 w-auto"
         priority
       />
     </Link>

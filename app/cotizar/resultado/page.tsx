@@ -6,6 +6,8 @@ import * as htmlToImage from "html-to-image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useDollarBlue } from "@/hooks/useDollarBlue";
+import { useEmailJS } from "@/hooks/useEmailJS";
+import { toast } from "sonner";
 
 interface QuoteData {
   marca: string;
@@ -25,6 +27,8 @@ export default function QuoteResultPage() {
   const router = useRouter();
   const cardRef = useRef<HTMLDivElement>(null);
   const [quoteData, setQuoteData] = useState<QuoteData | null>(null);
+  const [userEmail, setUserEmail] = useState("");
+
   const {
     dollarBlue,
     loading: dollarLoading,
@@ -33,6 +37,14 @@ export default function QuoteResultPage() {
     formatDollarBlue,
     getLastUpdate,
   } = useDollarBlue();
+
+  const {
+    sending: sendingEmail,
+    error: emailError,
+    success: emailSuccess,
+    sendQuoteEmail,
+    resetStatus: resetEmailStatus,
+  } = useEmailJS();
 
   useEffect(() => {
     const getQuoteData = (): QuoteData => {
@@ -144,6 +156,46 @@ export default function QuoteResultPage() {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     }).format(precio);
+  };
+
+  // Manejar envío de email
+  const handleSendEmail = async () => {
+    if (!userEmail || !userEmail.includes('@')) {
+      toast.error('Por favor ingresa un email válido');
+      return;
+    }
+
+    if (!quoteData) {
+      toast.error('No hay datos de cotización disponibles');
+      return;
+    }
+
+    const tiposVenta = calcularTiposVenta();
+
+    const emailParams = {
+      to_email: userEmail,
+      from_name: 'KARS - Tu concesionario de confianza',
+      marca: quoteData.marca,
+      modelo: quoteData.modelo,
+      grupo: quoteData.grupo,
+      año: quoteData.año,
+      precio_consignacion_usd: formatearPrecioDolares(tiposVenta.consignacion.dolares),
+      precio_consignacion_ars: formatearPrecioPesos(tiposVenta.consignacion.pesos),
+      precio_permuta_usd: formatearPrecioDolares(tiposVenta.permuta.dolares),
+      precio_permuta_ars: formatearPrecioPesos(tiposVenta.permuta.pesos),
+      precio_inmediata_usd: formatearPrecioDolares(tiposVenta.inmediata.dolares),
+      precio_inmediata_ars: formatearPrecioPesos(tiposVenta.inmediata.pesos),
+      dolar_blue: dollarBlue ? formatDollarBlue() : 'No disponible',
+    };
+
+    const success = await sendQuoteEmail(emailParams);
+
+    if (success) {
+      toast.success('¡Cotización enviada exitosamente!');
+      setUserEmail(''); // Limpiar el campo
+    } else {
+      toast.error('Error al enviar la cotización. Por favor intenta nuevamente.');
+    }
   };
 
   if (!quoteData) {
@@ -428,12 +480,29 @@ export default function QuoteResultPage() {
                       <input
                         type="email"
                         placeholder="tu@email.com"
+                        value={userEmail}
+                        onChange={(e) => setUserEmail(e.target.value)}
                         className="flex-1 px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-400 focus:border-transparent outline-none"
+                        disabled={sendingEmail}
                       />
-                      <button className="bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-semibold hover:bg-slate-700 transition-colors">
-                        Enviar
+                      <button
+                        onClick={handleSendEmail}
+                        disabled={sendingEmail || !dollarBlue}
+                        className="bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-semibold hover:bg-slate-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {sendingEmail ? 'Enviando...' : 'Enviar'}
                       </button>
                     </div>
+                    {emailSuccess && (
+                      <p className="text-xs text-green-600 mt-2 text-center">
+                        ✓ Cotización enviada exitosamente
+                      </p>
+                    )}
+                    {emailError && (
+                      <p className="text-xs text-red-600 mt-2 text-center">
+                        ✗ Error al enviar. Intenta nuevamente
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

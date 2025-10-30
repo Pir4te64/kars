@@ -113,8 +113,26 @@ export default function Hero() {
         </div>
 
         {/* Cotizador integrado (desktop y mobile) */}
-        <div className="absolute bottom-24 sm:bottom-8 md:bottom-16 left-0 right-0 px-4 z-30">
+        <div className="absolute bottom-48 lg:bottom-8 md:bottom-16 left-0 right-0 px-4 z-30">
           <CarQuoteSection />
+        </div>
+
+        {/* Auto en mobile - debajo del cotizador */}
+        <div className="lg:hidden absolute bottom-2 left-0 right-0 h-40 flex items-center justify-center z-20 px-4">
+          <div className={`
+            relative w-full h-full max-w-sm
+            transition-all duration-1000 delay-300
+            ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+          `}>
+            <Image
+              src="/hero_image_kars.png"
+              alt="Vehículo Kars"
+              fill
+              className="object-contain"
+              priority
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+          </div>
         </div>
       </div>
 

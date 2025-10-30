@@ -14,7 +14,7 @@ export default function HeroV2() {
 
   return (
     // Mobile-only hero (no car image), preserves title + cotizador
-    <section className="relative md:hidden w-full min-h-[calc(100vh-4rem)] bg-gradient-to-b from-slate-200 to-white flex items-start justify-center overflow-hidden z-0">
+    <section className="relative md:hidden w-full min-h-fit bg-gradient-to-b from-slate-200 to-white flex items-start justify-center overflow-hidden z-0">
       <div className="container px-4 mx-auto max-w-7xl w-full pt-20 pb-8">
         {/* Header content */}
         <div className="w-full max-w-xl mx-auto space-y-4 text-center">
@@ -46,9 +46,9 @@ export default function HeroV2() {
         </div>
 
         {/* Imagen del auto (en flujo, inmediatamente debajo del cotizador) */}
-        <div className="mt-6 sm:mt-8 flex items-center justify-center">
+        <div className="mt-6 sm:mt-8 mb-4 flex items-center justify-center">
           <div
-            className={`relative w-full max-w-sm h-48 sm:h-56 min-[1000px]:h-72 min-[1000px]:h-80 min-[900px]:max-w-md transition-all duration-700 ${
+            className={`relative w-full max-w-sm h-48 sm:h-56 min-[900px]:h-72 min-[950px]:h-80 min-[900px]:max-w-md transition-all duration-700 ${
               isVisible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-2"

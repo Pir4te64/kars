@@ -88,7 +88,7 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* COLUMNA DERECHA- Auto (oculto en móvil) */}
+          {/* COLUMNA DERECHA- Aut  o (oculto en móvil) */}
           <div className="relative hidden lg:flex items-start justify-start lg:pl-0 overflow-hidden pt-2 sm:pt-6 md:pt-24 md:-mt-[15%]">
 
             {/* Imagen del auto */}

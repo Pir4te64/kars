@@ -8,6 +8,7 @@ import type {
   ModelFeature,
   UseCarInfoReturn,
 } from "@/types/car";
+import { isBrandAllowed, isModelAllowed, ALLOWED_CARS, likeMatch } from "@/constants/allowedCars";
 
 export function useCarInfo(): UseCarInfoReturn {
   const [brands, setBrands] = useState<Brand[]>([]);
@@ -48,8 +49,13 @@ export function useCarInfo(): UseCarInfoReturn {
         brand_id: brand.id,
       }));
 
+      // Filtrar solo las marcas permitidas
+      const allowedBrands = mappedBrands.filter((brand: Brand) =>
+        isBrandAllowed(brand.name)
+      );
+
       setBrands(
-        mappedBrands.sort((a: Brand, b: Brand) => a.name.localeCompare(b.name))
+        allowedBrands.sort((a: Brand, b: Brand) => a.name.localeCompare(b.name))
       );
     } catch (err) {
       console.error("Error loading brands:", err);
@@ -78,8 +84,30 @@ export function useCarInfo(): UseCarInfoReturn {
         codia: group.codia.toString(),
       }));
 
+      // Obtener el nombre de la marca actual para filtrar los modelos permitidos
+      const currentBrand = brands.find((b: Brand) => b.id.toString() === brandId);
+      
+      // Filtrar grupos/modelos según las marcas y modelos permitidos
+      let filteredGroups = mappedGroups;
+      if (currentBrand) {
+        // Buscar la marca correcta en ALLOWED_CARS usando LIKE
+        const brandKey = Object.keys(ALLOWED_CARS).find(
+          key => likeMatch(key, currentBrand.name)
+        ) as keyof typeof ALLOWED_CARS | undefined;
+        
+        if (brandKey) {
+          const allowedModels = ALLOWED_CARS[brandKey] || [];
+          
+          filteredGroups = mappedGroups.filter((group: any) => {
+            return allowedModels.some((allowedModel) => 
+              likeMatch(allowedModel, group.name)
+            );
+          });
+        }
+      }
+
       setGroups(
-        mappedGroups.sort((a: any, b: any) => a.name.localeCompare(b.name))
+        filteredGroups.sort((a: any, b: any) => a.name.localeCompare(b.name))
       );
     } catch (err) {
       console.error("Error loading groups:", err);
@@ -87,7 +115,7 @@ export function useCarInfo(): UseCarInfoReturn {
     } finally {
       setLoadingGroups(false);
     }
-  }, []);
+  }, [brands]);
 
   const getModelsByBrand = useCallback(
     async (brandId: string, groupId: string) => {
@@ -117,10 +145,33 @@ export function useCarInfo(): UseCarInfoReturn {
           brand_id: model.brand_id,
         }));
 
-        console.log("Modelos mapeados:", mappedModels);
+        // Obtener el nombre de la marca actual para filtrar los modelos permitidos
+        const currentBrand = brands.find((b: Brand) => b.id.toString() === brandId);
+        
+        // Filtrar modelos según las marcas y modelos permitidos
+        let filteredModels = mappedModels;
+        if (currentBrand) {
+          // Buscar la marca correcta en ALLOWED_CARS usando LIKE
+          const brandKey = Object.keys(ALLOWED_CARS).find(
+            key => likeMatch(key, currentBrand.name)
+          ) as keyof typeof ALLOWED_CARS | undefined;
+          
+          if (brandKey) {
+            const allowedModels = ALLOWED_CARS[brandKey] || [];
+            
+            filteredModels = mappedModels.filter((model: Model) => {
+              const modelName = model.description || model.name || "";
+              return allowedModels.some((allowedModel) => 
+                likeMatch(allowedModel, modelName)
+              );
+            });
+          }
+        }
+
+        console.log("Modelos mapeados:", filteredModels);
         setModels(
-          mappedModels.sort((a: Model, b: Model) =>
-            a.description.localeCompare(b.description)
+          filteredModels.sort((a: Model, b: Model) =>
+            (a.description || "").localeCompare(b.description || "")
           )
         );
       } catch (err) {
@@ -130,7 +181,7 @@ export function useCarInfo(): UseCarInfoReturn {
         setLoadingModels(false);
       }
     },
-    []
+    [brands]
   );
 
   const getPrice = useCallback(async (codia: string) => {

@@ -4,6 +4,7 @@ import getModelHelper from "../utils/getModelHelper";
 import getGroupHelper from "../utils/getGroupHelper";
 import { useAuth } from "./useAuth";
 import getPriceHelper from "../utils/getPriceHelper";
+import { isBrandAllowed, isModelAllowed, ALLOWED_CARS, likeMatch } from "../../constants/allowedCars";
 
 export function useCarInfo() {
   const { accessToken, refresh } = useAuth();
@@ -27,7 +28,12 @@ export function useCarInfo() {
     setLoadingBrands(true);
     try {
       const data = await getBrandHelper(accessToken);
-      setBrands(Array.isArray(data) ? data : []);
+      const allBrands = Array.isArray(data) ? data : [];
+      // Filtrar solo las marcas permitidas
+      const allowedBrands = allBrands.filter((brand) =>
+        isBrandAllowed(brand.name)
+      );
+      setBrands(allowedBrands);
     } catch (err) {
       console.error("Error loading brands:", err);
       if (err.message === "TOKEN_EXPIRED") {
@@ -55,7 +61,31 @@ export function useCarInfo() {
       try {
         const data = await getGroupHelper(accessToken, brandId);
         console.log("Groups data received:", data);
-        setGroups(Array.isArray(data) ? data : []);
+        const allGroups = Array.isArray(data) ? data : [];
+        
+        // Obtener el nombre de la marca actual para filtrar los modelos permitidos
+        const currentBrand = brands.find((b) => b.id.toString() === brandId);
+        
+        // Filtrar grupos/modelos según las marcas y modelos permitidos
+        let filteredGroups = allGroups;
+        if (currentBrand) {
+          // Buscar la marca correcta en ALLOWED_CARS usando LIKE
+          const brandKey = Object.keys(ALLOWED_CARS).find(
+            (key) => likeMatch(key, currentBrand.name)
+          );
+          
+          if (brandKey) {
+            const allowedModels = ALLOWED_CARS[brandKey] || [];
+            
+            filteredGroups = allGroups.filter((group) => {
+              return allowedModels.some((allowedModel) => 
+                likeMatch(allowedModel, group.name)
+              );
+            });
+          }
+        }
+        
+        setGroups(filteredGroups);
       } catch (err) {
         console.error("Error in getGroup:", err);
         if (err.message === "TOKEN_EXPIRED") {
@@ -65,7 +95,7 @@ export function useCarInfo() {
         setLoadingGroups(false);
       }
     },
-    [accessToken, refresh]
+    [accessToken, refresh, brands]
   );
 
   // Obtener modelos según la marca y grupo seleccionados
@@ -90,7 +120,32 @@ export function useCarInfo() {
         console.log("getModel: Datos recibidos:", data);
         console.log("getModel: Cantidad de modelos:", data?.length);
 
-        setModels(Array.isArray(data) ? data : []);
+        const allModels = Array.isArray(data) ? data : [];
+        
+        // Obtener el nombre de la marca actual para filtrar los modelos permitidos
+        const currentBrand = brands.find((b) => b.id.toString() === brandId);
+        
+        // Filtrar modelos según las marcas y modelos permitidos
+        let filteredModels = allModels;
+        if (currentBrand) {
+          // Buscar la marca correcta en ALLOWED_CARS usando LIKE
+          const brandKey = Object.keys(ALLOWED_CARS).find(
+            (key) => likeMatch(key, currentBrand.name)
+          );
+          
+          if (brandKey) {
+            const allowedModels = ALLOWED_CARS[brandKey] || [];
+            
+            filteredModels = allModels.filter((model) => {
+              const modelName = model.description || model.name || "";
+              return allowedModels.some((allowedModel) => 
+                likeMatch(allowedModel, modelName)
+              );
+            });
+          }
+        }
+
+        setModels(filteredModels);
         console.log("getModel: Modelos seteados exitosamente");
       } catch (err) {
         console.error("getModel: Error al obtener modelos:", err);
@@ -102,7 +157,7 @@ export function useCarInfo() {
         console.log("getModel: Finalizado (loadingModels = false)");
       }
     },
-    [accessToken, refresh]
+    [accessToken, refresh, brands]
   );
 
   const getPrice = useCallback(async (codia) => {

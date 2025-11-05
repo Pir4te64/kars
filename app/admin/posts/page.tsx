@@ -809,7 +809,7 @@ export default function PostsListPage() {
                               <DropdownMenuContent align="end">
                                 <DropdownMenuItem asChild>
                                   <Link
-                                    href={`https://kars-xi.vercel.app/auto/${post.id}`}
+                                    href={`https://kars-three.vercel.app/autos/${post.id}`}
                                     target="_blank"
                                     className="flex items-center gap-2">
                                     <Eye className="h-4 w-4" />

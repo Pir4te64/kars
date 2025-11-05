@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import Image from 'next/image'
 import type { VehiclePost } from '@/types'
 
@@ -10,7 +10,6 @@ interface StockSectionProps {
 }
 
 export default function StockSection({ initialCars }: StockSectionProps) {
-  const router = useRouter()
   const [limit, setLimit] = useState(8)
   const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set())
   const cardsRef = useRef<(HTMLDivElement | null)[]>([])
@@ -103,15 +102,15 @@ export default function StockSection({ initialCars }: StockSectionProps) {
                   <span className="font-medium truncate">{post.combustible}</span>
                   <span className="font-medium truncate">{post.transmision}</span>
                 </div>
-                <button
-                  onClick={() => router.push(`/autos/${post.id}`)}
+                <Link
+                  href={`/autos/${post.id}`}
                   className="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 sm:py-2.5 md:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-1.5 sm:gap-2 shadow-sm hover:shadow-md"
                 >
                   <span>Ver unidad</span>
                   <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
-                </button>
+                </Link>
               </div>
             </div>
           ))}

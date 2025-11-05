@@ -96,7 +96,7 @@ export default function Testimonials() {
         </div>
 
         {/* Carrusel de imágenes */}
-        <div className="mb-16 overflow-hidden relative group">
+        <div className="mb-16 overflow-hidden relative group  overflow-x-auto">
           {/* Flecha izquierda */}
           <button
             onClick={scrollLeft}

@@ -2,11 +2,12 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -20,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Upload, Trash2, Loader2, Check, AlertTriangle } from "lucide-react";
+import { Upload, Trash2, Loader2, Check, AlertTriangle, ArrowLeft } from "lucide-react";
 import {
   SidebarInset,
   SidebarProvider,
@@ -34,11 +35,12 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
+import Link from "next/link";
 
-// ----------------- Zod schema (todos TEXT) -----------------
+// ----------------- Zod schema (todos TEXT, SIN imágenes) -----------------
 const schema = z.object({
   titulo: z.string().optional(),
-  slug: z.string().optional().or(z.literal("")),
+  slug: z.string().optional().or(z.literal("")), // Se genera automáticamente
   marca: z.string().optional(),
   modelo: z.string().optional(),
   version: z.string().optional().or(z.literal("")),
@@ -93,22 +95,26 @@ function idFor(file: File) {
 
 type ImgItem = {
   id: string;
-  file: File;
+  file?: File;
   name: string;
-  size: number;
+  size?: number;
   preview: string;
   status: "uploading" | "done" | "error";
   url?: string;
   error?: string;
+  isExisting?: boolean; // Para distinguir imágenes existentes de nuevas
 };
 
-export default function Page() {
+export default function EditPostPage() {
   const router = useRouter();
+  const params = useParams();
+  const postId = params?.id as string;
+
   const [uploading, setUploading] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
   const [loggedEmail, setLoggedEmail] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [signingOut, setSigningOut] = useState(false);
+  const [loadingPost, setLoadingPost] = useState(true);
+  const [postData, setPostData] = useState<any>(null);
 
   // Imágenes con preview y estado
   const [imgItems, setImgItems] = useState<ImgItem[]>([]);
@@ -162,21 +168,21 @@ export default function Page() {
     },
   });
 
+  // Helper para convertir valores a string (evita problemas con tipos)
+  const toStr = (val: string | number | undefined | null): string => {
+    if (val === null || val === undefined) return "";
+    return String(val);
+  };
+
   // ---------- Obtener usuario autenticado ----------
   useEffect(() => {
     let active = true;
 
     supabase.auth
       .getUser()
-      .then(({ data, error }) => {
+      .then(({ data }) => {
         if (!active) return;
-        if (!error && data.user) {
-          setLoggedEmail(data.user.email ?? null);
-          setUserId(data.user.id ?? null);
-        } else {
-          setLoggedEmail(null);
-          setUserId(null);
-        }
+        setLoggedEmail(data.user?.email ?? null);
       })
       .catch((error) => {
         console.error("Auth error:", error);
@@ -189,7 +195,6 @@ export default function Page() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_, session) => {
       setLoggedEmail(session?.user?.email ?? null);
-      setUserId(session?.user?.id ?? null);
     });
 
     return () => {
@@ -198,27 +203,121 @@ export default function Page() {
     };
   }, []);
 
+  // ---------- Cargar datos del post ----------
+  useEffect(() => {
+    if (!postId) return;
+
+    (async () => {
+      try {
+        setLoadingPost(true);
+        const { data, error } = await supabase
+          .from("vehicle_posts")
+          .select("*")
+          .eq("id", postId)
+          .single();
+
+        if (error) throw error;
+        if (!data) {
+          toast.error("Post no encontrado");
+          router.push("/admin/posts");
+          return;
+        }
+
+        setPostData(data);
+
+        // Prellenar formulario - convertir todos los valores a string
+        reset({
+          titulo: toStr(data.titulo),
+          slug: toStr(data.slug),
+          marca: toStr(data.marca),
+          modelo: toStr(data.modelo),
+          version: toStr(data.version),
+          anio: toStr(data.anio),
+          kilometraje: toStr(data.kilometraje),
+          carroceria: toStr(data.carroceria),
+          descripcion: toStr(data.descripcion),
+          condicion: toStr(data.condicion),
+          combustible: toStr(data.combustible),
+          transmision: toStr(data.transmision),
+          traccion: toStr(data.traccion),
+          color_exterior: toStr(data.color_exterior),
+          color_interior: toStr(data.color_interior),
+          puertas: toStr(data.puertas),
+          asientos: toStr(data.asientos),
+          cilindrada: toStr(data.cilindrada),
+          potencia_hp: toStr(data.potencia_hp),
+          moneda: toStr(data.moneda),
+          precio: toStr(data.precio),
+          precio_negociable: toStr(data.precio_negociable),
+          cuota_mensual: toStr(data.cuota_mensual),
+          enganche: toStr(data.enganche),
+          pais: toStr(data.pais),
+          estado_provincia: toStr(data.estado_provincia),
+          ciudad: toStr(data.ciudad),
+          vendedor_nombre: toStr(data.vendedor_nombre),
+          vendedor_calificacion: toStr(data.vendedor_calificacion),
+          concesionaria_nombre: toStr(data.concesionaria_nombre),
+          disponible: toStr(data.disponible),
+        });
+
+        // Cargar imágenes existentes
+        if (data.images_urls && Array.isArray(data.images_urls) && data.images_urls.length > 0) {
+          const existingImages: ImgItem[] = data.images_urls.map((url: string, index: number) => ({
+            id: `existing-${index}-${Date.now()}`,
+            name: `Imagen ${index + 1}`,
+            preview: url,
+            status: "done" as const,
+            url: url,
+            isExisting: true,
+          }));
+          setImgItems(existingImages);
+        }
+      } catch (error: any) {
+        console.error("Error loading post:", error);
+        toast.error(`Error cargando post: ${error.message}`);
+        router.push("/admin/posts");
+      } finally {
+        setLoadingPost(false);
+      }
+    })();
+  }, [postId, reset, router]);
+
   // Limpiar objectURLs al desmontar
   useEffect(() => {
     return () => {
-      imgItems.forEach((it) => URL.revokeObjectURL(it.preview));
+      imgItems.forEach((it) => {
+        if (it.file && it.preview.startsWith("blob:")) {
+          URL.revokeObjectURL(it.preview);
+        }
+      });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Generar slug automáticamente UNA SOLA VEZ desde el título
+  // Generar slug automáticamente desde el título (solo si el usuario cambia el título)
   const titulo = watch("titulo");
-  const slugGenOnceRef = useRef(false);
+  const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  
   useEffect(() => {
-    if (!slugGenOnceRef.current && titulo && titulo.length >= 2) {
+    // Marcar que la carga inicial terminó después de que se carguen los datos
+    if (postData && isInitialLoad) {
+      setIsInitialLoad(false);
+    }
+  }, [postData, isInitialLoad]);
+  
+  useEffect(() => {
+    // Solo generar slug automáticamente si:
+    // - No fue editado manualmente
+    // - No es la carga inicial (para no sobrescribir el slug existente)
+    // - Hay un título válido
+    if (!isInitialLoad && !isSlugManuallyEdited && titulo && titulo.length >= 2) {
+      // Generar UUID corto (primeros 8 caracteres de timestamp en base36)
       const shortId = Date.now().toString(36).substring(0, 8);
       const generatedSlug = `${sanitizePath(titulo)}-${shortId}`;
       setValue("slug", generatedSlug, { shouldValidate: false });
-      slugGenOnceRef.current = true;
     }
-  }, [titulo, setValue]);
-
-  const watchSlug = watch("slug");
+  }, [titulo, setValue, isSlugManuallyEdited, isInitialLoad]);
 
   const uploadedUrls = useMemo(
     () =>
@@ -227,7 +326,13 @@ export default function Page() {
   );
 
   function currentFolderSlug() {
-    return sanitizePath(watchSlug || titulo || "listing");
+    const slugInput = document.getElementById(
+      "slug"
+    ) as HTMLInputElement | null;
+    const tituloInput = document.getElementById(
+      "titulo"
+    ) as HTMLInputElement | null;
+    return sanitizePath(slugInput?.value || tituloInput?.value || "listing");
   }
 
   // ---- Subir UNA imagen y devolver URL pública ----
@@ -252,8 +357,9 @@ export default function Page() {
   async function handleNewFiles(files: File[]) {
     if (!files.length) return;
 
+    // 1) Crear items con preview y estado "uploading"
     const dedupeKey = (f: File) => `${f.name}__${f.size}`;
-    const existingKeys = new Set(imgItems.map((i) => dedupeKey(i.file)));
+    const existingKeys = new Set(imgItems.map((i) => i.file ? dedupeKey(i.file) : ""));
     const incoming = files.filter((f) => f.type.startsWith("image/"));
     const freshFiles = incoming.filter((f) => !existingKeys.has(dedupeKey(f)));
 
@@ -270,43 +376,41 @@ export default function Page() {
 
     setImgItems((prev) => [...prev, ...newItems]);
 
+    // 2) Subir cada una (secuencial para UI clara)
     try {
       const folder = currentFolderSlug();
 
       for (const it of newItems) {
         try {
-          const url = await uploadAndGetUrl(it.file, folder);
+          const url = await uploadAndGetUrl(it.file!, folder);
           setImgItems((prev) =>
             prev.map((p) =>
               p.id === it.id ? { ...p, status: "done", url } : p
             )
           );
-        } catch (e: any) {
+        } catch (e: Error | unknown) {
           setImgItems((prev) =>
             prev.map((p) =>
               p.id === it.id
                 ? {
                     ...p,
                     status: "error",
-                    error:
-                      e instanceof Error ? e.message : "Fallo de subida",
+                    error: e instanceof Error ? e.message : "Fallo de subida",
                   }
                 : p
             )
           );
         }
       }
-    } catch (e: any) {
+    } catch (e: Error | unknown) {
+      // Error inesperado al preparar las subidas
       setImgItems((prev) =>
         prev.map((p) =>
           newItems.some((n) => n.id === p.id)
             ? {
                 ...p,
                 status: "error",
-                error:
-                  e instanceof Error
-                    ? e.message
-                    : "Fallo al preparar la subida",
+                error: e instanceof Error ? e.message : "Fallo al preparar la subida",
               }
             : p
         )
@@ -317,69 +421,63 @@ export default function Page() {
   const removeItem = (id: string) => {
     setImgItems((prev) => {
       const found = prev.find((p) => p.id === id);
-      if (found) URL.revokeObjectURL(found.preview);
+      if (found && found.file && found.preview.startsWith("blob:")) {
+        URL.revokeObjectURL(found.preview);
+      }
       return prev.filter((p) => p.id !== id);
     });
   };
 
-  // Helper para convertir valores a string
-  const toStr = (val: string | undefined | null): string => {
-    if (val === null || val === undefined) return "";
-    return String(val);
-  };
-
-  // ---- onSubmit ----
+  // ---- onSubmit: actualizar post ----
   const onSubmit = async (values: FormValues) => {
     try {
       if (!uploadedUrls.length) {
-        alert("Agrega imágenes (se suben automáticamente) antes de crear el post.");
-        return;
+        return toast.error(
+          "Agrega al menos una imagen antes de guardar."
+        );
       }
-
-      // Validaciones mínimas
-      const tituloValue = String(values.titulo ?? "").trim();
-      if (!tituloValue || tituloValue.length < 2) {
-        alert("El título es requerido (mínimo 2 caracteres)");
-        return;
+      
+      // Validar campos requeridos manualmente (pueden venir como undefined)
+      const tituloValue = values.titulo ?? "";
+      if (!tituloValue || tituloValue.trim().length < 2) {
+        return toast.error("El título es requerido (mínimo 2 caracteres)");
       }
-      const marcaValue = String(values.marca ?? "").trim();
-      if (!marcaValue) {
-        alert("La marca es requerida");
-        return;
+      
+      const marcaValue = values.marca ?? "";
+      if (!marcaValue || marcaValue.trim().length < 1) {
+        return toast.error("La marca es requerida");
       }
-      const modeloValue = String(values.modelo ?? "").trim();
-      if (!modeloValue) {
-        alert("El modelo es requerido");
-        return;
+      
+      const modeloValue = values.modelo ?? "";
+      if (!modeloValue || modeloValue.trim().length < 1) {
+        return toast.error("El modelo es requerido");
       }
-      const anioValue = String(values.anio ?? "").trim();
-      if (!anioValue) {
-        alert("El año es requerido");
-        return;
+      
+      const anioValue = values.anio ?? "";
+      if (!anioValue || anioValue.trim().length < 2) {
+        return toast.error("El año es requerido (mínimo 2 caracteres)");
       }
-      const precioValue = String(values.precio ?? "").trim();
-      if (!precioValue) {
-        alert("El precio es requerido");
-        return;
+      
+      const precioValue = values.precio ?? "";
+      if (!precioValue || precioValue.trim().length < 1) {
+        return toast.error("El precio es requerido");
       }
-
+      
       setUploading(true);
 
-      // Slug final
-      const finalSlug =
-        values.slug && values.slug.trim()
-          ? toStr(values.slug)
-          : `${sanitizePath(tituloValue)}-${Date.now()
-              .toString(36)
-              .substring(0, 8)}`;
+      // Generar slug si no existe o está vacío
+      const finalSlug = values.slug && values.slug.trim() 
+        ? toStr(values.slug) 
+        : `${sanitizePath(tituloValue)}-${Date.now().toString(36).substring(0, 8)}`;
 
+      // Convertir todos los valores a string para asegurar compatibilidad con SQL TEXT
       const payload = {
-        titulo: toStr(tituloValue),
+        titulo: toStr(tituloValue), // Ya validado manualmente
         slug: finalSlug,
-        marca: toStr(marcaValue),
-        modelo: toStr(modeloValue),
+        marca: toStr(marcaValue), // Ya validado manualmente
+        modelo: toStr(modeloValue), // Ya validado manualmente
         version: toStr(values.version),
-        anio: toStr(anioValue),
+        anio: toStr(anioValue), // Ya validado manualmente
         kilometraje: toStr(values.kilometraje),
         carroceria: toStr(values.carroceria),
         condicion: toStr(values.condicion),
@@ -393,9 +491,8 @@ export default function Page() {
         combustible: toStr(values.combustible),
         potencia_hp: toStr(values.potencia_hp),
         moneda: toStr(values.moneda),
-        precio: toStr(precioValue),
+        precio: toStr(precioValue), // Ya validado manualmente
         precio_negociable: toStr(values.precio_negociable),
-        estado: "published",
         disponible: toStr(values.disponible),
         pais: toStr(values.pais),
         estado_provincia: toStr(values.estado_provincia),
@@ -406,27 +503,24 @@ export default function Page() {
         cuota_mensual: toStr(values.cuota_mensual),
         enganche: toStr(values.enganche),
         descripcion: toStr(values.descripcion),
-        images_urls: uploadedUrls, // text[]
-        created_by: userId ?? null, // FK a auth.users(id)
+        images_urls: uploadedUrls, // Array de strings, no necesita conversión
+        updated_at: new Date().toISOString(),
       };
 
-      // console.log("Submit values:", values);
-      // console.log("Payload to Supabase:", payload);
+      const { error } = await supabase
+        .from("vehicle_posts")
+        .update(payload)
+        .eq("id", postId);
 
-      const { error } = await supabase.from("vehicle_posts").insert([payload]);
       if (error) throw error;
 
-      alert("✅ Post creado con éxito");
-
-      // limpiar
-      reset();
-      slugGenOnceRef.current = false;
-      imgItems.forEach((it) => URL.revokeObjectURL(it.preview));
-      setImgItems([]);
-      if (fileRef.current) fileRef.current.value = "";
-    } catch (e: any) {
+      toast.success("✅ Post actualizado con éxito");
+      router.push("/admin/posts");
+    } catch (e: Error | unknown) {
       console.error(e);
-      alert(`❌ Error: ${e instanceof Error ? e.message : "Fallo al crear el post"}`);
+      toast.error(
+        `❌ Error: ${e instanceof Error ? e.message : "Fallo al actualizar el post"}`
+      );
     } finally {
       setUploading(false);
     }
@@ -434,7 +528,6 @@ export default function Page() {
 
   const handleSignOut = async () => {
     try {
-      setSigningOut(true);
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
 
@@ -450,18 +543,28 @@ export default function Page() {
       }
 
       setLoggedEmail(null);
-      setUserId(null);
       router.replace("/login");
       router.refresh();
-    } catch (e: any) {
+    } catch (e: Error | unknown) {
       console.error("Sign out error:", e);
-      alert("❌ Error al cerrar sesión");
-    } finally {
-      setSigningOut(false);
+      toast.error("❌ Error al cerrar sesión");
     }
   };
 
   // ---------- UI ----------
+  if (loadingPost || authLoading) {
+    return (
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>
+          <div className="flex items-center justify-center h-screen">
+            <Loader2 className="h-8 w-8 animate-spin" />
+          </div>
+        </SidebarInset>
+      </SidebarProvider>
+    );
+  }
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -477,7 +580,7 @@ export default function Page() {
               <BreadcrumbList>
                 <BreadcrumbItem>
                   <BreadcrumbPage className="line-clamp-1">
-                    Listado de Posts de Vehículos
+                    Editar Post de Vehículo
                   </BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
@@ -487,26 +590,26 @@ export default function Page() {
 
         <div className="w-full mx-auto p-6 space-y-6">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold">Crear POST de Vehículo</h1>
+            <div className="flex items-center gap-4">
+              <Link href="/admin/posts">
+                <Button variant="ghost" size="sm">
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Volver
+                </Button>
+              </Link>
+              <h1 className="text-2xl font-bold">Editar POST de Vehículo</h1>
+            </div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span>
-                {authLoading
-                  ? "Autenticando…"
-                  : loggedEmail
-                  ? `Sesión: ${loggedEmail}`
-                  : "No autenticado"}
+                {loggedEmail ? `Sesión: ${loggedEmail}` : "No autenticado"}
               </span>
               {loggedEmail ? (
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={handleSignOut}
-                  disabled={signingOut}
                   className="flex items-center gap-2"
                 >
-                  {signingOut ? (
-                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                  ) : null}
                   <span>Cerrar sesión</span>
                 </Button>
               ) : null}
@@ -522,9 +625,15 @@ export default function Page() {
               <CardContent className="space-y-4">
                 <div>
                   <Label htmlFor="titulo">Título</Label>
-                  <Input id="titulo" type="text" placeholder="" {...register("titulo")} />
+                  <Input
+                    id="titulo"
+                    placeholder=""
+                    {...register("titulo")}
+                  />
                   {errors.titulo && (
-                    <p className="text-red-500 text-sm">{errors.titulo.message}</p>
+                    <p className="text-red-500 text-sm">
+                      {errors.titulo.message}
+                    </p>
                   )}
                 </div>
                 <div>
@@ -532,50 +641,67 @@ export default function Page() {
                   <Input
                     id="slug"
                     placeholder="Se genera automáticamente desde el título"
-                    {...register("slug")}
-                    readOnly
+                    {...register("slug", {
+                      onChange: () => setIsSlugManuallyEdited(true)
+                    })}
                     className="bg-muted"
                   />
                   <p className="text-xs text-muted-foreground mt-1">
-                    El slug se genera automáticamente basado en el título
+                    El slug se genera automáticamente, pero puedes editarlo si lo necesitas
                   </p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <Label>Marca</Label>
-                    <Input type="text" placeholder="" {...register("marca")} />
+                    <Input placeholder="" {...register("marca")} />
                     {errors.marca && (
-                      <p className="text-red-500 text-sm">{errors.marca.message}</p>
+                      <p className="text-red-500 text-sm">
+                        {errors.marca.message}
+                      </p>
                     )}
                   </div>
                   <div>
                     <Label>Modelo</Label>
-                    <Input type="text" placeholder="" {...register("modelo")} />
+                    <Input placeholder="" {...register("modelo")} />
                     {errors.modelo && (
-                      <p className="text-red-500 text-sm">{errors.modelo.message}</p>
+                      <p className="text-red-500 text-sm">
+                        {errors.modelo.message}
+                      </p>
                     )}
                   </div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <Label>Año</Label>
-                    <Input type="text" placeholder="" {...register("anio")} />
+                    <Input placeholder="" {...register("anio")} />
                     {errors.anio && (
-                      <p className="text-red-500 text-sm">{errors.anio.message}</p>
+                      <p className="text-red-500 text-sm">
+                        {errors.anio.message}
+                      </p>
                     )}
                   </div>
                   <div>
                     <Label>Kilometraje</Label>
-                    <Input placeholder="" {...register("kilometraje")} />
+                    <Input
+                      placeholder=""
+                      {...register("kilometraje")}
+                    />
                   </div>
                 </div>
                 <div>
                   <Label>Transmisión</Label>
-                  <Input placeholder="" {...register("transmision")} />
+                  <Input
+                    placeholder=""
+                    {...register("transmision")}
+                  />
                 </div>
                 <div>
                   <Label>Descripción</Label>
-                  <Textarea placeholder="" {...register("descripcion")} />
+                  <Textarea
+                    placeholder=""
+                    {...register("descripcion")}
+                    rows={4}
+                  />
                 </div>
               </CardContent>
             </Card>
@@ -609,7 +735,7 @@ export default function Page() {
               </CardContent>
             </Card>
 
-            {/* Imágenes */}
+            {/* Imágenes (auto-upload con preview y loader) */}
             <Card>
               <CardHeader>
                 <CardTitle>Imágenes del Vehículo</CardTitle>
@@ -636,40 +762,44 @@ export default function Page() {
                     const files = Array.from(e.dataTransfer.files || []);
                     handleNewFiles(files);
                   }}
-                  onClick={() => fileRef.current?.click()}
-                >
+                  onClick={() => fileRef.current?.click()}>
                   <Upload className="mx-auto h-12 w-12 opacity-60 mb-3" />
                   <p className="font-medium">
-                    Arrastra y suelta, o haz clic para elegir —{" "}
+                    Arrastra y suelta, o haz clic para agregar más imágenes —{" "}
                     <span className="opacity-70">se suben automáticamente</span>
                   </p>
                 </div>
 
+                {/* Lista de imágenes con preview, nombre/tamaño y estado */}
                 {!!imgItems.length && (
                   <ul className="space-y-3">
                     {imgItems.map((it) => (
                       <li
                         key={it.id}
-                        className="flex items-center gap-3 border rounded-lg p-3"
-                      >
+                        className="flex items-center gap-3 border rounded-lg p-3">
+                        {/* Preview */}
                         <img
                           src={it.preview}
                           alt={it.name}
                           className="w-16 h-16 rounded-md object-cover bg-muted"
                         />
 
+                        {/* Nombre y tamaño */}
                         <div className="flex-1 min-w-0">
                           <p className="truncate font-medium">{it.name}</p>
-                          <p className="text-xs text-muted-foreground">
-                            {formatKB(it.size)}
-                          </p>
-                          {it.url ? (
-                            <p className="text-xs text-muted-foreground truncate">
-                              {it.url}
+                          {it.size && (
+                            <p className="text-xs text-muted-foreground">
+                              {formatKB(it.size)}
                             </p>
-                          ) : null}
+                          )}
+                          {it.isExisting && (
+                            <p className="text-xs text-muted-foreground italic">
+                              Imagen existente
+                            </p>
+                          )}
                         </div>
 
+                        {/* Estado */}
                         <div className="flex items-center gap-2">
                           {it.status === "uploading" && (
                             <span className="inline-flex items-center text-sm text-muted-foreground">
@@ -695,8 +825,7 @@ export default function Page() {
                             variant="ghost"
                             size="icon"
                             title="Quitar de la lista"
-                            onClick={() => removeItem(it.id)}
-                          >
+                            onClick={() => removeItem(it.id)}>
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
@@ -715,19 +844,32 @@ export default function Page() {
               <CardContent className="space-y-4">
                 <div>
                   <Label>Precio</Label>
-                  <Input placeholder="" {...register("precio")} />
+                  <Input 
+                    placeholder="" 
+                    {...register("precio", {
+                      setValueAs: (value) => value === undefined || value === null ? "" : String(value)
+                    })} 
+                  />
                   {errors.precio && (
-                    <p className="text-red-500 text-sm">{errors.precio.message}</p>
+                    <p className="text-red-500 text-sm">
+                      {errors.precio.message}
+                    </p>
                   )}
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <Label>Cuota Mensual</Label>
-                    <Input placeholder="" {...register("cuota_mensual")} />
+                    <Input
+                      placeholder=""
+                      {...register("cuota_mensual")}
+                    />
                   </div>
                   <div>
                     <Label>Enganche</Label>
-                    <Input placeholder="" {...register("enganche")} />
+                    <Input
+                      placeholder=""
+                      {...register("enganche")}
+                    />
                   </div>
                 </div>
                 <div>
@@ -735,12 +877,10 @@ export default function Page() {
                   <Controller
                     control={control}
                     name="disponible"
-                    defaultValue=""
                     render={({ field }) => (
                       <Select
-                        value={field.value || undefined}
-                        onValueChange={(v) => field.onChange(v)}
-                      >
+                        value={field.value}
+                        onValueChange={field.onChange}>
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Seleccionar" />
                         </SelectTrigger>
@@ -764,33 +904,33 @@ export default function Page() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <Label>Nombre del Vendedor</Label>
-                    <Input placeholder="" {...register("vendedor_nombre")} />
+                    <Input
+                      placeholder=""
+                      {...register("vendedor_nombre")}
+                    />
                   </div>
                   <div>
                     <Label>Calificación</Label>
-                    <Input placeholder="" {...register("vendedor_calificacion")} />
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div>
-                    <Label>País</Label>
-                    <Input placeholder="" {...register("pais")} />
-                  </div>
-                  <div>
-                    <Label>Estado/Provincia</Label>
-                    <Input placeholder="" {...register("estado_provincia")} />
-                  </div>
-                  <div>
-                    <Label>Ciudad</Label>
-                    <Input placeholder="" {...register("ciudad")} />
+                    <Input
+                      placeholder=""
+                      {...register("vendedor_calificacion")}
+                    />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             <div className="flex justify-end gap-3">
-              <Button type="submit" disabled={isSubmitting || uploading || authLoading}>
-                {uploading ? "Guardando…" : "Crear POST"}
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.push("/admin/posts")}>
+                Cancelar
+              </Button>
+              <Button
+                type="submit"
+                disabled={isSubmitting || uploading || authLoading}>
+                {uploading ? "Guardando…" : "Actualizar POST"}
               </Button>
             </div>
           </form>
@@ -799,3 +939,4 @@ export default function Page() {
     </SidebarProvider>
   );
 }
+

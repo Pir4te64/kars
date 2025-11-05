@@ -29,6 +29,9 @@ export default function QuoteResultPage() {
   const [quoteData, setQuoteData] = useState<QuoteData | null>(null);
   const [userEmail, setUserEmail] = useState("");
 
+  const encodedMessage = encodeURIComponent("Hola soy Ramon, tengo un fiat toro 2017 100mil km tal modelo a 17mil usd");
+  const whatsappUrl = `https://wa.me/541121596100?text=${encodedMessage}`;
+
   const {
     dollarBlue,
     loading: dollarLoading,
@@ -439,6 +442,7 @@ export default function QuoteResultPage() {
 
                 <div className="space-y-3">
                   {/* Button - WhatsApp */}
+                  <a href={whatsappUrl}>
                   <button className="w-full bg-gradient-to-r from-green-600 to-green-500 text-white py-2.5 px-4 rounded-full flex items-center justify-center hover:scale-105 hover:shadow-xl transition-all duration-300 font-bold text-sm">
                     <svg
                       className="w-4 h-4 mr-2 flex-shrink-0"
@@ -449,6 +453,7 @@ export default function QuoteResultPage() {
                     </svg>
                     <span>Hablar con un asesor</span>
                   </button>
+                  </a>
 
                   {/* Button - Nueva Cotización */}
                   <button

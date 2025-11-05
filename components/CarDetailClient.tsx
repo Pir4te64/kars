@@ -211,26 +211,7 @@ export default function CarDetailClient({ carData, featuredCars }: CarDetailClie
               <div className="text-xs text-gray-500">Precio de contado</div>
             </div>
 
-            {/* Financing Options */}
-            <div className="p-3 mb-4 rounded-lg bg-gray-50">
-              <h3 className="mb-2 text-sm font-semibold text-gray-900">
-                Opciones de financiamiento
-              </h3>
-              <div className="mb-3 space-y-1">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Cuota desde:</span>
-                  <span className="font-semibold">
-                    {car.monthlyPayment}/mes
-                  </span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Enganche:</span>
-                  <span className="font-semibold">
-                    {car.downPayment} ({car.downPaymentPercent})
-                  </span>
-                </div>
-              </div>
-            </div>
+        
 
             {/* Action Buttons */}
             <div className="mb-4 space-y-2">

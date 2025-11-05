@@ -117,7 +117,7 @@ export default function Hero() {
           <CarQuoteSection />
         </div>
 
-        {/* Auto en mobile - debajo del cotizador */}
+        {/* Auto en mobile - debajo del  cotizador */}
         <div className="lg:hidden absolute bottom-2 left-0 right-0 h-40 flex items-center justify-center z-20 px-4">
           <div className={`
             relative w-full h-full max-w-sm

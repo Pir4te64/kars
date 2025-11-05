@@ -47,6 +47,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   Eye,
   Trash2,
   Plus,
@@ -133,6 +141,8 @@ export default function PostsListPage() {
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [postToDelete, setPostToDelete] = useState<{ id: string; titulo: string | null } | null>(null);
 
   /* --------- estadísticas/KPIs --------- */
   const [stats, setStats] = useState({
@@ -310,18 +320,24 @@ export default function PostsListPage() {
     setPage(1);
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("¿Eliminar este post? Esta acción no se puede deshacer."))
-      return;
+  const handleDeleteClick = (id: string, titulo: string | null) => {
+    setPostToDelete({ id, titulo });
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!postToDelete) return;
+    
     try {
-      setDeletingId(id);
+      setDeletingId(postToDelete.id);
       const { error } = await supabase
         .from("vehicle_posts")
         .delete()
-        .eq("id", id);
+        .eq("id", postToDelete.id);
       if (error) throw error;
+      
       // refrescar clientemente
-      setRows((prev) => prev.filter((r) => r.id !== id));
+      setRows((prev) => prev.filter((r) => r.id !== postToDelete.id));
       setTotal((t) => Math.max(0, t - 1));
       if (rows.length === 1 && page > 1) setPage((p) => p - 1);
 
@@ -329,6 +345,8 @@ export default function PostsListPage() {
       setStats((prev) => ({ ...prev, total: Math.max(0, prev.total - 1) }));
 
       toast.success("Post eliminado correctamente");
+      setDeleteDialogOpen(false);
+      setPostToDelete(null);
     } catch (e: unknown) {
       console.error("Delete error:", e);
       toast.error(`Error eliminando: ${getErrorMessage(e)}`);
@@ -792,46 +810,23 @@ export default function PostsListPage() {
                             {fmtDate(post.created_at)}
                           </TableCell>
                           <TableCell className="text-right">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-8 w-8 p-0"
-                                  disabled={deletingId === post.id}>
-                                  {deletingId === post.id ? (
-                                    <Loader2 className="h-4 w-4 animate-spin" />
-                                  ) : (
-                                    <MoreHorizontal className="h-4 w-4" />
-                                  )}
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuItem asChild>
-                                  <Link
-                                    href={`https://kars-three.vercel.app/autos/${post.id}`}
-                                    target="_blank"
-                                    className="flex items-center gap-2">
-                                    <Eye className="h-4 w-4" />
-                                    Ver en sitio web
-                                  </Link>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem asChild>
-                                  <Link
-                                    href={`/admin/posts/edit/${post.id}` as any}
-                                    className="flex items-center gap-2">
-                                    <Edit className="h-4 w-4" />
-                                    Editar post
-                                  </Link>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                  onClick={() => handleDelete(post.id)}
-                                  className="flex items-center gap-2 text-destructive focus:text-destructive">
+                            <div className="flex items-center justify-end gap-2">
+                          
+                        
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+                                onClick={() => handleDeleteClick(post.id, post.titulo)}
+                                disabled={deletingId === post.id}
+                                title="Eliminar post">
+                                {deletingId === post.id ? (
+                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
                                   <Trash2 className="h-4 w-4" />
-                                  Eliminar
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
+                                )}
+                              </Button>
+                            </div>
                           </TableCell>
                         </TableRow>
                       );
@@ -842,6 +837,48 @@ export default function PostsListPage() {
 
             </CardContent>
           </Card>
+
+          {/* Dialog de confirmación de eliminación */}
+          <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>¿Eliminar este post?</DialogTitle>
+                <DialogDescription>
+                  Esta acción no se puede deshacer. Se eliminará permanentemente el post
+                  {postToDelete?.titulo && (
+                    <span className="font-semibold"> "{postToDelete.titulo}"</span>
+                  )}.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setDeleteDialogOpen(false);
+                    setPostToDelete(null);
+                  }}
+                  disabled={deletingId !== null}>
+                  Cancelar
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={handleDeleteConfirm}
+                  disabled={deletingId !== null}>
+                  {deletingId ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Eliminando...
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 className="mr-2 h-4 w-4" />
+                      Eliminar
+                    </>
+                  )}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </SidebarInset>
     </SidebarProvider>

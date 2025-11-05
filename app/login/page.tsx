@@ -73,7 +73,7 @@ export default async function LoginPage({ searchParams }: PageProps) {
       {/* Right Panel - Hero Image */}
       <div className="relative hidden lg:block overflow-hidden bg-muted">
         <Image
-          src="/login.jpg"
+          src="/about.png"
           alt="Luxury cars showcase"
           fill
           className="object-cover"

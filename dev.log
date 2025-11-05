@@ -1,0 +1,60 @@
+
+> kars-nextjs@1.0.0 dev
+> next dev
+
+ ⚠ Port 3000 is in use, trying 3001 instead.
+  ▲ Next.js 14.2.33
+  - Local:        http://localhost:3001
+  - Environments: .env.local
+  - Experiments (use with caution):
+    · typedRoutes
+
+ ✓ Starting...
+ ✓ Ready in 2.7s
+ ○ Compiling / ...
+ ✓ Compiled / in 5.4s (825 modules)
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+years []
+years []
+ ✓ Compiled in 763ms (367 modules)
+ GET / 200 in 6612ms
+years []
+years []
+ GET / 200 in 56ms
+ ✓ Compiled /api/vehicles in 264ms (479 modules)
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+ GET /api/vehicles?limit=1 200 in 1283ms
+years []
+years []
+ GET / 200 in 246ms
+ ✓ Compiled /autos/[id] in 450ms (848 modules)
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+ GET /api/vehicles?limit=1 200 in 228ms
+ GET /autos/04d9e126-94e0-45d1-9916-3d9d802e4e15 200 in 146ms
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+ ○ Compiling /api/send-quote-email ...
+ ✓ Compiled /api/send-quote-email in 612ms (682 modules)
+Error sending email with Resend: {
+  statusCode: 403,
+  name: 'validation_error',
+  message: 'You can only send testing emails to your own email address (08automotores@gmail.com). To send emails to other recipients, please verify a domain at resend.com/domains, and change the `from` address to an email using this domain.'
+}
+ POST /api/send-quote-email 500 in 1360ms
+ ✓ Compiled /_not-found in 358ms (1040 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 565ms
+Error sending email with Resend: {
+  statusCode: 403,
+  name: 'validation_error',
+  message: 'You can only send testing emails to your own email address (08automotores@gmail.com). To send emails to other recipients, please verify a domain at resend.com/domains, and change the `from` address to an email using this domain.'
+}
+ POST /api/send-quote-email 500 in 849ms
+Error sending email with Resend: {
+  statusCode: 403,
+  name: 'validation_error',
+  message: 'You can only send testing emails to your own email address (08automotores@gmail.com). To send emails to other recipients, please verify a domain at resend.com/domains, and change the `from` address to an email using this domain.'
+}
+ POST /api/send-quote-email 500 in 1606ms

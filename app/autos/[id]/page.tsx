@@ -11,6 +11,20 @@ interface PageProps {
 }
 
 export const revalidate = 60 // ISR: revalidate every 60 seconds
+export const dynamicParams = true // Allow dynamic params not in generateStaticParams
+
+// Generate static params for all vehicle IDs
+export async function generateStaticParams() {
+  try {
+    const vehicles = await getVehiclePosts(1000)
+    return vehicles.map((vehicle) => ({
+      id: vehicle.id,
+    }))
+  } catch (error) {
+    console.error('Error generating static params:', error)
+    return []
+  }
+}
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const carData = await getVehiclePostById(params.id)

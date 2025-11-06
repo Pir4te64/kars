@@ -41,12 +41,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -55,15 +49,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
-  Eye,
   Trash2,
   Plus,
   Loader2,
   Search,
   Filter,
-  MoreHorizontal,
-  Edit,
-  TrendingUp,
   Car,
   DollarSign,
   Package,
@@ -846,7 +836,7 @@ export default function PostsListPage() {
                 <DialogDescription>
                   Esta acción no se puede deshacer. Se eliminará permanentemente el post
                   {postToDelete?.titulo && (
-                    <span className="font-semibold"> "{postToDelete.titulo}"</span>
+                    <span className="font-semibold"> &quot;{postToDelete.titulo}&quot;</span>
                   )}.
                 </DialogDescription>
               </DialogHeader>

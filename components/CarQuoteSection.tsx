@@ -867,13 +867,14 @@ export default function CarQuoteSection() {
       {/* WhatsApp Button */}
       <div className="px-4 mb-4">
         {(() => {
-          // Obtener nombres reales de los datos
-          let marcaNombre = formData.marca;
-          let modeloNombre = formData.modelo;
-          let grupoNombre = formData.grupo;
-          let precioFinal = formData.precio;
+          // Obtener nombres reales de los datos ingresados por el usuario
+          let marcaNombre = "";
+          let modeloNombre = "";
+          let grupoNombre = "";
+          let precioFinal = "";
+          let añoFinal = "";
 
-          // Buscar nombre real de la marca
+          // Buscar nombre real de la marca (usando el ID almacenado)
           if (typedBrands && typedBrands.length > 0 && formData.marca) {
             const brandData = typedBrands.find(
               (item) =>
@@ -896,7 +897,7 @@ export default function CarQuoteSection() {
             }
           }
 
-          // Buscar nombre real del modelo
+          // Buscar nombre real del modelo (usando el codia almacenado)
           if (typedModels && typedModels.length > 0 && formData.modelo) {
             const modelData = typedModels.find(
               (item) =>
@@ -908,7 +909,10 @@ export default function CarQuoteSection() {
             }
           }
 
-          // Buscar precio real
+          // Obtener año seleccionado por el usuario
+          añoFinal = formData.año || "";
+
+          // Buscar precio real del año seleccionado
           if (typedYears && typedYears.length > 0 && formData.año) {
             const yearData = typedYears.find(
               (item) => Number(item.year) === Number(formData.año)
@@ -918,17 +922,29 @@ export default function CarQuoteSection() {
             }
           }
 
+          // Solo mostrar el botón si hay datos mínimos del vehículo
+          const hasVehicleData =
+            marcaNombre &&
+            modeloNombre &&
+            añoFinal &&
+            formData.nombre &&
+            formData.ubicacion;
+
+          if (!hasVehicleData) {
+            return null;
+          }
+
           return (
             <a
               href={generateWhatsAppUrl({
-                nombre: formData.nombre,
+                nombre: formData.nombre || "",
                 marca: marcaNombre,
                 modelo: modeloNombre,
                 grupo: grupoNombre,
-                año: formData.año,
+                año: añoFinal,
                 precio: precioFinal,
-                kilometraje: formData.kilometraje,
-                ubicacion: formData.ubicacion,
+                kilometraje: formData.kilometraje || "",
+                ubicacion: formData.ubicacion || "",
               })}
               target="_blank"
               rel="noopener noreferrer"

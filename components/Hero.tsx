@@ -99,7 +99,7 @@ export default function Hero() {
             `}>
               <Image
                 src="/hero_image_kars.png"
-                alt="Vehículo Kars "
+                alt="Vehículo Kars"
                 fill
                 className="object-contain object-left object-top scale-100 md:scale-75"
                 priority

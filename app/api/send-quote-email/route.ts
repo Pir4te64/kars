@@ -78,9 +78,9 @@ export async function POST(request: Request) {
     // Enviar email usando Resend
     // Siempre enviar copia a Contacto@kars.ar
     const { data, error } = await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL || "KARS <onboarding@resend.dev>",
+      from: process.env.RESEND_FROM_EMAIL || "KARS <info@kars.com.ar>",
       to: [email],
-      cc: ["Contacto@kars.ar"],
+      // cc: ["Contacto@kars.ar"],
       subject: `Cotización de ${marca} ${modelo} ${año} - KARS`,
       html,
     });

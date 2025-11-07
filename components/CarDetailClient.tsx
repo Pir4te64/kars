@@ -1,18 +1,21 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import type { VehiclePost } from '@/types'
-import { useVehiclePosts } from '@/hooks/useVehiclePosts'
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import type { VehiclePost } from "@/types";
+import { useVehiclePosts } from "@/hooks/useVehiclePosts";
 
 interface CarDetailClientProps {
-  carData: VehiclePost
-  featuredCars: VehiclePost[]
+  carData: VehiclePost;
+  featuredCars: VehiclePost[];
 }
 
-export default function CarDetailClient({ carData, featuredCars }: CarDetailClientProps) {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+export default function CarDetailClient({
+  carData,
+  featuredCars,
+}: CarDetailClientProps) {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { cars } = useVehiclePosts(1000);
 
   // Map the carData to car object
@@ -25,16 +28,11 @@ export default function CarDetailClient({ carData, featuredCars }: CarDetailClie
     mileage: carData.kilometraje,
     transmission: carData.transmision,
     price: carData.precio,
-    monthlyPayment: carData.cuota_mensual,
-    downPayment: carData.enganche,
-    downPaymentPercent: carData.enganche
-      ? carData.enganche.match(/\(([^)]+)\)/)?.[1]
-      : '',
     status: carData.disponible || carData.estado,
     images:
       carData.images_urls && carData.images_urls.length > 0
         ? carData.images_urls
-        : ['/hero_image.jpg'],
+        : ["/hero_image.jpg"],
     specs: {
       general: {
         marca: carData.marca,
@@ -52,23 +50,23 @@ export default function CarDetailClient({ carData, featuredCars }: CarDetailClie
       equipment: [],
     },
     seller: {
-      name: carData.vendedor_nombre || '',
-      title: 'Asesor Certificado',
+      name: carData.vendedor_nombre || "",
+      title: "Asesor Certificado",
       rating: Number(carData.vendedor_calificacion) || 0,
       reviews: 0,
     },
-  }
+  };
 
   // Prepare WhatsApp link
-  const sellerPhoneRaw = null
-  const fallbackPhone = '5491150186138'
+  const sellerPhoneRaw = null;
+  const fallbackPhone = "5491150186138";
   const normalize = (s: string | null) =>
-    s ? String(s).replace(/[^0-9+]/g, '') : null
-  const phone = normalize(sellerPhoneRaw) || fallbackPhone
+    s ? String(s).replace(/[^0-9+]/g, "") : null;
+  const phone = normalize(sellerPhoneRaw) || fallbackPhone;
   const message = encodeURIComponent(
     `Hola, estoy interesado en el auto: ${car.title} `
-  )
-  const waUrl = `https://wa.me/${phone}?text=${message}`
+  );
+  const waUrl = `https://wa.me/${phone}?text=${message}`;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -129,13 +127,13 @@ export default function CarDetailClient({ carData, featuredCars }: CarDetailClie
           <div className="lg:col-span-2">
             {/* Main Image */}
             <div className="relative mb-4">
-              <div className="relative w-full h-[500px]">
+              <div className="relative w-full h-[300px] sm:h-[400px] lg:h-[500px] bg-gray-100 rounded-lg">
                 <Image
                   src={car.images[currentImageIndex]}
                   alt={car.title}
                   fill
-                  className="object-cover rounded-lg"
-                  sizes="(max-width: 1024px) 100vw, 66vw"
+                  className="object-contain sm:object-cover rounded-lg"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 66vw"
                   priority={currentImageIndex === 0}
                 />
               </div>
@@ -152,8 +150,8 @@ export default function CarDetailClient({ carData, featuredCars }: CarDetailClie
                   onClick={() => setCurrentImageIndex(index)}
                   className={`w-24 h-24 rounded-lg overflow-hidden border-2 relative ${
                     currentImageIndex === index
-                      ? 'border-primary-600'
-                      : 'border-gray-200'
+                      ? "border-primary-600"
+                      : "border-gray-200"
                   }`}>
                   <Image
                     src={image}
@@ -172,7 +170,7 @@ export default function CarDetailClient({ carData, featuredCars }: CarDetailClie
             {/* Status Badge */}
             <div className="mb-3">
               <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full">
-                {car.status == 'Sí' ? 'Disponible' : 'No disponible'}
+                {car.status == "Sí" ? "Disponible" : "No disponible"}
               </span>
             </div>
 
@@ -211,8 +209,6 @@ export default function CarDetailClient({ carData, featuredCars }: CarDetailClie
               <div className="text-xs text-gray-500">Precio de contado</div>
             </div>
 
-        
-
             {/* Action Buttons */}
             <div className="mb-4 space-y-2">
               <a
@@ -235,58 +231,695 @@ export default function CarDetailClient({ carData, featuredCars }: CarDetailClie
                 Contactar vendedor
               </a>
             </div>
-
-            {/* Seller Information */}
-            <div className="pt-4 border-t">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-sm font-semibold text-gray-900">
-                    {car.seller.name}
-                  </div>
-                  <div className="text-xs text-gray-500">
-                    {car.seller.title}
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
-          {/* Características Section */}
+          {/* Descripción Section */}
+          {carData.descripcion && (
+            <div className="lg:col-span-2">
+              <h2 className="pb-2 mb-6 text-2xl font-bold text-gray-900 border-b border-primary-600">
+                Descripción
+              </h2>
+              <div className="p-4 rounded-lg bg-white">
+                <p className="text-gray-700 whitespace-pre-line">
+                  {carData.descripcion}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Características Detalladas Section */}
           <div className="lg:col-span-2">
             <h2 className="pb-2 mb-6 text-2xl font-bold text-gray-900 border-b border-primary-600">
-              Características
+              Características Detalladas
             </h2>
 
             <div className="grid gap-6 md:grid-cols-2">
               {/* Información General */}
-              <div className="p-4 rounded-lg">
+              <div className="p-4 rounded-lg bg-white">
                 <h3 className="mb-3 text-lg font-semibold text-gray-900">
-                  Información general
+                  Información General
                 </h3>
                 <div className="space-y-2">
-                  {Object.entries(car.specs.general).map(([key, value]) => (
-                    <div key={key} className="flex justify-between text-sm">
-                      <span className="text-gray-500 capitalize">{key}:</span>
-                      <span className="font-medium text-gray-900">{value}</span>
-                    </div>
-                  ))}
+                  {Object.entries(car.specs.general).map(
+                    ([key, value]) =>
+                      value && (
+                        <div key={key} className="flex justify-between text-sm">
+                          <span className="text-gray-500 capitalize">
+                            {key}:
+                          </span>
+                          <span className="font-medium text-gray-900">
+                            {value}
+                          </span>
+                        </div>
+                      )
+                  )}
                 </div>
               </div>
 
               {/* Motor */}
-              <div className="p-4 rounded-lg">
+              <div className="p-4 rounded-lg bg-white">
                 <h3 className="mb-3 text-lg font-semibold text-gray-900">
                   Motor
                 </h3>
                 <div className="space-y-2">
-                  {Object.entries(car.specs.engine).map(([key, value]) => (
-                    <div key={key} className="flex justify-between text-sm">
-                      <span className="text-gray-500 capitalize">{key}:</span>
-                      <span className="font-medium text-gray-900">{value}</span>
+                  {Object.entries(car.specs.engine).map(
+                    ([key, value]) =>
+                      value && (
+                        <div key={key} className="flex justify-between text-sm">
+                          <span className="text-gray-500 capitalize">
+                            {key}:
+                          </span>
+                          <span className="font-medium text-gray-900">
+                            {value}
+                          </span>
+                        </div>
+                      )
+                  )}
+                  {carData.alimentacion && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-500">Alimentación:</span>
+                      <span className="font-medium text-gray-900">
+                        {carData.alimentacion}
+                      </span>
                     </div>
-                  ))}
+                  )}
+                  {carData.cilindros && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-500">Cilindros:</span>
+                      <span className="font-medium text-gray-900">
+                        {carData.cilindros}
+                      </span>
+                    </div>
+                  )}
+                  {carData.valvulas && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-500">Válvulas:</span>
+                      <span className="font-medium text-gray-900">
+                        {carData.valvulas}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
+
+              {/* Transmisión y Chasis */}
+              {(carData.velocidades ||
+                carData.neumaticos ||
+                carData.frenos_delanteros ||
+                carData.frenos_traseros ||
+                carData.direccion_asistida ||
+                carData.freno_mano) && (
+                <div className="p-4 rounded-lg bg-white">
+                  <h3 className="mb-3 text-lg font-semibold text-gray-900">
+                    Transmisión y Chasis
+                  </h3>
+                  <div className="space-y-2">
+                    {carData.velocidades && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Velocidades:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.velocidades}
+                        </span>
+                      </div>
+                    )}
+                    {carData.neumaticos && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Neumáticos:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.neumaticos}
+                        </span>
+                      </div>
+                    )}
+                    {carData.frenos_delanteros && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Frenos Delanteros:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.frenos_delanteros}
+                        </span>
+                      </div>
+                    )}
+                    {carData.frenos_traseros && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Frenos Traseros:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.frenos_traseros}
+                        </span>
+                      </div>
+                    )}
+                    {carData.direccion_asistida && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Dirección Asistida:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.direccion_asistida}
+                        </span>
+                      </div>
+                    )}
+                    {carData.freno_mano && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Freno de Mano:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.freno_mano}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Confort */}
+              {(carData.aire_acondicionado ||
+                carData.asiento_delantero_ajuste_altura ||
+                carData.volante_regulable ||
+                carData.asientos_traseros ||
+                carData.tapizados ||
+                carData.cierre_puertas ||
+                carData.vidrios_delanteros ||
+                carData.vidrios_traseros ||
+                carData.espejos_exteriores ||
+                carData.espejo_interior_antideslumbrante ||
+                carData.faros_delanteros ||
+                carData.faros_antiniebla ||
+                carData.faros_tipo ||
+                carData.computadora_abordo ||
+                carData.control_velocidad_crucero ||
+                carData.limitador_velocidad ||
+                carData.llantas_aleacion ||
+                carData.techo_solar ||
+                carData.sensores_estacionamiento ||
+                carData.camara_estacionamiento ||
+                carData.asistencia_arranque_pendientes) && (
+                <div className="p-4 rounded-lg bg-white">
+                  <h3 className="mb-3 text-lg font-semibold text-gray-900">
+                    Confort
+                  </h3>
+                  <div className="space-y-2">
+                    {carData.aire_acondicionado && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Aire Acondicionado:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.aire_acondicionado}
+                        </span>
+                      </div>
+                    )}
+                    {carData.asiento_delantero_ajuste_altura && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Asiento Delantero Ajuste Altura:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.asiento_delantero_ajuste_altura}
+                        </span>
+                      </div>
+                    )}
+                    {carData.volante_regulable && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Volante Regulable:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.volante_regulable}
+                        </span>
+                      </div>
+                    )}
+                    {carData.asientos_traseros && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Asientos Traseros:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.asientos_traseros}
+                        </span>
+                      </div>
+                    )}
+                    {carData.tapizados && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Tapizados:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.tapizados}
+                        </span>
+                      </div>
+                    )}
+                    {carData.cierre_puertas && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Cierre de Puertas:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.cierre_puertas}
+                        </span>
+                      </div>
+                    )}
+                    {carData.vidrios_delanteros && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Vidrios Delanteros:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.vidrios_delanteros}
+                        </span>
+                      </div>
+                    )}
+                    {carData.vidrios_traseros && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Vidrios Traseros:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.vidrios_traseros}
+                        </span>
+                      </div>
+                    )}
+                    {carData.espejos_exteriores && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Espejos Exteriores:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.espejos_exteriores}
+                        </span>
+                      </div>
+                    )}
+                    {carData.espejo_interior_antideslumbrante && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Espejo Interior Antideslumbrante:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.espejo_interior_antideslumbrante}
+                        </span>
+                      </div>
+                    )}
+                    {carData.faros_delanteros && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Faros Delanteros:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.faros_delanteros}
+                        </span>
+                      </div>
+                    )}
+                    {carData.faros_antiniebla && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Faros Antiniebla:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.faros_antiniebla}
+                        </span>
+                      </div>
+                    )}
+                    {carData.faros_tipo && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Tipo de Faros:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.faros_tipo}
+                        </span>
+                      </div>
+                    )}
+                    {carData.computadora_abordo && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Computadora de a Bordo:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.computadora_abordo}
+                        </span>
+                      </div>
+                    )}
+                    {carData.control_velocidad_crucero && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Control de Velocidad Crucero:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.control_velocidad_crucero}
+                        </span>
+                      </div>
+                    )}
+                    {carData.limitador_velocidad && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Limitador de Velocidad:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.limitador_velocidad}
+                        </span>
+                      </div>
+                    )}
+                    {carData.llantas_aleacion && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Llantas de Aleación:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.llantas_aleacion}
+                        </span>
+                      </div>
+                    )}
+                    {carData.techo_solar && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Techo Solar:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.techo_solar}
+                        </span>
+                      </div>
+                    )}
+                    {carData.sensores_estacionamiento && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Sensores de Estacionamiento:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.sensores_estacionamiento}
+                        </span>
+                      </div>
+                    )}
+                    {carData.camara_estacionamiento && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Cámara de Estacionamiento:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.camara_estacionamiento}
+                        </span>
+                      </div>
+                    )}
+                    {carData.asistencia_arranque_pendientes && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Asistencia al Arranque en Pendientes:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.asistencia_arranque_pendientes}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Seguridad */}
+              {(carData.abs ||
+                carData.distribucion_electronica_frenado ||
+                carData.asistencia_frenada_emergencia ||
+                carData.airbags_delanteros ||
+                carData.airbags_cortina ||
+                carData.airbag_rodilla_conductor ||
+                carData.airbags_laterales ||
+                carData.cantidad_airbags ||
+                carData.alarma ||
+                carData.inmovilizador_motor ||
+                carData.anclaje_asientos_infantiles ||
+                carData.sensor_lluvia ||
+                carData.sensor_luz ||
+                carData.autobloqueo_puertas_velocidad ||
+                carData.control_estabilidad ||
+                carData.control_traccion ||
+                carData.control_descenso ||
+                carData.sensor_presion_neumaticos) && (
+                <div className="p-4 rounded-lg bg-white">
+                  <h3 className="mb-3 text-lg font-semibold text-gray-900">
+                    Seguridad
+                  </h3>
+                  <div className="space-y-2">
+                    {carData.abs && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">ABS:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.abs}
+                        </span>
+                      </div>
+                    )}
+                    {carData.distribucion_electronica_frenado && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Distribución Electrónica de Frenado:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.distribucion_electronica_frenado}
+                        </span>
+                      </div>
+                    )}
+                    {carData.asistencia_frenada_emergencia && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Asistencia en Frenada de Emergencia:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.asistencia_frenada_emergencia}
+                        </span>
+                      </div>
+                    )}
+                    {carData.airbags_delanteros && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Airbags Delanteros:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.airbags_delanteros}
+                        </span>
+                      </div>
+                    )}
+                    {carData.airbags_cortina && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Airbags Cortina:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.airbags_cortina}
+                        </span>
+                      </div>
+                    )}
+                    {carData.airbag_rodilla_conductor && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Airbag de Rodilla Conductor:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.airbag_rodilla_conductor}
+                        </span>
+                      </div>
+                    )}
+                    {carData.airbags_laterales && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Airbags Laterales:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.airbags_laterales}
+                        </span>
+                      </div>
+                    )}
+                    {carData.cantidad_airbags && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Cantidad de Airbags:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.cantidad_airbags}
+                        </span>
+                      </div>
+                    )}
+                    {carData.alarma && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Alarma:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.alarma}
+                        </span>
+                      </div>
+                    )}
+                    {carData.inmovilizador_motor && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Inmovilizador de Motor:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.inmovilizador_motor}
+                        </span>
+                      </div>
+                    )}
+                    {carData.anclaje_asientos_infantiles && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Anclaje para Asientos Infantiles:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.anclaje_asientos_infantiles}
+                        </span>
+                      </div>
+                    )}
+                    {carData.sensor_lluvia && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Sensor de Lluvia:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.sensor_lluvia}
+                        </span>
+                      </div>
+                    )}
+                    {carData.sensor_luz && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Sensor de Luz:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.sensor_luz}
+                        </span>
+                      </div>
+                    )}
+                    {carData.autobloqueo_puertas_velocidad && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Autobloqueo de Puertas con Velocidad:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.autobloqueo_puertas_velocidad}
+                        </span>
+                      </div>
+                    )}
+                    {carData.control_estabilidad && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Control de Estabilidad:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.control_estabilidad}
+                        </span>
+                      </div>
+                    )}
+                    {carData.control_traccion && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Control de Tracción:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.control_traccion}
+                        </span>
+                      </div>
+                    )}
+                    {carData.control_descenso && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Control de Descenso:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.control_descenso}
+                        </span>
+                      </div>
+                    )}
+                    {carData.sensor_presion_neumaticos && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Sensor de Presión de Neumáticos:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.sensor_presion_neumaticos}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Comunicación y Entretenimiento */}
+              {(carData.equipo_musica ||
+                carData.comandos_volante ||
+                carData.conexion_auxiliar ||
+                carData.conexion_usb ||
+                carData.bluetooth ||
+                carData.control_voz ||
+                carData.pantalla ||
+                carData.navegacion_gps ||
+                carData.apple_carplay ||
+                carData.android_auto) && (
+                <div className="p-4 rounded-lg bg-white">
+                  <h3 className="mb-3 text-lg font-semibold text-gray-900">
+                    Comunicación y Entretenimiento
+                  </h3>
+                  <div className="space-y-2">
+                    {carData.equipo_musica && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Equipo de Música:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.equipo_musica}
+                        </span>
+                      </div>
+                    )}
+                    {carData.comandos_volante && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Comandos al Volante:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.comandos_volante}
+                        </span>
+                      </div>
+                    )}
+                    {carData.conexion_auxiliar && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">
+                          Conexión Auxiliar:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {carData.conexion_auxiliar}
+                        </span>
+                      </div>
+                    )}
+                    {carData.conexion_usb && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Conexión USB:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.conexion_usb}
+                        </span>
+                      </div>
+                    )}
+                    {carData.bluetooth && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Bluetooth:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.bluetooth}
+                        </span>
+                      </div>
+                    )}
+                    {carData.control_voz && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Control por Voz:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.control_voz}
+                        </span>
+                      </div>
+                    )}
+                    {carData.pantalla && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Pantalla:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.pantalla}
+                        </span>
+                      </div>
+                    )}
+                    {carData.navegacion_gps && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Navegación GPS:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.navegacion_gps}
+                        </span>
+                      </div>
+                    )}
+                    {carData.apple_carplay && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Apple CarPlay:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.apple_carplay}
+                        </span>
+                      </div>
+                    )}
+                    {carData.android_auto && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-500">Android Auto:</span>
+                        <span className="font-medium text-gray-900">
+                          {carData.android_auto}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -351,5 +984,5 @@ export default function CarDetailClient({ carData, featuredCars }: CarDetailClie
         </div>
       </div>
     </div>
-  )
+  );
 }

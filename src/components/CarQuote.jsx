@@ -3,11 +3,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useCarInfo } from "../hooks/useCarInfo";
 import { useRouter } from "next/navigation";
+import { calculatePriceByKilometers } from "../../lib/car-quote";
 
 const CarQuote = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedCondition, setSelectedCondition] = useState("excelente");
   const [isModelDropdownOpen, setIsModelDropdownOpen] = useState(false);
+  const [yearError, setYearError] = useState(null);
   const modelDropdownRef = useRef(null);
   const router = useRouter();
   const {
@@ -105,7 +107,13 @@ const CarQuote = () => {
     if (years && years.length > 0 && formData.año) {
       const yearData = years.filter((item) => item.year == formData.año)[0];
       if (yearData) {
-        formData.precio = yearData.price;
+        // Aplicar la fórmula de depreciación por kilómetros
+        const basePrice = parseFloat(yearData.price);
+        const adjustedPrice = calculatePriceByKilometers(
+          basePrice,
+          formData.kilometraje
+        );
+        formData.precio = adjustedPrice.toString();
       }
     }
 
@@ -419,9 +427,16 @@ const CarQuote = () => {
           >
             <select
               value={formData.año}
-              onChange={(e) =>
-                setFormData({ ...formData, año: e.target.value })
-              }
+              onChange={(e) => {
+                const selectedYear = parseInt(e.target.value);
+                if (selectedYear && selectedYear < 2008) {
+                  setYearError("Lo sentimos, solo aceptamos vehículos del año 2008 en adelante.");
+                  setFormData({ ...formData, año: "" });
+                } else {
+                  setYearError(null);
+                  setFormData({ ...formData, año: e.target.value });
+                }
+              }}
               className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500"
               style={{
                 border: "none",
@@ -454,6 +469,14 @@ const CarQuote = () => {
             </div>
           </div>
         </div>
+
+        {/* Mensaje de error para año */}
+        {yearError && (
+          <div className="w-full max-w-4xl mx-auto bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-2" role="alert">
+            <strong className="font-bold">¡Atención! </strong>
+            <span className="block sm:inline">{yearError}</span>
+          </div>
+        )}
 
         {/* Second Row - Versión, Kilometraje, Button */}
         <div
@@ -526,40 +549,21 @@ const CarQuote = () => {
               opacity: 1,
             }}
           >
-            <select
+            <input
+              type="number"
+              min="0"
+              step="1"
+              placeholder="Kilometraje"
               value={formData.kilometraje}
               onChange={(e) =>
                 setFormData({ ...formData, kilometraje: e.target.value })
               }
-              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500"
+              className="w-full h-full focus:ring-2 focus:ring-blue-500 bg-transparent text-gray-500"
               style={{
                 border: "none",
                 outline: "none",
               }}
-            >
-              <option value="">Kilometraje</option>
-              <option value="0-10000">0 - 10,000 km</option>
-              <option value="10000-25000">10,000 - 25,000 km</option>
-              <option value="25000-50000">25,000 - 50,000 km</option>
-              <option value="50000-75000">50,000 - 75,000 km</option>
-              <option value="75000-100000">75,000 - 100,000 km</option>
-              <option value="100000+">Más de 100,000 km</option>
-            </select>
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-              <svg
-                className="w-5 h-5 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </div>
+            />
           </div>
 
           {/* Button */}

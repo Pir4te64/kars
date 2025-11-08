@@ -5,6 +5,7 @@ interface QuoteEmailData {
   grupo: string;
   año: string;
   precio: string;
+  cotizacionDolar?: number;
   kilometraje: string;
   ubicacion: string;
 }
@@ -36,12 +37,18 @@ export function generateWhatsAppUrl(
   const kilometraje = data.kilometraje || "No especificado";
   const ubicacion = data.ubicacion || "";
 
+  // Formatear precio en USD para WhatsApp
+  const precioNum = parseFloat(precio.toString());
+  const precioFormateado = !isNaN(precioNum) && precioNum > 0
+    ? `USD $${precioNum.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`
+    : precio;
+
   // Construir el mensaje con los datos de la cotización
   let message = `Hola! Quiero consultar sobre mi cotización:\n\n`;
   message += `👤 Nombre: ${nombre}\n`;
   message += `🚗 Vehículo: ${marca} ${modelo}${grupo ? ` ${grupo}` : ""}\n`;
   message += `📅 Año: ${año}\n`;
-  message += `💰 Precio ofrecido: ${precio}\n`;
+  message += `💰 Precio ofrecido: ${precioFormateado}\n`;
   message += `📏 Kilometraje: ${kilometraje}\n`;
   message += `📍 Ubicación: ${ubicacion}\n\n`;
   message += `¿Podemos agendar una visita para evaluar mi vehículo?`;
@@ -57,10 +64,45 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
   const modelo = escapeHtml(data.modelo || "");
   const grupo = data.grupo ? escapeHtml(data.grupo) : "";
   const año = escapeHtml(data.año || "");
+  const precioRaw = data.precio ? parseFloat(data.precio.toString()) : 0;
   const precio = data.precio ? escapeHtml(data.precio) : "Consultar";
-  const kilometraje = data.kilometraje
-    ? escapeHtml(data.kilometraje)
-    : "No especificado";
+
+  // Formatear precio en USD
+  const precioUSD = precioRaw > 0
+    ? `USD $${precioRaw.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`
+    : "Consultar";
+
+  // Convertir a ARS usando la cotización recibida o valor por defecto
+  const cotizacionDolar = data.cotizacionDolar || 1200; // Usar cotización recibida o fallback
+
+  // Aplicar la misma lógica que en la página de resultado:
+  // 1. Restar 17% del precio
+  // 2. Multiplicar por 1000
+  const precioBasePesos = precioRaw > 0
+    ? (precioRaw * 0.87 * 1000) // Mismo cálculo que obtenerPrecioBasePesos()
+    : 0;
+
+  // Calcular los 3 tipos de venta (igual que en resultado/page.tsx)
+  const precioConsignacion = precioBasePesos; // 100% - Mejor precio
+  const precioPermuta = precioBasePesos * 0.95; // 95% - Menos 5%
+  const precioInmediata = precioBasePesos * 0.90; // 90% - Menos 10%
+
+  // Formatear el precio de consignación (mejor precio) para el email
+  const precioARS = precioBasePesos > 0
+    ? precioConsignacion.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+    : "Consultar";
+
+  // Precio en USD de consignación
+  const precioUSDConsignacion = precioBasePesos > 0 && cotizacionDolar > 0
+    ? (precioConsignacion / cotizacionDolar).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })
+    : "0";
+
+  // Formatear kilometraje
+  const kmRaw = data.kilometraje ? parseFloat(data.kilometraje.toString()) : 0;
+  const kilometraje = !isNaN(kmRaw) && kmRaw > 0
+    ? `${kmRaw.toLocaleString('es-AR')} km`
+    : (data.kilometraje ? escapeHtml(data.kilometraje) : "No especificado");
+
   const ubicacion = escapeHtml(data.ubicacion || "");
 
   // Construir el título con los datos reales
@@ -196,20 +238,116 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
                     <tr>
                         <td style="padding: 40px 30px; text-align: center; background-color: #ffffff;">
                             <h3 style="margin: 0 0 20px; color: #1a1a1a; font-size: 22px; font-weight: 600;">
-                                La oferta para tu auto:
+                                Opciones de venta para tu auto:
                             </h3>
-                            
-                            <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border-radius: 12px; padding: 30px; margin: 0 0 20px;">
-                                <p style="margin: 0 0 10px; color: #cccccc; font-size: 16px;">
-                                    Pago inmediato:
-                                </p>
-                                <p style="margin: 0; color: #ffffff; font-size: 42px; font-weight: 700; letter-spacing: -1px;">
-                                    ${precio || "Consultar"}
-                                </p>
-                                <p style="margin: 15px 0 0; color: #4CAF50; font-size: 16px; font-weight: 600;">
-                                    ✓ Excelentes condiciones
-                                </p>
-                            </div>
+
+                            <!-- Consignación -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border-radius: 12px; margin: 0 0 15px;">
+                                <tr>
+                                    <td style="padding: 25px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <tr>
+                                                <td style="padding-bottom: 15px;">
+                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                        <tr>
+                                                            <td style="color: #ffffff; font-size: 18px; font-weight: 700;">Consignación</td>
+                                                            <td align="right" style="background-color: rgba(255,255,255,0.3); color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; width: auto;">Mejor precio</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-bottom: 5px; color: #cccccc; font-size: 14px;">Precio en Pesos (ARS):</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="color: #ffffff; font-size: 36px; font-weight: 700; letter-spacing: -1px;">
+                                                    $${precioARS}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-top: 10px; color: #999999; font-size: 16px;">
+                                                    USD $${precioUSDConsignacion}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-top: 15px; color: #ffffff; font-size: 13px; opacity: 0.9;">
+                                                    Precio completo, pagas al vender
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Permuta -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); border-radius: 12px; margin: 0 0 15px;">
+                                <tr>
+                                    <td style="padding: 20px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <tr>
+                                                <td style="padding-bottom: 10px;">
+                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                        <tr>
+                                                            <td style="color: #ffffff; font-size: 16px; font-weight: 700;">Permuta</td>
+                                                            <td align="right" style="background-color: rgba(255,255,255,0.3); color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; width: auto;">-5%</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="color: #ffffff; font-size: 24px; font-weight: 700;">
+                                                    $${precioPermuta.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-top: 5px; color: #999999; font-size: 14px;">
+                                                    USD $${(precioPermuta / cotizacionDolar).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-top: 10px; color: #ffffff; font-size: 12px; opacity: 0.9;">
+                                                    Cambia tu auto por otro
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Compra Inmediata -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); border-radius: 12px; margin: 0 0 20px;">
+                                <tr>
+                                    <td style="padding: 20px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <tr>
+                                                <td style="padding-bottom: 10px;">
+                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                        <tr>
+                                                            <td style="color: #ffffff; font-size: 16px; font-weight: 700;">Compra inmediata</td>
+                                                            <td align="right" style="background-color: rgba(255,255,255,0.3); color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; width: auto;">-10%</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="color: #ffffff; font-size: 24px; font-weight: 700;">
+                                                    $${precioInmediata.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-top: 5px; color: #999999; font-size: 14px;">
+                                                    USD $${(precioInmediata / cotizacionDolar).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-top: 10px; color: #ffffff; font-size: 12px; opacity: 0.9;">
+                                                    Dinero en el momento
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
                             <div style="background-color: #fff3cd; border-left: 4px solid #ff9800; padding: 15px; margin: 0 0 30px; border-radius: 4px;">
                                 <p style="margin: 0; color: #856404; font-size: 15px; font-weight: 600;">
                                     ⚠️ Oferta válida solo por 7 días

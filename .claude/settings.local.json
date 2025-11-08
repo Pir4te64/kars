@@ -21,7 +21,8 @@
       "Bash(for month in 05 06 07 08 09)",
       "Bash(do echo \"Testing 2024/$month:\")",
       "Bash(done)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(node -e:*)"
     ],
     "deny": [],
     "ask": []

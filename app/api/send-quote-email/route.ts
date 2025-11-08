@@ -26,6 +26,7 @@ export async function POST(request: Request) {
       grupo,
       año,
       precio,
+      cotizacionDolar,
       kilometraje,
       ubicacion,
     } = body;
@@ -71,6 +72,7 @@ export async function POST(request: Request) {
       grupo: grupo ? String(grupo) : "",
       año: String(año || ""),
       precio: precio ? String(precio) : "Consultar",
+      cotizacionDolar: cotizacionDolar ? Number(cotizacionDolar) : 1200,
       kilometraje: kilometraje ? String(kilometraje) : "No especificado",
       ubicacion: String(ubicacion || ""),
     });

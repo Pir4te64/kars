@@ -18,6 +18,7 @@ interface FormData {
   precio: string;
   nombre: string;
   email: string;
+  telefono: string;
   ubicacion: string;
 }
 
@@ -72,6 +73,7 @@ export default function CarQuoteSection() {
     kilometraje: "",
     nombre: "",
     email: "",
+    telefono: "",
     ubicacion: "",
   });
 
@@ -282,6 +284,40 @@ export default function CarQuoteSection() {
     // Guardar en localStorage
     localStorage.removeItem("quoteData");
     localStorage.setItem("quoteData", JSON.stringify(updatedFormData));
+
+    // Guardar lead en la base de datos
+    try {
+      console.log("🔄 Guardando lead...");
+      const leadResponse = await fetch("/api/leads", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nombre: updatedFormData.nombre,
+          email: updatedFormData.email,
+          telefono: updatedFormData.telefono,
+          ubicacion: updatedFormData.ubicacion,
+          marca: updatedFormData.marca,
+          modelo: updatedFormData.modelo,
+          grupo: updatedFormData.grupo,
+          año: updatedFormData.año,
+          kilometraje: updatedFormData.kilometraje,
+          precio: updatedFormData.precio,
+        }),
+      });
+
+      const leadData = await leadResponse.json();
+
+      if (!leadResponse.ok) {
+        console.error("❌ Error al guardar el lead:", leadData);
+      } else {
+        console.log("✅ Lead guardado exitosamente:", leadData);
+      }
+    } catch (error) {
+      console.error("❌ Error saving lead:", error);
+      // No bloqueamos el flujo si falla el guardado del lead
+    }
 
     // Enviar email
     try {
@@ -828,6 +864,33 @@ export default function CarQuoteSection() {
           {formErrors.email && (
             <p className="text-xs text-red-500 mt-1">{formErrors.email}</p>
           )}
+        </div>
+
+        {/* Teléfono */}
+        <div className="flex flex-col w-full md:flex-1 md:max-w-xs">
+          <label className="font-medium text-sm text-slate-700 mb-1">
+            Teléfono <span style={{ color: "#ef4444" }}>*</span>
+          </label>
+          <div
+            className="relative w-full"
+            style={{
+              height: "48px",
+              borderRadius: "12px",
+              border: "1px solid rgba(148, 163, 184, 0.3)",
+              backgroundColor: "rgba(248, 250, 252, 0.5)",
+            }}>
+            <input
+              type="tel"
+              placeholder="Teléfono"
+              value={formData.telefono}
+              onChange={(e) => {
+                setFormData({ ...formData, telefono: e.target.value });
+              }}
+              className="w-full h-full bg-transparent text-gray-500 text-sm px-3"
+              style={{ border: "none", outline: "none" }}
+              required
+            />
+          </div>
         </div>
 
         {/* Ubicación */}

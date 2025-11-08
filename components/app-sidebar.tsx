@@ -1,7 +1,7 @@
 "use client"
 
 import type * as React from "react"
-import { Car, Plus, List, X } from "lucide-react"
+import { Car, Plus, List, X, Users } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
 import { Sidebar, SidebarContent, SidebarHeader, SidebarRail, useSidebar } from "@/components/ui/sidebar"
@@ -24,6 +24,19 @@ const data = {
           title: "Crear POST",
           url: "/admin/posts/create",
           icon: Plus,
+        },
+      ],
+    },
+    {
+      title: "LEADS",
+      url: "#",
+      icon: Users,
+      isActive: true,
+      items: [
+        {
+          title: "Leads del Cotizador",
+          url: "/admin/leads",
+          icon: Users,
         },
       ],
     },

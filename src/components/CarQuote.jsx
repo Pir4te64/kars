@@ -36,6 +36,7 @@ const CarQuote = () => {
     precio: "",
     nombre: "",
     email: "",
+    telefono: "",
     ubicacion: "",
   });
 
@@ -1341,6 +1342,51 @@ const CarQuote = () => {
                 />
               </svg>
             </div>
+          </div>
+        </div>
+
+        {/* Teléfono */}
+        <div className="flex flex-col w-full md:w-80">
+          <label
+            style={{
+              fontFamily: "Poppins",
+              fontWeight: 500,
+              fontSize: "14px",
+              color: "#0D0D0D",
+              marginBottom: "8px",
+            }}
+          >
+            Teléfono
+          </label>
+          <div
+            className="relative"
+            style={{
+              width: "300px",
+              height: "56px",
+              paddingTop: "12px",
+              paddingRight: "16px",
+              paddingBottom: "12px",
+              paddingLeft: "16px",
+              borderRadius: "7px",
+              border: "1px solid #0D0D0D",
+              backgroundColor: "white",
+            }}
+          >
+            <input
+              type="tel"
+              placeholder="Teléfono"
+              value={formData.telefono}
+              onChange={(e) =>
+                setFormData({ ...formData, telefono: e.target.value })
+              }
+              className="w-full h-full bg-transparent text-gray-500"
+              style={{
+                border: "none",
+                outline: "none",
+                fontFamily: "Poppins",
+                fontSize: "14px",
+              }}
+            />
           </div>
         </div>
 

@@ -22,7 +22,8 @@
       "Bash(do echo \"Testing 2024/$month:\")",
       "Bash(done)",
       "WebSearch",
-      "Bash(node -e:*)"
+      "Bash(node -e:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

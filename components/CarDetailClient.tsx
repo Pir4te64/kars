@@ -59,7 +59,7 @@ export default function CarDetailClient({
 
   // Prepare WhatsApp link
   const sellerPhoneRaw = null;
-  const fallbackPhone = "5491150186138";
+  const fallbackPhone = "5491121596100"; // Número de la agencia
   const normalize = (s: string | null) =>
     s ? String(s).replace(/[^0-9+]/g, "") : null;
   const phone = normalize(sellerPhoneRaw) || fallbackPhone;

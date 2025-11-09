@@ -121,13 +121,13 @@ export default function CarDetailClient({
         </div>
       </div>
 
-      <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div className="grid gap-8 lg:grid-cols-3">
+      <div className="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8 sm:py-8">
+        <div className="grid gap-6 lg:gap-8 lg:grid-cols-3">
           {/* Left Side - Image Gallery (2 columns) */}
           <div className="lg:col-span-2">
             {/* Main Image */}
-            <div className="relative mb-4">
-              <div className="relative w-full h-[300px] sm:h-[400px] lg:h-[500px] bg-gray-100 rounded-lg">
+            <div className="relative mb-3 sm:mb-4">
+              <div className="relative w-full h-[280px] sm:h-[400px] lg:h-[500px] bg-gray-100 rounded-lg">
                 <Image
                   src={car.images[currentImageIndex]}
                   alt={car.title}
@@ -143,12 +143,12 @@ export default function CarDetailClient({
             </div>
 
             {/* Thumbnail Gallery */}
-            <div className="flex space-x-2">
+            <div className="flex gap-2 overflow-x-auto pb-2 sm:gap-3">
               {car.images.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentImageIndex(index)}
-                  className={`w-24 h-24 rounded-lg overflow-hidden border-2 relative ${
+                  className={`flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden border-2 relative ${
                     currentImageIndex === index
                       ? "border-primary-600"
                       : "border-gray-200"
@@ -168,54 +168,54 @@ export default function CarDetailClient({
           {/* Right Side - Car Details & Actions (1 column) */}
           <div className="lg:col-span-1">
             {/* Status Badge */}
-            <div className="mb-3">
-              <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full">
+            <div className="mb-2 sm:mb-3">
+              <span className="inline-flex items-center px-3 py-1.5 text-xs sm:text-sm font-medium text-green-800 bg-green-100 rounded-full">
                 {car.status == "Sí" ? "Disponible" : "No disponible"}
               </span>
             </div>
 
             {/* Car Title */}
-            <h1 className="mb-3 text-2xl font-bold text-gray-900">
+            <h1 className="mb-3 sm:mb-4 text-xl sm:text-2xl font-bold text-gray-900 leading-tight">
               {car.title}
             </h1>
 
             {/* Key Specs */}
-            <div className="flex mb-4 space-x-4">
-              <div className="text-center">
-                <div className="text-lg font-bold text-gray-900">
+            <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-5">
+              <div className="text-center bg-gray-50 rounded-lg p-3">
+                <div className="text-base sm:text-lg font-bold text-gray-900">
                   {car.year}
                 </div>
-                <div className="text-xs text-gray-500">Año</div>
+                <div className="text-xs text-gray-500 mt-1">Año</div>
               </div>
-              <div className="text-center">
-                <div className="text-lg font-bold text-gray-900">
+              <div className="text-center bg-gray-50 rounded-lg p-3">
+                <div className="text-base sm:text-lg font-bold text-gray-900 truncate">
                   {car.mileage}
                 </div>
-                <div className="text-xs text-gray-500">km</div>
+                <div className="text-xs text-gray-500 mt-1">km</div>
               </div>
-              <div className="text-center">
-                <div className="text-lg font-bold text-gray-900">
+              <div className="text-center bg-gray-50 rounded-lg p-3">
+                <div className="text-sm sm:text-base font-bold text-gray-900">
                   {car.transmission}
                 </div>
-                <div className="text-xs text-gray-500">Transmisión</div>
+                <div className="text-xs text-gray-500 mt-1">Trans.</div>
               </div>
             </div>
 
             {/* Price */}
-            <div className="mb-4">
-              <div className="text-3xl font-bold text-primary-600">
+            <div className="mb-4 sm:mb-5 bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-100">
+              <div className="text-2xl sm:text-3xl font-bold text-primary-600">
                 {car.price}
               </div>
-              <div className="text-xs text-gray-500">Precio de contado</div>
+              <div className="text-xs sm:text-sm text-gray-600 mt-1">Precio de contado</div>
             </div>
 
             {/* Action Buttons */}
-            <div className="mb-4 space-y-2">
+            <div className="mb-4 sm:mb-6 space-y-3">
               <a
                 href={waUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center w-full px-4 py-2 text-sm font-semibold text-white transition-colors bg-gray-900 rounded-lg hover:bg-gray-800">
+                className="flex items-center justify-center w-full px-4 py-3 sm:py-3.5 text-sm sm:text-base font-semibold text-white transition-all duration-200 bg-gray-900 rounded-lg hover:bg-gray-800 hover:shadow-lg active:scale-95">
                 <svg
                   className="w-4 h-4 mr-2"
                   fill="none"
@@ -277,11 +277,14 @@ export default function CarDetailClient({
               </div>
 
               {/* Motor */}
-              <div className="p-4 rounded-lg bg-white">
-                <h3 className="mb-3 text-lg font-semibold text-gray-900">
+              <div className="p-4 sm:p-5 rounded-lg bg-gradient-to-br from-gray-50 to-white border border-gray-100 shadow-sm">
+                <h3 className="mb-3 sm:mb-4 text-base sm:text-lg font-semibold text-gray-900 flex items-center">
+                  <svg className="w-5 h-5 mr-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
                   Motor
                 </h3>
-                <div className="space-y-2">
+                <div className="space-y-2.5">
                   {Object.entries(car.specs.engine).map(
                     ([key, value]) =>
                       value && (

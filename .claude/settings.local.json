@@ -23,7 +23,9 @@
       "Bash(done)",
       "WebSearch",
       "Bash(node -e:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
     "ask": []

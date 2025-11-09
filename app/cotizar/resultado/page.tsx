@@ -217,15 +217,15 @@ export default function QuoteResultPage() {
   }
 
   return (
-    <div className="h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50">
       <Navbar />
-      <div className="w-full h-full px-4 pt-16 pb-8 mx-auto max-w-7xl flex flex-col">
+      <div className="w-full px-4 pt-8 pb-16 mx-auto max-w-7xl">
         {/* Header */}
-        <div className="text-center mb-4">
-          <h1 className="text-xl md:text-2xl font-black text-slate-800 mb-0.5">
+        <div className="text-center mb-6">
+          <h1 className="text-2xl md:text-3xl font-black text-slate-800 mb-2">
             Tu cotización está lista
           </h1>
-          <p className="text-xs text-slate-600">
+          <p className="text-sm text-slate-600">
             Basada en los datos de tu vehículo
           </p>
         </div>
@@ -233,7 +233,7 @@ export default function QuoteResultPage() {
         {/* Main content card */}
         <div
           ref={cardRef}
-          className="flex-1 mx-auto w-full max-w-6xl bg-gradient-to-br from-white via-slate-50 to-white rounded-2xl shadow-xl overflow-hidden flex flex-col mb-8"
+          className="mx-auto w-full max-w-6xl bg-gradient-to-br from-white via-slate-50 to-white rounded-2xl shadow-xl overflow-visible flex flex-col"
         >
           {/* Estimated Value Header */}
           <div className="bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 py-3 px-4">
@@ -264,12 +264,12 @@ export default function QuoteResultPage() {
             </div>
           </div>
 
-          <div className="flex-1 p-4 md:p-6 overflow-hidden">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full">
+          <div className="flex-1 p-4 md:p-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {/* LEFT COLUMN - Vehicle Details & Price */}
-              <div className="flex flex-col">
+              <div className="flex flex-col space-y-4">
                 {/* Vehicle Summary */}
-                <div className="mb-3">
+                <div>
                   <h3 className="text-sm font-black text-slate-800 mb-2">
                     Detalles de tu vehículo
                   </h3>
@@ -311,12 +311,12 @@ export default function QuoteResultPage() {
                 </div>
 
                 {/* Tipos de Venta */}
-                <div className="flex-1 overflow-y-auto">
+                <div>
                   <h3 className="text-sm font-black text-slate-800 mb-2">
                     Opciones de venta
                   </h3>
 
-                  <div className="grid grid-cols-1 gap-2">
+                  <div className="grid grid-cols-1 gap-3">
                     {/* Consignación - Precio Normal */}
                     <div className="bg-gradient-to-br from-slate-700 via-slate-600 to-slate-700 rounded-lg p-3 text-white shadow-md">
                       <div className="flex items-center justify-between mb-2">

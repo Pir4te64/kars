@@ -121,34 +121,34 @@ export default function CarDetailClient({
         </div>
       </div>
 
-      <div className="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8 sm:py-8">
-        <div className="grid gap-6 lg:gap-8 lg:grid-cols-3">
+      <div className="px-4 py-4 mx-auto max-w-7xl sm:px-6 lg:px-8 sm:py-8">
+        <div className="flex flex-col lg:grid lg:gap-8 lg:grid-cols-3 space-y-6 lg:space-y-0">
           {/* Left Side - Image Gallery (2 columns) */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 w-full">
             {/* Main Image */}
-            <div className="relative mb-3 sm:mb-4">
-              <div className="relative w-full h-[280px] sm:h-[400px] lg:h-[500px] bg-gray-100 rounded-lg">
+            <div className="relative mb-3 sm:mb-4 w-full">
+              <div className="relative w-full h-[250px] sm:h-[400px] lg:h-[500px] bg-gray-100 rounded-lg overflow-hidden">
                 <Image
                   src={car.images[currentImageIndex]}
                   alt={car.title}
                   fill
-                  className="object-contain sm:object-cover rounded-lg"
+                  className="object-contain rounded-lg"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 66vw"
                   priority={currentImageIndex === 0}
                 />
               </div>
-              <div className="absolute px-3 py-1 text-sm text-white bg-black bg-opacity-75 rounded-full bottom-4 left-4">
+              <div className="absolute px-2 py-1 text-xs sm:text-sm text-white bg-black bg-opacity-75 rounded-full bottom-3 left-3">
                 {currentImageIndex + 1}/{car.images.length}
               </div>
             </div>
 
             {/* Thumbnail Gallery */}
-            <div className="flex gap-2 overflow-x-auto pb-2 sm:gap-3">
+            <div className="flex gap-2 overflow-x-auto pb-2 sm:gap-3 scrollbar-hide">
               {car.images.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentImageIndex(index)}
-                  className={`flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden border-2 relative ${
+                  className={`flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg overflow-hidden border-2 relative ${
                     currentImageIndex === index
                       ? "border-primary-600"
                       : "border-gray-200"
@@ -166,7 +166,7 @@ export default function CarDetailClient({
           </div>
 
           {/* Right Side - Car Details & Actions (1 column) */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 w-full">
             {/* Status Badge */}
             <div className="mb-2 sm:mb-3">
               <span className="inline-flex items-center px-3 py-1.5 text-xs sm:text-sm font-medium text-green-800 bg-green-100 rounded-full">
@@ -175,35 +175,35 @@ export default function CarDetailClient({
             </div>
 
             {/* Car Title */}
-            <h1 className="mb-3 sm:mb-4 text-xl sm:text-2xl font-bold text-gray-900 leading-tight">
+            <h1 className="mb-3 sm:mb-4 text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 leading-tight">
               {car.title}
             </h1>
 
             {/* Key Specs */}
-            <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-5">
-              <div className="text-center bg-gray-50 rounded-lg p-3">
-                <div className="text-base sm:text-lg font-bold text-gray-900">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 lg:gap-4 mb-4 sm:mb-5">
+              <div className="text-center bg-gray-50 rounded-lg p-2 sm:p-3">
+                <div className="text-sm sm:text-base lg:text-lg font-bold text-gray-900">
                   {car.year}
                 </div>
-                <div className="text-xs text-gray-500 mt-1">Año</div>
+                <div className="text-xs text-gray-500 mt-0.5 sm:mt-1">Año</div>
               </div>
-              <div className="text-center bg-gray-50 rounded-lg p-3">
-                <div className="text-base sm:text-lg font-bold text-gray-900 truncate">
+              <div className="text-center bg-gray-50 rounded-lg p-2 sm:p-3">
+                <div className="text-sm sm:text-base lg:text-lg font-bold text-gray-900 truncate">
                   {car.mileage}
                 </div>
-                <div className="text-xs text-gray-500 mt-1">km</div>
+                <div className="text-xs text-gray-500 mt-0.5 sm:mt-1">km</div>
               </div>
-              <div className="text-center bg-gray-50 rounded-lg p-3">
-                <div className="text-sm sm:text-base font-bold text-gray-900">
+              <div className="text-center bg-gray-50 rounded-lg p-2 sm:p-3">
+                <div className="text-xs sm:text-sm lg:text-base font-bold text-gray-900">
                   {car.transmission}
                 </div>
-                <div className="text-xs text-gray-500 mt-1">Trans.</div>
+                <div className="text-xs text-gray-500 mt-0.5 sm:mt-1">Trans.</div>
               </div>
             </div>
 
             {/* Price */}
-            <div className="mb-4 sm:mb-5 bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-100">
-              <div className="text-2xl sm:text-3xl font-bold text-primary-600">
+            <div className="mb-4 sm:mb-5 bg-gradient-to-r from-blue-50 to-indigo-50 p-3 sm:p-4 rounded-lg border border-blue-100">
+              <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-primary-600">
                 {car.price}
               </div>
               <div className="text-xs sm:text-sm text-gray-600 mt-1">Precio de contado</div>
@@ -215,7 +215,7 @@ export default function CarDetailClient({
                 href={waUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center w-full px-4 py-3 sm:py-3.5 text-sm sm:text-base font-semibold text-white transition-all duration-200 bg-gray-900 rounded-lg hover:bg-gray-800 hover:shadow-lg active:scale-95">
+                className="flex items-center justify-center w-full px-4 py-2.5 sm:py-3 text-sm sm:text-base font-semibold text-white transition-all duration-200 bg-gray-900 rounded-lg hover:bg-gray-800 hover:shadow-lg active:scale-95">
                 <svg
                   className="w-4 h-4 mr-2"
                   fill="none"
@@ -235,12 +235,12 @@ export default function CarDetailClient({
 
           {/* Descripción Section */}
           {carData.descripcion && (
-            <div className="lg:col-span-2">
-              <h2 className="pb-2 mb-6 text-2xl font-bold text-gray-900 border-b border-primary-600">
+            <div className="lg:col-span-3 w-full">
+              <h2 className="pb-2 mb-4 sm:mb-6 text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 border-b border-primary-600">
                 Descripción
               </h2>
-              <div className="p-4 rounded-lg bg-white">
-                <p className="text-gray-700 whitespace-pre-line">
+              <div className="p-3 sm:p-4 rounded-lg bg-white shadow-sm">
+                <p className="text-sm sm:text-base text-gray-700 whitespace-pre-line leading-relaxed">
                   {carData.descripcion}
                 </p>
               </div>
@@ -248,22 +248,22 @@ export default function CarDetailClient({
           )}
 
           {/* Características Detalladas Section */}
-          <div className="lg:col-span-2">
-            <h2 className="pb-2 mb-6 text-2xl font-bold text-gray-900 border-b border-primary-600">
+          <div className="lg:col-span-3 w-full">
+            <h2 className="pb-2 mb-4 sm:mb-6 text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 border-b border-primary-600">
               Características Detalladas
             </h2>
 
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2">
               {/* Información General */}
-              <div className="p-4 rounded-lg bg-white">
-                <h3 className="mb-3 text-lg font-semibold text-gray-900">
+              <div className="p-3 sm:p-4 rounded-lg bg-white shadow-sm">
+                <h3 className="mb-2 sm:mb-3 text-base sm:text-lg font-semibold text-gray-900">
                   Información General
                 </h3>
-                <div className="space-y-2">
+                <div className="space-y-1.5 sm:space-y-2">
                   {Object.entries(car.specs.general).map(
                     ([key, value]) =>
                       value && (
-                        <div key={key} className="flex justify-between text-sm">
+                        <div key={key} className="flex justify-between text-xs sm:text-sm">
                           <span className="text-gray-500 capitalize">
                             {key}:
                           </span>
@@ -277,18 +277,18 @@ export default function CarDetailClient({
               </div>
 
               {/* Motor */}
-              <div className="p-4 sm:p-5 rounded-lg bg-gradient-to-br from-gray-50 to-white border border-gray-100 shadow-sm">
-                <h3 className="mb-3 sm:mb-4 text-base sm:text-lg font-semibold text-gray-900 flex items-center">
-                  <svg className="w-5 h-5 mr-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="p-3 sm:p-4 lg:p-5 rounded-lg bg-gradient-to-br from-gray-50 to-white border border-gray-100 shadow-sm">
+                <h3 className="mb-2 sm:mb-3 lg:mb-4 text-base sm:text-lg font-semibold text-gray-900 flex items-center">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                   Motor
                 </h3>
-                <div className="space-y-2.5">
+                <div className="space-y-1.5 sm:space-y-2.5">
                   {Object.entries(car.specs.engine).map(
                     ([key, value]) =>
                       value && (
-                        <div key={key} className="flex justify-between text-sm">
+                        <div key={key} className="flex justify-between text-xs sm:text-sm">
                           <span className="text-gray-500 capitalize">
                             {key}:
                           </span>
@@ -299,7 +299,7 @@ export default function CarDetailClient({
                       )
                   )}
                   {carData.alimentacion && (
-                    <div className="flex justify-between text-sm">
+                    <div className="flex justify-between text-xs sm:text-sm">
                       <span className="text-gray-500">Alimentación:</span>
                       <span className="font-medium text-gray-900">
                         {carData.alimentacion}
@@ -307,7 +307,7 @@ export default function CarDetailClient({
                     </div>
                   )}
                   {carData.cilindros && (
-                    <div className="flex justify-between text-sm">
+                    <div className="flex justify-between text-xs sm:text-sm">
                       <span className="text-gray-500">Cilindros:</span>
                       <span className="font-medium text-gray-900">
                         {carData.cilindros}
@@ -315,7 +315,7 @@ export default function CarDetailClient({
                     </div>
                   )}
                   {carData.valvulas && (
-                    <div className="flex justify-between text-sm">
+                    <div className="flex justify-between text-xs sm:text-sm">
                       <span className="text-gray-500">Válvulas:</span>
                       <span className="font-medium text-gray-900">
                         {carData.valvulas}
@@ -332,13 +332,13 @@ export default function CarDetailClient({
                 carData.frenos_traseros ||
                 carData.direccion_asistida ||
                 carData.freno_mano) && (
-                <div className="p-4 rounded-lg bg-white">
-                  <h3 className="mb-3 text-lg font-semibold text-gray-900">
+                <div className="p-3 sm:p-4 rounded-lg bg-white shadow-sm">
+                  <h3 className="mb-2 sm:mb-3 text-base sm:text-lg font-semibold text-gray-900">
                     Transmisión y Chasis
                   </h3>
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     {carData.velocidades && (
-                      <div className="flex justify-between text-sm">
+                      <div className="flex justify-between text-xs sm:text-sm">
                         <span className="text-gray-500">Velocidades:</span>
                         <span className="font-medium text-gray-900">
                           {carData.velocidades}
@@ -415,11 +415,11 @@ export default function CarDetailClient({
                 carData.sensores_estacionamiento ||
                 carData.camara_estacionamiento ||
                 carData.asistencia_arranque_pendientes) && (
-                <div className="p-4 rounded-lg bg-white">
-                  <h3 className="mb-3 text-lg font-semibold text-gray-900">
+                <div className="p-3 sm:p-4 rounded-lg bg-white shadow-sm">
+                  <h3 className="mb-2 sm:mb-3 text-base sm:text-lg font-semibold text-gray-900">
                     Confort
                   </h3>
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     {carData.aire_acondicionado && (
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-500">
@@ -641,11 +641,11 @@ export default function CarDetailClient({
                 carData.control_traccion ||
                 carData.control_descenso ||
                 carData.sensor_presion_neumaticos) && (
-                <div className="p-4 rounded-lg bg-white">
-                  <h3 className="mb-3 text-lg font-semibold text-gray-900">
+                <div className="p-3 sm:p-4 rounded-lg bg-white shadow-sm">
+                  <h3 className="mb-2 sm:mb-3 text-base sm:text-lg font-semibold text-gray-900">
                     Seguridad
                   </h3>
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     {carData.abs && (
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-500">ABS:</span>
@@ -831,11 +831,11 @@ export default function CarDetailClient({
                 carData.navegacion_gps ||
                 carData.apple_carplay ||
                 carData.android_auto) && (
-                <div className="p-4 rounded-lg bg-white">
-                  <h3 className="mb-3 text-lg font-semibold text-gray-900">
+                <div className="p-3 sm:p-4 rounded-lg bg-white shadow-sm">
+                  <h3 className="mb-2 sm:mb-3 text-base sm:text-lg font-semibold text-gray-900">
                     Comunicación y Entretenimiento
                   </h3>
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     {carData.equipo_musica && (
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-500">Equipo de Música:</span>
@@ -928,12 +928,12 @@ export default function CarDetailClient({
         </div>
 
         {/* Listados Destacados Section */}
-        <div className="mt-20">
-          <h2 className="mb-12 text-3xl font-bold text-left text-gray-900">
+        <div className="mt-12 sm:mt-16 lg:mt-20">
+          <h2 className="mb-6 sm:mb-8 lg:mb-12 text-xl sm:text-2xl lg:text-3xl font-bold text-left text-gray-900">
             Listados destacados
           </h2>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {cars.slice(0, 4).map((post) => (
               <div
                 key={post.id}

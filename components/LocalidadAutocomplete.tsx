@@ -105,36 +105,75 @@ export default function LocalidadAutocomplete({
   }
 
   return (
-    <div ref={wrapperRef} className={`relative w-full ${className}`}>
-      <input
-        type="text"
-        value={query}
-        onChange={handleInputChange}
-        onFocus={() => {
-          if (sugerencias.length > 0) {
-            setShowSuggestions(true)
-          }
-        }}
-        placeholder={placeholder}
-        className={`w-full h-full bg-transparent text-gray-900 ${inputClassName}`}
+    <div ref={wrapperRef} className={`relative ${className}`}>
+      <div
+        className="relative"
         style={{
-          border: 'none',
-          outline: 'none',
-          fontFamily: 'Poppins',
-          fontSize: '14px',
+          width: "100%",
+          height: "56px",
+          paddingTop: "12px",
+          paddingRight: "16px",
+          paddingBottom: "12px",
+          paddingLeft: "16px",
+          borderRadius: "7px",
+          border: "1px solid #0D0D0D",
+          backgroundColor: "white",
         }}
-      />
+      >
+        <input
+          type="text"
+          value={query}
+          onChange={handleInputChange}
+          onFocus={() => {
+            if (sugerencias.length > 0) {
+              setShowSuggestions(true)
+            }
+          }}
+          placeholder={placeholder}
+          className={`w-full h-full bg-transparent ${inputClassName}`}
+          style={{
+            border: 'none',
+            outline: 'none',
+            fontFamily: 'Poppins',
+            fontSize: '14px',
+          }}
+        />
 
-      {/* Loading indicator */}
-      {loading && (
-        <div className="absolute right-12 top-1/2 transform -translate-y-1/2">
-          <div className="animate-spin h-4 w-4 border-2 border-primary-600 border-t-transparent rounded-full"></div>
-        </div>
-      )}
+        {/* Loading indicator */}
+        {loading && (
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+            <div className="animate-spin h-4 w-4 border-2 border-blue-600 border-t-transparent rounded-full"></div>
+          </div>
+        )}
+
+        {/* Dropdown icon */}
+        {!loading && (
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <svg
+              className="w-5 h-5 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </div>
+        )}
+      </div>
 
       {/* Suggestions dropdown */}
       {showSuggestions && (sugerencias.length > 0 || error) && (
-        <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+        <div className="absolute z-50 w-full mt-1 bg-white rounded-md shadow-lg max-h-60 overflow-y-auto"
+          style={{
+            borderRadius: "7px",
+            border: "1px solid #0D0D0D",
+          }}
+        >
           {error && sugerencias.length === 0 ? (
             <div className="p-3 text-sm text-gray-500 text-center">
               {error}
@@ -144,8 +183,11 @@ export default function LocalidadAutocomplete({
               {sugerencias.map((loc) => (
                 <li
                   key={loc.id}
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer transition-colors duration-150 text-sm"
+                  className="px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors duration-150"
                   onClick={() => handleSelect(loc)}
+                  style={{
+                    borderBottom: "1px solid #f3f4f6",
+                  }}
                 >
                   <span className="font-medium text-gray-900">{loc.nombre}</span>
                   <span className="text-gray-500 ml-1">({loc.provincia.nombre})</span>

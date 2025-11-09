@@ -867,50 +867,21 @@ export default function CotizarPage() {
           >
             Ubicación
           </label>
-          <div
-            className="relative"
-            style={{
-              width: "100%",
-              maxWidth: "300px",
-              height: "56px",
-              paddingTop: "12px",
-              paddingRight: "16px",
-              paddingBottom: "12px",
-              paddingLeft: "16px",
-              borderRadius: "7px",
-              border: "1px solid #0D0D0D",
-              backgroundColor: "white",
+          <LocalidadAutocomplete
+            value={formData.ubicacion}
+            onSelect={(data) => {
+              setFormData({
+                ...formData,
+                ubicacion: `${data.localidadNombre}, ${data.provinciaNombre}`,
+                localidadId: data.localidadId,
+                localidadNombre: data.localidadNombre,
+                provinciaNombre: data.provinciaNombre,
+              })
             }}
-          >
-            <LocalidadAutocomplete
-              value={formData.ubicacion}
-              onSelect={(data) => {
-                setFormData({
-                  ...formData,
-                  ubicacion: `${data.localidadNombre}, ${data.provinciaNombre}`,
-                  localidadId: data.localidadId,
-                  localidadNombre: data.localidadNombre,
-                  provinciaNombre: data.provinciaNombre,
-                })
-              }}
-              placeholder="Escribí tu localidad..."
-            />
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-              <svg
-                className="w-5 h-5 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </div>
-          </div>
+            placeholder="Escribí tu localidad..."
+            className="w-full max-w-[300px]"
+            inputClassName="text-gray-900"
+          />
         </div>
       </div>
 

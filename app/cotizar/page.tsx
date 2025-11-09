@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import LocalidadAutocomplete from "@/components/LocalidadAutocomplete";
 import { useCarInfo } from "@/src/hooks/useCarInfo";
 import type { Metadata } from "next";
 
@@ -35,6 +36,9 @@ export default function CotizarPage() {
     nombre: "",
     email: "",
     ubicacion: "",
+    localidadId: "",
+    localidadNombre: "",
+    provinciaNombre: "",
   });
 
   const handleInputChange = (field: string, value: string) => {
@@ -878,20 +882,18 @@ export default function CotizarPage() {
               backgroundColor: "white",
             }}
           >
-            <input
-              type="text"
-              placeholder="Ubicación"
+            <LocalidadAutocomplete
               value={formData.ubicacion}
-              onChange={(e) =>
-                setFormData({ ...formData, ubicacion: e.target.value })
-              }
-              className="w-full h-full bg-transparent text-gray-500"
-              style={{
-                border: "none",
-                outline: "none",
-                fontFamily: "Poppins",
-                fontSize: "14px",
+              onSelect={(data) => {
+                setFormData({
+                  ...formData,
+                  ubicacion: `${data.localidadNombre}, ${data.provinciaNombre}`,
+                  localidadId: data.localidadId,
+                  localidadNombre: data.localidadNombre,
+                  provinciaNombre: data.provinciaNombre,
+                })
               }}
+              placeholder="Escribí tu localidad..."
             />
             <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
               <svg

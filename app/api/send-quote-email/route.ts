@@ -28,6 +28,13 @@ export async function POST(request: Request) {
       precio,
       kilometraje,
       ubicacion,
+      precio_consignacion_ars,
+      precio_consignacion_usd,
+      precio_permuta_ars,
+      precio_permuta_usd,
+      precio_inmediata_ars,
+      precio_inmediata_usd,
+      dolar_blue,
     } = body;
 
     // Validar campos requeridos
@@ -73,6 +80,25 @@ export async function POST(request: Request) {
       precio: precio ? String(precio) : "Consultar",
       kilometraje: kilometraje ? String(kilometraje) : "No especificado",
       ubicacion: String(ubicacion || ""),
+      precio_consignacion_ars: precio_consignacion_ars
+        ? String(precio_consignacion_ars)
+        : undefined,
+      precio_consignacion_usd: precio_consignacion_usd
+        ? String(precio_consignacion_usd)
+        : undefined,
+      precio_permuta_ars: precio_permuta_ars
+        ? String(precio_permuta_ars)
+        : undefined,
+      precio_permuta_usd: precio_permuta_usd
+        ? String(precio_permuta_usd)
+        : undefined,
+      precio_inmediata_ars: precio_inmediata_ars
+        ? String(precio_inmediata_ars)
+        : undefined,
+      precio_inmediata_usd: precio_inmediata_usd
+        ? String(precio_inmediata_usd)
+        : undefined,
+      dolar_blue: dolar_blue ? String(dolar_blue) : undefined,
     });
 
     // Enviar email usando Resend

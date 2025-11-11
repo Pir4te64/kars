@@ -97,7 +97,9 @@ export default function CotizarPage() {
 
   const handleCompleteQuote = () => {
     if (years && years.length > 0 && formData.año) {
-      const yearData = years.filter((item) => item.year == Number(formData.año))[0];
+      const yearData = years.filter(
+        (item) => item.year == Number(formData.año)
+      )[0];
       if (yearData) {
         formData.precio = yearData.price;
       }
@@ -105,7 +107,8 @@ export default function CotizarPage() {
 
     if (brands && brands.length > 0 && formData.marca) {
       const brandData = brands.filter(
-        (item) => item.id == Number(formData.marca) || item.name == formData.marca
+        (item) =>
+          item.id == Number(formData.marca) || item.name == formData.marca
       )[0];
       if (brandData) {
         formData.marca = brandData.name;
@@ -114,7 +117,8 @@ export default function CotizarPage() {
 
     if (models && models.length > 0 && formData.modelo) {
       const modelData = models.filter(
-        (item) => item.codia == formData.modelo || item.description == formData.modelo
+        (item) =>
+          item.codia == formData.modelo || item.description == formData.modelo
       )[0];
       if (modelData) {
         formData.modelo = modelData.description;
@@ -153,19 +157,16 @@ export default function CotizarPage() {
               currentStep >= 1
                 ? "border-2 border-blue-600 bg-white"
                 : "border-2 border-gray-300 bg-white"
-            }`}
-          >
+            }`}>
             <div
               className={`w-2 h-2 rounded-full ${
                 currentStep >= 1 ? "bg-blue-600" : "bg-gray-300"
-              }`}
-            ></div>
+              }`}></div>
           </div>
           <div
             className={`w-16 h-0.5 ${
               currentStep >= 2 ? "bg-blue-600" : "bg-gray-200"
-            }`}
-          ></div>
+            }`}></div>
 
           {/* Step 2 */}
           <div
@@ -173,19 +174,16 @@ export default function CotizarPage() {
               currentStep >= 2
                 ? "border-2 border-blue-600 bg-white"
                 : "border-2 border-gray-300 bg-white"
-            }`}
-          >
+            }`}>
             <div
               className={`w-2 h-2 rounded-full ${
                 currentStep >= 2 ? "bg-blue-600" : "bg-gray-300"
-              }`}
-            ></div>
+              }`}></div>
           </div>
           <div
             className={`w-16 h-0.5 ${
               currentStep >= 3 ? "bg-blue-600" : "bg-gray-200"
-            }`}
-          ></div>
+            }`}></div>
 
           {/* Step 3 */}
           <div
@@ -193,13 +191,11 @@ export default function CotizarPage() {
               currentStep >= 3
                 ? "border-2 border-blue-600 bg-white"
                 : "border-2 border-gray-300 bg-white"
-            }`}
-          >
+            }`}>
             <div
               className={`w-2 h-2 rounded-full ${
                 currentStep >= 3 ? "bg-blue-600" : "bg-gray-300"
-              }`}
-            ></div>
+              }`}></div>
           </div>
         </div>
       </div>
@@ -209,8 +205,7 @@ export default function CotizarPage() {
         style={{
           gap: "11px",
           opacity: 1,
-        }}
-      >
+        }}>
         <h2
           className="text-sm md:text-base font-bold text-center text-gray-900"
           style={{
@@ -218,8 +213,7 @@ export default function CotizarPage() {
             fontWeight: 700,
             lineHeight: "20px",
             letterSpacing: "0%",
-          }}
-        >
+          }}>
           Cotizamos tu auto en poco tiempo, ingresa los datos
         </h2>
         <p
@@ -229,8 +223,7 @@ export default function CotizarPage() {
             fontWeight: 400,
             lineHeight: "24px",
             letterSpacing: "0%",
-          }}
-        >
+          }}>
           Te acompañamos en cada paso de tu viaje
         </p>
       </div>
@@ -242,8 +235,7 @@ export default function CotizarPage() {
           className="flex flex-col md:flex-row justify-center mx-auto w-full max-w-4xl gap-2 md:gap-3"
           style={{
             opacity: 1,
-          }}
-        >
+          }}>
           {/* Marca */}
           <div
             className="relative w-full md:w-1/3"
@@ -257,8 +249,7 @@ export default function CotizarPage() {
               borderRadius: "7px",
               border: "1px solid #0D0D0D",
               opacity: 1,
-            }}
-          >
+            }}>
             <select
               value={formData.marca}
               onChange={(e) => handleInputChange("marca", e.target.value)}
@@ -267,8 +258,7 @@ export default function CotizarPage() {
                 border: "none",
                 outline: "none",
               }}
-              disabled={loadingBrands}
-            >
+              disabled={loadingBrands}>
               <option value="">Marca</option>
               {brands && brands.length > 0 ? (
                 brands.map((brand) =>
@@ -293,8 +283,7 @@ export default function CotizarPage() {
                 className="w-5 h-5 text-gray-400"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+                viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -321,8 +310,7 @@ export default function CotizarPage() {
               opacity: 1,
               cursor:
                 formData.marca && !loadingModels ? "pointer" : "not-allowed",
-            }}
-          >
+            }}>
             {/* Dropdown personalizado */}
             <div
               className="w-full h-full flex items-center justify-between cursor-pointer"
@@ -336,13 +324,11 @@ export default function CotizarPage() {
                   formData.marca && !loadingModels && models.length > 0
                     ? "pointer"
                     : "not-allowed",
-              }}
-            >
+              }}>
               <span
                 className={`${
                   formData.modelo ? "text-gray-900" : "text-gray-500"
-                }`}
-              >
+                }`}>
                 {loadingModels
                   ? "Cargando modelos..."
                   : !formData.marca
@@ -361,8 +347,7 @@ export default function CotizarPage() {
                 }`}
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+                viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -379,8 +364,7 @@ export default function CotizarPage() {
                 style={{
                   borderRadius: "7px",
                   border: "1px solid #0D0D0D",
-                }}
-              >
+                }}>
                 {models.map((item) => (
                   <div
                     key={item.id || item.codia}
@@ -388,8 +372,7 @@ export default function CotizarPage() {
                     onClick={() => handleModelSelect(item)}
                     style={{
                       borderBottom: "1px solid #f3f4f6",
-                    }}
-                  >
+                    }}>
                     <span className="text-gray-900">{item.description}</span>
                   </div>
                 ))}
@@ -410,8 +393,7 @@ export default function CotizarPage() {
               borderRadius: "7px",
               border: "1px solid #0D0D0D",
               opacity: 1,
-            }}
-          >
+            }}>
             <select
               value={formData.año}
               onChange={(e) =>
@@ -421,8 +403,7 @@ export default function CotizarPage() {
               style={{
                 border: "none",
                 outline: "none",
-              }}
-            >
+              }}>
               <option value="">Año</option>
               {years.map((year, i) => {
                 return (
@@ -437,8 +418,7 @@ export default function CotizarPage() {
                 className="w-5 h-5 text-gray-400"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+                viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -455,8 +435,7 @@ export default function CotizarPage() {
           className="flex flex-col md:flex-row justify-center items-center mx-auto w-full max-w-4xl gap-2 md:gap-3"
           style={{
             opacity: 1,
-          }}
-        >
+          }}>
           {/* Versión */}
           <div
             className="relative w-full md:w-1/3"
@@ -470,8 +449,7 @@ export default function CotizarPage() {
               borderRadius: "7px",
               border: "1px solid #0D0D0D",
               opacity: 1,
-            }}
-          >
+            }}>
             <select
               value={formData.version}
               onChange={(e) =>
@@ -481,8 +459,7 @@ export default function CotizarPage() {
               style={{
                 border: "none",
                 outline: "none",
-              }}
-            >
+              }}>
               <option value="">Versión</option>
               <option value="base">Base</option>
               <option value="intermedio">Intermedio</option>
@@ -494,8 +471,7 @@ export default function CotizarPage() {
                 className="w-5 h-5 text-gray-400"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+                viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -519,8 +495,7 @@ export default function CotizarPage() {
               borderRadius: "7px",
               border: "1px solid #0D0D0D",
               opacity: 1,
-            }}
-          >
+            }}>
             <select
               value={formData.kilometraje}
               onChange={(e) =>
@@ -530,8 +505,7 @@ export default function CotizarPage() {
               style={{
                 border: "none",
                 outline: "none",
-              }}
-            >
+              }}>
               <option value="">Kilometraje</option>
               <option value="0-10000">0 - 10,000 km</option>
               <option value="10000-25000">10,000 - 25,000 km</option>
@@ -545,8 +519,7 @@ export default function CotizarPage() {
                 className="w-5 h-5 text-gray-400"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+                viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -573,8 +546,7 @@ export default function CotizarPage() {
               border: "1px solid #2664C4",
               backgroundColor: "#2664C4",
               opacity: 1,
-            }}
-          >
+            }}>
             Comenzar cotización
           </button>
         </div>
@@ -596,15 +568,13 @@ export default function CotizarPage() {
             }`}
             style={{
               backgroundColor: currentStep >= 2 ? "#2664C4" : "white",
-            }}
-          >
+            }}>
             {currentStep >= 2 ? (
               <svg
                 className="w-4 h-4 text-white"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+                viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -616,15 +586,13 @@ export default function CotizarPage() {
               <div
                 className={`w-2 h-2 rounded-full ${
                   currentStep >= 1 ? "bg-blue-600" : "bg-gray-300"
-                }`}
-              ></div>
+                }`}></div>
             )}
           </div>
           <div
             className={`w-16 h-0.5 ${
               currentStep >= 2 ? "bg-blue-600" : "bg-gray-200"
-            }`}
-          ></div>
+            }`}></div>
 
           {/* Step 2 */}
           <div
@@ -635,15 +603,13 @@ export default function CotizarPage() {
             }`}
             style={{
               backgroundColor: currentStep >= 3 ? "#2664C4" : "white",
-            }}
-          >
+            }}>
             {currentStep >= 3 ? (
               <svg
                 className="w-4 h-4 text-white"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+                viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -655,15 +621,13 @@ export default function CotizarPage() {
               <div
                 className={`w-2 h-2 rounded-full ${
                   currentStep >= 2 ? "bg-blue-600" : "bg-gray-300"
-                }`}
-              ></div>
+                }`}></div>
             )}
           </div>
           <div
             className={`w-16 h-0.5 ${
               currentStep >= 3 ? "bg-blue-600" : "bg-gray-200"
-            }`}
-          ></div>
+            }`}></div>
 
           {/* Step 3 */}
           <div
@@ -671,13 +635,11 @@ export default function CotizarPage() {
               currentStep >= 3
                 ? "border-2 border-blue-600 bg-white"
                 : "border-2 border-gray-300 bg-white"
-            }`}
-          >
+            }`}>
             <div
               className={`w-2 h-2 rounded-full ${
                 currentStep >= 3 ? "bg-blue-600" : "bg-gray-300"
-              }`}
-            ></div>
+              }`}></div>
           </div>
         </div>
       </div>
@@ -691,8 +653,7 @@ export default function CotizarPage() {
           margin: "0 auto",
           gap: "11px",
           opacity: 1,
-        }}
-      >
+        }}>
         <h2
           className="text-center"
           style={{
@@ -703,8 +664,7 @@ export default function CotizarPage() {
             letterSpacing: "0%",
             color: "#0D0D0D",
             opacity: 1,
-          }}
-        >
+          }}>
           Cotizamos tu auto en poco tiempo, ingresa los datos
         </h2>
         <p
@@ -717,8 +677,7 @@ export default function CotizarPage() {
             letterSpacing: "0%",
             color: "#0D0D0D",
             opacity: 1,
-          }}
-        >
+          }}>
           Tus datos de contacto
         </p>
       </div>
@@ -726,8 +685,7 @@ export default function CotizarPage() {
       {/* Contact Form Fields */}
       <div
         className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6"
-        style={{ marginTop: "40px" }}
-      >
+        style={{ marginTop: "40px" }}>
         {/* Nombre y apellido */}
         <div className="flex flex-col w-full md:w-80">
           <label
@@ -737,8 +695,7 @@ export default function CotizarPage() {
               fontSize: "14px",
               color: "#0D0D0D",
               marginBottom: "8px",
-            }}
-          >
+            }}>
             Nombre y apellido
           </label>
           <div
@@ -754,8 +711,7 @@ export default function CotizarPage() {
               borderRadius: "7px",
               border: "1px solid #0D0D0D",
               backgroundColor: "white",
-            }}
-          >
+            }}>
             <input
               type="text"
               placeholder="Nombre y apellido"
@@ -776,8 +732,7 @@ export default function CotizarPage() {
                 className="w-5 h-5 text-gray-400"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+                viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -798,8 +753,7 @@ export default function CotizarPage() {
               fontSize: "14px",
               color: "#0D0D0D",
               marginBottom: "8px",
-            }}
-          >
+            }}>
             Correo electrónico
           </label>
           <div
@@ -815,8 +769,7 @@ export default function CotizarPage() {
               borderRadius: "7px",
               border: "1px solid #0D0D0D",
               backgroundColor: "white",
-            }}
-          >
+            }}>
             <input
               type="email"
               placeholder="Correo electrónico"
@@ -837,8 +790,7 @@ export default function CotizarPage() {
                 className="w-5 h-5 text-gray-400"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+                viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -859,8 +811,7 @@ export default function CotizarPage() {
               fontSize: "14px",
               color: "#0D0D0D",
               marginBottom: "8px",
-            }}
-          >
+            }}>
             Ubicación
           </label>
           <div
@@ -876,8 +827,7 @@ export default function CotizarPage() {
               borderRadius: "7px",
               border: "1px solid #0D0D0D",
               backgroundColor: "white",
-            }}
-          >
+            }}>
             <input
               type="text"
               placeholder="Ubicación"
@@ -898,8 +848,7 @@ export default function CotizarPage() {
                 className="w-5 h-5 text-gray-400"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+                viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -918,8 +867,7 @@ export default function CotizarPage() {
         style={{
           height: "48px",
           opacity: 1,
-        }}
-      >
+        }}>
         <button
           className="w-full md:w-auto"
           onClick={() => setCurrentStep(1)}
@@ -936,8 +884,7 @@ export default function CotizarPage() {
             backgroundColor: "transparent",
             border: "none",
             cursor: "pointer",
-          }}
-        >
+          }}>
           Volver
         </button>
         <button
@@ -960,8 +907,7 @@ export default function CotizarPage() {
             fontWeight: "normal",
             fontSize: "16px",
             cursor: "pointer",
-          }}
-        >
+          }}>
           Siguiente
         </button>
       </div>
@@ -976,15 +922,13 @@ export default function CotizarPage() {
         style={{
           minHeight: "400px",
           background: "linear-gradient(to bottom, #e5e5e5 50%, white 50%)",
-        }}
-      >
+        }}>
         <div
           className="flex items-center w-full max-w-7xl"
           style={{
             gap: "50px",
             opacity: 1,
-          }}
-        >
+          }}>
           {/* Form Container */}
           <div
             className="bg-white w-full mx-auto"
@@ -993,11 +937,11 @@ export default function CotizarPage() {
               minHeight: "400px",
               borderRadius: "12px",
               border: "1px solid #2664C4",
-              boxShadow: "0px 2px 3px 0px #0000004D, 0px 6px 10px 4px #00000026",
+              boxShadow:
+                "0px 2px 3px 0px #0000004D, 0px 6px 10px 4px #00000026",
               opacity: 1,
               padding: "16px",
-            }}
-          >
+            }}>
             {renderStepContent()}
           </div>
         </div>

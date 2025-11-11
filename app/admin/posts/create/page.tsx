@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
@@ -27,7 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Upload, Trash2, Loader2, Check, AlertTriangle } from "lucide-react";
+import { Upload, Trash2, Loader2, Check, AlertTriangle, Search, MessageCircle } from "lucide-react";
 import {
   SidebarInset,
   SidebarProvider,
@@ -41,7 +42,16 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { useCarInfo } from "@/src/hooks/useCarInfo";
 
 // ----------------- Zod schema según tabla vehicle_posts -----------------
 const schema = z.object({
@@ -190,11 +200,35 @@ export default function Page() {
   const [loggedEmail, setLoggedEmail] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [signingOut, setSigningOut] = useState(false);
+  const [isCarSelectorOpen, setIsCarSelectorOpen] = useState(false);
 
   // Imágenes con preview y estado
   const [imgItems, setImgItems] = useState<ImgItem[]>([]);
 
   const fileRef = useRef<HTMLInputElement | null>(null);
+
+  // Hook para obtener información de vehículos
+  const {
+    brands,
+    models,
+    groups,
+    years,
+    loadingBrands,
+    loadingGroups,
+    loadingModels,
+    loadingYears,
+    getGroup,
+    getModel,
+    getPrice,
+  } = useCarInfo();
+
+  // Estados para el selector de vehículo
+  const [selectedBrand, setSelectedBrand] = useState<string>("");
+  const [selectedGroup, setSelectedGroup] = useState<string>(""); // Guarda el name del grupo
+  const [selectedGroupId, setSelectedGroupId] = useState<string>(""); // Guarda el ID del grupo
+  const [selectedModel, setSelectedModel] = useState<string>("");
+  const [selectedYear, setSelectedYear] = useState<string>("");
+  const [whatsappUrl, setWhatsappUrl] = useState<string>("");
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -306,6 +340,106 @@ export default function Page() {
     setValue,
     formState: { errors, isSubmitting },
   } = form;
+
+  // Funciones para manejar el selector de vehículo
+  const handleBrandChange = (brandId: string) => {
+    setSelectedBrand(brandId);
+    setSelectedGroup("");
+    setSelectedGroupId("");
+    setSelectedModel("");
+    setSelectedYear("");
+    if (brandId) {
+      getGroup(brandId);
+    }
+  };
+
+  const handleGroupChange = (groupId: string) => {
+    // Buscar el grupo seleccionado por ID (el value del Select es el ID)
+    const selectedGroupData = groups.find(
+      (group) => group.id?.toString() === groupId
+    );
+    
+    if (selectedGroupData) {
+      setSelectedGroup(selectedGroupData.name);
+      setSelectedGroupId(groupId);
+      setSelectedModel("");
+      setSelectedYear("");
+      
+      if (selectedBrand && selectedGroupData.id) {
+        getModel(selectedBrand, selectedGroupData.id.toString());
+      }
+    }
+  };
+
+  const handleModelChange = (modelCodia: string) => {
+    setSelectedModel(modelCodia);
+    setSelectedYear("");
+    if (modelCodia) {
+      getPrice(modelCodia);
+    }
+  };
+
+  const handleYearChange = (year: string) => {
+    setSelectedYear(year);
+  };
+
+  // Función para generar mensaje de WhatsApp con los datos seleccionados
+  const generateWhatsAppMessage = () => {
+    const brandData = brands.find((b) => b.id.toString() === selectedBrand);
+    const modelData = models.find((m) => m.codia === selectedModel);
+    const groupData = groups.find((g) => g.id?.toString() === selectedGroupId);
+
+    const marca = brandData?.name || "";
+    const modelo = modelData?.description || modelData?.name || "";
+    const grupo = groupData?.name || "";
+    const año = selectedYear || "";
+
+    // Construir el mensaje con los datos seleccionados
+    let message = `Hola! Tengo un vehículo para vender:\n\n`;
+    message += `🚗 Vehículo: ${marca} ${modelo}${grupo ? ` ${grupo}` : ""}\n`;
+    if (año) {
+      message += `📅 Año: ${año}\n`;
+    }
+    message += `\n¿Podemos agendar una visita para evaluar mi vehículo?`;
+
+    return message;
+  };
+
+  // Función para aplicar los valores seleccionados al formulario
+  const applySelectedValues = () => {
+    if (!selectedBrand || !selectedModel) {
+      toast.error("Por favor selecciona al menos marca y modelo");
+      return;
+    }
+
+    // Obtener el nombre de la marca
+    const brandData = brands.find((b) => b.id.toString() === selectedBrand);
+    if (brandData) {
+      setValue("marca", brandData.name);
+    }
+
+    // Obtener el nombre del modelo
+    const modelData = models.find((m) => m.codia === selectedModel);
+    if (modelData) {
+      setValue("modelo", modelData.description || modelData.name || "");
+    }
+
+    // Aplicar año si está seleccionado
+    if (selectedYear) {
+      setValue("anio", selectedYear);
+    }
+
+    // Generar mensaje de WhatsApp y guardarlo
+    const whatsappMessage = generateWhatsAppMessage();
+    const encodedMessage = encodeURIComponent(whatsappMessage);
+    const generatedWhatsappUrl = `https://wa.me/541121596100?text=${encodedMessage}`;
+    
+    // Guardar el URL de WhatsApp en el estado
+    setWhatsappUrl(generatedWhatsappUrl);
+
+    toast.success("Datos aplicados al formulario. Mensaje de WhatsApp generado.");
+    setIsCarSelectorOpen(false);
+  };
 
   // Watchers para campos condicionales
   const airbagsDelanteros = watch("airbags_delanteros");
@@ -747,18 +881,19 @@ export default function Page() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-14 shrink-0 items-center gap-2">
-          <div className="flex flex-1 items-center gap-2 px-3">
-            <SidebarTrigger />
+        <header className="flex h-14 shrink-0 items-center gap-2 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="flex flex-1 items-center gap-2 px-2 sm:px-3 min-w-0">
+            <SidebarTrigger className="flex-shrink-0" />
             <Separator
               orientation="vertical"
-              className="mr-2 data-[orientation=vertical]:h-4"
+              className="mr-1 sm:mr-2 data-[orientation=vertical]:h-4 hidden sm:block"
             />
-            <Breadcrumb>
+            <Breadcrumb className="min-w-0">
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbPage className="line-clamp-1">
-                    Listado de Posts de Vehículos
+                  <BreadcrumbPage className="line-clamp-1 text-xs sm:text-sm">
+                    <span className="hidden sm:inline">Listado de Posts de Vehículos</span>
+                    <span className="sm:hidden">Posts</span>
                   </BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
@@ -766,10 +901,10 @@ export default function Page() {
           </div>
         </header>
 
-        <div className="w-full mx-auto p-6 space-y-6">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold">Crear POST de Vehículo</h1>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="w-full mx-auto p-3 sm:p-6 space-y-4 sm:space-y-6 overflow-auto">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <h1 className="text-xl sm:text-2xl font-bold">Crear POST de Vehículo</h1>
+            <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
               <span>
                 {authLoading
                   ? "Autenticando…"
@@ -795,6 +930,176 @@ export default function Page() {
 
           <Form {...form}>
             <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+              {/* Botón para abrir selector de vehículo */}
+              <div className="flex justify-end">
+                <Dialog open={isCarSelectorOpen} onOpenChange={setIsCarSelectorOpen}>
+                  <DialogTrigger asChild>
+                    <Button type="button" variant="outline" className="gap-2">
+                      <Search className="h-4 w-4" />
+                      Buscar Vehículo
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>Buscar Vehículo</DialogTitle>
+                      <DialogDescription>
+                        Selecciona marca, grupo y modelo para rellenar automáticamente los campos del formulario
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4 py-4">
+                      {/* Selector de Marca */}
+                      <div className="space-y-2">
+                        <Label>Marca</Label>
+                        <Select
+                          value={selectedBrand}
+                          onValueChange={handleBrandChange}
+                          disabled={loadingBrands}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder={loadingBrands ? "Cargando marcas..." : "Selecciona una marca"} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {brands && brands.length > 0 ? (
+                              brands
+                                .filter((brand) => ["FORD", "HONDA", "PEUGEOT", "CHEVROLET"].includes(brand.name))
+                                .map((brand) => (
+                                  <SelectItem key={brand.id || brand.name} value={brand.id?.toString() || brand.name}>
+                                    {brand.name}
+                                  </SelectItem>
+                                ))
+                            ) : (
+                              <SelectItem value="" disabled>
+                                {loadingBrands ? "Cargando marcas..." : "No hay marcas disponibles"}
+                              </SelectItem>
+                            )}
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      {/* Selector de Grupo */}
+                      {selectedBrand && (
+                        <div className="space-y-2">
+                          <Label>Grupo</Label>
+                          <Select
+                            value={selectedGroupId}
+                            onValueChange={handleGroupChange}
+                            disabled={loadingGroups || !selectedBrand}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder={loadingGroups ? "Cargando grupos..." : "Selecciona un grupo"} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {groups.map((group) => (
+                                <SelectItem key={group.id || group.name} value={group.id?.toString() || ""}>
+                                  {group.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
+
+                      {/* Selector de Modelo */}
+                      {selectedGroupId && (
+                        <div className="space-y-2">
+                          <Label>Modelo</Label>
+                          <Select
+                            value={selectedModel}
+                            onValueChange={handleModelChange}
+                            disabled={loadingModels || !selectedGroup}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder={loadingModels ? "Cargando modelos..." : "Selecciona un modelo"} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {models.map((model) => (
+                                <SelectItem key={model.codia} value={model.codia}>
+                                  {model.description || model.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
+
+                      {/* Selector de Año */}
+                      {selectedModel && years.length > 0 && (
+                        <div className="space-y-2">
+                          <Label>Año (Opcional)</Label>
+                          <Select
+                            value={selectedYear}
+                            onValueChange={handleYearChange}
+                            disabled={loadingYears || !selectedModel}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder={loadingYears ? "Cargando años..." : "Selecciona un año (opcional)"} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {years.map((year) => (
+                                <SelectItem key={year.year} value={year.year.toString()}>
+                                  {year.year}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
+
+                      {/* Vista previa del mensaje de WhatsApp */}
+                      {selectedBrand && selectedModel && (
+                        <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                          <div className="flex items-start gap-2">
+                            <MessageCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                            <div className="flex-1">
+                              <p className="text-sm font-medium text-green-900 mb-1">
+                                Mensaje de WhatsApp generado:
+                              </p>
+                              <p className="text-xs text-green-700 whitespace-pre-wrap">
+                                {generateWhatsAppMessage()}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Botones de acción */}
+                      <div className="flex justify-end gap-2 pt-4">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setIsCarSelectorOpen(false)}
+                        >
+                          Cancelar
+                        </Button>
+                        {selectedBrand && selectedModel && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="bg-green-50 hover:bg-green-100 text-green-700 border-green-300"
+                            onClick={() => {
+                              const whatsappMessage = generateWhatsAppMessage();
+                              const encodedMessage = encodeURIComponent(whatsappMessage);
+                              const url = `https://wa.me/541121596100?text=${encodedMessage}`;
+                              window.open(url, "_blank");
+                            }}
+                          >
+                            <MessageCircle className="h-4 w-4 mr-2" />
+                            Abrir WhatsApp
+                          </Button>
+                        )}
+                        <Button
+                          type="button"
+                          onClick={applySelectedValues}
+                          disabled={!selectedBrand || !selectedModel}
+                        >
+                          Aplicar al Formulario
+                        </Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+
               {/* Información General */}
               <Card>
                 <CardHeader>

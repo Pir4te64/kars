@@ -379,53 +379,57 @@ export default function PostsListPage() {
     <SidebarProvider defaultOpen={false}>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-14 shrink-0 items-center gap-2">
-          <div className="flex flex-1 items-center gap-2 px-3">
-            <SidebarTrigger />
+        <header className="flex h-14 shrink-0 items-center gap-2 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="flex flex-1 items-center gap-2 px-2 sm:px-3 min-w-0">
+            <SidebarTrigger className="flex-shrink-0" />
             <Separator
               orientation="vertical"
-              className="mr-2 data-[orientation=vertical]:h-4"
+              className="mr-1 sm:mr-2 data-[orientation=vertical]:h-4 hidden sm:block"
             />
-            <Breadcrumb>
+            <Breadcrumb className="min-w-0">
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbPage className="line-clamp-1">
-                    Listado de Posts de Vehículos
+                  <BreadcrumbPage className="line-clamp-1 text-xs sm:text-sm">
+                    <span className="hidden sm:inline">Listado de Posts de Vehículos</span>
+                    <span className="sm:hidden">Posts</span>
                   </BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
           </div>
-          <div className="flex items-center gap-2 px-3 text-sm text-muted-foreground">
-            <span>{loggedEmail ? `Sesión: ${loggedEmail}` : "—"}</span>
+          <div className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 text-xs sm:text-sm text-muted-foreground flex-shrink-0">
+            <span className="hidden sm:inline truncate max-w-[200px]">
+              {loggedEmail ? `Sesión: ${loggedEmail}` : "—"}
+            </span>
             {loggedEmail ? (
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleSignOut}
                 disabled={signingOut}
-                className="flex items-center gap-2">
+                className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-3">
                 {signingOut ? (
-                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  <Loader2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 animate-spin" />
                 ) : null}
-                <span>Cerrar sesión</span>
+                <span className="hidden sm:inline">Cerrar sesión</span>
+                <span className="sm:hidden">Salir</span>
               </Button>
             ) : null}
           </div>
         </header>
 
-        <div className="flex flex-1 flex-col gap-6 px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight">Posts de Vehículos</h1>
-              <p className="text-muted-foreground mt-1">
+        <div className="flex flex-1 flex-col gap-4 sm:gap-6 px-3 sm:px-4 py-4 sm:py-6 overflow-auto">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="min-w-0">
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Posts de Vehículos</h1>
+              <p className="text-muted-foreground mt-1 text-sm sm:text-base">
                 Gestiona tu inventario de vehículos
               </p>
             </div>
-            <Link href="/admin/posts/create">
-              <Button size="lg" className="gap-2">
-                <Plus className="h-5 w-5" />
-                Crear Nuevo POST
+            <Link href="/admin/posts/create" className="w-full sm:w-auto">
+              <Button size="lg" className="gap-2 w-full sm:w-auto">
+                <Plus className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="text-sm sm:text-base">Crear Nuevo POST</span>
               </Button>
             </Link>
           </div>

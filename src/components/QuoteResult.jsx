@@ -2,8 +2,11 @@ import React, { useRef } from "react";
 import * as htmlToImage from "html-to-image";
 import Navbar from "./Navbar";
 import EmailSummary from "./EmailSummary";
+import { useDollarBlue } from "../../hooks/useDollarBlue";
 
 const QuoteResult = () => {
+  const { convertToPesos, loading: loadingDolar } = useDollarBlue();
+
   // Obtener los datos del localStorage o de la URL
   const getQuoteData = () => {
     const savedData = localStorage.getItem("quoteData");
@@ -124,6 +127,12 @@ const QuoteResult = () => {
                     {quoteData.modelo}
                   </span>
                 </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700">Año:</span>
+                  <span className="font-bold text-gray-900">
+                    {quoteData.año}
+                  </span>
+                </div>
               </div>
 
               {/* Right Column */}
@@ -131,13 +140,21 @@ const QuoteResult = () => {
                 <div className="flex justify-between">
                   <span className="text-gray-700">Grupo:</span>
                   <span className="font-bold text-gray-900">
-                    {quoteData.grupo} km
+                    {quoteData.grupo}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-700">Año:</span>
+                  <span className="text-gray-700">Kilometraje:</span>
                   <span className="font-bold text-gray-900">
-                    {quoteData.año}
+                    {quoteData.kilometraje
+                      ? `${parseFloat(quoteData.kilometraje).toLocaleString('es-AR')} km`
+                      : "No especificado"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700">Ubicación:</span>
+                  <span className="font-bold text-gray-900">
+                    {quoteData.ubicacion || "No especificada"}
                   </span>
                 </div>
               </div>
@@ -149,12 +166,34 @@ const QuoteResult = () => {
             <h3 className="mb-4 text-lg font-bold text-gray-900">
               Estimación:
             </h3>
-            <div className="mb-2 text-4xl font-bold text-blue-500">
-              ${quoteData.precio}
+
+            {/* Precio en USD */}
+            <div className="mb-3">
+              <div className="text-sm text-gray-600 mb-1">Precio en USD</div>
+              <div className="text-4xl font-bold text-blue-500">
+                USD ${parseFloat(quoteData.precio || 0).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
+              </div>
             </div>
+
+            {/* Precio en Pesos */}
+            <div className="mb-4">
+              <div className="text-sm text-gray-600 mb-1">Precio en Pesos Argentinos (ARS)</div>
+              <div className="text-3xl font-bold text-green-600">
+                {loadingDolar ? (
+                  <span className="text-gray-400">Calculando...</span>
+                ) : (
+                  convertToPesos(quoteData.precio || 0)
+                )}
+              </div>
+              {!loadingDolar && (
+                <div className="text-xs text-gray-500 mt-1">
+                  Cotización dólar blue
+                </div>
+              )}
+            </div>
+
             <p className="text-sm text-gray-500">
-              Nota: Este valor es una estimación inicial. El precio final se
-              confirmará tras la inspección.
+              Nota: Este valor es una estimación que incluye la depreciación por kilometraje. El precio final se confirmará tras la inspección.
             </p>
           </div>
           

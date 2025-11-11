@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Poppins } from 'next/font/google'
 import './globals.css'
 import { Toaster } from "@/components/ui/sonner"
+import WhatsAppButton from "@/components/WhatsAppButton"
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700'],
@@ -39,6 +40,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-gray-50 antialiased">
         {children}
         <Toaster />
+        <WhatsAppButton />
       </body>
     </html>
   )

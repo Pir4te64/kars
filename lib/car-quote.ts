@@ -140,3 +140,36 @@ export async function getPrice(
     throw error;
   }
 }
+
+/**
+ * Calcula el precio ajustado según los kilómetros del vehículo
+ * Fórmula: Precio = precioBase × e^(-0.00000289 × km)
+ * Basado en una depreciación de ~2.9% cada 10,000 km
+ *
+ * @param basePrice - Precio base del vehículo (precio a 0 km)
+ * @param kilometraje - Kilómetros exactos del vehículo (número o string)
+ * @returns Precio ajustado según los kilómetros
+ */
+export function calculatePriceByKilometers(
+  basePrice: number,
+  kilometraje: string | number
+): number {
+  if (!kilometraje || !basePrice) {
+    return basePrice;
+  }
+
+  // Convertir kilometraje a número
+  const km = typeof kilometraje === 'string' ? parseFloat(kilometraje) : kilometraje;
+
+  // Si no es un número válido, retornar precio base
+  if (isNaN(km) || km < 0) {
+    return basePrice;
+  }
+
+  // Aplicar la fórmula: Precio = precioBase × e^(-0.00000289 × km)
+  const deprecationRate = 0.00000289;
+  const adjustedPrice = basePrice * Math.exp(-deprecationRate * km);
+
+  // Redondear a 2 decimales
+  return Math.round(adjustedPrice * 100) / 100;
+}

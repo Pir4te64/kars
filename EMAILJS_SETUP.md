@@ -82,7 +82,7 @@ El template de EmailJS debe incluir las siguientes variables para funcionar corr
             </div>
 
             <p><small><strong>Cotización Dólar Blue:</strong> {{dolar_blue}}</small></p>
-            <p><small>* Precios calculados con descuento del 17%</small></p>
+            <p><small>* Precios calculados con descuento del 15%</small></p>
         </div>
 
         <div class="footer">

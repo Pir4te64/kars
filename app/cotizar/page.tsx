@@ -4,9 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import LocalidadAutocomplete from "@/components/LocalidadAutocomplete";
 import { useCarInfo } from "@/src/hooks/useCarInfo";
-import type { Metadata } from "next";
 
 export default function CotizarPage() {
   const router = useRouter();
@@ -867,21 +865,76 @@ export default function CotizarPage() {
           >
             Ubicación
           </label>
-          <LocalidadAutocomplete
-            value={formData.ubicacion}
-            onSelect={(data) => {
-              setFormData({
-                ...formData,
-                ubicacion: `${data.localidadNombre}, ${data.provinciaNombre}`,
-                localidadId: data.localidadId,
-                localidadNombre: data.localidadNombre,
-                provinciaNombre: data.provinciaNombre,
-              })
+          <div
+            className="relative"
+            style={{
+              width: "100%",
+              maxWidth: "300px",
+              height: "56px",
+              paddingTop: "12px",
+              paddingRight: "16px",
+              paddingBottom: "12px",
+              paddingLeft: "16px",
+              borderRadius: "7px",
+              border: "1px solid #0D0D0D",
+              backgroundColor: "white",
             }}
-            placeholder="Escribí tu localidad..."
-            className="w-full max-w-[300px]"
-            inputClassName="text-gray-900"
-          />
+          >
+            <select
+              value={formData.ubicacion}
+              onChange={(e) =>
+                setFormData({ ...formData, ubicacion: e.target.value })
+              }
+              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500"
+              style={{
+                border: "none",
+                outline: "none",
+                fontFamily: "Poppins",
+                fontSize: "14px",
+              }}
+            >
+              <option value="">Selecciona tu provincia</option>
+              <option value="Buenos Aires">Buenos Aires</option>
+              <option value="CABA">CABA</option>
+              <option value="Catamarca">Catamarca</option>
+              <option value="Chaco">Chaco</option>
+              <option value="Chubut">Chubut</option>
+              <option value="Córdoba">Córdoba</option>
+              <option value="Corrientes">Corrientes</option>
+              <option value="Entre Ríos">Entre Ríos</option>
+              <option value="Formosa">Formosa</option>
+              <option value="Jujuy">Jujuy</option>
+              <option value="La Pampa">La Pampa</option>
+              <option value="La Rioja">La Rioja</option>
+              <option value="Mendoza">Mendoza</option>
+              <option value="Misiones">Misiones</option>
+              <option value="Neuquén">Neuquén</option>
+              <option value="Río Negro">Río Negro</option>
+              <option value="Salta">Salta</option>
+              <option value="San Juan">San Juan</option>
+              <option value="San Luis">San Luis</option>
+              <option value="Santa Cruz">Santa Cruz</option>
+              <option value="Santa Fe">Santa Fe</option>
+              <option value="Santiago del Estero">Santiago del Estero</option>
+              <option value="Tierra del Fuego">Tierra del Fuego</option>
+              <option value="Tucumán">Tucumán</option>
+            </select>
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <svg
+                className="w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
 

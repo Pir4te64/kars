@@ -56,7 +56,7 @@ export default function Navbar() {
             <Logo />
           </div>
 
-          {/* Desktop Navigation - Centered */}
+          {/* Desktop Navigation -  Centered */}
           <div className="hidden lg:flex lg:items-center lg:space-x-6 lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2">
             {navItems.map((item) => (
               <button

@@ -907,9 +907,7 @@ export default function CarQuoteSection() {
                 : "1px solid rgba(148, 163, 184, 0.3)",
               backgroundColor: "rgba(248, 250, 252, 0.5)",
             }}>
-            <input
-              type="text"
-              placeholder="Ubicación"
+            <select
               value={formData.ubicacion}
               onChange={(e) => {
                 setFormData({ ...formData, ubicacion: e.target.value });
@@ -917,10 +915,50 @@ export default function CarQuoteSection() {
                   setFormErrors({ ...formErrors, ubicacion: undefined });
                 }
               }}
-              className="w-full h-full bg-transparent text-gray-500 text-sm px-3"
-              style={{ border: "none", outline: "none" }}
+              className="w-full h-full bg-transparent text-gray-500 text-sm px-3 appearance-none"
+              style={{ border: "none", outline: "none", paddingRight: "40px" }}
               required
-            />
+            >
+              <option value="">Selecciona tu provincia</option>
+              <option value="Buenos Aires">Buenos Aires</option>
+              <option value="CABA">CABA</option>
+              <option value="Catamarca">Catamarca</option>
+              <option value="Chaco">Chaco</option>
+              <option value="Chubut">Chubut</option>
+              <option value="Córdoba">Córdoba</option>
+              <option value="Corrientes">Corrientes</option>
+              <option value="Entre Ríos">Entre Ríos</option>
+              <option value="Formosa">Formosa</option>
+              <option value="Jujuy">Jujuy</option>
+              <option value="La Pampa">La Pampa</option>
+              <option value="La Rioja">La Rioja</option>
+              <option value="Mendoza">Mendoza</option>
+              <option value="Misiones">Misiones</option>
+              <option value="Neuquén">Neuquén</option>
+              <option value="Río Negro">Río Negro</option>
+              <option value="Salta">Salta</option>
+              <option value="San Juan">San Juan</option>
+              <option value="San Luis">San Luis</option>
+              <option value="Santa Cruz">Santa Cruz</option>
+              <option value="Santa Fe">Santa Fe</option>
+              <option value="Santiago del Estero">Santiago del Estero</option>
+              <option value="Tierra del Fuego">Tierra del Fuego</option>
+              <option value="Tucumán">Tucumán</option>
+            </select>
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <svg
+                className="w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
           </div>
           {formErrors.ubicacion && (
             <p className="text-xs text-red-500 mt-1">{formErrors.ubicacion}</p>

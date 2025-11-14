@@ -11,12 +11,9 @@ import {
 } from "@/components/ui/sheet";
 
 const navItems = [
-  "Cómo funciona",
   "Beneficios",
   "Nosotros",
   "Contacto",
-  "Vende tu auto",
-  "Vehículos en venta",
 ];
 
 export default function Navbar() {
@@ -35,18 +32,14 @@ export default function Navbar() {
     if (pathname !== "/") {
       router.push("/");
       setTimeout(() => {
-        if (item === "Cómo funciona") {
-          scrollToSection("como-funciona");
-        } else if (item === "Contacto") {
+        if (item === "Contacto") {
           scrollToSection("ubicacion");
         } else {
           scrollToSection(item.toLowerCase().replace(/\s+/g, "-"));
         }
       }, 100);
     } else {
-      if (item === "Cómo funciona") {
-        scrollToSection("como-funciona");
-      } else if (item === "Contacto") {
+      if (item === "Contacto") {
         scrollToSection("ubicacion");
       } else {
         scrollToSection(item.toLowerCase().replace(/\s+/g, "-"));
@@ -63,9 +56,9 @@ export default function Navbar() {
             <Logo />
           </div>
 
-          {/* Desktop Navigation - Centered */}
+          {/* Desktop Navigation -  Centered */}
           <div className="hidden lg:flex lg:items-center lg:space-x-6 lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2">
-            {navItems.slice(0, 4).map((item) => (
+            {navItems.map((item) => (
               <button
                 key={item}
                 onClick={() => handleNavItemClick(item)}
@@ -73,21 +66,6 @@ export default function Navbar() {
                 {item}
               </button>
             ))}
-          </div>
-
-          {/* Action Buttons - Right Side */}
-          <div className="hidden lg:flex lg:items-center lg:space-x-3">
-            {/* <button
-              onClick={() => handleNavItemClick('Vende tu auto')}
-              className="px-5 py-2 text-sm font-medium text-white transition-colors duration-200 rounded-full bg-primary-600 hover:bg-primary-700"
-            >
-              Vende tu auto
-            </button> */}
-            <button
-              onClick={() => handleNavItemClick("Vehículos en venta")}
-              className="px-5 py-2 text-sm font-medium text-gray-900 transition-colors duration-200 bg-white border border-gray-800 rounded-full hover:bg-gray-50">
-              Vehículos en venta
-            </button>
           </div>
 
           {/* Mobile menu button */}
@@ -123,7 +101,7 @@ export default function Navbar() {
           <div className="h-full overflow-y-auto">
             <div className="px-4 pt-4 pb-6 space-y-4">
               <div className="space-y-3">
-                {navItems.slice(0, 4).map((item) => (
+                {navItems.map((item) => (
                   <button
                     key={item}
                     onClick={() => {
@@ -136,28 +114,6 @@ export default function Navbar() {
                 ))}
               </div>
 
-              <div className="my-4 border-t mr-52 border-gray-200"></div>
-
-              <div className="space-y-3 mr-70">
-                {/* <button
-                  onClick={() => {
-                    handleNavItemClick("Vende tu auto");
-                    setIsMenuOpen(false);
-                  }}
-                  className="flex items-center justify-center w-full px-4 py-3 font-medium text-white transition-colors duration-200 rounded-lg bg-primary-600 hover:bg-primary-700">
-                  Vende tu auto
-                </button> */}
-
-                <button
-                  onClick={() => {
-                    handleNavItemClick("Vehículos en venta");
-                    setIsMenuOpen(false);
-                  }}
-                  className="flex items-center justify-center w-full px-4 py-3 font-medium text-gray-900 transition-colors duration-200 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
-                  Vehículos en venta
-                </button>
-              </div>
-
               <div className="pt-4 border-t border-gray-200">
                 <div className="text-center">
                   <p className="mb-2 text-sm text-gray-600">
@@ -165,12 +121,12 @@ export default function Navbar() {
                   </p>
                   <div className="flex justify-center space-x-4">
                     <a
-                      href="tel:+59812345678"
+                      href="tel:+5491121596100"
                       className="flex items-center transition-colors text-primary-600 hover:text-primary-700">
                       <span className="text-sm">Llamar</span>
                     </a>
                     <a
-                      href="https://wa.me/59812345678"
+                      href="https://wa.me/5491121596100"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center text-green-600 transition-colors hover:text-green-700">

@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useCarInfo } from "@/src/hooks/useCarInfo";
-import type { Metadata } from "next";
 
 export default function CotizarPage() {
   const router = useRouter();
@@ -35,6 +34,9 @@ export default function CotizarPage() {
     nombre: "",
     email: "",
     ubicacion: "",
+    localidadId: "",
+    localidadNombre: "",
+    provinciaNombre: "",
   });
 
   const handleInputChange = (field: string, value: string) => {
@@ -878,21 +880,45 @@ export default function CotizarPage() {
               backgroundColor: "white",
             }}
           >
-            <input
-              type="text"
-              placeholder="Ubicación"
+            <select
               value={formData.ubicacion}
               onChange={(e) =>
                 setFormData({ ...formData, ubicacion: e.target.value })
               }
-              className="w-full h-full bg-transparent text-gray-500"
+              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500"
               style={{
                 border: "none",
                 outline: "none",
                 fontFamily: "Poppins",
                 fontSize: "14px",
               }}
-            />
+            >
+              <option value="">Selecciona tu provincia</option>
+              <option value="Buenos Aires">Buenos Aires</option>
+              <option value="CABA">CABA</option>
+              <option value="Catamarca">Catamarca</option>
+              <option value="Chaco">Chaco</option>
+              <option value="Chubut">Chubut</option>
+              <option value="Córdoba">Córdoba</option>
+              <option value="Corrientes">Corrientes</option>
+              <option value="Entre Ríos">Entre Ríos</option>
+              <option value="Formosa">Formosa</option>
+              <option value="Jujuy">Jujuy</option>
+              <option value="La Pampa">La Pampa</option>
+              <option value="La Rioja">La Rioja</option>
+              <option value="Mendoza">Mendoza</option>
+              <option value="Misiones">Misiones</option>
+              <option value="Neuquén">Neuquén</option>
+              <option value="Río Negro">Río Negro</option>
+              <option value="Salta">Salta</option>
+              <option value="San Juan">San Juan</option>
+              <option value="San Luis">San Luis</option>
+              <option value="Santa Cruz">Santa Cruz</option>
+              <option value="Santa Fe">Santa Fe</option>
+              <option value="Santiago del Estero">Santiago del Estero</option>
+              <option value="Tierra del Fuego">Tierra del Fuego</option>
+              <option value="Tucumán">Tucumán</option>
+            </select>
             <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
               <svg
                 className="w-5 h-5 text-gray-400"

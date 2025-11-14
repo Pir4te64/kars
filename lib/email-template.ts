@@ -76,7 +76,7 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
   const cotizacionDolar = data.cotizacionDolar || 1200; // Usar cotización recibida o fallback
 
   // Aplicar la misma lógica que en la página de resultado:
-  // 1. Restar 17% del precio
+  // 1. Restar 13% del precio
   // 2. Multiplicar por 1000
   const precioBasePesos = precioRaw > 0
     ? (precioRaw * 0.87 * 1000) // Mismo cálculo que obtenerPrecioBasePesos()

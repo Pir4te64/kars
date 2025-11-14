@@ -138,7 +138,7 @@ export default function LeadsPage() {
       };
     }
 
-    // Aplicar misma lógica que en el cotizador y email
+    // Aplicar misma lógica que en el cotizador y email (restar 13%)
     const precioBasePesos = precioRaw * 0.87 * 1000;
     const precioConsignacion = precioBasePesos;
     const precioPermuta = precioBasePesos * 0.95;

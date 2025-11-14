@@ -631,18 +631,19 @@ export default function EditPostPage() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-14 shrink-0 items-center gap-2">
-          <div className="flex flex-1 items-center gap-2 px-3">
-            <SidebarTrigger />
+        <header className="flex h-14 shrink-0 items-center gap-2 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="flex flex-1 items-center gap-2 px-2 sm:px-3 min-w-0">
+            <SidebarTrigger className="flex-shrink-0" />
             <Separator
               orientation="vertical"
-              className="mr-2 data-[orientation=vertical]:h-4"
+              className="mr-1 sm:mr-2 data-[orientation=vertical]:h-4 hidden sm:block"
             />
-            <Breadcrumb>
+            <Breadcrumb className="min-w-0">
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbPage className="line-clamp-1">
-                    Editar Post de Vehículo
+                  <BreadcrumbPage className="line-clamp-1 text-xs sm:text-sm">
+                    <span className="hidden sm:inline">Editar Post de Vehículo</span>
+                    <span className="sm:hidden">Editar</span>
                   </BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
@@ -650,18 +651,19 @@ export default function EditPostPage() {
           </div>
         </header>
 
-        <div className="w-full mx-auto p-6 space-y-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <div className="w-full mx-auto p-3 sm:p-6 space-y-4 sm:space-y-6 overflow-auto">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               <Link href="/admin/posts">
-                <Button variant="ghost" size="sm">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Volver
+                <Button variant="ghost" size="sm" className="text-xs sm:text-sm">
+                  <ArrowLeft className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">Volver</span>
+                  <span className="sm:hidden">Atrás</span>
                 </Button>
               </Link>
-              <h1 className="text-2xl font-bold">Editar POST de Vehículo</h1>
+              <h1 className="text-xl sm:text-2xl font-bold">Editar POST de Vehículo</h1>
             </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
               <span>
                 {loggedEmail ? `Sesión: ${loggedEmail}` : "No autenticado"}
               </span>

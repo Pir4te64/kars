@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 
 interface CarouselImage {
@@ -19,6 +19,8 @@ interface Testimonial {
 
 export default function Testimonials() {
   const [currentPosition, setCurrentPosition] = useState(0);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Carrusel de imágenes - 20 imágenes reales de KARS
   const carouselImages: CarouselImage[] = [
@@ -44,13 +46,33 @@ export default function Testimonials() {
     { id: 20, src: "/carrusel_kars20.jpg", alt: "Mujer con auto rojo" }
   ];
 
-  // Funciones para navegación del carrusel
+  // Detectar si es desktop
+  useEffect(() => {
+    const checkDesktop = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
+    
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
+
+  // Funciones para navegación del carrusel (solo desktop)
   const scrollLeft = () => {
-    setCurrentPosition(prev => Math.max(0, prev - 400));
+    if (scrollContainerRef.current && isDesktop) {
+      const itemWidth = 320 + 16; // ancho del item + gap
+      const newPosition = Math.max(0, currentPosition - itemWidth);
+      setCurrentPosition(newPosition);
+    }
   };
 
   const scrollRight = () => {
-    setCurrentPosition(prev => Math.min(prev + 400, 400 * (carouselImages.length - 1)));
+    if (scrollContainerRef.current && isDesktop) {
+      const itemWidth = 320 + 16; // ancho del item + gap
+      const maxScroll = (carouselImages.length - 1) * itemWidth;
+      const newPosition = Math.min(maxScroll, currentPosition + itemWidth);
+      setCurrentPosition(newPosition);
+    }
   };
 
   const testimonials: Testimonial[] = [
@@ -96,11 +118,11 @@ export default function Testimonials() {
         </div>
 
         {/* Carrusel de imágenes */}
-        <div className="mb-16 overflow-hidden relative group  overflow-x-auto">
-          {/* Flecha izquierda */}
+        <div className="mb-16 relative group">
+          {/* Flecha izquierda - Solo visible en desktop */}
           <button
             onClick={scrollLeft}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 hover:text-gray-900 rounded-full p-3 shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+            className="hidden md:block absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 hover:text-gray-900 rounded-full p-3 shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
             style={{ marginTop: '-32px' }}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,10 +130,10 @@ export default function Testimonials() {
             </svg>
           </button>
 
-          {/* Flecha derecha */}
+          {/* Flecha derecha - Solo visible en desktop */}
           <button
             onClick={scrollRight}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 hover:text-gray-900 rounded-full p-3 shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+            className="hidden md:block absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 hover:text-gray-900 rounded-full p-3 shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
             style={{ marginTop: '-32px' }}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -119,18 +141,23 @@ export default function Testimonials() {
             </svg>
           </button>
 
+          {/* Contenedor scrolleable con gestos táctiles */}
           <div
-            className="flex gap-4 transition-transform duration-500 ease-in-out"
+            ref={scrollContainerRef}
+            className={`flex gap-4 scroll-smooth snap-x snap-mandatory scrollbar-hide ${
+              isDesktop ? 'overflow-hidden' : 'overflow-x-auto'
+            }`}
             style={{
-              transform: `translateX(-${currentPosition}px)`,
-              width: 'max-content'
+              WebkitOverflowScrolling: 'touch',
+              transform: isDesktop ? `translateX(-${currentPosition}px)` : 'none',
+              transition: isDesktop ? 'transform 0.5s ease-in-out' : 'none'
             }}
           >
             {/* Imágenes del carrusel */}
             {carouselImages.map((image, index) => (
-              <div key={`${image.id}-${index}`} className="flex-shrink-0">
+              <div key={`${image.id}-${index}`} className="flex-shrink-0 snap-start snap-always">
                 {/* Contenedor tipo ventana - Rectangular vertical */}
-                <div className="relative w-80 h-96 bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105">
+                <div className="relative w-72 sm:w-80 md:w-80 h-72 sm:h-96 md:h-96 bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105">
                   <Image
                     src={image.src}
                     alt={image.alt}
@@ -141,7 +168,7 @@ export default function Testimonials() {
                       objectPosition: 'center center'
                     }}
                     loading="lazy"
-                    sizes="320px"
+                    sizes="(max-width: 640px) 288px, 320px"
                   />
                   {/* Borde sutil para definir la ventana */}
                   <div className="absolute inset-0 border border-gray-200 rounded-xl pointer-events-none"></div>

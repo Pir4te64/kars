@@ -23,7 +23,13 @@
       "Bash(done)",
       "WebSearch",
       "Bash(node -e:*)",
+<<<<<<< HEAD
       "Bash(npx next build:*)"
+=======
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npm run dev:*)"
+>>>>>>> 7edc6a07c1780d3663d48862fad1eaa97143548c
     ],
     "deny": [],
     "ask": []

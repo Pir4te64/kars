@@ -239,7 +239,7 @@ export default function CotizarPage() {
 
       {/* Form Fields */}
       <div className="space-y-4" style={{ marginTop: "40px" }}>
-        {/* First Row - Marca, Modelo, Año */}
+        {/* First Row - Marca, Año, Modelo */}
         <div
           className="flex flex-col md:flex-row justify-center mx-auto w-full max-w-4xl gap-2 md:gap-3"
           style={{
@@ -289,6 +289,58 @@ export default function CotizarPage() {
                     : "No hay marcas disponibles"}
                 </option>
               )}
+            </select>
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <svg
+                className="w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+          </div>
+
+          {/* Año */}
+          <div
+            className="relative w-full md:w-1/3"
+            style={{
+              height: "56px",
+              paddingTop: "12px",
+              paddingRight: "16px",
+              paddingBottom: "12px",
+              paddingLeft: "16px",
+              gap: "4px",
+              borderRadius: "7px",
+              border: "1px solid #0D0D0D",
+              opacity: 1,
+            }}
+          >
+            <select
+              value={formData.año}
+              onChange={(e) =>
+                setFormData({ ...formData, año: e.target.value })
+              }
+              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500"
+              style={{
+                border: "none",
+                outline: "none",
+              }}
+            >
+              <option value="">Año</option>
+              {years.map((year, i) => {
+                return (
+                  <option key={year.year} value={year.year}>
+                    {year.year}
+                  </option>
+                );
+              })}
             </select>
             <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
               <svg
@@ -397,58 +449,6 @@ export default function CotizarPage() {
                 ))}
               </div>
             )}
-          </div>
-
-          {/* Año */}
-          <div
-            className="relative w-full md:w-1/3"
-            style={{
-              height: "56px",
-              paddingTop: "12px",
-              paddingRight: "16px",
-              paddingBottom: "12px",
-              paddingLeft: "16px",
-              gap: "4px",
-              borderRadius: "7px",
-              border: "1px solid #0D0D0D",
-              opacity: 1,
-            }}
-          >
-            <select
-              value={formData.año}
-              onChange={(e) =>
-                setFormData({ ...formData, año: e.target.value })
-              }
-              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500"
-              style={{
-                border: "none",
-                outline: "none",
-              }}
-            >
-              <option value="">Año</option>
-              {years.map((year, i) => {
-                return (
-                  <option key={year.year} value={year.year}>
-                    {year.year}
-                  </option>
-                );
-              })}
-            </select>
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-              <svg
-                className="w-5 h-5 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </div>
           </div>
         </div>
 

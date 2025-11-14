@@ -208,19 +208,11 @@ export default function Page() {
 
   const fileRef = useRef<HTMLInputElement | null>(null);
 
-<<<<<<< HEAD
   // Hook para datos de InfoAuto (marcas, modelos, años)
   const {
     brands,
     groups,
     models,
-=======
-  // Hook para obtener información de vehículos
-  const {
-    brands,
-    models,
-    groups,
->>>>>>> 7edc6a07c1780d3663d48862fad1eaa97143548c
     years,
     loadingBrands,
     loadingGroups,
@@ -231,17 +223,6 @@ export default function Page() {
     getPrice,
   } = useCarInfo();
 
-<<<<<<< HEAD
-=======
-  // Estados para el selector de vehículo
-  const [selectedBrand, setSelectedBrand] = useState<string>("");
-  const [selectedGroup, setSelectedGroup] = useState<string>(""); // Guarda el name del grupo
-  const [selectedGroupId, setSelectedGroupId] = useState<string>(""); // Guarda el ID del grupo
-  const [selectedModel, setSelectedModel] = useState<string>("");
-  const [selectedYear, setSelectedYear] = useState<string>("");
-  const [whatsappUrl, setWhatsappUrl] = useState<string>("");
-
->>>>>>> 7edc6a07c1780d3663d48862fad1eaa97143548c
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     mode: "onChange",

@@ -202,15 +202,9 @@ export default function CarDetailClient({
             </div>
 
             {/* Price */}
-<<<<<<< HEAD
-            <div className="mb-4">
-              <div className="text-3xl font-bold text-primary-600">
-                {car.moneda || 'USD'} {car.price}
-=======
             <div className="mb-4 sm:mb-5 bg-gradient-to-r from-blue-50 to-indigo-50 p-3 sm:p-4 rounded-lg border border-blue-100">
               <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-primary-600">
-                {car.price}
->>>>>>> 7edc6a07c1780d3663d48862fad1eaa97143548c
+                {carData.moneda || 'USD'} {car.price}
               </div>
               <div className="text-xs sm:text-sm text-gray-600 mt-1">Precio de contado</div>
             </div>

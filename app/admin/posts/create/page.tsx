@@ -222,6 +222,14 @@ export default function Page() {
     getPrice,
   } = useCarInfo();
 
+  // Estados para el selector de vehículo
+  const [selectedBrand, setSelectedBrand] = useState<string>("");
+  const [selectedGroup, setSelectedGroup] = useState<string>(""); // Guarda el name del grupo
+  const [selectedGroupId, setSelectedGroupId] = useState<string>(""); // Guarda el ID del grupo
+  const [selectedModel, setSelectedModel] = useState<string>("");
+  const [selectedYear, setSelectedYear] = useState<string>("");
+  const [whatsappUrl, setWhatsappUrl] = useState<string>("");
+
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     mode: "onChange",

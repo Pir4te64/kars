@@ -106,11 +106,11 @@ export default function QuoteResultPage() {
     // 1. Precio de InfoAuto (ej: "772")
     const precioInfoAuto = parseFloat(quoteData?.precio || "0");
 
-    // 2. Aumentar 10%
-    const precioConAumento = precioInfoAuto * 1.10;
+    // 2. Descontar 10%
+    const precioConDescuento = precioInfoAuto * 0.90;
 
     // 3. Multiplicar por 1000 para obtener pesos reales
-    const precioEnPesos = precioConAumento * 1000;
+    const precioEnPesos = precioConDescuento * 1000;
 
     return precioEnPesos;
   };

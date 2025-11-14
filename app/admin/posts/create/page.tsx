@@ -1126,117 +1126,114 @@ export default function Page() {
                     )}
                   />
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                    {/* MARCA - Desplegable con datos de InfoAuto */}
+                    {/* MARCA - Autocompletado con datos de InfoAuto */}
                     <FormField
                       control={form.control}
                       name="marca"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Marca</FormLabel>
-                          <Select
-                            value={field.value || undefined}
-                            onValueChange={(value) => {
-                              field.onChange(value);
-                              // Obtener grupos/modelos de esta marca
-                              const brand = brands.find((b) => b.name === value);
-                              if (brand) {
-                                getGroup(brand.id.toString());
-                                // Limpiar campos dependientes
-                                form.setValue("modelo", "");
-                                form.setValue("version", "");
-                                form.setValue("anio", "");
-                              }
-                            }}>
-                            <FormControl>
-                              <SelectTrigger className="w-full">
-                                <SelectValue placeholder={loadingBrands ? "Cargando..." : "Seleccionar marca"} />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {brands.map((brand) => (
-                                <SelectItem key={brand.id} value={brand.name}>
-                                  {brand.name}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                          <FormControl>
+                            <VehicleAutocomplete
+                              value={field.value || ""}
+                              onChange={(value) => {
+                                field.onChange(value);
+                                // Obtener grupos/modelos de esta marca
+                                const brand = brands.find((b) => b.name === value);
+                                if (brand) {
+                                  getGroup(brand.id.toString());
+                                  // Limpiar campos dependientes
+                                  form.setValue("modelo", "");
+                                  form.setValue("version", "");
+                                  form.setValue("anio", "");
+                                }
+                              }}
+                              options={brands.map((brand) => ({
+                                id: brand.id,
+                                label: brand.name,
+                                value: brand.name,
+                              }))}
+                              placeholder="Buscar marca..."
+                              loading={loadingBrands}
+                              loadingText="Cargando marcas..."
+                              noResultsText="No se encontraron marcas"
+                            />
+                          </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
 
-                    {/* GRUPO/MODELO - Desplegable con datos de InfoAuto */}
+                    {/* GRUPO/MODELO - Autocompletado con datos de InfoAuto */}
                     <FormField
                       control={form.control}
                       name="modelo"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Grupo/Modelo</FormLabel>
-                          <Select
-                            value={field.value || undefined}
-                            onValueChange={(value) => {
-                              field.onChange(value);
-                              // Obtener versiones de este modelo
-                              const marca = form.getValues("marca");
-                              const brand = brands.find((b) => b.name === marca);
-                              const group = groups.find((g) => g.name === value);
-                              if (brand && group) {
-                                getModel(brand.id.toString(), group.id.toString());
-                                // Limpiar campos dependientes
-                                form.setValue("version", "");
-                                form.setValue("anio", "");
-                              }
-                            }}
-                            disabled={!form.getValues("marca") || loadingGroups}>
-                            <FormControl>
-                              <SelectTrigger className="w-full">
-                                <SelectValue placeholder={loadingGroups ? "Cargando..." : "Seleccionar modelo"} />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {groups.map((group) => (
-                                <SelectItem key={group.id} value={group.name}>
-                                  {group.name}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                          <FormControl>
+                            <VehicleAutocomplete
+                              value={field.value || ""}
+                              onChange={(value) => {
+                                field.onChange(value);
+                                // Obtener versiones de este modelo
+                                const marca = form.getValues("marca");
+                                const brand = brands.find((b) => b.name === marca);
+                                const group = groups.find((g) => g.name === value);
+                                if (brand && group) {
+                                  getModel(brand.id.toString(), group.id.toString());
+                                  // Limpiar campos dependientes
+                                  form.setValue("version", "");
+                                  form.setValue("anio", "");
+                                }
+                              }}
+                              options={groups.map((group) => ({
+                                id: group.id,
+                                label: group.name,
+                                value: group.name,
+                              }))}
+                              placeholder="Buscar modelo..."
+                              loading={loadingGroups}
+                              disabled={!form.getValues("marca")}
+                              loadingText="Cargando modelos..."
+                              noResultsText="No se encontraron modelos"
+                            />
+                          </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
 
-                    {/* VERSIÓN - Desplegable con datos de InfoAuto */}
+                    {/* VERSIÓN - Autocompletado con datos de InfoAuto */}
                     <FormField
                       control={form.control}
                       name="version"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Versión</FormLabel>
-                          <Select
-                            value={field.value || undefined}
-                            onValueChange={(value) => {
-                              field.onChange(value);
-                              // Obtener precios/años de esta versión
-                              const model = models.find((m) => m.description === value);
-                              if (model) {
-                                getPrice(model.codia);
-                              }
-                            }}
-                            disabled={!form.getValues("modelo") || loadingModels}>
-                            <FormControl>
-                              <SelectTrigger className="w-full">
-                                <SelectValue placeholder={loadingModels ? "Cargando..." : "Seleccionar versión"} />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {models.map((model) => (
-                                <SelectItem key={model.codia} value={model.description}>
-                                  {model.description}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                          <FormControl>
+                            <VehicleAutocomplete
+                              value={field.value || ""}
+                              onChange={(value) => {
+                                field.onChange(value);
+                                // Obtener precios/años de esta versión
+                                const model = models.find((m) => m.description === value);
+                                if (model) {
+                                  getPrice(model.codia);
+                                }
+                              }}
+                              options={models.map((model) => ({
+                                id: model.codia,
+                                label: model.description,
+                                value: model.description,
+                              }))}
+                              placeholder="Buscar versión..."
+                              loading={loadingModels}
+                              disabled={!form.getValues("modelo")}
+                              loadingText="Cargando versiones..."
+                              noResultsText="No se encontraron versiones"
+                            />
+                          </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}

@@ -44,7 +44,7 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { setOpen, isMobile } = useSidebar()
+  const { setOpen } = useSidebar()
 
   return (
     <Sidebar collapsible="offcanvas" className="border-r-0" {...props}>
@@ -56,17 +56,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               Dashboard Vehículos
             </span>
           </div>
-          {isMobile && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 flex-shrink-0"
-              onClick={() => setOpen(false)}
-              title="Cerrar sidebar"
-            >
-              <X className="h-5 w-5" />
-            </Button>
-          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-9 w-9 flex-shrink-0 hover:bg-accent rounded-md"
+            onClick={() => setOpen(false)}
+            title="Cerrar panel"
+          >
+            <X className="h-5 w-5" />
+          </Button>
         </div>
         <div className="px-2 sm:px-4">
           <NavMain items={data.navMain} />

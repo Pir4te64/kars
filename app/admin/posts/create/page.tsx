@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Separator } from "@radix-ui/react-separator";
+import { VehicleAutocomplete } from "@/components/VehicleAutocomplete";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -944,52 +945,43 @@ export default function Page() {
                       {/* Selector de Marca */}
                       <div className="space-y-2">
                         <Label>Marca</Label>
-                        <Select
+                        <VehicleAutocomplete
                           value={selectedBrand}
-                          onValueChange={handleBrandChange}
-                          disabled={loadingBrands}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder={loadingBrands ? "Cargando marcas..." : "Selecciona una marca"} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {brands && brands.length > 0 ? (
-                              brands
-                                .filter((brand) => ["FORD", "HONDA", "PEUGEOT", "CHEVROLET"].includes(brand.name))
-                                .map((brand) => (
-                                  <SelectItem key={brand.id || brand.name} value={brand.id?.toString() || brand.name}>
-                                    {brand.name}
-                                  </SelectItem>
-                                ))
-                            ) : (
-                              <SelectItem value="" disabled>
-                                {loadingBrands ? "Cargando marcas..." : "No hay marcas disponibles"}
-                              </SelectItem>
-                            )}
-                          </SelectContent>
-                        </Select>
+                          onChange={(value) => handleBrandChange(value)}
+                          options={
+                            brands
+                              .filter((brand) => ["FORD", "HONDA", "PEUGEOT", "CHEVROLET"].includes(brand.name))
+                              .map((brand) => ({
+                                id: brand.id || brand.name,
+                                label: brand.name,
+                                value: brand.id?.toString() || brand.name,
+                              }))
+                          }
+                          placeholder="Buscar marca..."
+                          loading={loadingBrands}
+                          loadingText="Cargando marcas..."
+                          noResultsText="No se encontraron marcas"
+                        />
                       </div>
 
                       {/* Selector de Grupo */}
                       {selectedBrand && (
                         <div className="space-y-2">
                           <Label>Grupo</Label>
-                          <Select
+                          <VehicleAutocomplete
                             value={selectedGroupId}
-                            onValueChange={handleGroupChange}
-                            disabled={loadingGroups || !selectedBrand}
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder={loadingGroups ? "Cargando grupos..." : "Selecciona un grupo"} />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {groups.map((group) => (
-                                <SelectItem key={group.id || group.name} value={group.id?.toString() || ""}>
-                                  {group.name}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                            onChange={(value) => handleGroupChange(value)}
+                            options={groups.map((group) => ({
+                              id: group.id || group.name,
+                              label: group.name,
+                              value: group.id?.toString() || "",
+                            }))}
+                            placeholder="Buscar grupo..."
+                            loading={loadingGroups}
+                            disabled={!selectedBrand}
+                            loadingText="Cargando grupos..."
+                            noResultsText="No se encontraron grupos"
+                          />
                         </div>
                       )}
 
@@ -997,22 +989,20 @@ export default function Page() {
                       {selectedGroupId && (
                         <div className="space-y-2">
                           <Label>Modelo</Label>
-                          <Select
+                          <VehicleAutocomplete
                             value={selectedModel}
-                            onValueChange={handleModelChange}
-                            disabled={loadingModels || !selectedGroup}
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder={loadingModels ? "Cargando modelos..." : "Selecciona un modelo"} />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {models.map((model) => (
-                                <SelectItem key={model.codia} value={model.codia}>
-                                  {model.description || model.name}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                            onChange={(value) => handleModelChange(value)}
+                            options={models.map((model) => ({
+                              id: model.codia,
+                              label: model.description || model.name,
+                              value: model.codia,
+                            }))}
+                            placeholder="Buscar modelo..."
+                            loading={loadingModels}
+                            disabled={!selectedGroup}
+                            loadingText="Cargando modelos..."
+                            noResultsText="No se encontraron modelos"
+                          />
                         </div>
                       )}
 

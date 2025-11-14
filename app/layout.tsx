@@ -15,6 +15,12 @@ export const metadata: Metadata = {
   title: 'KARS - Compra y Vende Autos Usados',
   description: ' Encuentra el auto de tus sueños o vende tu auto usado de manera rápida y segura. Proceso 100% en línea, financiamiento disponible.',
   keywords: ['autos usados', 'compra venta autos', 'autos certificados', 'financiamiento autos'],
+  verification: {
+    google: 'YsoKZhVyTAsy15w8AmYhU4x6YOEyzZU3Qbovm-Eeec',
+    other: {
+      'facebook-domain-verification': '2prisasaheadexeps5804x28with1',
+    },
+  },
   openGraph: {
     title: 'KARS - Compra y Vende Autos Usados',
     description: 'Encuentra el auto de tus sueños o vende tu auto usado de manera rápida y segura.',

@@ -52,7 +52,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { useCarInfo } from "@/src/hooks/useCarInfo";
 
 // ----------------- Zod schema según tabla vehicle_posts -----------------
 const schema = z.object({

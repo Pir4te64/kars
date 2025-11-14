@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
 
+export const dynamic = 'force-dynamic'
+
 const AUTH_API_URL = process.env.AUTH_API_URL || 'http://localhost:3001/api/cars/auth'
 
 export async function POST(request: Request) {

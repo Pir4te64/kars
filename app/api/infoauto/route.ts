@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+export const dynamic = 'force-dynamic'
+
 const INFOAUTO_BASE_URL = 'https://api.infoauto.com.ar/cars'
 const INFOAUTO_USER = 'vicmor601@gmail.com'
 const INFOAUTO_PASSWORD = 'XhqOsuVIK1MeXpAB'

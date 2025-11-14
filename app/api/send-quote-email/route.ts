@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { generateQuoteEmailHTML } from "@/lib/email-template";
 
+export const dynamic = 'force-dynamic'
+
 // Usar RESEND_API_KEY (recomendado) o NEXT_PUBLIC_RESEND_API_KEY como fallback
 // NOTA: Para producción, usa RESEND_API_KEY sin NEXT_PUBLIC_ por seguridad
 const resendApiKey =

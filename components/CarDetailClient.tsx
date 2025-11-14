@@ -204,7 +204,7 @@ export default function CarDetailClient({
             {/* Price */}
             <div className="mb-4">
               <div className="text-3xl font-bold text-primary-600">
-                {car.price}
+                {car.moneda || 'USD'} {car.price}
               </div>
               <div className="text-xs text-gray-500">Precio de contado</div>
             </div>
@@ -964,7 +964,7 @@ export default function CarDetailClient({
                   </h3>
                   <div className="flex items-center justify-between">
                     <span className="text-2xl font-bold text-gray-900">
-                      {post.precio}
+                      {post.moneda || 'USD'} {post.precio}
                     </span>
                   </div>
                   <div className="flex items-center justify-between pt-2 text-xs text-gray-500 border-t">

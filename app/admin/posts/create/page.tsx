@@ -7,6 +7,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useCarInfo } from "@/src/hooks/useCarInfo";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -195,6 +196,21 @@ export default function Page() {
   const [imgItems, setImgItems] = useState<ImgItem[]>([]);
 
   const fileRef = useRef<HTMLInputElement | null>(null);
+
+  // Hook para datos de InfoAuto (marcas, modelos, años)
+  const {
+    brands,
+    groups,
+    models,
+    years,
+    loadingBrands,
+    loadingGroups,
+    loadingModels,
+    loadingYears,
+    getGroup,
+    getModel,
+    getPrice,
+  } = useCarInfo();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -492,17 +508,6 @@ export default function Page() {
       }
 
       // Validaciones mínimas
-      const tituloValue = String(values.titulo ?? "").trim();
-      if (!tituloValue || tituloValue.length < 2) {
-        toast.error("Título inválido", {
-          description: "El título es requerido (mínimo 2 caracteres)",
-        });
-        form.setError("titulo", {
-          type: "manual",
-          message: "El título es requerido (mínimo 2 caracteres)",
-        });
-        return;
-      }
       const marcaValue = String(values.marca ?? "").trim();
       if (!marcaValue) {
         toast.error("Marca requerida", {
@@ -550,13 +555,18 @@ export default function Page() {
 
       setUploading(true);
 
-      // Slug final
-      const finalSlug =
-        values.slug && values.slug.trim()
-          ? toStr(values.slug)
-          : `${sanitizePath(tituloValue)}-${Date.now()
-              .toString(36)
-              .substring(0, 8)}`;
+      // Generar título automáticamente: Marca Modelo Versión Año
+      const versionValue = String(values.version ?? "").trim();
+      const tituloAuto = [marcaValue, modeloValue, versionValue, anioValue]
+        .filter(Boolean)
+        .join(" ");
+
+      const tituloValue = tituloAuto || "Vehículo sin título";
+
+      // Slug final generado desde el título automático
+      const finalSlug = `${sanitizePath(tituloValue)}-${Date.now()
+          .toString(36)
+          .substring(0, 8)}`;
 
       const payload = {
         // Información básica
@@ -801,6 +811,7 @@ export default function Page() {
                   <CardTitle>Información General</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                  {/* TÍTULO - COMENTADO: Se genera automáticamente desde marca + modelo + versión + año
                   <FormField
                     control={form.control}
                     name="titulo"
@@ -814,6 +825,7 @@ export default function Page() {
                       </FormItem>
                     )}
                   />
+                  */}
                   <FormField
                     control={form.control}
                     name="slug"
@@ -834,46 +846,161 @@ export default function Page() {
                       </FormItem>
                     )}
                   />
-                  <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {/* MARCA - Desplegable con datos de InfoAuto */}
                     <FormField
                       control={form.control}
                       name="marca"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Marca</FormLabel>
-                          <FormControl>
-                            <Input type="text" placeholder="" {...field} />
-                          </FormControl>
+                          <Select
+                            value={field.value || undefined}
+                            onValueChange={(value) => {
+                              field.onChange(value);
+                              // Obtener grupos/modelos de esta marca
+                              const brand = brands.find((b) => b.name === value);
+                              if (brand) {
+                                getGroup(brand.id.toString());
+                                // Limpiar campos dependientes
+                                form.setValue("modelo", "");
+                                form.setValue("version", "");
+                                form.setValue("anio", "");
+                              }
+                            }}>
+                            <FormControl>
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder={loadingBrands ? "Cargando..." : "Seleccionar marca"} />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {brands.map((brand) => (
+                                <SelectItem key={brand.id} value={brand.name}>
+                                  {brand.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
+
+                    {/* GRUPO/MODELO - Desplegable con datos de InfoAuto */}
                     <FormField
                       control={form.control}
                       name="modelo"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Modelo</FormLabel>
-                          <FormControl>
-                            <Input type="text" placeholder="" {...field} />
-                          </FormControl>
+                          <FormLabel>Grupo/Modelo</FormLabel>
+                          <Select
+                            value={field.value || undefined}
+                            onValueChange={(value) => {
+                              field.onChange(value);
+                              // Obtener versiones de este modelo
+                              const marca = form.getValues("marca");
+                              const brand = brands.find((b) => b.name === marca);
+                              const group = groups.find((g) => g.name === value);
+                              if (brand && group) {
+                                getModel(brand.id.toString(), group.id.toString());
+                                // Limpiar campos dependientes
+                                form.setValue("version", "");
+                                form.setValue("anio", "");
+                              }
+                            }}
+                            disabled={!form.getValues("marca") || loadingGroups}>
+                            <FormControl>
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder={loadingGroups ? "Cargando..." : "Seleccionar modelo"} />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {groups.map((group) => (
+                                <SelectItem key={group.id} value={group.name}>
+                                  {group.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
+
+                    {/* VERSIÓN - Desplegable con datos de InfoAuto */}
+                    <FormField
+                      control={form.control}
+                      name="version"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Versión</FormLabel>
+                          <Select
+                            value={field.value || undefined}
+                            onValueChange={(value) => {
+                              field.onChange(value);
+                              // Obtener precios/años de esta versión
+                              const model = models.find((m) => m.description === value);
+                              if (model) {
+                                getPrice(model.codia);
+                              }
+                            }}
+                            disabled={!form.getValues("modelo") || loadingModels}>
+                            <FormControl>
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder={loadingModels ? "Cargando..." : "Seleccionar versión"} />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {models.map((model) => (
+                                <SelectItem key={model.codia} value={model.description}>
+                                  {model.description}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {/* AÑO - Desplegable con datos de InfoAuto */}
                     <FormField
                       control={form.control}
                       name="anio"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Año</FormLabel>
-                          <FormControl>
-                            <Input type="text" placeholder="" {...field} />
-                          </FormControl>
+                          <Select
+                            value={field.value || undefined}
+                            onValueChange={(value) => {
+                              field.onChange(value);
+                              // Actualizar precio automáticamente
+                              const yearData = years.find((y) => y.year.toString() === value);
+                              if (yearData) {
+                                form.setValue("precio", yearData.price.toString());
+                              }
+                            }}
+                            disabled={!form.getValues("version") || loadingYears}>
+                            <FormControl>
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder={loadingYears ? "Cargando..." : "Seleccionar año"} />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {years.map((yearData) => (
+                                <SelectItem key={yearData.year} value={yearData.year.toString()}>
+                                  {yearData.year} - ${yearData.price?.toLocaleString("es-AR") || "N/A"}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
+
                     <FormField
                       control={form.control}
                       name="kilometraje"
@@ -881,27 +1008,15 @@ export default function Page() {
                         <FormItem>
                           <FormLabel>Kilometraje</FormLabel>
                           <FormControl>
-                            <Input placeholder="" {...field} />
+                            <Input placeholder="Ej: 50000" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                   </div>
-                  <FormField
-                    control={form.control}
-                    name="version"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Versión</FormLabel>
-                        <FormControl>
-                          <Input placeholder="" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
                   <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                    {/* CARROCERÍA - COMENTADO
                     <FormField
                       control={form.control}
                       name="carroceria"
@@ -915,6 +1030,7 @@ export default function Page() {
                         </FormItem>
                       )}
                     />
+                    */}
                     <FormField
                       control={form.control}
                       name="condicion"
@@ -941,6 +1057,7 @@ export default function Page() {
                         </FormItem>
                       )}
                     />
+                    {/* COLOR INTERIOR - COMENTADO
                     <FormField
                       control={form.control}
                       name="color_interior"
@@ -954,6 +1071,7 @@ export default function Page() {
                         </FormItem>
                       )}
                     />
+                    */}
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
                     <FormField
@@ -1115,6 +1233,7 @@ export default function Page() {
               </Card>
 
               {/* 🚗 TRANSMISIÓN Y CHASIS */}
+              {/* COMENTADO - No se muestra en el formulario
               <Card>
                 <CardHeader>
                   <CardTitle>Transmisión y Chasis</CardTitle>
@@ -1268,8 +1387,10 @@ export default function Page() {
                   </div>
                 </CardContent>
               </Card>
+              */}
 
               {/* 🎛️ CONFORT */}
+              {/* COMENTADO - No se muestra en el formulario
               <Card>
                 <CardHeader>
                   <CardTitle>Confort</CardTitle>
@@ -1782,8 +1903,10 @@ export default function Page() {
                   </div>
                 </CardContent>
               </Card>
+              */}
 
               {/* 🛡️ SEGURIDAD */}
+              {/* COMENTADO - No se muestra en el formulario
               <Card>
                 <CardHeader>
                   <CardTitle>Seguridad</CardTitle>
@@ -2225,8 +2348,10 @@ export default function Page() {
                   </div>
                 </CardContent>
               </Card>
+              */}
 
               {/* 📻 COMUNICACIÓN Y ENTRETENIMIENTO */}
+              {/* COMENTADO - No se muestra en el formulario
               <Card>
                 <CardHeader>
                   <CardTitle>Comunicación y Entretenimiento</CardTitle>
@@ -2468,6 +2593,7 @@ export default function Page() {
                   )}
                 </CardContent>
               </Card>
+              */}
 
               {/* 💰 PRECIO */}
               <Card>
@@ -2495,9 +2621,19 @@ export default function Page() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Moneda</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Ej: USD, ARS, EUR" {...field} />
-                          </FormControl>
+                          <Select
+                            value={field.value || undefined}
+                            onValueChange={field.onChange}>
+                            <FormControl>
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Seleccionar moneda" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="USD">USD (Dólares)</SelectItem>
+                              <SelectItem value="ARS">ARS (Pesos)</SelectItem>
+                            </SelectContent>
+                          </Select>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -2552,7 +2688,7 @@ export default function Page() {
                 </CardContent>
               </Card>
 
-              {/* 👤 VENDEDOR */}
+              {/* 👤 VENDEDOR - COMENTADO COMPLETO
               <Card>
                 <CardHeader>
                   <CardTitle>Vendedor</CardTitle>
@@ -2642,6 +2778,7 @@ export default function Page() {
                   </div>
                 </CardContent>
               </Card>
+              */}
 
               {/* 📸 IMÁGENES (OBLIGATORIO) */}
               <Card>

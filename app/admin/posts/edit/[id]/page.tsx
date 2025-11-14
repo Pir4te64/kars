@@ -8,6 +8,7 @@ import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { useCarInfo } from "@/src/hooks/useCarInfo";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -120,6 +121,21 @@ export default function EditPostPage() {
   const [imgItems, setImgItems] = useState<ImgItem[]>([]);
 
   const fileRef = useRef<HTMLInputElement | null>(null);
+
+  // Hook para datos de InfoAuto (marcas, modelos, años)
+  const {
+    brands,
+    groups,
+    models,
+    years,
+    loadingBrands,
+    loadingGroups,
+    loadingModels,
+    loadingYears,
+    getGroup,
+    getModel,
+    getPrice,
+  } = useCarInfo();
 
   const {
     register,
@@ -281,6 +297,52 @@ export default function EditPostPage() {
       }
     })();
   }, [postId, reset, router]);
+
+  // Cargar datos de InfoAuto cuando se cargan los datos del vehículo
+  useEffect(() => {
+    if (!postData || !brands.length) return;
+
+    const marca = toStr(postData.marca);
+    const modelo = toStr(postData.modelo);
+
+    // Si hay marca, cargar grupos/modelos
+    if (marca) {
+      const brand = brands.find((b) => b.name === marca);
+      if (brand) {
+        getGroup(brand.id.toString());
+      }
+    }
+  }, [postData, brands, getGroup]);
+
+  // Cuando se cargan los grupos, cargar modelos si ya hay modelo seleccionado
+  useEffect(() => {
+    if (!postData || !groups.length || !brands.length) return;
+
+    const marca = toStr(postData.marca);
+    const modelo = toStr(postData.modelo);
+
+    if (marca && modelo) {
+      const brand = brands.find((b) => b.name === marca);
+      const group = groups.find((g) => g.name === modelo);
+      if (brand && group) {
+        getModel(brand.id.toString(), group.id.toString());
+      }
+    }
+  }, [postData, groups, brands, getModel]);
+
+  // Cuando se cargan los modelos, cargar precios si ya hay versión seleccionada
+  useEffect(() => {
+    if (!postData || !models.length) return;
+
+    const version = toStr(postData.version);
+
+    if (version) {
+      const model = models.find((m) => m.description === version);
+      if (model) {
+        getPrice(model.codia);
+      }
+    }
+  }, [postData, models, getPrice]);
 
   // Limpiar objectURLs al desmontar
   useEffect(() => {
@@ -623,6 +685,7 @@ export default function EditPostPage() {
                 <CardTitle>Información General</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
+                {/* TÍTULO - COMENTADO: Se genera automáticamente desde marca + modelo + versión + año
                 <div>
                   <Label htmlFor="titulo">Título</Label>
                   <Input
@@ -636,6 +699,7 @@ export default function EditPostPage() {
                     </p>
                   )}
                 </div>
+                */}
                 <div>
                   <Label htmlFor="slug">Slug (generado automáticamente)</Label>
                   <Input
@@ -650,30 +714,157 @@ export default function EditPostPage() {
                     El slug se genera automáticamente, pero puedes editarlo si lo necesitas
                   </p>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* MARCA - Desplegable con datos de InfoAuto */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                   <div>
                     <Label>Marca</Label>
-                    <Input placeholder="" {...register("marca")} />
+                    <Controller
+                      control={control}
+                      name="marca"
+                      render={({ field }) => (
+                        <Select
+                          value={field.value || undefined}
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            // Obtener grupos/modelos de esta marca
+                            const brand = brands.find((b) => b.name === value);
+                            if (brand) {
+                              getGroup(brand.id.toString());
+                              // Limpiar campos dependientes
+                              setValue("modelo", "");
+                              setValue("version", "");
+                              setValue("anio", "");
+                            }
+                          }}>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder={loadingBrands ? "Cargando..." : "Seleccionar marca"} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {brands.map((brand) => (
+                              <SelectItem key={brand.id} value={brand.name}>
+                                {brand.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
                     {errors.marca && (
                       <p className="text-red-500 text-sm">
                         {errors.marca.message}
                       </p>
                     )}
                   </div>
+
+                  {/* GRUPO/MODELO - Desplegable con datos de InfoAuto */}
                   <div>
-                    <Label>Modelo</Label>
-                    <Input placeholder="" {...register("modelo")} />
+                    <Label>Grupo/Modelo</Label>
+                    <Controller
+                      control={control}
+                      name="modelo"
+                      render={({ field }) => (
+                        <Select
+                          value={field.value || undefined}
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            // Obtener versiones de este modelo
+                            const marcaValue = watch("marca");
+                            const brand = brands.find((b) => b.name === marcaValue);
+                            const group = groups.find((g) => g.name === value);
+                            if (brand && group) {
+                              getModel(brand.id.toString(), group.id.toString());
+                              // Limpiar campos dependientes
+                              setValue("version", "");
+                              setValue("anio", "");
+                            }
+                          }}
+                          disabled={!watch("marca") || loadingGroups}>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder={loadingGroups ? "Cargando..." : "Seleccionar modelo"} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {groups.map((group) => (
+                              <SelectItem key={group.id} value={group.name}>
+                                {group.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
                     {errors.modelo && (
                       <p className="text-red-500 text-sm">
                         {errors.modelo.message}
                       </p>
                     )}
                   </div>
+
+                  {/* VERSIÓN - Desplegable con datos de InfoAuto */}
+                  <div>
+                    <Label>Versión</Label>
+                    <Controller
+                      control={control}
+                      name="version"
+                      render={({ field }) => (
+                        <Select
+                          value={field.value || undefined}
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            // Obtener precios/años de esta versión
+                            const model = models.find((m) => m.description === value);
+                            if (model) {
+                              getPrice(model.codia);
+                            }
+                          }}
+                          disabled={!watch("modelo") || loadingModels}>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder={loadingModels ? "Cargando..." : "Seleccionar versión"} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {models.map((model) => (
+                              <SelectItem key={model.codia} value={model.description}>
+                                {model.description}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
+                  </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {/* AÑO - Desplegable con datos de InfoAuto */}
                   <div>
                     <Label>Año</Label>
-                    <Input placeholder="" {...register("anio")} />
+                    <Controller
+                      control={control}
+                      name="anio"
+                      render={({ field }) => (
+                        <Select
+                          value={field.value || undefined}
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            // Actualizar precio automáticamente
+                            const yearData = years.find((y) => y.year.toString() === value);
+                            if (yearData) {
+                              setValue("precio", yearData.price.toString());
+                            }
+                          }}
+                          disabled={!watch("version") || loadingYears}>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder={loadingYears ? "Cargando..." : "Seleccionar año"} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {years.map((yearData) => (
+                              <SelectItem key={yearData.year} value={yearData.year.toString()}>
+                                {yearData.year} - ${yearData.price?.toLocaleString("es-AR") || "N/A"}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
                     {errors.anio && (
                       <p className="text-red-500 text-sm">
                         {errors.anio.message}
@@ -683,7 +874,7 @@ export default function EditPostPage() {
                   <div>
                     <Label>Kilometraje</Label>
                     <Input
-                      placeholder=""
+                      placeholder="Ej: 50000"
                       {...register("kilometraje")}
                     />
                   </div>
@@ -842,19 +1033,41 @@ export default function EditPostPage() {
                 <CardTitle>Precio & Financiamiento</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div>
-                  <Label>Precio</Label>
-                  <Input 
-                    placeholder="" 
-                    {...register("precio", {
-                      setValueAs: (value) => value === undefined || value === null ? "" : String(value)
-                    })} 
-                  />
-                  {errors.precio && (
-                    <p className="text-red-500 text-sm">
-                      {errors.precio.message}
-                    </p>
-                  )}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <Label>Precio</Label>
+                    <Input
+                      placeholder=""
+                      {...register("precio", {
+                        setValueAs: (value) => value === undefined || value === null ? "" : String(value)
+                      })}
+                    />
+                    {errors.precio && (
+                      <p className="text-red-500 text-sm">
+                        {errors.precio.message}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <Label>Moneda</Label>
+                    <Controller
+                      control={control}
+                      name="moneda"
+                      render={({ field }) => (
+                        <Select
+                          value={field.value || undefined}
+                          onValueChange={field.onChange}>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Seleccionar moneda" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="USD">USD (Dólares)</SelectItem>
+                            <SelectItem value="ARS">ARS (Pesos)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
+                  </div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>

@@ -95,7 +95,9 @@ export default function StockSection({ initialCars }: StockSectionProps) {
                   {post.titulo}
                 </h3>
                 <div className="flex items-center justify-between">
-                  <span className="text-lg sm:text-xl md:text-2xl font-black text-slate-900">{post.precio}</span>
+                  <span className="text-lg sm:text-xl md:text-2xl font-black text-slate-900">
+                    {post.moneda || 'USD'} {post.precio}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between text-[10px] sm:text-xs text-slate-600 pt-2 border-t border-slate-200 gap-1">
                   <span className="font-medium truncate">{post.kilometraje}</span>

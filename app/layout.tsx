@@ -3,6 +3,7 @@ import { Poppins } from 'next/font/google'
 import './globals.css'
 import { Toaster } from "@/components/ui/sonner"
 import WhatsAppButton from "@/components/WhatsAppButton"
+import FacebookDomainVerification from "@/components/FacebookDomainVerification"
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700'],
@@ -29,6 +30,7 @@ export const metadata: Metadata = {
   },
 }
 
+
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
@@ -47,6 +49,7 @@ export default function RootLayout({
         {children}
         <Toaster />
         <WhatsAppButton />
+        <FacebookDomainVerification />
       </body>
     </html>
   )

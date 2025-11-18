@@ -62,6 +62,16 @@ export const ALLOWED_CARS = {
     "Tracker",
     "Zafira"
   ],
+  "Chrysler": [
+    // Modelos JEEP (están bajo CHRYSLER en la API)
+    "Cherokee",
+    "Commander",
+    "Compass",
+    "Grand Cherokee",
+    "Renegade",
+    // Modelos DODGE (están bajo CHRYSLER en la API)
+    "Journey"
+  ],
   "Jeep": [
     "Cherokee",
     "Commander",

@@ -2,6 +2,7 @@ export interface Brand {
   id: number;
   name: string;
   brand_id?: number;
+  logo_url?: string | null;
 }
 
 export interface Model {

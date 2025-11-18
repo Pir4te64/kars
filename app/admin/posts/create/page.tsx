@@ -29,7 +29,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Upload, Trash2, Loader2, Check, AlertTriangle, Search, MessageCircle } from "lucide-react";
+import {
+  Upload,
+  Trash2,
+  Loader2,
+  Check,
+  AlertTriangle,
+  Search,
+  MessageCircle,
+} from "lucide-react";
 import {
   SidebarInset,
   SidebarProvider,
@@ -230,6 +238,7 @@ export default function Page() {
   const [selectedModel, setSelectedModel] = useState<string>("");
   const [selectedYear, setSelectedYear] = useState<string>("");
   const [whatsappUrl, setWhatsappUrl] = useState<string>("");
+  const [loadingFeatures, setLoadingFeatures] = useState<boolean>(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -356,18 +365,24 @@ export default function Page() {
 
   const handleGroupChange = (groupId: string) => {
     // Buscar el grupo seleccionado por ID (el value del Select es el ID)
+    // El grupo puede tener 'id' o 'codia' como identificador
     const selectedGroupData = groups.find(
-      (group) => group.id?.toString() === groupId
+      (group) =>
+        group.id?.toString() === groupId || group.codia?.toString() === groupId
     );
-    
+
     if (selectedGroupData) {
       setSelectedGroup(selectedGroupData.name);
-      setSelectedGroupId(groupId);
+      // Usar id o codia como groupId
+      const actualGroupId = selectedGroupData.id || selectedGroupData.codia;
+      setSelectedGroupId(actualGroupId?.toString() || groupId);
       setSelectedModel("");
       setSelectedYear("");
-      
-      if (selectedBrand && selectedGroupData.id) {
-        getModel(selectedBrand, selectedGroupData.id.toString());
+
+      // Llamar a getModel con el brandId y el groupId correcto
+      // Para JEEP (-1) y DODGE (-2), getModel mapeará automáticamente a 13
+      if (selectedBrand && actualGroupId) {
+        getModel(selectedBrand, actualGroupId.toString());
       }
     }
   };
@@ -406,39 +421,318 @@ export default function Page() {
     return message;
   };
 
+  // Función para mapear características a campos del formulario
+  const mapFeaturesToFormFields = (features: any[]): Record<string, string> => {
+    const mappedFields: Record<string, string> = {};
+
+    features.forEach((feature) => {
+      const { id, type, value, value_description, description } = feature;
+
+      // Convertir valores a string para el formulario
+      let formValue: string = "";
+
+      if (type === "boolean") {
+        formValue = value === true ? "Sí" : value === false ? "No" : "";
+      } else if (type === "choice") {
+        formValue = value_description || value || "";
+      } else if (type === "integer" || type === "decimal") {
+        formValue = value?.toString() || "";
+      }
+
+      // Mapear según el ID de la característica
+      switch (id) {
+        // Motor y transmisión
+        case 1: // Combustible
+          mappedFields.combustible = formValue;
+          break;
+        case 2: // Alimentación
+          mappedFields.alimentacion = formValue;
+          break;
+        case 6: // Tracción
+          mappedFields.traccion = formValue;
+          break;
+        case 7: // Caja
+          mappedFields.transmision = formValue;
+          break;
+        case 12: // Cilindrada
+          mappedFields.cilindrada = formValue;
+          break;
+        case 18: // Potencia HP
+          mappedFields.potencia_hp = formValue;
+          break;
+
+        // Datos técnicos
+        case 3: // Tipo de vehículo
+          mappedFields.carroceria = formValue;
+          break;
+        case 5: // Dirección
+          mappedFields.direccion_asistida = formValue;
+          break;
+        case 11: // Cantidad de puertas
+          mappedFields.puertas = formValue;
+          break;
+        case 65: // Frenos delanteros
+          mappedFields.frenos_delanteros = formValue;
+          break;
+        case 66: // Frenos traseros
+          mappedFields.frenos_traseros = formValue;
+          break;
+
+        // Confort
+        case 20: // Aire Acondicionado
+          mappedFields.aire_acondicionado = formValue;
+          break;
+        case 8: // Sensor de estacionamiento
+          mappedFields.sensores_estacionamiento = formValue;
+          break;
+        case 9: // Llantas de aleación
+          mappedFields.llantas_aleacion = formValue;
+          break;
+        case 10: // Techo panorámico
+          mappedFields.techo_solar = formValue;
+          break;
+        case 25: // Faros antiniebla
+          mappedFields.faros_antiniebla = formValue;
+          break;
+        case 41: // Tapizado de cuero
+          mappedFields.tapizados = formValue;
+          break;
+        case 43: // Computadora de abordo
+          mappedFields.computadora_abordo = formValue;
+          break;
+        case 44: // Faros de xenón
+          mappedFields.faros_tipo = formValue;
+          break;
+        case 48: // Volante con levas
+          mappedFields.comandos_volante = formValue;
+          break;
+        case 49: // Bluetooth
+          mappedFields.bluetooth = formValue;
+          break;
+        case 52: // Alarma luces
+          mappedFields.alarma = formValue;
+          break;
+        case 53: // Asistente estacionamiento
+          mappedFields.asistencia_arranque_pendientes = formValue;
+          break;
+        case 55: // Cierre centralizado comando a distancia
+          mappedFields.cierre_puertas = formValue;
+          break;
+        case 57: // Espejo exterior eléctricos
+          mappedFields.espejos_exteriores = formValue;
+          break;
+        case 58: // Levanta vidrios eléctricos
+          mappedFields.vidrios_delanteros = formValue;
+          mappedFields.vidrios_traseros = formValue;
+          break;
+        case 60: // Navegador satelital
+          mappedFields.navegacion_gps = formValue;
+          break;
+        case 61: // Pantalla
+          mappedFields.pantalla = formValue;
+          break;
+
+        // Seguridad
+        case 22: // Frenos ABS
+          mappedFields.abs = formValue;
+          break;
+        case 28: // AirBag Frontales
+          mappedFields.airbags_delanteros = formValue;
+          break;
+        case 27: // AirBag lateral
+          mappedFields.airbags_laterales = formValue;
+          break;
+        case 29: // AirBag cortina
+          mappedFields.airbags_cortina = formValue;
+          break;
+        case 30: // AirBag rodilla
+          mappedFields.airbag_rodilla_conductor = formValue;
+          break;
+        case 31: // Fijación ISOFIX
+          mappedFields.anclaje_asientos_infantiles = formValue;
+          break;
+        case 32: // Control de tracción
+          mappedFields.control_traccion = formValue;
+          break;
+        case 33: // Control de estabilidad
+          mappedFields.control_estabilidad = formValue;
+          break;
+        case 34: // Control de descenso
+          mappedFields.control_descenso = formValue;
+          break;
+        case 45: // Sensor de lluvia
+          mappedFields.sensor_lluvia = formValue;
+          break;
+        case 46: // Sensor crepuscular
+          mappedFields.sensor_luz = formValue;
+          break;
+        case 47: // Indicador de presión en neumáticos
+          mappedFields.sensor_presion_neumaticos = formValue;
+          break;
+        case 80: // Espejo interior fotocromático
+          mappedFields.espejo_interior_antideslumbrante = formValue;
+          break;
+        case 79: // Control velocidad de crucero
+          mappedFields.control_velocidad_crucero = formValue;
+          break;
+        case 85: // Limitador de velocidad
+          mappedFields.limitador_velocidad = formValue;
+          break;
+      }
+    });
+
+    return mappedFields;
+  };
+
+  // Función para generar descripción con las características
+  const generateDescriptionFromFeatures = (features: any[]): string => {
+    if (!Array.isArray(features) || features.length === 0) {
+      return "";
+    }
+
+    const descriptionParts: string[] = [];
+    const categories: Record<string, any[]> = {};
+
+    // Agrupar características por categoría
+    features.forEach((feature) => {
+      const category = feature.category_name || "Otros";
+      if (!categories[category]) {
+        categories[category] = [];
+      }
+      categories[category].push(feature);
+    });
+
+    // Procesar cada categoría
+    Object.entries(categories).forEach(([categoryName, categoryFeatures]) => {
+      const categoryParts: string[] = [];
+
+      categoryFeatures.forEach((feature) => {
+        const { description, type, value, value_description } = feature;
+
+        if (value === null || value === undefined) {
+          return;
+        }
+
+        let featureText = "";
+
+        if (type === "boolean") {
+          if (value === true) {
+            featureText = description;
+          } else {
+            return; // No incluir características que son "No" o "false"
+          }
+        } else if (type === "choice") {
+          if (value !== "NO" && value_description) {
+            featureText = `${description}: ${value_description}`;
+          }
+        } else if (type === "integer" || type === "decimal") {
+          featureText = `${description}: ${value}`;
+        }
+
+        if (featureText) {
+          categoryParts.push(featureText);
+        }
+      });
+
+      if (categoryParts.length > 0) {
+        descriptionParts.push(`\n${categoryName}:`);
+        descriptionParts.push(...categoryParts.map((part) => `• ${part}`));
+      }
+    });
+
+    return descriptionParts.join("\n").trim();
+  };
+
+  // Función para cargar características del modelo
+  const loadModelFeatures = async (codia: string) => {
+    if (!codia) {
+      return null;
+    }
+
+    setLoadingFeatures(true);
+    try {
+      const backendUrl =
+        process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
+      const response = await fetch(
+        `${backendUrl}/api/models/${codia}/features`
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.message || "Error al obtener las características"
+        );
+      }
+
+      const features = await response.json();
+
+      if (!Array.isArray(features) || features.length === 0) {
+        return null;
+      }
+
+      // Mapear características a campos del formulario
+      const mappedFields = mapFeaturesToFormFields(features);
+
+      // Aplicar los campos mapeados al formulario
+      Object.entries(mappedFields).forEach(([field, value]) => {
+        if (value) {
+          setValue(field as keyof FormValues, value);
+        }
+      });
+
+      // Generar descripción con las características
+      const description = generateDescriptionFromFeatures(features);
+      if (description) {
+        setValue("descripcion", description);
+      }
+
+      return features;
+    } catch (error: any) {
+      console.error("Error cargando características:", error);
+      return null;
+    } finally {
+      setLoadingFeatures(false);
+    }
+  };
+
   // Función para aplicar los valores seleccionados al formulario
-  const applySelectedValues = () => {
+  const applySelectedValues = async () => {
     if (!selectedBrand || !selectedModel) {
       toast.error("Por favor selecciona al menos marca y modelo");
       return;
     }
 
-    // Obtener el nombre de la marca
+    // Obtener el nombre de la marca (solo como sugerencia, el usuario puede editarlo)
     const brandData = brands.find((b) => b.id.toString() === selectedBrand);
     if (brandData) {
       setValue("marca", brandData.name);
     }
 
-    // Obtener el nombre del modelo
+    // Obtener el nombre del modelo (solo como sugerencia, el usuario puede editarlo)
     const modelData = models.find((m) => m.codia === selectedModel);
     if (modelData) {
       setValue("modelo", modelData.description || modelData.name || "");
     }
 
-    // Aplicar año si está seleccionado
+    // Aplicar año si está seleccionado (solo como sugerencia, el usuario puede editarlo)
     if (selectedYear) {
       setValue("anio", selectedYear);
     }
+
+    // Cargar características automáticamente al aplicar
+    await loadModelFeatures(selectedModel);
 
     // Generar mensaje de WhatsApp y guardarlo
     const whatsappMessage = generateWhatsAppMessage();
     const encodedMessage = encodeURIComponent(whatsappMessage);
     const generatedWhatsappUrl = `https://wa.me/541121596100?text=${encodedMessage}`;
-    
+
     // Guardar el URL de WhatsApp en el estado
     setWhatsappUrl(generatedWhatsappUrl);
 
-    toast.success("Datos aplicados al formulario. Mensaje de WhatsApp generado.");
+    toast.success(
+      "Datos aplicados al formulario. Características cargadas automáticamente."
+    );
     setIsCarSelectorOpen(false);
   };
 
@@ -684,8 +978,8 @@ export default function Page() {
 
       // Slug final generado desde el título automático
       const finalSlug = `${sanitizePath(tituloValue)}-${Date.now()
-          .toString(36)
-          .substring(0, 8)}`;
+        .toString(36)
+        .substring(0, 8)}`;
 
       const payload = {
         // Información básica
@@ -887,7 +1181,9 @@ export default function Page() {
               <BreadcrumbList>
                 <BreadcrumbItem>
                   <BreadcrumbPage className="line-clamp-1 text-xs sm:text-sm">
-                    <span className="hidden sm:inline">Listado de Posts de Vehículos</span>
+                    <span className="hidden sm:inline">
+                      Listado de Posts de Vehículos
+                    </span>
                     <span className="sm:hidden">Posts</span>
                   </BreadcrumbPage>
                 </BreadcrumbItem>
@@ -898,7 +1194,9 @@ export default function Page() {
 
         <div className="w-full mx-auto p-3 sm:p-6 space-y-4 sm:space-y-6 overflow-auto">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <h1 className="text-xl sm:text-2xl font-bold">Crear POST de Vehículo</h1>
+            <h1 className="text-xl sm:text-2xl font-bold">
+              Crear POST de Vehículo
+            </h1>
             <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
               <span>
                 {authLoading
@@ -927,36 +1225,37 @@ export default function Page() {
             <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
               {/* Botón para abrir selector de vehículo */}
               <div className="flex justify-end">
-                <Dialog open={isCarSelectorOpen} onOpenChange={setIsCarSelectorOpen}>
+                <Dialog
+                  open={isCarSelectorOpen}
+                  onOpenChange={setIsCarSelectorOpen}>
                   <DialogTrigger asChild>
                     <Button type="button" variant="outline" className="gap-2">
                       <Search className="h-4 w-4" />
                       Buscar Vehículo
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-                    <DialogHeader>
-                      <DialogTitle>Buscar Vehículo</DialogTitle>
-                      <DialogDescription>
-                        Selecciona marca, grupo y modelo para rellenar automáticamente los campos del formulario
+                  <DialogContent className="max-w-lg sm:max-w-xl max-h-[85vh] sm:max-h-[90vh] h-auto sm:h-[85vh] overflow-hidden flex flex-col">
+                    <DialogHeader className="flex-shrink-0 pb-2 sm:pb-4">
+                      <DialogTitle className="text-lg sm:text-xl">
+                        Buscar Vehículo
+                      </DialogTitle>
+                      <DialogDescription className="text-xs sm:text-sm">
+                        Selecciona marca, grupo y modelo para rellenar
+                        automáticamente los campos del formulario
                       </DialogDescription>
                     </DialogHeader>
-                    <div className="space-y-4 py-4">
+                    <div className="space-y-3 sm:space-y-4 py-2 sm:py-4 flex-1 overflow-y-auto min-h-0">
                       {/* Selector de Marca */}
-                      <div className="space-y-2">
-                        <Label>Marca</Label>
+                      <div className="space-y-1.5 sm:space-y-2">
+                        <Label className="text-sm sm:text-base">Marca</Label>
                         <VehicleAutocomplete
                           value={selectedBrand}
                           onChange={(value) => handleBrandChange(value)}
-                          options={
-                            brands
-                              .filter((brand) => ["FORD", "HONDA", "PEUGEOT", "CHEVROLET"].includes(brand.name))
-                              .map((brand) => ({
-                                id: brand.id || brand.name,
-                                label: brand.name,
-                                value: brand.id?.toString() || brand.name,
-                              }))
-                          }
+                          options={brands.map((brand) => ({
+                            id: brand.id || brand.name,
+                            label: brand.name,
+                            value: brand.id?.toString() || brand.name,
+                          }))}
                           placeholder="Buscar marca..."
                           loading={loadingBrands}
                           loadingText="Cargando marcas..."
@@ -966,16 +1265,20 @@ export default function Page() {
 
                       {/* Selector de Grupo */}
                       {selectedBrand && (
-                        <div className="space-y-2">
-                          <Label>Grupo</Label>
+                        <div className="space-y-1.5 sm:space-y-2">
+                          <Label className="text-sm sm:text-base">Grupo</Label>
                           <VehicleAutocomplete
                             value={selectedGroupId}
                             onChange={(value) => handleGroupChange(value)}
-                            options={groups.map((group) => ({
-                              id: group.id || group.name,
-                              label: group.name,
-                              value: group.id?.toString() || "",
-                            }))}
+                            options={groups.map((group) => {
+                              // Usar id o codia como identificador del grupo
+                              const groupId = group.id || group.codia;
+                              return {
+                                id: groupId || group.name,
+                                label: group.name,
+                                value: groupId?.toString() || "",
+                              };
+                            })}
                             placeholder="Buscar grupo..."
                             loading={loadingGroups}
                             disabled={!selectedBrand}
@@ -987,8 +1290,8 @@ export default function Page() {
 
                       {/* Selector de Modelo */}
                       {selectedGroupId && (
-                        <div className="space-y-2">
-                          <Label>Modelo</Label>
+                        <div className="space-y-1.5 sm:space-y-2">
+                          <Label className="text-sm sm:text-base">Modelo</Label>
                           <VehicleAutocomplete
                             value={selectedModel}
                             onChange={(value) => handleModelChange(value)}
@@ -1008,19 +1311,28 @@ export default function Page() {
 
                       {/* Selector de Año */}
                       {selectedModel && years.length > 0 && (
-                        <div className="space-y-2">
-                          <Label>Año (Opcional)</Label>
+                        <div className="space-y-1.5 sm:space-y-2">
+                          <Label className="text-sm sm:text-base">
+                            Año (Opcional)
+                          </Label>
                           <Select
                             value={selectedYear}
                             onValueChange={handleYearChange}
-                            disabled={loadingYears || !selectedModel}
-                          >
+                            disabled={loadingYears || !selectedModel}>
                             <SelectTrigger>
-                              <SelectValue placeholder={loadingYears ? "Cargando años..." : "Selecciona un año (opcional)"} />
+                              <SelectValue
+                                placeholder={
+                                  loadingYears
+                                    ? "Cargando años..."
+                                    : "Selecciona un año (opcional)"
+                                }
+                              />
                             </SelectTrigger>
                             <SelectContent>
                               {years.map((year) => (
-                                <SelectItem key={year.year} value={year.year.toString()}>
+                                <SelectItem
+                                  key={year.year}
+                                  value={year.year.toString()}>
                                   {year.year}
                                 </SelectItem>
                               ))}
@@ -1031,14 +1343,14 @@ export default function Page() {
 
                       {/* Vista previa del mensaje de WhatsApp */}
                       {selectedBrand && selectedModel && (
-                        <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <div className="mt-3 sm:mt-4 p-2 sm:p-3 bg-green-50 border border-green-200 rounded-lg">
                           <div className="flex items-start gap-2">
-                            <MessageCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                            <div className="flex-1">
-                              <p className="text-sm font-medium text-green-900 mb-1">
+                            <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs sm:text-sm font-medium text-green-900 mb-1">
                                 Mensaje de WhatsApp generado:
                               </p>
-                              <p className="text-xs text-green-700 whitespace-pre-wrap">
+                              <p className="text-xs text-green-700 whitespace-pre-wrap break-words">
                                 {generateWhatsAppMessage()}
                               </p>
                             </div>
@@ -1047,26 +1359,26 @@ export default function Page() {
                       )}
 
                       {/* Botones de acción */}
-                      <div className="flex justify-end gap-2 pt-4">
+                      <div className="flex flex-col sm:flex-row justify-end gap-2 pt-3 sm:pt-4 mt-4 border-t flex-shrink-0">
                         <Button
                           type="button"
                           variant="outline"
                           onClick={() => setIsCarSelectorOpen(false)}
-                        >
+                          className="w-full sm:w-auto order-3 sm:order-1">
                           Cancelar
                         </Button>
                         {selectedBrand && selectedModel && (
                           <Button
                             type="button"
                             variant="outline"
-                            className="bg-green-50 hover:bg-green-100 text-green-700 border-green-300"
+                            className="bg-green-50 hover:bg-green-100 text-green-700 border-green-300 w-full sm:w-auto order-2"
                             onClick={() => {
                               const whatsappMessage = generateWhatsAppMessage();
-                              const encodedMessage = encodeURIComponent(whatsappMessage);
+                              const encodedMessage =
+                                encodeURIComponent(whatsappMessage);
                               const url = `https://wa.me/541121596100?text=${encodedMessage}`;
                               window.open(url, "_blank");
-                            }}
-                          >
+                            }}>
                             <MessageCircle className="h-4 w-4 mr-2" />
                             Abrir WhatsApp
                           </Button>
@@ -1074,9 +1386,18 @@ export default function Page() {
                         <Button
                           type="button"
                           onClick={applySelectedValues}
-                          disabled={!selectedBrand || !selectedModel}
-                        >
-                          Aplicar al Formulario
+                          disabled={
+                            !selectedBrand || !selectedModel || loadingFeatures
+                          }
+                          className="w-full sm:w-auto order-1 sm:order-3">
+                          {loadingFeatures ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Cargando...
+                            </>
+                          ) : (
+                            "Aplicar al Formulario"
+                          )}
                         </Button>
                       </div>
                     </div>
@@ -1134,29 +1455,9 @@ export default function Page() {
                         <FormItem>
                           <FormLabel>Marca</FormLabel>
                           <FormControl>
-                            <VehicleAutocomplete
-                              value={field.value || ""}
-                              onChange={(value) => {
-                                field.onChange(value);
-                                // Obtener grupos/modelos de esta marca
-                                const brand = brands.find((b) => b.name === value);
-                                if (brand) {
-                                  getGroup(brand.id.toString());
-                                  // Limpiar campos dependientes
-                                  form.setValue("modelo", "");
-                                  form.setValue("version", "");
-                                  form.setValue("anio", "");
-                                }
-                              }}
-                              options={brands.map((brand) => ({
-                                id: brand.id,
-                                label: brand.name,
-                                value: brand.name,
-                              }))}
-                              placeholder="Buscar marca..."
-                              loading={loadingBrands}
-                              loadingText="Cargando marcas..."
-                              noResultsText="No se encontraron marcas"
+                            <Input
+                              {...field}
+                              placeholder="Ej: Ford, Toyota, etc."
                             />
                           </FormControl>
                           <FormMessage />
@@ -1164,7 +1465,7 @@ export default function Page() {
                       )}
                     />
 
-                    {/* GRUPO/MODELO - Autocompletado con datos de InfoAuto */}
+                    {/* GRUPO/MODELO - Campo editable */}
                     <FormField
                       control={form.control}
                       name="modelo"
@@ -1172,31 +1473,9 @@ export default function Page() {
                         <FormItem>
                           <FormLabel>Grupo/Modelo</FormLabel>
                           <FormControl>
-                            <VehicleAutocomplete
-                              value={field.value || ""}
-                              onChange={(value) => {
-                                field.onChange(value);
-                                // Obtener versiones de este modelo
-                                const marca = form.getValues("marca");
-                                const brand = brands.find((b) => b.name === marca);
-                                const group = groups.find((g) => g.name === value);
-                                if (brand && group) {
-                                  getModel(brand.id.toString(), group.id.toString());
-                                  // Limpiar campos dependientes
-                                  form.setValue("version", "");
-                                  form.setValue("anio", "");
-                                }
-                              }}
-                              options={groups.map((group) => ({
-                                id: group.id,
-                                label: group.name,
-                                value: group.name,
-                              }))}
-                              placeholder="Buscar modelo..."
-                              loading={loadingGroups}
-                              disabled={!form.getValues("marca")}
-                              loadingText="Cargando modelos..."
-                              noResultsText="No se encontraron modelos"
+                            <Input
+                              {...field}
+                              placeholder="Ej: Focus, Corolla, etc."
                             />
                           </FormControl>
                           <FormMessage />
@@ -1204,7 +1483,7 @@ export default function Page() {
                       )}
                     />
 
-                    {/* VERSIÓN - Autocompletado con datos de InfoAuto */}
+                    {/* VERSIÓN - Campo editable */}
                     <FormField
                       control={form.control}
                       name="version"
@@ -1212,27 +1491,7 @@ export default function Page() {
                         <FormItem>
                           <FormLabel>Versión</FormLabel>
                           <FormControl>
-                            <VehicleAutocomplete
-                              value={field.value || ""}
-                              onChange={(value) => {
-                                field.onChange(value);
-                                // Obtener precios/años de esta versión
-                                const model = models.find((m) => m.description === value);
-                                if (model) {
-                                  getPrice(model.codia);
-                                }
-                              }}
-                              options={models.map((model) => ({
-                                id: model.codia,
-                                label: model.description,
-                                value: model.description,
-                              }))}
-                              placeholder="Buscar versión..."
-                              loading={loadingModels}
-                              disabled={!form.getValues("modelo")}
-                              loadingText="Cargando versiones..."
-                              noResultsText="No se encontraron versiones"
-                            />
+                            <Input {...field} placeholder="Ej: SE, XLT, etc." />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -1241,37 +1500,20 @@ export default function Page() {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                    {/* AÑO - Desplegable con datos de InfoAuto */}
+                    {/* AÑO - Campo editable */}
                     <FormField
                       control={form.control}
                       name="anio"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Año</FormLabel>
-                          <Select
-                            value={field.value || undefined}
-                            onValueChange={(value) => {
-                              field.onChange(value);
-                              // Actualizar precio automáticamente
-                              const yearData = years.find((y) => y.year.toString() === value);
-                              if (yearData) {
-                                form.setValue("precio", yearData.price.toString());
-                              }
-                            }}
-                            disabled={!form.getValues("version") || loadingYears}>
-                            <FormControl>
-                              <SelectTrigger className="w-full">
-                                <SelectValue placeholder={loadingYears ? "Cargando..." : "Seleccionar año"} />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {years.map((yearData) => (
-                                <SelectItem key={yearData.year} value={yearData.year.toString()}>
-                                  {yearData.year} - ${yearData.price?.toLocaleString("es-AR") || "N/A"}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="Ej: 2020, 2021, etc."
+                              type="text"
+                            />
+                          </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}

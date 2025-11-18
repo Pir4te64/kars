@@ -26,6 +26,7 @@ export default function CarQuoteSection() {
   const [selectedCondition, setSelectedCondition] = useState("excelente");
   const [isModelDropdownOpen, setIsModelDropdownOpen] = useState(false);
   const [isGroupDropdownOpen, setIsGroupDropdownOpen] = useState(false);
+  const [isBrandDropdownOpen, setIsBrandDropdownOpen] = useState(false);
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<{
@@ -37,6 +38,7 @@ export default function CarQuoteSection() {
 
   const modelDropdownRef = useRef<HTMLDivElement>(null);
   const groupDropdownRef = useRef<HTMLDivElement>(null);
+  const brandDropdownRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
 
@@ -57,7 +59,36 @@ export default function CarQuoteSection() {
   } = useCarInfo();
 
   // Tipos explícitos para evitar errores de TypeScript
-  const typedBrands: Brand[] = brands || [];
+  // Agregar JEEP y DODGE hardcodeadas si no están en la lista
+  const baseBrands: Brand[] = brands || [];
+  // Usar IDs únicos negativos para JEEP y DODGE para evitar conflictos
+  const jeepBrand: Brand = {
+    id: -1, // ID único para JEEP (se mapeará a CHRYSLER ID 13 en el backend)
+    name: "JEEP",
+    brand_id: -1,
+    logo_url: "/jeep.png", // Logo de JEEP
+  };
+  const dodgeBrand: Brand = {
+    id: -2, // ID único para DODGE (se mapeará a CHRYSLER ID 13 en el backend)
+    name: "DODGE",
+    brand_id: -2,
+    logo_url: "/dodge.png", // Logo de DODGE
+  };
+  
+  // Filtrar JEEP y DODGE que vengan del backend (tienen ID 13 de CHRYSLER)
+  // Solo queremos usar nuestras versiones hardcodeadas con IDs -1 y -2
+  const filteredBaseBrands = baseBrands.filter(
+    (b) => b.name.toUpperCase() !== "JEEP" && b.name.toUpperCase() !== "DODGE"
+  );
+  
+  // Siempre agregar JEEP y DODGE con IDs únicos (-1 y -2)
+  // Esto asegura que siempre usemos estos IDs específicos
+  const typedBrands: Brand[] = [
+    ...filteredBaseBrands,
+    jeepBrand, // Siempre agregar JEEP con ID -1
+    dodgeBrand, // Siempre agregar DODGE con ID -2
+  ].sort((a, b) => a.name.localeCompare(b.name));
+  
   const typedModels: Model[] = models || [];
   const typedGroups: Group[] = groups || [];
   const typedYears: YearPrice[] = years || [];
@@ -79,9 +110,12 @@ export default function CarQuoteSection() {
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => {
       // Si cambia la marca, limpiar modelo y pedir modelos nuevos
-
       if (field === "marca") {
+        console.log("🟢 handleInputChange - Cambiando marca a:", value);
+        // Llamar a getGroup con el nuevo brandId
+        // El hook se encargará de limpiar grupos y modelos cuando detecte el cambio de marca
         getGroup(value);
+        
         return {
           ...prev,
           marca: value,
@@ -101,13 +135,16 @@ export default function CarQuoteSection() {
         console.log("selectedGroup:", selectedGroup);
         console.log("Grupos disponibles:", typedGroups);
         if (selectedGroup) {
-          console.log(
-            "Ejecutando getModel con marca:",
-            prev.marca,
-            "y grupo (name):",
-            selectedGroup.name
-          );
-          getModel(prev.marca, selectedGroup.id);
+          // Usar codia si id no está disponible (el backend retorna codia como ID)
+          const groupId = selectedGroup.id || selectedGroup.codia;
+          console.log("🟢 === DEBUG GRUPO SELECCIONADO ===");
+          console.log("🟢 Marca actual (prev.marca):", prev.marca);
+          console.log("🟢 Grupo seleccionado ID:", selectedGroup.id);
+          console.log("🟢 Grupo seleccionado codia:", selectedGroup.codia);
+          console.log("🟢 Grupo seleccionado name:", selectedGroup.name);
+          console.log("🟢 Usando groupId:", groupId);
+          console.log("🟢 Ejecutando getModel con marca:", prev.marca, "y grupo ID:", groupId);
+          getModel(prev.marca, groupId?.toString() || "");
         } else {
           console.log(
             "ERROR: No se encontró el grupo seleccionado en el array"
@@ -191,7 +228,7 @@ export default function CarQuoteSection() {
       }
     };
 
-    if (isModelDropdownOpen) {
+    if (isGroupDropdownOpen) {
       document.addEventListener("mousedown", handleClickOutside);
       document.addEventListener("touchstart", handleClickOutside);
     }
@@ -201,6 +238,27 @@ export default function CarQuoteSection() {
       document.removeEventListener("touchstart", handleClickOutside);
     };
   }, [isGroupDropdownOpen]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (
+        brandDropdownRef.current &&
+        !brandDropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsBrandDropdownOpen(false);
+      }
+    };
+
+    if (isBrandDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("touchstart", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [isBrandDropdownOpen]);
 
   const validateStep2 = (): boolean => {
     const errors: typeof formErrors = {};
@@ -381,6 +439,7 @@ export default function CarQuoteSection() {
         <div className="flex flex-col md:flex-row justify-center items-stretch mx-auto w-full max-w-4xl gap-2 md:gap-3 px-2 sm:px-0">
           {/* Marca */}
           <div
+            ref={brandDropdownRef}
             className="relative w-full md:w-1/3"
             style={{
               height: "40px",
@@ -388,31 +447,54 @@ export default function CarQuoteSection() {
               border: "1px solid rgba(148, 163, 184, 0.3)",
               backgroundColor: "rgba(248, 250, 252, 0.5)",
               opacity: 1,
+              cursor: !loadingBrands ? "pointer" : "not-allowed",
             }}>
-            <select
-              value={formData.marca}
-              onChange={(e) => handleInputChange("marca", e.target.value)}
-              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500 text-sm md:text-base px-3"
-              style={{ border: "none", outline: "none", paddingRight: "40px" }}
-              disabled={loadingBrands}>
-              <option value="">Marca</option>
-              {typedBrands && typedBrands.length > 0 ? (
-                typedBrands.map((brand) => (
-                  <option key={brand.id || brand.name} value={brand.id}>
-                    {brand.name}
-                  </option>
-                ))
-              ) : (
-                <option value="" disabled>
-                  {loadingBrands
-                    ? "Cargando marcas..."
-                    : "No hay marcas disponibles"}
-                </option>
-              )}
-            </select>
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <div
+              className="w-full h-full flex items-center justify-between cursor-pointer px-3"
+              onClick={() => {
+                if (!loadingBrands && typedBrands.length > 0) {
+                  setIsBrandDropdownOpen(!isBrandDropdownOpen);
+                }
+              }}
+              style={{
+                cursor: !loadingBrands && typedBrands.length > 0 ? "pointer" : "not-allowed",
+              }}>
+              <div className="flex items-center gap-2 flex-1 min-w-0">
+                {formData.marca ? (
+                  <>
+                    {(() => {
+                      const selectedBrand = typedBrands.find(
+                        (b) => b.id.toString() === formData.marca
+                      );
+                      return selectedBrand?.logo_url ? (
+                        <img
+                          src={selectedBrand.logo_url}
+                          alt={selectedBrand.name}
+                          className="w-6 h-6 object-contain flex-shrink-0"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = "none";
+                          }}
+                        />
+                      ) : null;
+                    })()}
+                    <span className="text-sm md:text-base text-gray-900 truncate">
+                      {(() => {
+                        const selectedBrand = typedBrands.find(
+                          (b) => b.id.toString() === formData.marca
+                        );
+                        console.log("🔍 Mostrando marca seleccionada - formData.marca:", formData.marca, "selectedBrand:", selectedBrand?.name);
+                        return selectedBrand?.name || "Marca";
+                      })()}
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-sm md:text-base text-gray-500">Marca</span>
+                )}
+              </div>
               <svg
-                className="w-5 h-5 text-gray-400"
+                className={`w-5 h-5 transition-transform duration-200 flex-shrink-0 ${
+                  isBrandDropdownOpen ? "rotate-180" : ""
+                } ${!loadingBrands && typedBrands.length > 0 ? "text-gray-600" : "text-gray-400"}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24">
@@ -424,6 +506,41 @@ export default function CarQuoteSection() {
                 />
               </svg>
             </div>
+            {isBrandDropdownOpen && !loadingBrands && typedBrands.length > 0 && (
+              <div
+                className="absolute bottom-full left-0 right-0 z-50 mb-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-80 sm:max-h-96 overflow-y-auto"
+                style={{
+                  borderRadius: "12px",
+                  border: "1px solid rgba(148, 163, 184, 0.3)",
+                  boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+                }}>
+                {typedBrands.map((brand, index) => (
+                  <div
+                    key={`brand-${brand.id}-${brand.name}-${index}`}
+                    className="px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors duration-150 flex items-center gap-3"
+                    onClick={() => {
+                      console.log("🔵 Seleccionando marca:", brand.name, "ID:", brand.id.toString());
+                      handleInputChange("marca", brand.id.toString());
+                      setIsBrandDropdownOpen(false);
+                    }}
+                    style={{ borderBottom: "1px solid #f3f4f6" }}>
+                    {brand.logo_url && (
+                      <img
+                        src={brand.logo_url}
+                        alt={brand.name}
+                        className="w-6 h-6 object-contain flex-shrink-0"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = "none";
+                        }}
+                      />
+                    )}
+                    <span className="text-gray-900 text-xs sm:text-sm md:text-base">
+                      {brand.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           {/* Grupo */}
           <div
@@ -490,7 +607,7 @@ export default function CarQuoteSection() {
               formData.marca &&
               typedGroups.length > 0 && (
                 <div
-                  className="absolute bottom-full left-0 right-0 z-50 mb-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 sm:max-h-60 overflow-y-auto"
+                  className="absolute bottom-full left-0 right-0 z-50 mb-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-80 sm:max-h-96 overflow-y-auto"
                   style={{
                     borderRadius: "12px",
                     border: "1px solid rgba(148, 163, 184, 0.3)",
@@ -588,7 +705,7 @@ export default function CarQuoteSection() {
               formData.grupo &&
               typedModels.length > 0 && (
                 <div
-                  className="absolute bottom-full left-0 right-0 z-50 mb-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 sm:max-h-60 overflow-y-auto"
+                  className="absolute bottom-full left-0 right-0 z-50 mb-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-80 sm:max-h-96 overflow-y-auto"
                   style={{
                     borderRadius: "12px",
                     border: "1px solid rgba(148, 163, 184, 0.3)",

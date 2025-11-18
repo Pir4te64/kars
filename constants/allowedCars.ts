@@ -1,5 +1,5 @@
 export const ALLOWED_CARS = {
-  "Ford": [
+  Ford: [
     "Ecosport",
     "Everest",
     "Fiesta",
@@ -9,9 +9,9 @@ export const ALLOWED_CARS = {
     "Maverick",
     "Mondeo",
     "Ranger",
-    "Territori"
+    "Territori",
   ],
-  "Fiat": [
+  Fiat: [
     "500",
     "Argo",
     "Bravo",
@@ -32,19 +32,10 @@ export const ALLOWED_CARS = {
     "Strada",
     "Titano",
     "Toro",
-    "Uno"
+    "Uno",
   ],
-  "Audi": [
-    "A1",
-    "A3",
-    "A4",
-    "A5",
-    "Q2",
-    "Q3",
-    "Q5",
-    "TT"
-  ],
-  "Chevrolet": [
+  Audi: ["A1", "A3", "A4", "A5", "Q2", "Q3", "Q5", "TT"],
+  Chevrolet: [
     "Agile",
     "Astra",
     "Aveo",
@@ -60,9 +51,10 @@ export const ALLOWED_CARS = {
     "Prisma",
     "Spin",
     "Tracker",
-    "Zafira"
+    "Zafira",
   ],
-  "Chrysler": [
+  Chery: ["QQ", "Fulwin", "Tiggo", "Tiggo 3", "Tiggo 5"],
+  Chrysler: [
     // Modelos JEEP (están bajo CHRYSLER en la API)
     "Cherokee",
     "Commander",
@@ -70,32 +62,32 @@ export const ALLOWED_CARS = {
     "Grand Cherokee",
     "Renegade",
     // Modelos DODGE (están bajo CHRYSLER en la API)
-    "Journey"
+    "Journey",
   ],
-  "Jeep": [
-    "Cherokee",
-    "Commander",
-    "Compass",
-    "Grand Cherokee",
-    "Renegade"
+  Jeep: ["Cherokee", "Commander", "Compass", "Grand Cherokee", "Renegade"],
+  Dodge: ["Journey"],
+  Citroen: [
+    "2CV",
+    "3CV",
+    "AK 400",
+    "AMI 8",
+    "AMI 8 ELYSEE",
+    "AZAM M28 SPORT",
+    "DYANE 6",
+    "GRINGA PICK-UP",
+    "IES AMERICA",
+    "IES AMERICA CARGA",
+    "IES SAFARI",
+    "IES SUPER AMERICA",
+    "MEHARI",
+    "OLT CIT CLUB",
+    "AX",
+    "BASALT",
+    "BERLINGO",
   ],
-  "Dodge": [
-    "Journey"
-  ],
-  "Ram": [
-    "Ram"
-  ],
-  "Honda": [
-    "Accord",
-    "City",
-    "Civic",
-    "Crv",
-    "Fit",
-    "Hrv",
-    "Wrv",
-    "Zrv"
-  ],
-  "Hyundai": [
+  Ram: ["Ram"],
+  Honda: ["Accord", "City", "Civic", "Crv", "Fit", "Hrv", "Wrv", "Zrv"],
+  Hyundai: [
     "Creta",
     "Grand Santa Fe",
     "H1",
@@ -103,9 +95,9 @@ export const ALLOWED_CARS = {
     "Santa Fe",
     "Staria",
     "Tucson",
-    "Veloster"
+    "Veloster",
   ],
-  "Kia": [
+  Kia: [
     "Carnival",
     "Cerato",
     "Grand Sportage",
@@ -115,20 +107,12 @@ export const ALLOWED_CARS = {
     "Seltos",
     "Sorento",
     "Soul",
-    "Sportage"
+    "Sportage",
   ],
-  "Mitsubishi": [
-    "L200"
-  ],
-  "Nissan": [
-    "Kicks",
-    "March",
-    "Sentra",
-    "Tiida",
-    "Versa",
-    "Xtrail"
-  ],
-  "Peugeot": [
+  Mitsubishi: ["L200"],
+  Nissan: ["Kicks", "March", "Sentra", "Tiida", "Versa", "Xtrail"],
+  Suzuki: ["Fun", "Grand Vitara", "Swift", "Vitara"],
+  Peugeot: [
     "2008",
     "206",
     "207",
@@ -141,9 +125,9 @@ export const ALLOWED_CARS = {
     "408",
     "5008",
     "Partner",
-    "Rcz"
+    "Rcz",
   ],
-  "Renault": [
+  Renault: [
     "Alaskan",
     "Arkana",
     "Captur",
@@ -162,9 +146,9 @@ export const ALLOWED_CARS = {
     "Sandero",
     "Scenic",
     "Symbol",
-    "Twingo"
+    "Twingo",
   ],
-  "Toyota": [
+  Toyota: [
     "Corolla",
     "Corolla Cross",
     "Etios",
@@ -172,9 +156,9 @@ export const ALLOWED_CARS = {
     "Hilux",
     "Innova",
     "Sw4",
-    "Yaris"
+    "Yaris",
   ],
-  "Volkswagen": [
+  Volkswagen: [
     "Amarok",
     "Bora",
     "Fox",
@@ -195,8 +179,8 @@ export const ALLOWED_CARS = {
     "Up",
     "Vento",
     "Virtus",
-    "Voyage"
-  ]
+    "Voyage",
+  ],
 } as const;
 
 /**
@@ -206,7 +190,7 @@ export const ALLOWED_CARS = {
  */
 export function normalizeForComparison(str: string): string {
   if (!str) return "";
-  
+
   return str
     .toLowerCase()
     .normalize("NFD")
@@ -223,10 +207,10 @@ export function normalizeForComparison(str: string): string {
 export function likeMatch(str1: string, str2: string): boolean {
   const normalized1 = normalizeForComparison(str1);
   const normalized2 = normalizeForComparison(str2);
-  
+
   // Coincidencia exacta
   if (normalized1 === normalized2) return true;
-  
+
   // Una contiene a la otra (para casos como "focus-1.6" vs "focus")
   if (normalized1.includes(normalized2) || normalized2.includes(normalized1)) {
     // Solo aceptar si la longitud del más corto es al menos 3 caracteres
@@ -236,7 +220,7 @@ export function likeMatch(str1: string, str2: string): boolean {
       return true;
     }
   }
-  
+
   return false;
 }
 
@@ -244,32 +228,35 @@ export function likeMatch(str1: string, str2: string): boolean {
 export function isBrandAllowed(brandName: string): boolean {
   // Normalizar también el nombre de la marca para comparación
   const normalizedBrandName = normalizeForComparison(brandName);
-  const allowedBrandNames = Object.keys(ALLOWED_CARS).map(b => normalizeForComparison(b));
-  return allowedBrandNames.some(allowed => likeMatch(allowed, normalizedBrandName));
+  const allowedBrandNames = Object.keys(ALLOWED_CARS).map((b) =>
+    normalizeForComparison(b)
+  );
+  return allowedBrandNames.some((allowed) =>
+    likeMatch(allowed, normalizedBrandName)
+  );
 }
 
 // Función helper para verificar si un modelo está permitido para una marca
 export function isModelAllowed(brandName: string, modelName: string): boolean {
   // Primero encontrar la marca correcta (puede venir con diferentes formatos)
-  const brandKey = Object.keys(ALLOWED_CARS).find(
-    key => likeMatch(key, brandName)
+  const brandKey = Object.keys(ALLOWED_CARS).find((key) =>
+    likeMatch(key, brandName)
   ) as keyof typeof ALLOWED_CARS | undefined;
-  
+
   if (!brandKey) return false;
-  
+
   const allowedModels = ALLOWED_CARS[brandKey];
   if (!allowedModels) return false;
-  
+
   // Buscar coincidencias con LIKE en los modelos permitidos
-  return allowedModels.some(allowed => likeMatch(allowed, modelName));
+  return allowedModels.some((allowed) => likeMatch(allowed, modelName));
 }
 
 // Función helper para obtener los modelos permitidos de una marca
 export function getAllowedModels(brandName: string): string[] {
-  const brandKey = Object.keys(ALLOWED_CARS).find(
-    key => likeMatch(key, brandName)
+  const brandKey = Object.keys(ALLOWED_CARS).find((key) =>
+    likeMatch(key, brandName)
   ) as keyof typeof ALLOWED_CARS | undefined;
-  
-  return brandKey ? ALLOWED_CARS[brandKey] : [];
-}
 
+  return brandKey ? [...ALLOWED_CARS[brandKey]] : [];
+}

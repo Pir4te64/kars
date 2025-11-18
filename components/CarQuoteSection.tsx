@@ -93,6 +93,17 @@ export default function CarQuoteSection() {
   const typedGroups: Group[] = groups || [];
   const typedYears: YearPrice[] = years || [];
 
+  // Generar años desde 2000 hasta 2025
+  const generateYears = () => {
+    const yearsList = [];
+    for (let year = 2025; year >= 2000; year--) {
+      yearsList.push(year);
+    }
+    return yearsList;
+  };
+
+  const availableYears = generateYears();
+
   const [formData, setFormData] = useState({
     marca: "",
     grupo: "",
@@ -435,12 +446,62 @@ export default function CarQuoteSection() {
       <div
         className="space-y-1.5 md:space-y-2 w-full"
         style={{ marginTop: "8px" }}>
-        {/* First Row - Marca, Grupo, Modelo */}
+        {/* First Row - Año, Marca, Grupo, Modelo */}
         <div className="flex flex-col md:flex-row justify-center items-stretch mx-auto w-full max-w-4xl gap-2 md:gap-3 px-2 sm:px-0">
+          {/* Año */}
+          <div
+            className="relative w-full md:w-1/4"
+            style={{
+              height: "40px",
+              borderRadius: "12px",
+              border: "1px solid rgba(148, 163, 184, 0.3)",
+              backgroundColor: "rgba(248, 250, 252, 0.5)",
+              opacity: 1,
+            }}>
+            <select
+              value={formData.año}
+              onChange={(e) => {
+                const selectedYear = parseInt(e.target.value);
+                if (selectedYear && selectedYear < 2008) {
+                  setYearError("Lo sentimos, solo aceptamos vehículos del año 2008 en adelante.");
+                  setFormData({ ...formData, año: "" });
+                } else {
+                  setYearError(null);
+                  setFormData({ ...formData, año: e.target.value });
+                }
+              }}
+              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500 text-sm md:text-base px-3"
+              style={{
+                border: "none",
+                outline: "none",
+                paddingRight: "40px",
+              }}>
+              <option value="">Año</option>
+              {availableYears.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <svg
+                className="w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+          </div>
           {/* Marca */}
           <div
             ref={brandDropdownRef}
-            className="relative w-full md:w-1/3"
+            className="relative w-full md:w-1/4"
             style={{
               height: "40px",
               borderRadius: "12px",
@@ -545,7 +606,7 @@ export default function CarQuoteSection() {
           {/* Grupo */}
           <div
             ref={groupDropdownRef}
-            className="relative w-full md:w-1/3"
+            className="relative w-full md:w-1/4"
             style={{
               height: "40px",
               borderRadius: "12px",
@@ -630,7 +691,7 @@ export default function CarQuoteSection() {
           {/* Modelo */}
           <div
             ref={modelDropdownRef}
-            className="relative w-full md:w-1/3"
+            className="relative w-full md:w-1/4"
             style={{
               height: "40px",
               borderRadius: "12px",
@@ -727,77 +788,8 @@ export default function CarQuoteSection() {
           </div>
         </div>
 
-        {/* Second Row - Año, Kilometraje, Button */}
+        {/* Second Row - Kilometraje, Button */}
         <div className="flex flex-col md:flex-row justify-center items-stretch mx-auto w-full max-w-4xl gap-2 md:gap-3 px-2 sm:px-0">
-          {/* Año */}
-          <div
-            className="relative w-full md:w-1/3"
-            style={{
-              height: "40px",
-              borderRadius: "12px",
-              border: "1px solid rgba(148, 163, 184, 0.3)",
-              backgroundColor: "rgba(248, 250, 252, 0.5)",
-              opacity: 1,
-              cursor:
-                formData.modelo && !loadingYears ? "pointer" : "not-allowed",
-            }}>
-            <select
-              value={formData.año}
-              onChange={(e) => {
-                const selectedYear = parseInt(e.target.value);
-                if (selectedYear && selectedYear < 2008) {
-                  setYearError("Lo sentimos, solo aceptamos vehículos del año 2008 en adelante.");
-                  setFormData({ ...formData, año: "" });
-                } else {
-                  setYearError(null);
-                  setFormData({ ...formData, año: e.target.value });
-                }
-              }}
-              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500 text-sm md:text-base px-3"
-              style={{
-                border: "none",
-                outline: "none",
-                paddingRight: "40px",
-                cursor:
-                  formData.modelo && !loadingYears ? "pointer" : "not-allowed",
-              }}
-              disabled={!formData.modelo || loadingYears}>
-              {formData.modelo && typedYears.length > 0 ? (
-                <>
-                  <option value="">Año</option>
-
-                  {typedYears.map((year) => (
-                    <option key={year.year} value={year.year}>
-                      {year.year}
-                    </option>
-                  ))}
-                </>
-              ) : (
-                <option value="" disabled>
-                  {loadingYears
-                    ? "Cargando Años..."
-                    : !formData.modelo
-                    ? "Año"
-                    : "No hay años disponibles"}
-                </option>
-              )}
-            </select>
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-              <svg
-                className="w-5 h-5 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </div>
-          </div>
-
           {/* Mensaje de error para año */}
           {yearError && (
             <div className="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -805,49 +797,6 @@ export default function CarQuoteSection() {
               <span className="block sm:inline">{yearError}</span>
             </div>
           )}
-
-          {/* Versión */}
-          {/* <div
-            className="relative w-full md:w-1/3"
-            style={{
-              height: "56px",
-              paddingTop: "12px",
-              paddingRight: "16px",
-              paddingBottom: "12px",
-              paddingLeft: "16px",
-              gap: "4px",
-              borderRadius: "7px",
-              border: "1px solid #0D0D0D",
-              opacity: 1,
-            }}>
-            <select
-              value={formData.version}
-              onChange={(e) =>
-                setFormData({ ...formData, version: e.target.value })
-              }
-              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500"
-              style={{ border: "none", outline: "none" }}>
-              <option value="">Versión</option>
-              <option value="base">Base</option>
-              <option value="intermedio">Intermedio</option>
-              <option value="alto">Alto</option>
-              <option value="premium">Premium</option>
-            </select>
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-              <svg
-                className="w-5 h-5 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </div>
-          </div> */}
 
           {/* Kilometraje */}
           <div

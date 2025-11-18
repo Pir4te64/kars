@@ -65,6 +65,7 @@ import { toast } from "sonner";
 // ----------------- Zod schema según tabla vehicle_posts -----------------
 const schema = z.object({
   // Información básica
+  type_post: z.string().optional(),
   titulo: z.string().optional(),
   slug: z.string().optional(),
   marca: z.string().optional(),
@@ -245,6 +246,7 @@ export default function Page() {
     mode: "onChange",
     defaultValues: {
       // Información básica
+      type_post: "",
       titulo: "",
       slug: "",
       marca: "",
@@ -981,6 +983,10 @@ export default function Page() {
         .toString(36)
         .substring(0, 8)}`;
 
+      // Mapear type_post a vehicle_kind
+      const typePostValue = String(values.type_post ?? "").trim();
+      const vehicleKind = typePostValue === "motos" ? "moto" : "auto";
+
       const payload = {
         // Información básica
         titulo: toStr(tituloValue),
@@ -1090,6 +1096,8 @@ export default function Page() {
         vendedor_calificacion: toStr(values.vendedor_calificacion),
         concesionaria_nombre: toStr(values.concesionaria_nombre),
         disponible: toStr(values.disponible),
+        // Tipo de vehículo (vehicle_kind)
+        vehicle_kind: vehicleKind,
         // Estado
         estado: "published",
         images_urls: uploadedUrls,
@@ -1223,187 +1231,221 @@ export default function Page() {
 
           <Form {...form}>
             <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+              {/* Selector de tipo de post */}
+              <FormField
+                control={form.control}
+                name="type_post"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tipo de Publicación</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecciona el tipo de publicación" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="autos">Autos</SelectItem>
+                        <SelectItem value="motos">Motos</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               {/* Botón para abrir selector de vehículo */}
-              <div className="flex justify-end">
-                <Dialog
-                  open={isCarSelectorOpen}
-                  onOpenChange={setIsCarSelectorOpen}>
-                  <DialogTrigger asChild>
-                    <Button type="button" variant="outline" className="gap-2">
-                      <Search className="h-4 w-4" />
-                      Buscar Vehículo
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-lg sm:max-w-xl max-h-[85vh] sm:max-h-[90vh] h-auto sm:h-[85vh] overflow-hidden flex flex-col">
-                    <DialogHeader className="flex-shrink-0 pb-2 sm:pb-4">
-                      <DialogTitle className="text-lg sm:text-xl">
+              {form.watch("type_post") === "autos" && (
+                <div className="flex justify-end">
+                  <Dialog
+                    open={isCarSelectorOpen}
+                    onOpenChange={setIsCarSelectorOpen}>
+                    <DialogTrigger asChild>
+                      <Button type="button" variant="outline" className="gap-2">
+                        <Search className="h-4 w-4" />
                         Buscar Vehículo
-                      </DialogTitle>
-                      <DialogDescription className="text-xs sm:text-sm">
-                        Selecciona marca, grupo y modelo para rellenar
-                        automáticamente los campos del formulario
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="space-y-3 sm:space-y-4 py-2 sm:py-4 flex-1 overflow-y-auto min-h-0">
-                      {/* Selector de Marca */}
-                      <div className="space-y-1.5 sm:space-y-2">
-                        <Label className="text-sm sm:text-base">Marca</Label>
-                        <VehicleAutocomplete
-                          value={selectedBrand}
-                          onChange={(value) => handleBrandChange(value)}
-                          options={brands.map((brand) => ({
-                            id: brand.id || brand.name,
-                            label: brand.name,
-                            value: brand.id?.toString() || brand.name,
-                          }))}
-                          placeholder="Buscar marca..."
-                          loading={loadingBrands}
-                          loadingText="Cargando marcas..."
-                          noResultsText="No se encontraron marcas"
-                        />
-                      </div>
-
-                      {/* Selector de Grupo */}
-                      {selectedBrand && (
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-lg sm:max-w-xl max-h-[85vh] sm:max-h-[90vh] h-auto sm:h-[85vh] overflow-hidden flex flex-col">
+                      <DialogHeader className="flex-shrink-0 pb-2 sm:pb-4">
+                        <DialogTitle className="text-lg sm:text-xl">
+                          Buscar Vehículo
+                        </DialogTitle>
+                        <DialogDescription className="text-xs sm:text-sm">
+                          Selecciona marca, grupo y modelo para rellenar
+                          automáticamente los campos del formulario
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="space-y-3 sm:space-y-4 py-2 sm:py-4 flex-1 overflow-y-auto min-h-0">
+                        {/* Selector de Marca */}
                         <div className="space-y-1.5 sm:space-y-2">
-                          <Label className="text-sm sm:text-base">Grupo</Label>
+                          <Label className="text-sm sm:text-base">Marca</Label>
                           <VehicleAutocomplete
-                            value={selectedGroupId}
-                            onChange={(value) => handleGroupChange(value)}
-                            options={groups.map((group) => {
-                              // Usar id o codia como identificador del grupo
-                              const groupId = group.id || group.codia;
-                              return {
-                                id: groupId || group.name,
-                                label: group.name,
-                                value: groupId?.toString() || "",
-                              };
-                            })}
-                            placeholder="Buscar grupo..."
-                            loading={loadingGroups}
-                            disabled={!selectedBrand}
-                            loadingText="Cargando grupos..."
-                            noResultsText="No se encontraron grupos"
-                          />
-                        </div>
-                      )}
-
-                      {/* Selector de Modelo */}
-                      {selectedGroupId && (
-                        <div className="space-y-1.5 sm:space-y-2">
-                          <Label className="text-sm sm:text-base">Modelo</Label>
-                          <VehicleAutocomplete
-                            value={selectedModel}
-                            onChange={(value) => handleModelChange(value)}
-                            options={models.map((model) => ({
-                              id: model.codia,
-                              label: model.description || model.name,
-                              value: model.codia,
+                            value={selectedBrand}
+                            onChange={(value) => handleBrandChange(value)}
+                            options={brands.map((brand) => ({
+                              id: brand.id || brand.name,
+                              label: brand.name,
+                              value: brand.id?.toString() || brand.name,
                             }))}
-                            placeholder="Buscar modelo..."
-                            loading={loadingModels}
-                            disabled={!selectedGroup}
-                            loadingText="Cargando modelos..."
-                            noResultsText="No se encontraron modelos"
+                            placeholder="Buscar marca..."
+                            loading={loadingBrands}
+                            loadingText="Cargando marcas..."
+                            noResultsText="No se encontraron marcas"
                           />
                         </div>
-                      )}
 
-                      {/* Selector de Año */}
-                      {selectedModel && years.length > 0 && (
-                        <div className="space-y-1.5 sm:space-y-2">
-                          <Label className="text-sm sm:text-base">
-                            Año (Opcional)
-                          </Label>
-                          <Select
-                            value={selectedYear}
-                            onValueChange={handleYearChange}
-                            disabled={loadingYears || !selectedModel}>
-                            <SelectTrigger>
-                              <SelectValue
-                                placeholder={
-                                  loadingYears
-                                    ? "Cargando años..."
-                                    : "Selecciona un año (opcional)"
-                                }
-                              />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {years.map((year) => (
-                                <SelectItem
-                                  key={year.year}
-                                  value={year.year.toString()}>
-                                  {year.year}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      )}
+                        {/* Selector de Grupo */}
+                        {selectedBrand && (
+                          <div className="space-y-1.5 sm:space-y-2">
+                            <Label className="text-sm sm:text-base">
+                              Grupo
+                            </Label>
+                            <VehicleAutocomplete
+                              value={selectedGroupId}
+                              onChange={(value) => handleGroupChange(value)}
+                              options={groups.map((group) => {
+                                // Usar id o codia como identificador del grupo
+                                const groupId = group.id || group.codia;
+                                return {
+                                  id: groupId || group.name,
+                                  label: group.name,
+                                  value: groupId?.toString() || "",
+                                };
+                              })}
+                              placeholder="Buscar grupo..."
+                              loading={loadingGroups}
+                              disabled={!selectedBrand}
+                              loadingText="Cargando grupos..."
+                              noResultsText="No se encontraron grupos"
+                            />
+                          </div>
+                        )}
 
-                      {/* Vista previa del mensaje de WhatsApp */}
-                      {selectedBrand && selectedModel && (
-                        <div className="mt-3 sm:mt-4 p-2 sm:p-3 bg-green-50 border border-green-200 rounded-lg">
-                          <div className="flex items-start gap-2">
-                            <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                            <div className="flex-1 min-w-0">
-                              <p className="text-xs sm:text-sm font-medium text-green-900 mb-1">
-                                Mensaje de WhatsApp generado:
-                              </p>
-                              <p className="text-xs text-green-700 whitespace-pre-wrap break-words">
-                                {generateWhatsAppMessage()}
-                              </p>
+                        {/* Selector de Modelo */}
+                        {selectedGroupId && (
+                          <div className="space-y-1.5 sm:space-y-2">
+                            <Label className="text-sm sm:text-base">
+                              Modelo
+                            </Label>
+                            <VehicleAutocomplete
+                              value={selectedModel}
+                              onChange={(value) => handleModelChange(value)}
+                              options={models.map((model) => ({
+                                id: model.codia,
+                                label: model.description || model.name,
+                                value: model.codia,
+                              }))}
+                              placeholder="Buscar modelo..."
+                              loading={loadingModels}
+                              disabled={!selectedGroup}
+                              loadingText="Cargando modelos..."
+                              noResultsText="No se encontraron modelos"
+                            />
+                          </div>
+                        )}
+
+                        {/* Selector de Año */}
+                        {selectedModel && years.length > 0 && (
+                          <div className="space-y-1.5 sm:space-y-2">
+                            <Label className="text-sm sm:text-base">
+                              Año (Opcional)
+                            </Label>
+                            <Select
+                              value={selectedYear}
+                              onValueChange={handleYearChange}
+                              disabled={loadingYears || !selectedModel}>
+                              <SelectTrigger>
+                                <SelectValue
+                                  placeholder={
+                                    loadingYears
+                                      ? "Cargando años..."
+                                      : "Selecciona un año (opcional)"
+                                  }
+                                />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {years.map((year) => (
+                                  <SelectItem
+                                    key={year.year}
+                                    value={year.year.toString()}>
+                                    {year.year}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        )}
+
+                        {/* Vista previa del mensaje de WhatsApp */}
+                        {selectedBrand && selectedModel && (
+                          <div className="mt-3 sm:mt-4 p-2 sm:p-3 bg-green-50 border border-green-200 rounded-lg">
+                            <div className="flex items-start gap-2">
+                              <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                              <div className="flex-1 min-w-0">
+                                <p className="text-xs sm:text-sm font-medium text-green-900 mb-1">
+                                  Mensaje de WhatsApp generado:
+                                </p>
+                                <p className="text-xs text-green-700 whitespace-pre-wrap break-words">
+                                  {generateWhatsAppMessage()}
+                                </p>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      )}
+                        )}
 
-                      {/* Botones de acción */}
-                      <div className="flex flex-col sm:flex-row justify-end gap-2 pt-3 sm:pt-4 mt-4 border-t flex-shrink-0">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => setIsCarSelectorOpen(false)}
-                          className="w-full sm:w-auto order-3 sm:order-1">
-                          Cancelar
-                        </Button>
-                        {selectedBrand && selectedModel && (
+                        {/* Botones de acción */}
+                        <div className="flex flex-col sm:flex-row justify-end gap-2 pt-3 sm:pt-4 mt-4 border-t flex-shrink-0">
                           <Button
                             type="button"
                             variant="outline"
-                            className="bg-green-50 hover:bg-green-100 text-green-700 border-green-300 w-full sm:w-auto order-2"
-                            onClick={() => {
-                              const whatsappMessage = generateWhatsAppMessage();
-                              const encodedMessage =
-                                encodeURIComponent(whatsappMessage);
-                              const url = `https://wa.me/541121596100?text=${encodedMessage}`;
-                              window.open(url, "_blank");
-                            }}>
-                            <MessageCircle className="h-4 w-4 mr-2" />
-                            Abrir WhatsApp
+                            onClick={() => setIsCarSelectorOpen(false)}
+                            className="w-full sm:w-auto order-3 sm:order-1">
+                            Cancelar
                           </Button>
-                        )}
-                        <Button
-                          type="button"
-                          onClick={applySelectedValues}
-                          disabled={
-                            !selectedBrand || !selectedModel || loadingFeatures
-                          }
-                          className="w-full sm:w-auto order-1 sm:order-3">
-                          {loadingFeatures ? (
-                            <>
-                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                              Cargando...
-                            </>
-                          ) : (
-                            "Aplicar al Formulario"
+                          {selectedBrand && selectedModel && (
+                            <Button
+                              type="button"
+                              variant="outline"
+                              className="bg-green-50 hover:bg-green-100 text-green-700 border-green-300 w-full sm:w-auto order-2"
+                              onClick={() => {
+                                const whatsappMessage =
+                                  generateWhatsAppMessage();
+                                const encodedMessage =
+                                  encodeURIComponent(whatsappMessage);
+                                const url = `https://wa.me/541121596100?text=${encodedMessage}`;
+                                window.open(url, "_blank");
+                              }}>
+                              <MessageCircle className="h-4 w-4 mr-2" />
+                              Abrir WhatsApp
+                            </Button>
                           )}
-                        </Button>
+                          <Button
+                            type="button"
+                            onClick={applySelectedValues}
+                            disabled={
+                              !selectedBrand ||
+                              !selectedModel ||
+                              loadingFeatures
+                            }
+                            className="w-full sm:w-auto order-1 sm:order-3">
+                            {loadingFeatures ? (
+                              <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Cargando...
+                              </>
+                            ) : (
+                              "Aplicar al Formulario"
+                            )}
+                          </Button>
+                        </div>
                       </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-              </div>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              )}
 
               {/* Información General */}
               <Card>

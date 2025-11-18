@@ -66,7 +66,7 @@ export default function Footer() {
           {/* Right Section - Contact */}
           <div className="md:ml-auto md:pl-12">
             <h4 className="text-xl font-semibold text-primary-600 mb-6">
-              Contact
+              Contacto
             </h4>
             <div className="space-y-4">
               <div className="flex items-start space-x-3">

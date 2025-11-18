@@ -18,7 +18,7 @@ export default function CallToAction() {
             />
             <div className="absolute inset-0 z-20 flex flex-col justify-center items-start text-left text-white p-8">
               <h3 className="text-3xl md:text-4xl font-bold mb-4">
-                ¿Estás buscando un auto?
+                ¿Estás buscando un auto? 
               </h3>
               <p className="text-lg mb-8 opacity-90 max-w-md">
                 Explora nuestro catálogo de vehículos verificados y encuentra el auto perfecto para ti.

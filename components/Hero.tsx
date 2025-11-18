@@ -112,7 +112,7 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Cotizador integrado (desktop y mobile) */}
+        {/* Cotizador integrado  (desktop y mobile) */}
         <div className="absolute bottom-48 lg:bottom-8 md:bottom-16 left-0 right-0 px-4 z-30">
           <CarQuoteSection />
         </div>

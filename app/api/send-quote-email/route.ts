@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { generateQuoteEmailHTML } from "@/lib/email-template";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 // Usar RESEND_API_KEY (recomendado) o NEXT_PUBLIC_RESEND_API_KEY como fallback
 // NOTA: Para producción, usa RESEND_API_KEY sin NEXT_PUBLIC_ por seguridad
@@ -110,7 +110,7 @@ export async function POST(request: Request) {
     const { data, error } = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || "KARS <info@kars.com.ar>",
       to: [email],
-      // cc: ["Contacto@kars.ar"],
+      cc: ["Contacto@kars.ar"],
       subject: `Cotización de ${marca} ${modelo} ${año} - KARS`,
       html,
     });

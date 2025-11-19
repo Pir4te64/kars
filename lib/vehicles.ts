@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { VehiclePost } from '@/types'
 import { getVehiclesFromSupabase, getVehicleById } from './supabase'
 

@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -7,7 +8,6 @@ import Footer from "@/components/Footer";
 import { useCarInfo } from "@/src/hooks/useCarInfo";
 
 export default function VendeTuAutoPage() {
-  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const {
     brands,

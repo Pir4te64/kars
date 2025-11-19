@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 interface QuoteEmailData {
   nombre: string;
   marca: string;

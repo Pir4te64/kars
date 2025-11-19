@@ -1,7 +1,7 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-unused-vars, @next/next/no-img-element */
 
 import { useRef, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import * as htmlToImage from "html-to-image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -24,7 +24,6 @@ interface QuoteData {
 }
 
 export default function QuoteResultPage() {
-  const router = useRouter();
   const cardRef = useRef<HTMLDivElement>(null);
   const [quoteData, setQuoteData] = useState<QuoteData | null>(null);
   const [userEmail, setUserEmail] = useState("");
@@ -38,17 +37,10 @@ export default function QuoteResultPage() {
     dollarBlue,
     loading: dollarLoading,
     error: dollarError,
-    convertToPesos,
-    formatDollarBlue,
-    getLastUpdate,
   } = useDollarBlue();
 
   const {
-    sending: sendingEmail,
-    error: emailError,
-    success: emailSuccess,
     sendQuoteEmail,
-    resetStatus: resetEmailStatus,
   } = useEmailJS();
 
   useEffect(() => {

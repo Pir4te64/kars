@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import CarQuoteSection from './CarQuoteSection'
 
 export default function Hero() {
@@ -13,13 +12,6 @@ export default function Hero() {
     const timer = setTimeout(() => setIsVisible(true), 100)
     return () => clearTimeout(timer)
   }, [])
-
-  const scrollToCotizador = () => {
-    const cotizadorElement = document.getElementById('vende-tu-auto')
-    if (cotizadorElement) {
-      cotizadorElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
-  }
 
   return (
     <section className="relative w-full h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] md:h-[calc(100vh-6rem)] flex items-start justify-center bg-gradient-to-br from-slate-200 via-slate-300 to-slate-200 overflow-hidden z-0 pt-0 pb-0">

@@ -121,7 +121,7 @@ export default function Hero() {
               />
             </div>
 
-            {/* Overlay gradient para mezclar auto con fondo */}
+            {/* Overlay  gradient para mezclar auto con fondo */}
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-slate-200/50 pointer-events-none"></div>
           </div>
         </div>

@@ -178,9 +178,9 @@ export default function Testimonials() {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 tablet:grid-cols-2 tablet-lg:grid-cols-3 lg:grid-cols-3 gap-6 md:gap-7 tablet:gap-7 tablet-lg:gap-8">
           {testimonials.map((testimonial) => (
-            <div key={testimonial.id} className="bg-white rounded-2xl p-6 group hover:scale-105 transition-all duration-200">
+            <div key={testimonial.id} className="bg-white rounded-2xl p-5 md:p-5.5 tablet:p-6 tablet-lg:p-6 group hover:scale-105 transition-all duration-200">
               <div className="mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">
                   {testimonial.name}

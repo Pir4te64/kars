@@ -35,15 +35,18 @@ export interface UseCarInfoReturn {
   groups: Group[];
   models: Model[];
   years: YearPrice[];
+  groupYears: number[];
   versions: ModelFeature[];
   loadingBrands: boolean;
   loadingGroups: boolean;
   loadingModels: boolean;
   loadingYears: boolean;
+  loadingGroupYears: boolean;
   loadingVersions: boolean;
   getGroup: (brandId: string) => Promise<void>;
   getModelsByBrand: (brandId: string, groupId: string) => Promise<void>;
   getModel: (brandId: string, groupId: string) => Promise<void>;
   getPrice: (codia: string) => Promise<void>;
+  getGroupYears: (brandId: string, groupId: string) => Promise<void>;
   getVersions: (codia: string) => Promise<void>;
 }

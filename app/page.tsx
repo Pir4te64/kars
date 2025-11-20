@@ -1,45 +1,46 @@
-import { Metadata } from 'next'
-import Navbar from '@/components/Navbar'
-import Hero from '@/components/Hero'
-import HeroV2 from '@/components/HeroV2'
-import Benefits from '@/components/Benefits'
-import StockSection from '@/components/StockSection'
-import WhyChooseUs from '@/components/WhyChooseUs'
-import Testimonials from '@/components/Testimonials'
-import AboutSection from '@/components/AboutSection'
-import LocationSection from '@/components/LocationSection'
-import Footer from '@/components/Footer'
-import { getVehiclePosts } from '@/lib/vehicles'
-import type { VehiclePost } from '@/types'
+import { Metadata } from "next";
+import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
+import HeroV2 from "@/components/HeroV2";
+import Benefits from "@/components/Benefits";
+import StockSection from "@/components/StockSection";
+import WhyChooseUs from "@/components/WhyChooseUs";
+import Testimonials from "@/components/Testimonials";
+import AboutSection from "@/components/AboutSection";
+import LocationSection from "@/components/LocationSection";
+import Footer from "@/components/Footer";
+import { getVehiclePosts } from "@/lib/vehicles";
+import type { VehiclePost } from "@/types";
 
 export const metadata: Metadata = {
-  title: 'KARS - Compra y Vende Autos Usados | Encuentra Tu Auto Ideal',
+  title: "KARS - Compra y Vende Autos Usados | Encuentra Tu Auto Ideal",
   description:
-    'Encuentra el auto de tus sueños o vende tu auto usado de manera rápida y segura. Proceso 100% en línea, autos certificados, financiamiento disponible. Stock actualizado de vehículos.',
+    "Encuentra el auto de tus sueños o vende tu auto usado de manera rápida y segura. Proceso 100% en línea, autos certificados, financiamiento disponible. Stock actualizado de vehículos.",
   keywords: [
-    'autos usados',
-    'compra venta autos',
-    'autos certificados',
-    'financiamiento autos',
-    'vender auto usado',
-    'comprar auto',
+    "autos usados",
+    "compra venta autos",
+    "autos certificados",
+    "financiamiento autos",
+    "vender auto usado",
+    "comprar auto",
   ],
   openGraph: {
-    title: 'KARS - Compra y Vende Autos Usados',
-    description: 'Encuentra el auto de tus sueños o vende tu auto usado de manera rápida y segura.',
-    images: ['/hero_image_kars.png'],
+    title: "KARS - Compra y Vende Autos Usados",
+    description:
+      "Encuentra el auto de tus sueños o vende tu auto usado de manera rápida y segura.",
+    images: ["/hero_image_kars.png"],
   },
-}
+};
 
-export const revalidate = 60 // ISR: revalidate every 60 seconds
+export const revalidate = 60; // ISR: revalidate every 60 seconds
 
 export default async function HomePage() {
-  let cars: VehiclePost[] = []
+  let cars: VehiclePost[] = [];
 
   try {
-    cars = await getVehiclePosts(1000)
+    cars = await getVehiclePosts(1000);
   } catch (error) {
-    console.error('Error loading vehicles:', error)
+    console.error("Error loading vehicles:", error);
   }
 
   return (
@@ -47,10 +48,10 @@ export default async function HomePage() {
       <Navbar />
       <main>
         {/* Mobile: HeroV2 (sin imagen del auto). Desktop: Hero original intacto */}
-        <div className="md:hidden">
+        <div className="lg:hidden">
           <HeroV2 />
         </div>
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <Hero />
         </div>
         <Benefits />
@@ -62,5 +63,5 @@ export default async function HomePage() {
       </main>
       <Footer />
     </>
-  )
+  );
 }

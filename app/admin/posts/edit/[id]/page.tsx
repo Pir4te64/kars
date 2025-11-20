@@ -4,7 +4,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -15,6 +15,14 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import {
   Select,
   SelectContent,
@@ -38,39 +46,113 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 
-// ----------------- Zod schema (todos TEXT, SIN imágenes) -----------------
+// ----------------- Zod schema según tabla vehicle_posts -----------------
 const schema = z.object({
+  // Información básica
+  type_post: z.string().optional(),
   titulo: z.string().optional(),
-  slug: z.string().optional().or(z.literal("")), // Se genera automáticamente
+  slug: z.string().optional(),
   marca: z.string().optional(),
   modelo: z.string().optional(),
-  version: z.string().optional().or(z.literal("")),
+  version: z.string().optional(),
   anio: z.string().optional(),
-  kilometraje: z.string().optional().or(z.literal("")),
-  carroceria: z.string().optional().or(z.literal("")),
-  descripcion: z.string().optional().or(z.literal("")),
-  condicion: z.string().optional().or(z.literal("")),
-  combustible: z.string().optional().or(z.literal("")),
-  transmision: z.string().optional().or(z.literal("")),
-  traccion: z.string().optional().or(z.literal("")),
-  color_exterior: z.string().optional().or(z.literal("")),
-  color_interior: z.string().optional().or(z.literal("")),
-  puertas: z.string().optional().or(z.literal("")),
-  asientos: z.string().optional().or(z.literal("")),
-  cilindrada: z.string().optional().or(z.literal("")),
-  potencia_hp: z.string().optional().or(z.literal("")),
-  moneda: z.string().optional().or(z.literal("")),
+  kilometraje: z.string().optional(),
+  carroceria: z.string().optional(),
+  descripcion: z.string().optional(),
+  condicion: z.string().optional(),
+  color_exterior: z.string().optional(),
+  color_interior: z.string().optional(),
+  puertas: z.string().optional(),
+  asientos: z.string().optional(),
+
+  // Motor básico
+  combustible: z.string().optional(),
+  cilindrada: z.string().optional(),
+  potencia_hp: z.string().optional(),
+  transmision: z.string().optional(),
+  traccion: z.string().optional(),
+
+  // Motor (detalles adicionales)
+  alimentacion: z.string().optional(),
+  cilindros: z.string().optional(),
+  valvulas: z.string().optional(),
+
+  // Transmisión y chasis
+  velocidades: z.string().optional(),
+  neumaticos: z.string().optional(),
+  frenos_delanteros: z.string().optional(),
+  frenos_traseros: z.string().optional(),
+  direccion_asistida: z.string().optional(),
+  freno_mano: z.string().optional(),
+
+  // Confort
+  aire_acondicionado: z.string().optional(),
+  asiento_delantero_ajuste_altura: z.string().optional(),
+  volante_regulable: z.string().optional(),
+  asientos_traseros: z.string().optional(),
+  tapizados: z.string().optional(),
+  cierre_puertas: z.string().optional(),
+  vidrios_delanteros: z.string().optional(),
+  vidrios_traseros: z.string().optional(),
+  espejos_exteriores: z.string().optional(),
+  espejo_interior_antideslumbrante: z.string().optional(),
+  faros_delanteros: z.string().optional(),
+  faros_antiniebla: z.string().optional(),
+  faros_tipo: z.string().optional(),
+  computadora_abordo: z.string().optional(),
+  control_velocidad_crucero: z.string().optional(),
+  limitador_velocidad: z.string().optional(),
+  llantas_aleacion: z.string().optional(),
+  techo_solar: z.string().optional(),
+  sensores_estacionamiento: z.string().optional(),
+  camara_estacionamiento: z.string().optional(),
+  asistencia_arranque_pendientes: z.string().optional(),
+
+  // Seguridad
+  abs: z.string().optional(),
+  distribucion_electronica_frenado: z.string().optional(),
+  asistencia_frenada_emergencia: z.string().optional(),
+  airbags_delanteros: z.string().optional(),
+  airbags_cortina: z.string().optional(),
+  airbag_rodilla_conductor: z.string().optional(),
+  airbags_laterales: z.string().optional(),
+  cantidad_airbags: z.string().optional(),
+  alarma: z.string().optional(),
+  inmovilizador_motor: z.string().optional(),
+  anclaje_asientos_infantiles: z.string().optional(),
+  sensor_lluvia: z.string().optional(),
+  sensor_luz: z.string().optional(),
+  autobloqueo_puertas_velocidad: z.string().optional(),
+  control_estabilidad: z.string().optional(),
+  control_traccion: z.string().optional(),
+  control_descenso: z.string().optional(),
+  sensor_presion_neumaticos: z.string().optional(),
+
+  // Comunicación y entretenimiento
+  equipo_musica: z.string().optional(),
+  comandos_volante: z.string().optional(),
+  conexion_auxiliar: z.string().optional(),
+  conexion_usb: z.string().optional(),
+  bluetooth: z.string().optional(),
+  control_voz: z.string().optional(),
+  pantalla: z.string().optional(),
+  navegacion_gps: z.string().optional(),
+  apple_carplay: z.string().optional(),
+  android_auto: z.string().optional(),
+
+  // Precio
+  moneda: z.string().optional(),
   precio: z.string().optional(),
-  precio_negociable: z.string().optional().or(z.literal("")),
-  cuota_mensual: z.string().optional().or(z.literal("")),
-  enganche: z.string().optional().or(z.literal("")),
-  pais: z.string().optional().or(z.literal("")),
-  estado_provincia: z.string().optional().or(z.literal("")),
-  ciudad: z.string().optional().or(z.literal("")),
-  vendedor_nombre: z.string().optional().or(z.literal("")),
-  vendedor_calificacion: z.string().optional().or(z.literal("")),
-  concesionaria_nombre: z.string().optional().or(z.literal("")),
-  disponible: z.string().optional().or(z.literal("")),
+  precio_negociable: z.string().optional(),
+
+  // Ubicación y vendedor
+  pais: z.string().optional(),
+  estado_provincia: z.string().optional(),
+  ciudad: z.string().optional(),
+  vendedor_nombre: z.string().optional(),
+  vendedor_calificacion: z.string().optional(),
+  concesionaria_nombre: z.string().optional(),
+  disponible: z.string().optional(),
 });
 type FormValues = z.infer<typeof schema>;
 
@@ -137,19 +219,12 @@ export default function EditPostPage() {
     getPrice,
   } = useCarInfo();
 
-  const {
-    register,
-    handleSubmit,
-    control,
-    reset,
-    watch,
-    setValue,
-    formState: { errors, isSubmitting },
-  } = useForm<FormValues>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(schema),
-    mode: "onSubmit",
-    reValidateMode: "onSubmit",
+    mode: "onChange",
     defaultValues: {
+      // Información básica
+      type_post: "",
       titulo: "",
       slug: "",
       marca: "",
@@ -160,20 +235,84 @@ export default function EditPostPage() {
       carroceria: "",
       descripcion: "",
       condicion: "",
-      combustible: "",
-      transmision: "",
-      traccion: "",
       color_exterior: "",
       color_interior: "",
       puertas: "",
       asientos: "",
+      // Motor básico
+      combustible: "",
       cilindrada: "",
       potencia_hp: "",
+      transmision: "",
+      traccion: "",
+      // Motor (detalles)
+      alimentacion: "",
+      cilindros: "",
+      valvulas: "",
+      // Transmisión y chasis
+      velocidades: "",
+      neumaticos: "",
+      frenos_delanteros: "",
+      frenos_traseros: "",
+      direccion_asistida: "",
+      freno_mano: "",
+      // Confort
+      aire_acondicionado: "",
+      asiento_delantero_ajuste_altura: "",
+      volante_regulable: "",
+      asientos_traseros: "",
+      tapizados: "",
+      cierre_puertas: "",
+      vidrios_delanteros: "",
+      vidrios_traseros: "",
+      espejos_exteriores: "",
+      espejo_interior_antideslumbrante: "",
+      faros_delanteros: "",
+      faros_antiniebla: "",
+      faros_tipo: "",
+      computadora_abordo: "",
+      control_velocidad_crucero: "",
+      limitador_velocidad: "",
+      llantas_aleacion: "",
+      techo_solar: "",
+      sensores_estacionamiento: "",
+      camara_estacionamiento: "",
+      asistencia_arranque_pendientes: "",
+      // Seguridad
+      abs: "",
+      distribucion_electronica_frenado: "",
+      asistencia_frenada_emergencia: "",
+      airbags_delanteros: "",
+      airbags_cortina: "",
+      airbag_rodilla_conductor: "",
+      airbags_laterales: "",
+      cantidad_airbags: "",
+      alarma: "",
+      inmovilizador_motor: "",
+      anclaje_asientos_infantiles: "",
+      sensor_lluvia: "",
+      sensor_luz: "",
+      autobloqueo_puertas_velocidad: "",
+      control_estabilidad: "",
+      control_traccion: "",
+      control_descenso: "",
+      sensor_presion_neumaticos: "",
+      // Comunicación y entretenimiento
+      equipo_musica: "",
+      comandos_volante: "",
+      conexion_auxiliar: "",
+      conexion_usb: "",
+      bluetooth: "",
+      control_voz: "",
+      pantalla: "",
+      navegacion_gps: "",
+      apple_carplay: "",
+      android_auto: "",
+      // Precio
       moneda: "",
       precio: "",
       precio_negociable: "",
-      cuota_mensual: "",
-      enganche: "",
+      // Ubicación y vendedor
       pais: "",
       estado_provincia: "",
       ciudad: "",
@@ -183,6 +322,14 @@ export default function EditPostPage() {
       disponible: "",
     },
   });
+
+  const {
+    handleSubmit,
+    reset,
+    watch,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = form;
 
   // Helper para convertir valores a string (evita problemas con tipos)
   const toStr = (val: string | number | undefined | null): string => {
@@ -243,6 +390,8 @@ export default function EditPostPage() {
 
         // Prellenar formulario - convertir todos los valores a string
         reset({
+          // Información básica
+          type_post: toStr(data.type_post),
           titulo: toStr(data.titulo),
           slug: toStr(data.slug),
           marca: toStr(data.marca),
@@ -253,20 +402,84 @@ export default function EditPostPage() {
           carroceria: toStr(data.carroceria),
           descripcion: toStr(data.descripcion),
           condicion: toStr(data.condicion),
-          combustible: toStr(data.combustible),
-          transmision: toStr(data.transmision),
-          traccion: toStr(data.traccion),
           color_exterior: toStr(data.color_exterior),
           color_interior: toStr(data.color_interior),
           puertas: toStr(data.puertas),
           asientos: toStr(data.asientos),
+          // Motor básico
+          combustible: toStr(data.combustible),
           cilindrada: toStr(data.cilindrada),
           potencia_hp: toStr(data.potencia_hp),
+          transmision: toStr(data.transmision),
+          traccion: toStr(data.traccion),
+          // Motor (detalles)
+          alimentacion: toStr(data.alimentacion),
+          cilindros: toStr(data.cilindros),
+          valvulas: toStr(data.valvulas),
+          // Transmisión y chasis
+          velocidades: toStr(data.velocidades),
+          neumaticos: toStr(data.neumaticos),
+          frenos_delanteros: toStr(data.frenos_delanteros),
+          frenos_traseros: toStr(data.frenos_traseros),
+          direccion_asistida: toStr(data.direccion_asistida),
+          freno_mano: toStr(data.freno_mano),
+          // Confort
+          aire_acondicionado: toStr(data.aire_acondicionado),
+          asiento_delantero_ajuste_altura: toStr(data.asiento_delantero_ajuste_altura),
+          volante_regulable: toStr(data.volante_regulable),
+          asientos_traseros: toStr(data.asientos_traseros),
+          tapizados: toStr(data.tapizados),
+          cierre_puertas: toStr(data.cierre_puertas),
+          vidrios_delanteros: toStr(data.vidrios_delanteros),
+          vidrios_traseros: toStr(data.vidrios_traseros),
+          espejos_exteriores: toStr(data.espejos_exteriores),
+          espejo_interior_antideslumbrante: toStr(data.espejo_interior_antideslumbrante),
+          faros_delanteros: toStr(data.faros_delanteros),
+          faros_antiniebla: toStr(data.faros_antiniebla),
+          faros_tipo: toStr(data.faros_tipo),
+          computadora_abordo: toStr(data.computadora_abordo),
+          control_velocidad_crucero: toStr(data.control_velocidad_crucero),
+          limitador_velocidad: toStr(data.limitador_velocidad),
+          llantas_aleacion: toStr(data.llantas_aleacion),
+          techo_solar: toStr(data.techo_solar),
+          sensores_estacionamiento: toStr(data.sensores_estacionamiento),
+          camara_estacionamiento: toStr(data.camara_estacionamiento),
+          asistencia_arranque_pendientes: toStr(data.asistencia_arranque_pendientes),
+          // Seguridad
+          abs: toStr(data.abs),
+          distribucion_electronica_frenado: toStr(data.distribucion_electronica_frenado),
+          asistencia_frenada_emergencia: toStr(data.asistencia_frenada_emergencia),
+          airbags_delanteros: toStr(data.airbags_delanteros),
+          airbags_cortina: toStr(data.airbags_cortina),
+          airbag_rodilla_conductor: toStr(data.airbag_rodilla_conductor),
+          airbags_laterales: toStr(data.airbags_laterales),
+          cantidad_airbags: toStr(data.cantidad_airbags),
+          alarma: toStr(data.alarma),
+          inmovilizador_motor: toStr(data.inmovilizador_motor),
+          anclaje_asientos_infantiles: toStr(data.anclaje_asientos_infantiles),
+          sensor_lluvia: toStr(data.sensor_lluvia),
+          sensor_luz: toStr(data.sensor_luz),
+          autobloqueo_puertas_velocidad: toStr(data.autobloqueo_puertas_velocidad),
+          control_estabilidad: toStr(data.control_estabilidad),
+          control_traccion: toStr(data.control_traccion),
+          control_descenso: toStr(data.control_descenso),
+          sensor_presion_neumaticos: toStr(data.sensor_presion_neumaticos),
+          // Comunicación y entretenimiento
+          equipo_musica: toStr(data.equipo_musica),
+          comandos_volante: toStr(data.comandos_volante),
+          conexion_auxiliar: toStr(data.conexion_auxiliar),
+          conexion_usb: toStr(data.conexion_usb),
+          bluetooth: toStr(data.bluetooth),
+          control_voz: toStr(data.control_voz),
+          pantalla: toStr(data.pantalla),
+          navegacion_gps: toStr(data.navegacion_gps),
+          apple_carplay: toStr(data.apple_carplay),
+          android_auto: toStr(data.android_auto),
+          // Precio
           moneda: toStr(data.moneda),
           precio: toStr(data.precio),
           precio_negociable: toStr(data.precio_negociable),
-          cuota_mensual: toStr(data.cuota_mensual),
-          enganche: toStr(data.enganche),
+          // Ubicación y vendedor
           pais: toStr(data.pais),
           estado_provincia: toStr(data.estado_provincia),
           ciudad: toStr(data.ciudad),
@@ -534,6 +747,7 @@ export default function EditPostPage() {
 
       // Convertir todos los valores a string para asegurar compatibilidad con SQL TEXT
       const payload = {
+        // Información básica
         titulo: toStr(tituloValue), // Ya validado manualmente
         slug: finalSlug,
         marca: toStr(marcaValue), // Ya validado manualmente
@@ -547,24 +761,88 @@ export default function EditPostPage() {
         color_interior: toStr(values.color_interior),
         puertas: toStr(values.puertas),
         asientos: toStr(values.asientos),
+        descripcion: toStr(values.descripcion),
+        // Motor básico
+        combustible: toStr(values.combustible),
+        cilindrada: toStr(values.cilindrada),
+        potencia_hp: toStr(values.potencia_hp),
         transmision: toStr(values.transmision),
         traccion: toStr(values.traccion),
-        cilindrada: toStr(values.cilindrada),
-        combustible: toStr(values.combustible),
-        potencia_hp: toStr(values.potencia_hp),
+        // Motor (detalles)
+        alimentacion: toStr(values.alimentacion),
+        cilindros: toStr(values.cilindros),
+        valvulas: toStr(values.valvulas),
+        // Transmisión y chasis
+        velocidades: toStr(values.velocidades),
+        neumaticos: toStr(values.neumaticos),
+        frenos_delanteros: toStr(values.frenos_delanteros),
+        frenos_traseros: toStr(values.frenos_traseros),
+        direccion_asistida: toStr(values.direccion_asistida),
+        freno_mano: toStr(values.freno_mano),
+        // Confort
+        aire_acondicionado: toStr(values.aire_acondicionado),
+        asiento_delantero_ajuste_altura: toStr(values.asiento_delantero_ajuste_altura),
+        volante_regulable: toStr(values.volante_regulable),
+        asientos_traseros: toStr(values.asientos_traseros),
+        tapizados: toStr(values.tapizados),
+        cierre_puertas: toStr(values.cierre_puertas),
+        vidrios_delanteros: toStr(values.vidrios_delanteros),
+        vidrios_traseros: toStr(values.vidrios_traseros),
+        espejos_exteriores: toStr(values.espejos_exteriores),
+        espejo_interior_antideslumbrante: toStr(values.espejo_interior_antideslumbrante),
+        faros_delanteros: toStr(values.faros_delanteros),
+        faros_antiniebla: toStr(values.faros_antiniebla),
+        faros_tipo: toStr(values.faros_tipo),
+        computadora_abordo: toStr(values.computadora_abordo),
+        control_velocidad_crucero: toStr(values.control_velocidad_crucero),
+        limitador_velocidad: toStr(values.limitador_velocidad),
+        llantas_aleacion: toStr(values.llantas_aleacion),
+        techo_solar: toStr(values.techo_solar),
+        sensores_estacionamiento: toStr(values.sensores_estacionamiento),
+        camara_estacionamiento: toStr(values.camara_estacionamiento),
+        asistencia_arranque_pendientes: toStr(values.asistencia_arranque_pendientes),
+        // Seguridad
+        abs: toStr(values.abs),
+        distribucion_electronica_frenado: toStr(values.distribucion_electronica_frenado),
+        asistencia_frenada_emergencia: toStr(values.asistencia_frenada_emergencia),
+        airbags_delanteros: toStr(values.airbags_delanteros),
+        airbags_cortina: toStr(values.airbags_cortina),
+        airbag_rodilla_conductor: toStr(values.airbag_rodilla_conductor),
+        airbags_laterales: toStr(values.airbags_laterales),
+        cantidad_airbags: toStr(values.cantidad_airbags),
+        alarma: toStr(values.alarma),
+        inmovilizador_motor: toStr(values.inmovilizador_motor),
+        anclaje_asientos_infantiles: toStr(values.anclaje_asientos_infantiles),
+        sensor_lluvia: toStr(values.sensor_lluvia),
+        sensor_luz: toStr(values.sensor_luz),
+        autobloqueo_puertas_velocidad: toStr(values.autobloqueo_puertas_velocidad),
+        control_estabilidad: toStr(values.control_estabilidad),
+        control_traccion: toStr(values.control_traccion),
+        control_descenso: toStr(values.control_descenso),
+        sensor_presion_neumaticos: toStr(values.sensor_presion_neumaticos),
+        // Comunicación y entretenimiento
+        equipo_musica: toStr(values.equipo_musica),
+        comandos_volante: toStr(values.comandos_volante),
+        conexion_auxiliar: toStr(values.conexion_auxiliar),
+        conexion_usb: toStr(values.conexion_usb),
+        bluetooth: toStr(values.bluetooth),
+        control_voz: toStr(values.control_voz),
+        pantalla: toStr(values.pantalla),
+        navegacion_gps: toStr(values.navegacion_gps),
+        apple_carplay: toStr(values.apple_carplay),
+        android_auto: toStr(values.android_auto),
+        // Precio
         moneda: toStr(values.moneda),
         precio: toStr(precioValue), // Ya validado manualmente
         precio_negociable: toStr(values.precio_negociable),
-        disponible: toStr(values.disponible),
+        // Ubicación y vendedor
         pais: toStr(values.pais),
         estado_provincia: toStr(values.estado_provincia),
         ciudad: toStr(values.ciudad),
         vendedor_nombre: toStr(values.vendedor_nombre),
         vendedor_calificacion: toStr(values.vendedor_calificacion),
         concesionaria_nombre: toStr(values.concesionaria_nombre),
-        cuota_mensual: toStr(values.cuota_mensual),
-        enganche: toStr(values.enganche),
-        descripcion: toStr(values.descripcion),
+        disponible: toStr(values.disponible),
         images_urls: uploadedUrls, // Array de strings, no necesita conversión
         updated_at: new Date().toISOString(),
       };
@@ -680,256 +958,310 @@ export default function EditPostPage() {
             </div>
           </div>
 
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-            {/* Información General */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Información General</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {/* TÍTULO - COMENTADO: Se genera automáticamente desde marca + modelo + versión + año
-                <div>
-                  <Label htmlFor="titulo">Título</Label>
-                  <Input
-                    id="titulo"
-                    placeholder=""
-                    {...register("titulo")}
+          <Form {...form}>
+            <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+              {/* Información General */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Información General</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="slug"
+                    render={({ field }) => (
+                      <FormItem className="hidden">
+                        <FormLabel className="sr-only">
+                          Slug (generado automáticamente)
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Se genera automáticamente desde el título"
+                            {...field}
+                            readOnly
+                            className="bg-muted"
+                            type="hidden"
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
                   />
-                  {errors.titulo && (
-                    <p className="text-red-500 text-sm">
-                      {errors.titulo.message}
-                    </p>
-                  )}
-                </div>
-                */}
-                <div>
-                  <Label htmlFor="slug">Slug (generado automáticamente)</Label>
-                  <Input
-                    id="slug"
-                    placeholder="Se genera automáticamente desde el título"
-                    {...register("slug", {
-                      onChange: () => setIsSlugManuallyEdited(true)
-                    })}
-                    className="bg-muted"
-                  />
-                  <p className="text-xs text-muted-foreground mt-1">
-                    El slug se genera automáticamente, pero puedes editarlo si lo necesitas
-                  </p>
-                </div>
-                {/* MARCA - Desplegable con datos de InfoAuto */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                  <div>
-                    <Label>Marca</Label>
-                    <Controller
-                      control={control}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {/* MARCA - Autocompletado con datos de InfoAuto */}
+                    <FormField
+                      control={form.control}
                       name="marca"
                       render={({ field }) => (
-                        <Select
-                          value={field.value || undefined}
-                          onValueChange={(value) => {
-                            field.onChange(value);
-                            // Obtener grupos/modelos de esta marca
-                            const brand = brands.find((b) => b.name === value);
-                            if (brand) {
-                              getGroup(brand.id.toString());
-                              // Limpiar campos dependientes
-                              setValue("modelo", "");
-                              setValue("version", "");
-                              setValue("anio", "");
-                            }
-                          }}>
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder={loadingBrands ? "Cargando..." : "Seleccionar marca"} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {brands.map((brand) => (
-                              <SelectItem key={brand.id} value={brand.name}>
-                                {brand.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <FormItem>
+                          <FormLabel>Marca</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="Ej: Ford, Toyota, etc."
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
                       )}
                     />
-                    {errors.marca && (
-                      <p className="text-red-500 text-sm">
-                        {errors.marca.message}
-                      </p>
-                    )}
-                  </div>
 
-                  {/* GRUPO/MODELO - Desplegable con datos de InfoAuto */}
-                  <div>
-                    <Label>Grupo/Modelo</Label>
-                    <Controller
-                      control={control}
+                    {/* GRUPO/MODELO - Campo editable */}
+                    <FormField
+                      control={form.control}
                       name="modelo"
                       render={({ field }) => (
-                        <Select
-                          value={field.value || undefined}
-                          onValueChange={(value) => {
-                            field.onChange(value);
-                            // Obtener versiones de este modelo
-                            const marcaValue = watch("marca");
-                            const brand = brands.find((b) => b.name === marcaValue);
-                            const group = groups.find((g) => g.name === value);
-                            if (brand && group) {
-                              getModel(brand.id.toString(), group.id.toString());
-                              // Limpiar campos dependientes
-                              setValue("version", "");
-                              setValue("anio", "");
-                            }
-                          }}
-                          disabled={!watch("marca") || loadingGroups}>
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder={loadingGroups ? "Cargando..." : "Seleccionar modelo"} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {groups.map((group) => (
-                              <SelectItem key={group.id} value={group.name}>
-                                {group.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <FormItem>
+                          <FormLabel>Grupo/Modelo</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="Ej: Focus, Corolla, etc."
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
                       )}
                     />
-                    {errors.modelo && (
-                      <p className="text-red-500 text-sm">
-                        {errors.modelo.message}
-                      </p>
-                    )}
-                  </div>
 
-                  {/* VERSIÓN - Desplegable con datos de InfoAuto */}
-                  <div>
-                    <Label>Versión</Label>
-                    <Controller
-                      control={control}
+                    {/* VERSIÓN - Campo editable */}
+                    <FormField
+                      control={form.control}
                       name="version"
                       render={({ field }) => (
-                        <Select
-                          value={field.value || undefined}
-                          onValueChange={(value) => {
-                            field.onChange(value);
-                            // Obtener precios/años de esta versión
-                            const model = models.find((m) => m.description === value);
-                            if (model) {
-                              getPrice(model.codia);
-                            }
-                          }}
-                          disabled={!watch("modelo") || loadingModels}>
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder={loadingModels ? "Cargando..." : "Seleccionar versión"} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {models.map((model) => (
-                              <SelectItem key={model.codia} value={model.description}>
-                                {model.description}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <FormItem>
+                          <FormLabel>Versión</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="Ej: SE, XLT, etc." />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
                       )}
                     />
                   </div>
-                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {/* AÑO - Desplegable con datos de InfoAuto */}
-                  <div>
-                    <Label>Año</Label>
-                    <Controller
-                      control={control}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {/* AÑO - Campo editable */}
+                    <FormField
+                      control={form.control}
                       name="anio"
                       render={({ field }) => (
-                        <Select
-                          value={field.value || undefined}
-                          onValueChange={(value) => {
-                            field.onChange(value);
-                            // Actualizar precio automáticamente
-                            const yearData = years.find((y) => y.year.toString() === value);
-                            if (yearData) {
-                              setValue("precio", yearData.price.toString());
-                            }
-                          }}
-                          disabled={!watch("version") || loadingYears}>
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder={loadingYears ? "Cargando..." : "Seleccionar año"} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {years.map((yearData) => (
-                              <SelectItem key={yearData.year} value={yearData.year.toString()}>
-                                {yearData.year} - ${yearData.price?.toLocaleString("es-AR") || "N/A"}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <FormItem>
+                          <FormLabel>Año</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="Ej: 2020, 2021, etc."
+                              type="text"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
                       )}
                     />
-                    {errors.anio && (
-                      <p className="text-red-500 text-sm">
-                        {errors.anio.message}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <Label>Kilometraje</Label>
-                    <Input
-                      placeholder="Ej: 50000"
-                      {...register("kilometraje")}
+
+                    <FormField
+                      control={form.control}
+                      name="kilometraje"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Kilometraje</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Ej: 50000" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
                   </div>
-                </div>
-                <div>
-                  <Label>Transmisión</Label>
-                  <Input
-                    placeholder=""
-                    {...register("transmision")}
+                  <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                    <FormField
+                      control={form.control}
+                      name="condicion"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Condición</FormLabel>
+                          <FormControl>
+                            <Input placeholder="" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="color_exterior"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Color Exterior</FormLabel>
+                          <FormControl>
+                            <Input placeholder="" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                    <FormField
+                      control={form.control}
+                      name="puertas"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Puertas</FormLabel>
+                          <FormControl>
+                            <Input placeholder="" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="asientos"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Asientos</FormLabel>
+                          <FormControl>
+                            <Input placeholder="" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="descripcion"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Descripción</FormLabel>
+                        <FormControl>
+                          <Textarea placeholder="" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-                <div>
-                  <Label>Descripción</Label>
-                  <Textarea
-                    placeholder=""
-                    {...register("descripcion")}
-                    rows={4}
-                  />
-                </div>
               </CardContent>
             </Card>
 
-            {/* Motor */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Motor</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <Label>Cilindrada</Label>
-                    <Input placeholder="" {...register("cilindrada")} />
+              {/* 🔧 MOTOR */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Motor</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                    <FormField
+                      control={form.control}
+                      name="combustible"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Combustible</FormLabel>
+                          <FormControl>
+                            <Input placeholder="" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="cilindrada"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Cilindrada</FormLabel>
+                          <FormControl>
+                            <Input placeholder="" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="potencia_hp"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Potencia (HP)</FormLabel>
+                          <FormControl>
+                            <Input placeholder="" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="alimentacion"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Alimentación</FormLabel>
+                          <Select
+                            value={field.value || undefined}
+                            onValueChange={field.onChange}>
+                            <FormControl>
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Seleccionar" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="Turbo">Turbo</SelectItem>
+                              <SelectItem value="Aspirado">Aspirado</SelectItem>
+                              <SelectItem value="Híbrido">Híbrido</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
-                  <div>
-                    <Label>Combustible</Label>
-                    <Input placeholder="" {...register("combustible")} />
+                  <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                    <FormField
+                      control={form.control}
+                      name="cilindros"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Cilindros</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Ej: 4, 6, 8" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="valvulas"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Válvulas</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Ej: 16, 24, 32" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="traccion"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Tracción</FormLabel>
+                          <FormControl>
+                            <Input placeholder="" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <Label>Potencia</Label>
-                    <Input placeholder="" {...register("potencia_hp")} />
-                  </div>
-                  <div>
-                    <Label>Tracción</Label>
-                    <Input placeholder="" {...register("traccion")} />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
 
-            {/* Imágenes (auto-upload con preview y loader) */}
-            <Card>
+              {/* Imágenes (auto-upload con preview y loader) */}
+              <Card>
               <CardHeader>
                 <CardTitle>Imágenes del Vehículo</CardTitle>
               </CardHeader>
@@ -1029,126 +1361,114 @@ export default function EditPostPage() {
               </CardContent>
             </Card>
 
-            {/* Precio & Financiamiento */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Precio & Financiamiento</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <Label>Precio</Label>
-                    <Input
-                      placeholder=""
-                      {...register("precio", {
-                        setValueAs: (value) => value === undefined || value === null ? "" : String(value)
-                      })}
+              {/* 💰 PRECIO */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Precio</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                    <FormField
+                      control={form.control}
+                      name="precio"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Precio</FormLabel>
+                          <FormControl>
+                            <Input placeholder="" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                    {errors.precio && (
-                      <p className="text-red-500 text-sm">
-                        {errors.precio.message}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <Label>Moneda</Label>
-                    <Controller
-                      control={control}
+                    <FormField
+                      control={form.control}
                       name="moneda"
                       render={({ field }) => (
-                        <Select
-                          value={field.value || undefined}
-                          onValueChange={field.onChange}>
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Seleccionar moneda" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="USD">USD (Dólares)</SelectItem>
-                            <SelectItem value="ARS">ARS (Pesos)</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <FormItem>
+                          <FormLabel>Moneda</FormLabel>
+                          <Select
+                            value={field.value || undefined}
+                            onValueChange={field.onChange}>
+                            <FormControl>
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Seleccionar moneda" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="USD">USD (Dólares)</SelectItem>
+                              <SelectItem value="ARS">ARS (Pesos)</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="precio_negociable"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Precio Negociable</FormLabel>
+                          <Select
+                            value={field.value || undefined}
+                            onValueChange={field.onChange}>
+                            <FormControl>
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Seleccionar" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="Sí">Sí</SelectItem>
+                              <SelectItem value="No">No</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="disponible"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>¿Disponible?</FormLabel>
+                          <Select
+                            value={field.value || undefined}
+                            onValueChange={field.onChange}>
+                            <FormControl>
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Seleccionar" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="Sí">Sí</SelectItem>
+                              <SelectItem value="No">No</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
                       )}
                     />
                   </div>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <Label>Cuota Mensual</Label>
-                    <Input
-                      placeholder=""
-                      {...register("cuota_mensual")}
-                    />
-                  </div>
-                  <div>
-                    <Label>Enganche</Label>
-                    <Input
-                      placeholder=""
-                      {...register("enganche")}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <Label>¿Disponible?</Label>
-                  <Controller
-                    control={control}
-                    name="disponible"
-                    render={({ field }) => (
-                      <Select
-                        value={field.value}
-                        onValueChange={field.onChange}>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Seleccionar" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Sí">Sí</SelectItem>
-                          <SelectItem value="No">No</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    )}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
 
-            {/* Vendedor */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Vendedor</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <Label>Nombre del Vendedor</Label>
-                    <Input
-                      placeholder=""
-                      {...register("vendedor_nombre")}
-                    />
-                  </div>
-                  <div>
-                    <Label>Calificación</Label>
-                    <Input
-                      placeholder=""
-                      {...register("vendedor_calificacion")}
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <div className="flex justify-end gap-3">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => router.push("/admin/posts")}>
-                Cancelar
-              </Button>
-              <Button
-                type="submit"
-                disabled={isSubmitting || uploading || authLoading}>
-                {uploading ? "Guardando…" : "Actualizar POST"}
-              </Button>
-            </div>
-          </form>
+              <div className="flex justify-end gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => router.push("/admin/posts")}>
+                  Cancelar
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={isSubmitting || uploading || authLoading}>
+                  {uploading ? "Guardando…" : "Actualizar POST"}
+                </Button>
+              </div>
+            </form>
+          </Form>
         </div>
       </SidebarInset>
     </SidebarProvider>

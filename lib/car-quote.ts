@@ -117,7 +117,7 @@ export async function getPrice(
 ): Promise<PriceResponse | null> {
   try {
     const res = await fetch(
-      `${API_BASE_URL}/brands/${codia}/price?isNew=${isNew}&isOld=${isOld}`,
+      `${API_BASE_URL}/models/${codia}/prices?isNew=${isNew}&isOld=${isOld}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

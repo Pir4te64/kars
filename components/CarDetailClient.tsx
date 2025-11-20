@@ -181,21 +181,21 @@ export default function CarDetailClient({
             </h1>
 
             {/* Key Specs */}
-            <div className="grid grid-cols-3 gap-2 sm:gap-3 lg:gap-4 mb-4 sm:mb-5">
-              <div className="text-center bg-gray-50 rounded-lg p-2 sm:p-3">
-                <div className="text-sm sm:text-base lg:text-lg font-bold text-gray-900">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-3 tablet:gap-3.5 tablet-lg:gap-4 lg:gap-4 mb-4 sm:mb-5">
+              <div className="text-center bg-gray-50 rounded-lg p-2 sm:p-3 md:p-3 tablet:p-3 tablet-lg:p-3">
+                <div className="text-sm sm:text-base md:text-base tablet:text-lg tablet-lg:text-lg font-bold text-gray-900">
                   {car.year}
                 </div>
                 <div className="text-xs text-gray-500 mt-0.5 sm:mt-1">Año</div>
               </div>
-              <div className="text-center bg-gray-50 rounded-lg p-2 sm:p-3">
-                <div className="text-sm sm:text-base lg:text-lg font-bold text-gray-900 truncate">
+              <div className="text-center bg-gray-50 rounded-lg p-2 sm:p-3 md:p-3 tablet:p-3 tablet-lg:p-3">
+                <div className="text-sm sm:text-base md:text-base tablet:text-lg tablet-lg:text-lg font-bold text-gray-900 truncate">
                   {car.mileage}
                 </div>
                 <div className="text-xs text-gray-500 mt-0.5 sm:mt-1">km</div>
               </div>
-              <div className="text-center bg-gray-50 rounded-lg p-2 sm:p-3">
-                <div className="text-xs sm:text-sm lg:text-base font-bold text-gray-900">
+              <div className="text-center bg-gray-50 rounded-lg p-2 sm:p-3 md:p-3 tablet:p-3 tablet-lg:p-3">
+                <div className="text-xs sm:text-sm md:text-sm tablet:text-base tablet-lg:text-base font-bold text-gray-900">
                   {car.transmission}
                 </div>
                 <div className="text-xs text-gray-500 mt-0.5 sm:mt-1">Trans.</div>
@@ -203,8 +203,8 @@ export default function CarDetailClient({
             </div>
 
             {/* Price */}
-            <div className="mb-4 sm:mb-5 bg-gradient-to-r from-blue-50 to-indigo-50 p-3 sm:p-4 rounded-lg border border-blue-100">
-              <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-primary-600">
+            <div className="mb-4 sm:mb-5 bg-gradient-to-r from-blue-50 to-indigo-50 p-3 sm:p-4 md:p-3.5 tablet:p-4 tablet-lg:p-4 rounded-lg border border-blue-100">
+              <div className="text-xl sm:text-2xl md:text-2xl tablet:text-2xl tablet-lg:text-3xl lg:text-3xl font-bold text-primary-600">
                 {carData.moneda || 'USD'} {car.price}
               </div>
               <div className="text-xs sm:text-sm text-gray-600 mt-1">Precio de contado</div>
@@ -254,17 +254,17 @@ export default function CarDetailClient({
               Características Detalladas
             </h2>
 
-            <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2">
+            <div className="grid gap-4 sm:gap-6 md:gap-5 tablet:gap-6 tablet-lg:gap-6 grid-cols-1 md:grid-cols-2 tablet:grid-cols-2 tablet-lg:grid-cols-2">
               {/* Información General */}
-              <div className="p-3 sm:p-4 rounded-lg bg-white shadow-sm">
-                <h3 className="mb-2 sm:mb-3 text-base sm:text-lg font-semibold text-gray-900">
+              <div className="p-3 sm:p-4 md:p-3.5 tablet:p-4 tablet-lg:p-4 rounded-lg bg-white shadow-sm">
+                <h3 className="mb-2 sm:mb-3 md:mb-2.5 tablet:mb-3 tablet-lg:mb-3 text-base sm:text-lg md:text-base tablet:text-lg tablet-lg:text-lg font-semibold text-gray-900">
                   Información General
                 </h3>
-                <div className="space-y-1.5 sm:space-y-2">
+                <div className="space-y-1.5 sm:space-y-2 md:space-y-1.5 tablet:space-y-2 tablet-lg:space-y-2">
                   {Object.entries(car.specs.general).map(
                     ([key, value]) =>
                       value && (
-                        <div key={key} className="flex justify-between text-xs sm:text-sm">
+                        <div key={key} className="flex justify-between text-xs sm:text-sm md:text-xs tablet:text-sm tablet-lg:text-sm">
                           <span className="text-gray-500 capitalize">
                             {key}:
                           </span>
@@ -278,18 +278,18 @@ export default function CarDetailClient({
               </div>
 
               {/* Motor */}
-              <div className="p-3 sm:p-4 lg:p-5 rounded-lg bg-gradient-to-br from-gray-50 to-white border border-gray-100 shadow-sm">
-                <h3 className="mb-2 sm:mb-3 lg:mb-4 text-base sm:text-lg font-semibold text-gray-900 flex items-center">
-                  <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="p-3 sm:p-4 md:p-3.5 tablet:p-4 tablet-lg:p-5 rounded-lg bg-gradient-to-br from-gray-50 to-white border border-gray-100 shadow-sm">
+                <h3 className="mb-2 sm:mb-3 md:mb-2.5 tablet:mb-3 tablet-lg:mb-4 text-base sm:text-lg md:text-base tablet:text-lg tablet-lg:text-lg font-semibold text-gray-900 flex items-center">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-4 md:h-4 tablet:w-5 tablet:h-5 tablet-lg:w-5 tablet-lg:h-5 mr-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                   Motor
                 </h3>
-                <div className="space-y-1.5 sm:space-y-2.5">
+                <div className="space-y-1.5 sm:space-y-2.5 md:space-y-1.5 tablet:space-y-2 tablet-lg:space-y-2.5">
                   {Object.entries(car.specs.engine).map(
                     ([key, value]) =>
                       value && (
-                        <div key={key} className="flex justify-between text-xs sm:text-sm">
+                        <div key={key} className="flex justify-between text-xs sm:text-sm md:text-xs tablet:text-sm tablet-lg:text-sm">
                           <span className="text-gray-500 capitalize">
                             {key}:
                           </span>

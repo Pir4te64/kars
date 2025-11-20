@@ -14,7 +14,7 @@ export default function HeroV2() {
 
   return (
     // Mobile-only hero (no car image), preserves title + cotizador
-    <section className="relative md:hidden w-full min-h-fit bg-gradient-to-b from-slate-200 to-white flex items-start justify-center overflow-hidden z-0">
+    <section className="relative lg:hidden w-full min-h-fit bg-gradient-to-b from-slate-200 to-white flex items-start justify-center overflow-hidden z-0">
       <div className="container px-4 mx-auto max-w-7xl w-full pt-20 pb-8">
         {/* Header content */}
         <div className="w-full max-w-xl mx-auto space-y-4 text-center">

@@ -35,16 +35,16 @@ export default function WhyChooseUs() {
             </h2>
 
             {/* Stats grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+            <div className="grid grid-cols-1 md:grid-cols-3 tablet:grid-cols-3 tablet-lg:grid-cols-3 gap-6 md:gap-7 tablet:gap-8 tablet-lg:gap-8 relative">
               {stats.map((stat, index) => (
                 <div key={index} className="text-center relative">
-                  <div className="text-4xl md:text-5xl font-bold mb-3" style={{
+                  <div className="text-4xl md:text-4xl tablet:text-5xl tablet-lg:text-5xl font-bold mb-3" style={{
                     WebkitTextStroke: '1px white',
                     color: 'transparent'
                   }}>
                     {stat.number}
                   </div>
-                  <div className="text-sm md:text-base text-blue-400 font-medium">
+                  <div className="text-sm md:text-sm tablet:text-base tablet-lg:text-base text-blue-400 font-medium">
                     {stat.description}
                   </div>
 

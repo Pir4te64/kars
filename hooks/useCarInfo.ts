@@ -28,6 +28,8 @@ export function useCarInfo(): UseCarInfoReturn {
   const [loadingModels, setLoadingModels] = useState<boolean>(false);
   const [years, setYears] = useState<YearPrice[]>([]);
   const [loadingYears, setLoadingYears] = useState<boolean>(false);
+  const [groupYears, setGroupYears] = useState<number[]>([]);
+  const [loadingGroupYears, setLoadingGroupYears] = useState<boolean>(false);
   const [versions, setVersions] = useState<ModelFeature[]>([]);
   const [loadingVersions, setLoadingVersions] = useState<boolean>(false);
 
@@ -247,13 +249,16 @@ export function useCarInfo(): UseCarInfoReturn {
         console.log("Datos de modelos recibidos:", data);
 
         // Mapear los datos de InfoAuto al formato esperado
+        // El backend devuelve: { description, codia, brand: {id, name}, group: {id, name}, ... }
         const mappedModels = data.map((model: any) => ({
           id: model.codia,
-          description: model.name,
-          codia: model.codia.toString(),
-          name: model.name,
-          brand_id: model.brand_id,
+          description: model.description || model.name || "",
+          codia: model.codia?.toString() || String(model.codia),
+          name: model.description || model.name || "",
+          brand_id: model.brand?.id || model.brand_id,
         }));
+        
+        console.log("🟢 Modelos mapeados:", mappedModels);
 
         // Obtener el nombre de la marca actual para filtrar los modelos permitidos
         // Si brandId es -1 o -2, buscar por nombre en lugar de ID
@@ -306,12 +311,16 @@ export function useCarInfo(): UseCarInfoReturn {
     if (!codia) return;
     setLoadingYears(true);
     try {
+      console.log("🔵 Obteniendo precios para modelo codia:", codia);
       const response = await fetch(
         `${
           process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001"
-        }/api/brands/${codia}/price?isNew=true&isOld=true`
+        }/api/models/${codia}/prices?isNew=true&isOld=true`
       );
-      if (!response.ok) throw new Error("Error al cargar precios");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || "Error al cargar precios");
+      }
       const data = await response.json();
 
       // Procesar la respuesta del backend optimizado
@@ -340,6 +349,43 @@ export function useCarInfo(): UseCarInfoReturn {
       setYears([]);
     } finally {
       setLoadingYears(false);
+    }
+  }, []);
+
+  const getGroupYears = useCallback(async (brandId: string, groupId: string) => {
+    if (!brandId || !groupId) return;
+    setLoadingGroupYears(true);
+    try {
+      // Normalizar brandId para JEEP y DODGE
+      let actualBrandId = brandId;
+      if (brandId === "-1" || brandId === "-2") {
+        actualBrandId = "13"; // CHRYSLER ID
+      }
+
+      const response = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001"
+        }/api/brands/${actualBrandId}/groups/${groupId}/prices`
+      );
+      if (!response.ok) throw new Error("Error al cargar años del grupo");
+      const data = await response.json();
+
+      // Extraer años únicos del response, filtrar solo años >= 2008 y ordenarlos descendente
+      const years = Array.from(
+        new Set(data.map((item: any) => item.year))
+      )
+        .filter((year) => !isNaN(Number(year)))
+        .map((year) => Number(year))
+        .filter((year) => year >= 2008) // Solo años del 2008 en adelante
+        .sort((a, b) => b - a);
+
+      console.log("🟢 Años obtenidos para grupo (>= 2008):", years);
+      setGroupYears(years);
+    } catch (err) {
+      console.error("Error loading group years:", err);
+      setGroupYears([]);
+    } finally {
+      setLoadingGroupYears(false);
     }
   }, []);
 
@@ -375,16 +421,19 @@ export function useCarInfo(): UseCarInfoReturn {
     groups,
     models,
     years,
+    groupYears,
     versions,
     loadingBrands,
     loadingGroups,
     loadingModels,
     loadingYears,
+    loadingGroupYears,
     loadingVersions,
     getGroup,
     getModelsByBrand,
     getModel,
     getPrice,
+    getGroupYears,
     getVersions,
   };
 }

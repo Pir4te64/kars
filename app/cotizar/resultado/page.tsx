@@ -37,6 +37,7 @@ export default function QuoteResultPage() {
     dollarBlue,
     loading: dollarLoading,
     error: dollarError,
+    formatDollarBlue,
   } = useDollarBlue();
 
   const {

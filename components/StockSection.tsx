@@ -57,13 +57,13 @@ export default function StockSection({ initialCars }: StockSectionProps) {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 md:gap-5 lg:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 tablet:grid-cols-3 tablet-lg:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 md:gap-5 tablet:gap-5 tablet-lg:gap-6 lg:gap-6">
           {initialCars.slice(0, limit).map((post, index) => (
             <div
               key={post.id}
               ref={(el) => { cardsRef.current[index] = el }}
               data-index={index}
-              className={`bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl shadow-sm hover:shadow-xl p-3 sm:p-4 md:p-5 group hover:scale-105 hover:border-slate-300 transition-all duration-500 ${
+              className={`bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl shadow-sm hover:shadow-xl p-3 sm:p-4 md:p-4 tablet:p-5 tablet-lg:p-5 group hover:scale-105 hover:border-slate-300 transition-all duration-500 ${
                 visibleCards.has(index)
                   ? 'opacity-100 translate-y-0'
                   : 'opacity-0 translate-y-12'
@@ -71,7 +71,7 @@ export default function StockSection({ initialCars }: StockSectionProps) {
               style={{ transitionDelay: `${(index % 4) * 100}ms` }}
             >
               <div className="relative mb-2 sm:mb-3 md:mb-4">
-                <div className="w-full h-32 sm:h-40 md:h-48 bg-white rounded-lg sm:rounded-xl flex items-center justify-center overflow-hidden border border-slate-200">
+                <div className="w-full h-32 sm:h-40 md:h-44 tablet:h-48 tablet-lg:h-48 bg-white rounded-lg sm:rounded-xl flex items-center justify-center overflow-hidden border border-slate-200">
                   {post.images_urls && post.images_urls[0] ? (
                     <Image
                       src={post.images_urls[0]}
@@ -91,11 +91,11 @@ export default function StockSection({ initialCars }: StockSectionProps) {
                 </div>
               </div>
               <div className="space-y-2 sm:space-y-2.5 md:space-y-3">
-                <h3 className="text-sm sm:text-base md:text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2 min-h-[2.5rem] sm:min-h-[3rem] md:min-h-[3.5rem]">
+                <h3 className="text-sm sm:text-base md:text-base tablet:text-lg tablet-lg:text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2 min-h-[2.5rem] sm:min-h-[3rem] md:min-h-[3rem] tablet:min-h-[3.5rem] tablet-lg:min-h-[3.5rem]">
                   {post.titulo}
                 </h3>
                 <div className="flex items-center justify-between">
-                  <span className="text-lg sm:text-xl md:text-2xl font-black text-slate-900">
+                  <span className="text-lg sm:text-xl md:text-xl tablet:text-2xl tablet-lg:text-2xl font-black text-slate-900">
                     {post.moneda || 'USD'} {post.precio}
                   </span>
                 </div>

@@ -9,6 +9,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        'tablet': '750px',
+        'tablet-lg': '1000px',
+      },
       colors: {
         primary: {
           50: '#eff6ff',

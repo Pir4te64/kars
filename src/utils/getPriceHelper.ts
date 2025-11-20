@@ -6,7 +6,7 @@ export default async function getPriceHelper(
   isOld: boolean,
   token: string
 ) {
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/brands/${codia}/price?isNew=${isNew}&isOld=${isOld}`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/models/${codia}/prices?isNew=${isNew}&isOld=${isOld}`;
   try {
     const response = await fetch(url, {
       headers: {

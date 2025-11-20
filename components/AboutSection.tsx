@@ -14,7 +14,7 @@ export default function AboutSection() {
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid gap-12 mb-16 lg:grid-cols-2 lg:gap-16">
+        <div className="grid gap-10 md:gap-11 tablet:gap-12 tablet-lg:gap-14 mb-16 lg:grid-cols-2 lg:gap-16">
           {/* Left Column - Story */}
           <div>
             <h3

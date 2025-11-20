@@ -16,6 +16,15 @@ export const metadata: Metadata = {
   title: 'KARS - Compra y Vende Autos Usados',
   description: ' Encuentra el auto de tus sueños o vende tu auto usado de manera rápida y segura. Proceso 100% en línea, financiamiento disponible.',
   keywords: ['autos usados', 'compra venta autos', 'autos certificados', 'financiamiento autos'],
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/logo_kars_blanco.png', type: 'image/png', sizes: '32x32' },
+    ],
+    apple: [
+      { url: '/logo_kars_blanco.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
   verification: {
     google: 'YsoKZhVyTAsy15w8AmYhU4x6YOEyzZU3Qbovm-Eeec',
     other: {

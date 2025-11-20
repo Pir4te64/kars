@@ -1,14 +1,15 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @next/next/no-img-element */
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { useCarInfo } from "@/src/hooks/useCarInfo";
+import { useCarInfo } from "@/hooks/useCarInfo";
 import type { Brand, Model, Group, YearPrice } from "@/types/car";
 import { calculatePriceByKilometers } from "@/lib/car-quote";
 import { useDollarBlue } from "@/hooks/useDollarBlue";
+import PhoneInput from "@/components/PhoneInput";
 
-interface FormData {
+interface CarFormData {
   marca: string;
   modelo: string;
   año: string;
@@ -49,14 +50,44 @@ export default function CarQuoteSection() {
     models,
     groups,
     years,
+    groupYears,
     loadingBrands,
     loadingGroups,
     loadingModels,
     loadingYears,
+    loadingGroupYears,
     getModel,
     getGroup,
     getPrice,
+    getGroupYears,
   } = useCarInfo();
+
+  // Función de respaldo si getGroupYears no está disponible
+  const safeGetGroupYears =
+    getGroupYears ||
+    ((brandId: string, groupId: string) => {
+      console.error(
+        "❌ getGroupYears no está disponible. brandId:",
+        brandId,
+        "groupId:",
+        groupId
+      );
+    });
+
+  // Declarar formData primero para evitar errores de inicialización
+  const [formData, setFormData] = useState({
+    marca: "",
+    grupo: "",
+    precio: "",
+    modelo: "",
+    año: "",
+    version: "",
+    kilometraje: "",
+    nombre: "",
+    email: "",
+    telefono: "",
+    ubicacion: "",
+  });
 
   // Tipos explícitos para evitar errores de TypeScript
   // Agregar JEEP y DODGE hardcodeadas si no están en la lista
@@ -74,13 +105,13 @@ export default function CarQuoteSection() {
     brand_id: -2,
     logo_url: "/dodge.png", // Logo de DODGE
   };
-  
+
   // Filtrar JEEP y DODGE que vengan del backend (tienen ID 13 de CHRYSLER)
   // Solo queremos usar nuestras versiones hardcodeadas con IDs -1 y -2
   const filteredBaseBrands = baseBrands.filter(
     (b) => b.name.toUpperCase() !== "JEEP" && b.name.toUpperCase() !== "DODGE"
   );
-  
+
   // Siempre agregar JEEP y DODGE con IDs únicos (-1 y -2)
   // Esto asegura que siempre usemos estos IDs específicos
   const typedBrands: Brand[] = [
@@ -88,35 +119,31 @@ export default function CarQuoteSection() {
     jeepBrand, // Siempre agregar JEEP con ID -1
     dodgeBrand, // Siempre agregar DODGE con ID -2
   ].sort((a, b) => a.name.localeCompare(b.name));
-  
+
   const typedModels: Model[] = models || [];
   const typedGroups: Group[] = groups || [];
   const typedYears: YearPrice[] = years || [];
+  // Filtrar años para mostrar solo del 2008 en adelante
+  const typedGroupYears: number[] = (groupYears || []).filter(
+    (year) => year >= 2008
+  );
 
-  // Generar años desde 2000 hasta 2025
-  const generateYears = () => {
-    const yearsList = [];
-    for (let year = 2025; year >= 2000; year--) {
-      yearsList.push(year);
-    }
-    return yearsList;
-  };
+  // Filtrar modelos por año seleccionado si hay año
+  // Los modelos del backend tienen prices_from y prices_to que indican el rango de años
+  const filteredModels = useMemo(() => {
+    if (!formData.año) return typedModels;
+    const selectedYear = Number(formData.año);
+    if (isNaN(selectedYear)) return typedModels;
 
-  const availableYears = generateYears();
+    // Filtrar modelos que tengan el año seleccionado en su rango
+    // Nota: Los modelos del backend tienen prices_from y prices_to
+    // Por ahora mostramos todos los modelos del grupo, ya que el filtrado
+    // por año se hace cuando se obtienen los precios del modelo específico
+    return typedModels;
+  }, [typedModels, formData.año]);
 
-  const [formData, setFormData] = useState({
-    marca: "",
-    grupo: "",
-    precio: "",
-    modelo: "",
-    año: "",
-    version: "",
-    kilometraje: "",
-    nombre: "",
-    email: "",
-    telefono: "",
-    ubicacion: "",
-  });
+  // Los años ahora vienen directamente del hook cuando se selecciona grupo
+  // No necesitamos calcularlos desde typedYears
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => {
@@ -126,36 +153,32 @@ export default function CarQuoteSection() {
         // Llamar a getGroup con el nuevo brandId
         // El hook se encargará de limpiar grupos y modelos cuando detecte el cambio de marca
         getGroup(value);
-        
+
         return {
           ...prev,
           marca: value,
           grupo: "",
           modelo: "", // Limpiar modelo al cambiar marca
+          año: "", // Limpiar año al cambiar marca
         };
       }
       if (field === "grupo") {
-        // Buscar el grupo seleccionado para obtener su name
-        console.log("field bro y el value", field, value);
+        // Buscar el grupo seleccionado para obtener su ID
+        console.log("🟢 handleInputChange - Cambiando grupo a:", value);
         const selectedGroup = typedGroups.find(
           (group: Group) => group.name === value
         );
-        console.log("=== DEBUG GRUPO ===");
-        console.log("Grupo seleccionado:", value);
-        console.log("Marca actual (prev.marca):", prev.marca);
-        console.log("selectedGroup:", selectedGroup);
-        console.log("Grupos disponibles:", typedGroups);
         if (selectedGroup) {
           // Usar codia si id no está disponible (el backend retorna codia como ID)
           const groupId = selectedGroup.id || selectedGroup.codia;
-          console.log("🟢 === DEBUG GRUPO SELECCIONADO ===");
-          console.log("🟢 Marca actual (prev.marca):", prev.marca);
-          console.log("🟢 Grupo seleccionado ID:", selectedGroup.id);
-          console.log("🟢 Grupo seleccionado codia:", selectedGroup.codia);
-          console.log("🟢 Grupo seleccionado name:", selectedGroup.name);
-          console.log("🟢 Usando groupId:", groupId);
-          console.log("🟢 Ejecutando getModel con marca:", prev.marca, "y grupo ID:", groupId);
-          getModel(prev.marca, groupId?.toString() || "");
+          console.log(
+            "🟢 Obteniendo años para marca:",
+            prev.marca,
+            "y grupo:",
+            groupId
+          );
+          // Llamar a getGroupYears en lugar de getModel
+          safeGetGroupYears(prev.marca, groupId?.toString() || "");
         } else {
           console.log(
             "ERROR: No se encontró el grupo seleccionado en el array"
@@ -164,15 +187,39 @@ export default function CarQuoteSection() {
         return {
           ...prev,
           grupo: value,
+          año: "", // Limpiar año al cambiar grupo
           modelo: "", // Limpiar modelo al cambiar grupo
         };
       }
+      if (field === "año") {
+        console.log("🟢 handleInputChange - Cambiando año a:", value);
+        // Cuando se selecciona un año, obtener los modelos del grupo
+        const selectedGroup = typedGroups.find(
+          (group: Group) => group.name === prev.grupo
+        );
+        if (selectedGroup && prev.marca) {
+          const groupId = selectedGroup.id || selectedGroup.codia;
+          console.log(
+            "🟢 Obteniendo modelos para marca:",
+            prev.marca,
+            "y grupo:",
+            groupId
+          );
+          getModel(prev.marca, groupId?.toString() || "");
+        }
+        return {
+          ...prev,
+          año: value,
+          modelo: "", // Limpiar modelo al cambiar año
+        };
+      }
       if (field === "modelo") {
-        console.log(field, value);
+        console.log("🟢 handleInputChange - Cambiando modelo a:", value);
+        console.log("🟢 Llamando getPrice con codia:", value);
         getPrice(value);
         return {
           ...prev,
-          modelo: value, // Limpiar modelo al cambiar marca
+          modelo: value,
         };
       }
       return {
@@ -207,6 +254,16 @@ export default function CarQuoteSection() {
     );
     return selectedGroup ? selectedGroup.name : "Grupo";
   };
+
+  // Debug: Log para verificar modelos
+  useEffect(() => {
+    console.log("🔍 DEBUG MODELOS:");
+    console.log("  - models (del hook):", models);
+    console.log("  - typedModels:", typedModels);
+    console.log("  - filteredModels:", filteredModels);
+    console.log("  - formData.año:", formData.año);
+    console.log("  - loadingModels:", loadingModels);
+  }, [models, typedModels, filteredModels, formData.año, loadingModels]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
@@ -428,7 +485,6 @@ export default function CarQuoteSection() {
       setIsSendingEmail(false);
     }
   };
-  console.log("years", years);
 
   const renderStep1 = () => (
     <>
@@ -446,63 +502,18 @@ export default function CarQuoteSection() {
       <div
         className="space-y-1.5 md:space-y-2 w-full"
         style={{ marginTop: "8px" }}>
-        {/* First Row - Año, Marca, Grupo, Modelo */}
-        <div className="flex flex-col md:flex-row justify-center items-stretch mx-auto w-full max-w-4xl gap-2 md:gap-3 px-2 sm:px-0">
-          {/* Año */}
-          <div
-            className="relative w-full md:w-1/4"
-            style={{
-              height: "40px",
-              borderRadius: "12px",
-              border: "1px solid rgba(148, 163, 184, 0.3)",
-              backgroundColor: "rgba(248, 250, 252, 0.5)",
-              opacity: 1,
-            }}>
-            <select
-              value={formData.año}
-              onChange={(e) => {
-                const selectedYear = parseInt(e.target.value);
-                if (selectedYear && selectedYear < 2008) {
-                  setYearError("Lo sentimos, solo aceptamos vehículos del año 2008 en adelante.");
-                  setFormData({ ...formData, año: "" });
-                } else {
-                  setYearError(null);
-                  setFormData({ ...formData, año: e.target.value });
-                }
-              }}
-              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500 text-sm md:text-base px-3"
-              style={{
-                border: "none",
-                outline: "none",
-                paddingRight: "40px",
-              }}>
-              <option value="">Año</option>
-              {availableYears.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-              <svg
-                className="w-5 h-5 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </div>
-          </div>
+        {/* First Row - Marca, Grupo, Año, Modelo */}
+        <div
+          className="flex flex-col md:flex-row quote-form-row justify-center items-stretch mx-auto w-full max-w-4xl gap-2 md:gap-2.5 tablet:gap-3 tablet-lg:gap-3 px-2 sm:px-0"
+          style={{
+            minWidth: "min(100%, 600px)",
+          }}>
           {/* Marca */}
           <div
             ref={brandDropdownRef}
-            className="relative w-full md:w-1/4"
+            className="relative w-full md:w-1/4 tablet:w-1/4 tablet-lg:w-1/4 flex-shrink-0 quote-form-field w-1-4"
             style={{
+              minWidth: "120px",
               height: "40px",
               borderRadius: "12px",
               border: "1px solid rgba(148, 163, 184, 0.3)",
@@ -518,7 +529,10 @@ export default function CarQuoteSection() {
                 }
               }}
               style={{
-                cursor: !loadingBrands && typedBrands.length > 0 ? "pointer" : "not-allowed",
+                cursor:
+                  !loadingBrands && typedBrands.length > 0
+                    ? "pointer"
+                    : "not-allowed",
               }}>
               <div className="flex items-center gap-2 flex-1 min-w-0">
                 {formData.marca ? (
@@ -533,7 +547,8 @@ export default function CarQuoteSection() {
                           alt={selectedBrand.name}
                           className="w-6 h-6 object-contain flex-shrink-0"
                           onError={(e) => {
-                            (e.target as HTMLImageElement).style.display = "none";
+                            (e.target as HTMLImageElement).style.display =
+                              "none";
                           }}
                         />
                       ) : null;
@@ -543,19 +558,30 @@ export default function CarQuoteSection() {
                         const selectedBrand = typedBrands.find(
                           (b) => b.id.toString() === formData.marca
                         );
-                        console.log("🔍 Mostrando marca seleccionada - formData.marca:", formData.marca, "selectedBrand:", selectedBrand?.name);
+                        console.log(
+                          "🔍 Mostrando marca seleccionada - formData.marca:",
+                          formData.marca,
+                          "selectedBrand:",
+                          selectedBrand?.name
+                        );
                         return selectedBrand?.name || "Marca";
                       })()}
                     </span>
                   </>
                 ) : (
-                  <span className="text-sm md:text-base text-gray-500">Marca</span>
+                  <span className="text-sm md:text-base text-gray-500">
+                    Marca
+                  </span>
                 )}
               </div>
               <svg
                 className={`w-5 h-5 transition-transform duration-200 flex-shrink-0 ${
                   isBrandDropdownOpen ? "rotate-180" : ""
-                } ${!loadingBrands && typedBrands.length > 0 ? "text-gray-600" : "text-gray-400"}`}
+                } ${
+                  !loadingBrands && typedBrands.length > 0
+                    ? "text-gray-600"
+                    : "text-gray-400"
+                }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24">
@@ -567,46 +593,55 @@ export default function CarQuoteSection() {
                 />
               </svg>
             </div>
-            {isBrandDropdownOpen && !loadingBrands && typedBrands.length > 0 && (
-              <div
-                className="absolute bottom-full left-0 right-0 z-50 mb-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-80 sm:max-h-96 overflow-y-auto"
-                style={{
-                  borderRadius: "12px",
-                  border: "1px solid rgba(148, 163, 184, 0.3)",
-                  boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-                }}>
-                {typedBrands.map((brand, index) => (
-                  <div
-                    key={`brand-${brand.id}-${brand.name}-${index}`}
-                    className="px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors duration-150 flex items-center gap-3"
-                    onClick={() => {
-                      console.log("🔵 Seleccionando marca:", brand.name, "ID:", brand.id.toString());
-                      handleInputChange("marca", brand.id.toString());
-                      setIsBrandDropdownOpen(false);
-                    }}
-                    style={{ borderBottom: "1px solid #f3f4f6" }}>
-                    {brand.logo_url && (
-                      <img
-                        src={brand.logo_url}
-                        alt={brand.name}
-                        className="w-6 h-6 object-contain flex-shrink-0"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).style.display = "none";
-                        }}
-                      />
-                    )}
-                    <span className="text-gray-900 text-xs sm:text-sm md:text-base">
-                      {brand.name}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
+            {isBrandDropdownOpen &&
+              !loadingBrands &&
+              typedBrands.length > 0 && (
+                <div
+                  className="absolute bottom-full left-0 right-0 z-50 mb-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-80 sm:max-h-96 overflow-y-auto"
+                  style={{
+                    borderRadius: "12px",
+                    border: "1px solid rgba(148, 163, 184, 0.3)",
+                    boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+                  }}>
+                  {typedBrands.map((brand, index) => (
+                    <div
+                      key={`brand-${brand.id}-${brand.name}-${index}`}
+                      className="px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors duration-150 flex items-center gap-3"
+                      onClick={() => {
+                        console.log(
+                          "🔵 Seleccionando marca:",
+                          brand.name,
+                          "ID:",
+                          brand.id.toString()
+                        );
+                        handleInputChange("marca", brand.id.toString());
+                        setIsBrandDropdownOpen(false);
+                      }}
+                      style={{ borderBottom: "1px solid #f3f4f6" }}>
+                      {brand.logo_url && (
+                        <img
+                          src={brand.logo_url}
+                          alt={brand.name}
+                          className="w-6 h-6 object-contain flex-shrink-0"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display =
+                              "none";
+                          }}
+                        />
+                      )}
+                      <span className="text-gray-900 text-xs sm:text-sm md:text-base">
+                        {brand.name}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
           </div>
           {/* Grupo */}
           <div
             ref={groupDropdownRef}
-            className="relative w-full md:w-1/4"
+            className="relative w-full md:w-1/4 tablet:w-1/4 tablet-lg:w-1/4 flex-shrink-0 quote-form-field w-1-4"
+            style={{ minWidth: "120px" }}
             style={{
               height: "40px",
               borderRadius: "12px",
@@ -688,10 +723,10 @@ export default function CarQuoteSection() {
                 </div>
               )}
           </div>
-          {/* Modelo */}
+          {/* Año */}
           <div
-            ref={modelDropdownRef}
-            className="relative w-full md:w-1/4"
+            className="relative w-full md:w-1/4 tablet:w-1/4 tablet-lg:w-1/4 flex-shrink-0 quote-form-field w-1-4"
+            style={{ minWidth: "100px" }}
             style={{
               height: "40px",
               borderRadius: "12px",
@@ -699,7 +734,86 @@ export default function CarQuoteSection() {
               backgroundColor: "rgba(248, 250, 252, 0.5)",
               opacity: 1,
               cursor:
-                formData.grupo && !loadingModels && typedModels.length > 0
+                formData.grupo && !loadingGroupYears
+                  ? "pointer"
+                  : "not-allowed",
+            }}>
+            <select
+              value={formData.año}
+              onChange={(e) => {
+                const selectedYear = parseInt(e.target.value);
+                if (selectedYear && selectedYear < 2008) {
+                  setYearError(
+                    "Lo sentimos, solo aceptamos vehículos del año 2008 en adelante."
+                  );
+                  setFormData({ ...formData, año: "" });
+                } else {
+                  setYearError(null);
+                  handleInputChange("año", e.target.value);
+                }
+              }}
+              disabled={
+                !formData.grupo ||
+                loadingGroupYears ||
+                typedGroupYears.length === 0
+              }
+              className="w-full h-full focus:ring-2 focus:ring-blue-500 appearance-none bg-transparent text-gray-500 text-sm md:text-base px-3 disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{
+                border: "none",
+                outline: "none",
+                paddingRight: "40px",
+              }}>
+              <option value="">
+                {loadingGroupYears
+                  ? "Cargando años..."
+                  : !formData.grupo
+                  ? "Selecciona grupo"
+                  : typedGroupYears.length === 0
+                  ? "No hay años disponibles"
+                  : "Año"}
+              </option>
+              {typedGroupYears && typedGroupYears.length > 0
+                ? typedGroupYears.map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))
+                : null}
+            </select>
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <svg
+                className={`w-5 h-5 ${
+                  formData.grupo &&
+                  !loadingGroupYears &&
+                  typedGroupYears.length > 0
+                    ? "text-gray-400"
+                    : "text-gray-300"
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+          </div>
+          {/* Modelo */}
+          <div
+            ref={modelDropdownRef}
+            className="relative w-full md:w-1/4 tablet:w-1/4 tablet-lg:w-1/4 flex-shrink-0 quote-form-field w-1-4"
+            style={{ minWidth: "120px" }}
+            style={{
+              height: "40px",
+              borderRadius: "12px",
+              border: "1px solid rgba(148, 163, 184, 0.3)",
+              backgroundColor: "rgba(248, 250, 252, 0.5)",
+              opacity: 1,
+              cursor:
+                formData.año && !loadingModels && filteredModels.length > 0
                   ? "pointer"
                   : "not-allowed",
             }}>
@@ -707,26 +821,33 @@ export default function CarQuoteSection() {
               className="w-full h-full flex items-center justify-between cursor-pointer px-3"
               onClick={() => {
                 console.log("=== CLICK EN MODELO ===");
-                console.log("formData.grupo:", formData.grupo);
+                console.log("formData.año:", formData.año);
                 console.log("loadingModels:", loadingModels);
-                console.log("models.length:", typedModels.length);
-                console.log("models:", typedModels);
+                console.log("typedModels.length:", typedModels.length);
+                console.log("typedModels:", typedModels);
+                console.log("filteredModels.length:", filteredModels.length);
+                console.log("filteredModels:", filteredModels);
                 if (
-                  formData.grupo &&
+                  formData.año &&
                   !loadingModels &&
-                  typedModels.length > 0
+                  filteredModels.length > 0
                 ) {
                   console.log("Abriendo dropdown de modelos");
                   setIsModelDropdownOpen(!isModelDropdownOpen);
                 } else {
                   console.log(
-                    "No se puede abrir dropdown - condiciones no cumplidas"
+                    "No se puede abrir dropdown - condiciones no cumplidas",
+                    {
+                      tieneAño: !!formData.año,
+                      noEstaCargando: !loadingModels,
+                      tieneModelos: filteredModels.length > 0,
+                    }
                   );
                 }
               }}
               style={{
                 cursor:
-                  formData.grupo && !loadingModels && typedModels.length > 0
+                  formData.año && !loadingModels && filteredModels.length > 0
                     ? "pointer"
                     : "not-allowed",
               }}>
@@ -736,9 +857,9 @@ export default function CarQuoteSection() {
                 }`}>
                 {loadingModels
                   ? "Cargando Versiones..."
-                  : !formData.grupo
-                  ? "Version"
-                  : typedModels.length === 0
+                  : !formData.año
+                  ? "Selecciona año"
+                  : filteredModels.length === 0
                   ? "No hay modelos disponibles"
                   : getSelectedModelText()}
               </span>
@@ -746,7 +867,7 @@ export default function CarQuoteSection() {
                 className={`w-5 h-5 transition-transform duration-200 ${
                   isModelDropdownOpen ? "rotate-180" : ""
                 } ${
-                  formData.grupo && !loadingModels && typedModels.length > 0
+                  formData.año && !loadingModels && filteredModels.length > 0
                     ? "text-gray-600"
                     : "text-gray-400"
                 }`}
@@ -763,8 +884,8 @@ export default function CarQuoteSection() {
             </div>
 
             {isModelDropdownOpen &&
-              formData.grupo &&
-              typedModels.length > 0 && (
+              formData.año &&
+              filteredModels.length > 0 && (
                 <div
                   className="absolute bottom-full left-0 right-0 z-50 mb-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-80 sm:max-h-96 overflow-y-auto"
                   style={{
@@ -772,7 +893,7 @@ export default function CarQuoteSection() {
                     border: "1px solid rgba(148, 163, 184, 0.3)",
                     boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
                   }}>
-                  {typedModels.map((item) => (
+                  {filteredModels.map((item) => (
                     <div
                       key={item.id || item.codia}
                       className="px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors duration-150"
@@ -789,10 +910,14 @@ export default function CarQuoteSection() {
         </div>
 
         {/* Second Row - Kilometraje, Button */}
-        <div className="flex flex-col md:flex-row justify-center items-stretch mx-auto w-full max-w-4xl gap-2 md:gap-3 px-2 sm:px-0">
+        <div
+          className="flex flex-col md:flex-row quote-form-row justify-center items-stretch mx-auto w-full max-w-4xl gap-2 md:gap-2.5 tablet:gap-3 tablet-lg:gap-3 px-2 sm:px-0"
+          style={{ minWidth: "min(100%, 600px)" }}>
           {/* Mensaje de error para año */}
           {yearError && (
-            <div className="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <div
+              className="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+              role="alert">
               <strong className="font-bold">¡Atención! </strong>
               <span className="block sm:inline">{yearError}</span>
             </div>
@@ -800,7 +925,8 @@ export default function CarQuoteSection() {
 
           {/* Kilometraje */}
           <div
-            className="relative w-full md:w-1/3"
+            className="relative w-full md:w-1/3 tablet:w-1/3 tablet-lg:w-1/3 flex-shrink-0 quote-form-field w-1-3"
+            style={{ minWidth: "150px" }}
             style={{
               height: "40px",
               borderRadius: "12px",
@@ -824,7 +950,8 @@ export default function CarQuoteSection() {
 
           {/* Button */}
           <button
-            className="text-slate-900 font-bold transition-all duration-300 w-full md:w-1/3 whitespace-nowrap hover:scale-105 hover:shadow-lg text-xs md:text-sm"
+            className="text-slate-900 font-bold transition-all duration-300 w-full md:w-1/3 tablet:w-1/3 tablet-lg:w-1/3 whitespace-nowrap hover:scale-105 hover:shadow-lg text-xs md:text-sm tablet:text-sm tablet-lg:text-sm flex-shrink-0 quote-form-field w-1-3"
+            style={{ minWidth: "180px" }}
             onClick={() => setCurrentStep(2)}
             style={{
               height: "40px",
@@ -859,10 +986,10 @@ export default function CarQuoteSection() {
 
       {/* Contact Form Fields */}
       <div
-        className="flex flex-col md:flex-row justify-center items-stretch gap-3 md:gap-4 w-full px-4"
+        className="flex flex-col md:flex-row justify-center items-stretch gap-3 md:gap-3.5 tablet:gap-4 tablet-lg:gap-4 w-full px-4"
         style={{ marginTop: "20px" }}>
         {/* Nombre y apellido */}
-        <div className="flex flex-col w-full md:flex-1 md:max-w-xs">
+        <div className="flex flex-col w-full md:flex-1 md:max-w-xs tablet:flex-1 tablet:max-w-xs tablet-lg:flex-1 tablet-lg:max-w-xs">
           <label className="font-medium text-sm text-slate-700 mb-1">
             Nombre y apellido <span style={{ color: "#ef4444" }}>*</span>
           </label>
@@ -897,7 +1024,7 @@ export default function CarQuoteSection() {
         </div>
 
         {/* Correo electrónico */}
-        <div className="flex flex-col w-full md:flex-1 md:max-w-xs">
+        <div className="flex flex-col w-full md:flex-1 md:max-w-xs tablet:flex-1 tablet:max-w-xs tablet-lg:flex-1 tablet-lg:max-w-xs">
           <label className="font-medium text-sm text-slate-700 mb-1">
             Correo electrónico <span style={{ color: "#ef4444" }}>*</span>
           </label>
@@ -932,7 +1059,7 @@ export default function CarQuoteSection() {
         </div>
 
         {/* Teléfono */}
-        <div className="flex flex-col w-full md:flex-1 md:max-w-xs">
+        <div className="flex flex-col w-full md:flex-1 md:max-w-xs tablet:flex-1 tablet:max-w-xs tablet-lg:flex-1 tablet-lg:max-w-xs">
           <label className="font-medium text-sm text-slate-700 mb-1">
             Teléfono <span style={{ color: "#ef4444" }}>*</span>
           </label>
@@ -944,22 +1071,21 @@ export default function CarQuoteSection() {
               border: "1px solid rgba(148, 163, 184, 0.3)",
               backgroundColor: "rgba(248, 250, 252, 0.5)",
             }}>
-            <input
-              type="tel"
-              placeholder="Teléfono"
+            <PhoneInput
               value={formData.telefono}
-              onChange={(e) => {
-                setFormData({ ...formData, telefono: e.target.value });
+              onChange={(value) => {
+                setFormData({ ...formData, telefono: value });
               }}
-              className="w-full h-full bg-transparent text-gray-500 text-sm px-3"
-              style={{ border: "none", outline: "none" }}
+              placeholder="Teléfono"
               required
+              className="text-gray-500 text-sm"
+              style={{ height: "100%" }}
             />
           </div>
         </div>
 
         {/* Ubicación */}
-        <div className="flex flex-col w-full md:flex-1 md:max-w-xs">
+        <div className="flex flex-col w-full md:flex-1 md:max-w-xs tablet:flex-1 tablet:max-w-xs tablet-lg:flex-1 tablet-lg:max-w-xs">
           <label className="font-medium text-sm text-slate-700 mb-1">
             Ubicación <span style={{ color: "#ef4444" }}>*</span>
           </label>
@@ -983,8 +1109,7 @@ export default function CarQuoteSection() {
               }}
               className="w-full h-full bg-transparent text-gray-500 text-sm px-3 appearance-none"
               style={{ border: "none", outline: "none", paddingRight: "40px" }}
-              required
-            >
+              required>
               <option value="">Selecciona tu provincia</option>
               <option value="Buenos Aires">Buenos Aires</option>
               <option value="CABA">CABA</option>
@@ -1088,6 +1213,7 @@ export default function CarQuoteSection() {
           className="bg-gradient-to-br from-slate-100 via-white to-slate-50 w-full mx-auto px-2 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 rounded-xl md:rounded-2xl"
           style={{
             maxWidth: "1100px",
+            minWidth: "min(100%, 600px)",
             minHeight: "auto",
             borderRadius: "20px",
             border: "1px solid rgba(148, 163, 184, 0.2)",

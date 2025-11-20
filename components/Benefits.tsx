@@ -57,24 +57,24 @@ export default function Benefits() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 tablet:grid-cols-2 tablet-lg:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 tablet:gap-7 tablet-lg:gap-8 lg:gap-8">
           {benefits.map((benefit, index) => (
-            <div key={index} className="bg-white rounded-2xl shadow-lg p-4 md:p-6 text-center group hover:scale-105 transition-transform duration-200 border border-gray-100">
-              <div className="flex justify-center mb-4 md:mb-6">
-                <div className="p-3 md:p-4 bg-blue-50 rounded-full group-hover:bg-blue-100 transition-colors duration-200">
+            <div key={index} className="bg-white rounded-2xl shadow-lg p-4 md:p-5 tablet:p-6 tablet-lg:p-6 text-center group hover:scale-105 transition-transform duration-200 border border-gray-100">
+              <div className="flex justify-center mb-4 md:mb-5 tablet:mb-6 tablet-lg:mb-6">
+                <div className="p-3 md:p-3.5 tablet:p-4 tablet-lg:p-4 bg-blue-50 rounded-full group-hover:bg-blue-100 transition-colors duration-200">
                   <Image
                     src={benefit.icon.src}
                     alt={benefit.icon.alt}
                     width={48}
                     height={48}
-                    className="w-12 h-12 object-contain"
+                    className="w-12 h-12 md:w-11 md:h-11 tablet:w-12 tablet:h-12 tablet-lg:w-12 tablet-lg:h-12 object-contain"
                   />
                 </div>
               </div>
-              <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-2 md:mb-3">
+              <h3 className="text-lg md:text-lg tablet:text-xl tablet-lg:text-xl font-semibold text-gray-900 mb-2 md:mb-2.5 tablet:mb-3 tablet-lg:mb-3">
                 {benefit.title}
               </h3>
-              <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+              <p className="text-sm md:text-sm tablet:text-base tablet-lg:text-base text-gray-600 leading-relaxed">
                 {benefit.description}
               </p>
             </div>

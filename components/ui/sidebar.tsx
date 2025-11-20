@@ -163,7 +163,11 @@ function Sidebar({
   variant?: "sidebar" | "floating" | "inset"
   collapsible?: "offcanvas" | "icon" | "none"
 }) {
+<<<<<<< Updated upstream
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
+=======
+  const { isMobile, state, openMobile, setOpenMobile, setOpen } = useSidebar();
+>>>>>>> Stashed changes
 
   if (collapsible === "none") {
     return (

@@ -8,7 +8,7 @@ export default function FacebookDomainVerification() {
     const existingMeta = document.querySelector('meta[name="facebook-domain-verification"]')
     
     if (!existingMeta) {
-      // Crear y agregar el meta tag si no existe
+      // Crear   y agregar el meta tag si no existe
       const meta = document.createElement('meta')
       meta.setAttribute('name', 'facebook-domain-verification')
       meta.setAttribute('content', '2prisasaheadexeps5804x28with1')

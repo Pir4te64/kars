@@ -120,7 +120,7 @@ export default function CarQuoteSection() {
     dodgeBrand, // Siempre agregar DODGE con ID -2
   ].sort((a, b) => a.name.localeCompare(b.name));
 
-  const typedModels: Model[] = models || [];
+  const typedModels: Model[] = useMemo(() => models || [], [models]);
   const typedGroups: Group[] = groups || [];
   const typedYears: YearPrice[] = years || [];
   // Filtrar años para mostrar solo del 2008 en adelante
@@ -641,8 +641,8 @@ export default function CarQuoteSection() {
           <div
             ref={groupDropdownRef}
             className="relative w-full md:w-1/4 tablet:w-1/4 tablet-lg:w-1/4 flex-shrink-0 quote-form-field w-1-4"
-            style={{ minWidth: "120px" }}
             style={{
+              minWidth: "120px",
               height: "40px",
               borderRadius: "12px",
               border: "1px solid rgba(148, 163, 184, 0.3)",
@@ -726,8 +726,8 @@ export default function CarQuoteSection() {
           {/* Año */}
           <div
             className="relative w-full md:w-1/4 tablet:w-1/4 tablet-lg:w-1/4 flex-shrink-0 quote-form-field w-1-4"
-            style={{ minWidth: "100px" }}
             style={{
+              minWidth: "100px",
               height: "40px",
               borderRadius: "12px",
               border: "1px solid rgba(148, 163, 184, 0.3)",
@@ -805,8 +805,8 @@ export default function CarQuoteSection() {
           <div
             ref={modelDropdownRef}
             className="relative w-full md:w-1/4 tablet:w-1/4 tablet-lg:w-1/4 flex-shrink-0 quote-form-field w-1-4"
-            style={{ minWidth: "120px" }}
             style={{
+              minWidth: "120px",
               height: "40px",
               borderRadius: "12px",
               border: "1px solid rgba(148, 163, 184, 0.3)",
@@ -926,8 +926,8 @@ export default function CarQuoteSection() {
           {/* Kilometraje */}
           <div
             className="relative w-full md:w-1/3 tablet:w-1/3 tablet-lg:w-1/3 flex-shrink-0 quote-form-field w-1-3"
-            style={{ minWidth: "150px" }}
             style={{
+              minWidth: "150px",
               height: "40px",
               borderRadius: "12px",
               border: "1px solid rgba(148, 163, 184, 0.3)",
@@ -951,9 +951,9 @@ export default function CarQuoteSection() {
           {/* Button */}
           <button
             className="text-slate-900 font-bold transition-all duration-300 w-full md:w-1/3 tablet:w-1/3 tablet-lg:w-1/3 whitespace-nowrap hover:scale-105 hover:shadow-lg text-xs md:text-sm tablet:text-sm tablet-lg:text-sm flex-shrink-0 quote-form-field w-1-3"
-            style={{ minWidth: "180px" }}
             onClick={() => setCurrentStep(2)}
             style={{
+              minWidth: "180px",
               height: "40px",
               minHeight: "40px",
               paddingTop: "8px",

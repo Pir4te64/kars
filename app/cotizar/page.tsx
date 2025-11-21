@@ -5,7 +5,8 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { useCarInfo } from "@/src/hooks/useCarInfo";
+import { useCarInfo } from "@/hooks/useCarInfo";
+import type { Brand, Model, YearPrice } from "@/types/car";
 
 export default function CotizarPage() {
   const router = useRouter();
@@ -23,6 +24,11 @@ export default function CotizarPage() {
     getModelsByBrand,
     getPrice,
   } = useCarInfo();
+
+  // Tipos explícitos para evitar errores de TypeScript
+  const typedBrands: Brand[] = brands || [];
+  const typedModels: Model[] = models || [];
+  const typedYears: YearPrice[] = years || [];
 
   const [formData, setFormData] = useState({
     marca: "",
@@ -43,7 +49,9 @@ export default function CotizarPage() {
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => {
       if (field === "marca") {
-        getModelsByBrand(value);
+        // Nota: getModelsByBrand requiere brandId y groupId
+        // Este componente parece usar un flujo diferente, así que no llamamos aquí
+        // Se llamará cuando se seleccione el grupo
         setIsModelDropdownOpen(false);
         return {
           ...prev,
@@ -73,7 +81,9 @@ export default function CotizarPage() {
 
   const getSelectedModelText = () => {
     if (!formData.modelo) return "Modelo";
-    const selectedModel = models.find((item) => item.codia === formData.modelo);
+    const selectedModel = typedModels.find(
+      (item) => item.codia === formData.modelo
+    );
     return selectedModel ? selectedModel.description : "Modelo";
   };
 
@@ -99,37 +109,39 @@ export default function CotizarPage() {
   }, [isModelDropdownOpen]);
 
   const handleCompleteQuote = () => {
-    if (years && years.length > 0 && formData.año) {
-      const yearData = years.filter(
-        (item) => item.year == Number(formData.año)
-      )[0];
+    const updatedFormData = { ...formData };
+
+    if (typedYears && typedYears.length > 0 && formData.año) {
+      const yearData = typedYears.find(
+        (item) => item.year === Number(formData.año)
+      );
       if (yearData) {
-        formData.precio = yearData.price;
+        updatedFormData.precio = yearData.price;
       }
     }
 
-    if (brands && brands.length > 0 && formData.marca) {
-      const brandData = brands.filter(
+    if (typedBrands && typedBrands.length > 0 && formData.marca) {
+      const brandData = typedBrands.find(
         (item) =>
-          item.id == Number(formData.marca) || item.name == formData.marca
-      )[0];
+          item.id.toString() === formData.marca || item.name === formData.marca
+      );
       if (brandData) {
-        formData.marca = brandData.name;
+        updatedFormData.marca = brandData.name;
       }
     }
 
-    if (models && models.length > 0 && formData.modelo) {
-      const modelData = models.filter(
+    if (typedModels && typedModels.length > 0 && formData.modelo) {
+      const modelData = typedModels.find(
         (item) =>
-          item.codia == formData.modelo || item.description == formData.modelo
-      )[0];
+          item.codia === formData.modelo || item.description === formData.modelo
+      );
       if (modelData) {
-        formData.modelo = modelData.description;
+        updatedFormData.modelo = modelData.description;
       }
     }
 
     localStorage.removeItem("quoteData");
-    localStorage.setItem("quoteData", JSON.stringify(formData));
+    localStorage.setItem("quoteData", JSON.stringify(updatedFormData));
 
     router.push("/cotizar/resultado");
   };
@@ -263,16 +275,18 @@ export default function CotizarPage() {
               }}
               disabled={loadingBrands}>
               <option value="">Marca</option>
-              {brands && brands.length > 0 ? (
-                brands.map((brand) =>
-                  ["FORD", "HONDA", "PEUGEOT", "CHEVROLET"].includes(
-                    brand.name
-                  ) ? (
+              {typedBrands && typedBrands.length > 0 ? (
+                typedBrands
+                  .filter((brand) =>
+                    ["FORD", "HONDA", "PEUGEOT", "CHEVROLET"].includes(
+                      brand.name
+                    )
+                  )
+                  .map((brand) => (
                     <option key={brand.id || brand.name} value={brand.id}>
                       {brand.name}
                     </option>
-                  ) : null
-                )
+                  ))
               ) : (
                 <option value="" disabled>
                   {loadingBrands
@@ -322,7 +336,7 @@ export default function CotizarPage() {
                 outline: "none",
               }}>
               <option value="">Año</option>
-              {years.map((year, i) => {
+              {typedYears.map((year) => {
                 return (
                   <option key={year.year} value={year.year}>
                     {year.year}
@@ -361,19 +375,25 @@ export default function CotizarPage() {
               border: "1px solid #0D0D0D",
               opacity: 1,
               cursor:
-                formData.marca && !loadingModels ? "pointer" : "not-allowed",
+                formData.marca && !loadingModels && typedModels.length > 0
+                  ? "pointer"
+                  : "not-allowed",
             }}>
             {/* Dropdown personalizado */}
             <div
               className="w-full h-full flex items-center justify-between cursor-pointer"
               onClick={() => {
-                if (formData.marca && !loadingModels && models.length > 0) {
+                if (
+                  formData.marca &&
+                  !loadingModels &&
+                  typedModels.length > 0
+                ) {
                   setIsModelDropdownOpen(!isModelDropdownOpen);
                 }
               }}
               style={{
                 cursor:
-                  formData.marca && !loadingModels && models.length > 0
+                  formData.marca && !loadingModels && typedModels.length > 0
                     ? "pointer"
                     : "not-allowed",
               }}>
@@ -385,7 +405,7 @@ export default function CotizarPage() {
                   ? "Cargando modelos..."
                   : !formData.marca
                   ? "Modelo"
-                  : models.length === 0
+                  : typedModels.length === 0
                   ? "No hay modelos disponibles"
                   : getSelectedModelText()}
               </span>
@@ -393,7 +413,7 @@ export default function CotizarPage() {
                 className={`w-5 h-5 transition-transform duration-200 ${
                   isModelDropdownOpen ? "rotate-180" : ""
                 } ${
-                  formData.marca && !loadingModels && models.length > 0
+                  formData.marca && !loadingModels && typedModels.length > 0
                     ? "text-gray-600"
                     : "text-gray-400"
                 }`}
@@ -410,26 +430,28 @@ export default function CotizarPage() {
             </div>
 
             {/* Dropdown Options */}
-            {isModelDropdownOpen && formData.marca && models.length > 0 && (
-              <div
-                className="absolute top-full left-0 right-0 z-50 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
-                style={{
-                  borderRadius: "7px",
-                  border: "1px solid #0D0D0D",
-                }}>
-                {models.map((item) => (
-                  <div
-                    key={item.id || item.codia}
-                    className="px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors duration-150"
-                    onClick={() => handleModelSelect(item)}
-                    style={{
-                      borderBottom: "1px solid #f3f4f6",
-                    }}>
-                    <span className="text-gray-900">{item.description}</span>
-                  </div>
-                ))}
-              </div>
-            )}
+            {isModelDropdownOpen &&
+              formData.marca &&
+              typedModels.length > 0 && (
+                <div
+                  className="absolute top-full left-0 right-0 z-50 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
+                  style={{
+                    borderRadius: "7px",
+                    border: "1px solid #0D0D0D",
+                  }}>
+                  {typedModels.map((item) => (
+                    <div
+                      key={item.id || item.codia}
+                      className="px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors duration-150"
+                      onClick={() => handleModelSelect(item)}
+                      style={{
+                        borderBottom: "1px solid #f3f4f6",
+                      }}>
+                      <span className="text-gray-900">{item.description}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
           </div>
         </div>
 

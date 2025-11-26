@@ -1,9 +1,10 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { VehiclePost } from "@/types";
 import { useVehiclePosts } from "@/hooks/useVehiclePosts";
 
@@ -18,6 +19,9 @@ export default function CarDetailClient({
 }: CarDetailClientProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { cars } = useVehiclePosts(1000);
+  const imageContainerRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
 
   // Map the carData to car object
   const car = {
@@ -68,6 +72,63 @@ export default function CarDetailClient({
     `Hola, estoy interesado en el auto: ${car.title} `
   );
   const waUrl = `https://wa.me/${phone}?text=${message}`;
+
+  // Funciones de navegación
+  const goToPrevious = () => {
+    setCurrentImageIndex((prev) =>
+      prev === 0 ? car.images.length - 1 : prev - 1
+    );
+  };
+
+  const goToNext = () => {
+    setCurrentImageIndex((prev) =>
+      prev === car.images.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  // Manejo de gestos de deslizar (swipe)
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchEndX.current = null;
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    const distance = touchStartX.current - touchEndX.current;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      goToNext();
+    }
+    if (isRightSwipe) {
+      goToPrevious();
+    }
+  };
+
+  // Navegación con teclado
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") {
+        setCurrentImageIndex((prev) =>
+          prev === 0 ? car.images.length - 1 : prev - 1
+        );
+      } else if (e.key === "ArrowRight") {
+        setCurrentImageIndex((prev) =>
+          prev === car.images.length - 1 ? 0 : prev + 1
+        );
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [car.images.length]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -128,7 +189,12 @@ export default function CarDetailClient({
           <div className="lg:col-span-2 w-full">
             {/* Main Image */}
             <div className="relative mb-3 sm:mb-4 w-full">
-              <div className="relative w-full h-[250px] sm:h-[400px] lg:h-[500px] bg-gray-100 rounded-lg overflow-hidden">
+              <div
+                ref={imageContainerRef}
+                className="relative w-full h-[250px] sm:h-[400px] lg:h-[500px] bg-gray-100 rounded-lg overflow-hidden"
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}>
                 <Image
                   src={car.images[currentImageIndex]}
                   alt={car.title}
@@ -137,9 +203,31 @@ export default function CarDetailClient({
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 66vw"
                   priority={currentImageIndex === 0}
                 />
-              </div>
-              <div className="absolute px-2 py-1 text-xs sm:text-sm text-white bg-black bg-opacity-75 rounded-full bottom-3 left-3">
-                {currentImageIndex + 1}/{car.images.length}
+                
+                {/* Flecha izquierda */}
+                {car.images.length > 1 && (
+                  <button
+                    onClick={goToPrevious}
+                    className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 p-2 sm:p-3 bg-black bg-opacity-50 hover:bg-opacity-75 rounded-full transition-all duration-200 text-white hover:scale-110 active:scale-95"
+                    aria-label="Imagen anterior">
+                    <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
+                  </button>
+                )}
+
+                {/* Flecha derecha */}
+                {car.images.length > 1 && (
+                  <button
+                    onClick={goToNext}
+                    className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 p-2 sm:p-3 bg-black bg-opacity-50 hover:bg-opacity-75 rounded-full transition-all duration-200 text-white hover:scale-110 active:scale-95"
+                    aria-label="Imagen siguiente">
+                    <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
+                  </button>
+                )}
+
+                {/* Contador de imágenes */}
+                <div className="absolute px-2 py-1 text-xs sm:text-sm text-white bg-black bg-opacity-75 rounded-full bottom-3 left-3">
+                  {currentImageIndex + 1}/{car.images.length}
+                </div>
               </div>
             </div>
 

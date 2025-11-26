@@ -2,7 +2,7 @@
 
 Basado en el análisis de [Carmak.com.ar](https://carmak.com.ar/venta-autos-misiones/todos-0/fiat-11/cross-plus-automatico-4x4-3713/), estos son los campos adicionales que podrían agregarse a la tabla `vehicle_posts`:
 
-## 📋 Campos Actuales vs. Campos Sugeridos
+## 📋 Campos Actuales vs. Campos Sugeridos 
 
 ### ✅ Campos que YA existen:
 

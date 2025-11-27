@@ -97,23 +97,21 @@ export default function QuoteResultPage() {
     }
   };
 
-  // Convertir precio del modelo (usado) a precio real en pesos
-  // El precio viene en USD desde la API (ej: "7600" = 7600 USD para año 2008)
+  // Convertir precio del modelo a precio real en pesos
+  // El precio viene de la API sin los últimos 3 ceros (ej: "7600" = 7,600,000 pesos)
   const obtenerPrecioBasePesos = () => {
-    // 1. Precio del modelo usado en USD (ej: "7600")
+    // 1. Precio del modelo (ej: "7600")
     const precioString = quoteData?.precio || "0";
-    const precioEnUsd = parseFloat(precioString);
+    const precioRaw = parseFloat(precioString);
 
     console.log("💰 QuoteData completo:", quoteData);
     console.log("💰 Precio recibido (string):", precioString);
-    console.log("💰 Precio parseado (USD):", precioEnUsd);
+    console.log("💰 Precio parseado:", precioRaw);
     console.log("💰 Año del vehículo:", quoteData?.año);
     console.log("💰 Tipo de precio:", typeof precioString);
-    console.log("💰 Dólar blue:", dollarBlue);
-    console.log("💰 Dólar blue venta:", dollarBlue?.venta);
 
     // 2. Si el precio es 0, NaN, o no es un número válido, retornar 0
-    if (!precioEnUsd || precioEnUsd === 0 || isNaN(precioEnUsd)) {
+    if (!precioRaw || precioRaw === 0 || isNaN(precioRaw)) {
       console.warn(
         "⚠️ Precio inválido o es 0, no se puede calcular. Precio recibido:",
         precioString
@@ -121,24 +119,18 @@ export default function QuoteResultPage() {
       return 0;
     }
 
-    if (!dollarBlue || !dollarBlue.venta) {
-      console.warn("⚠️ No hay dólar blue disponible");
-      return 0;
-    }
-
-    // 3. Convertir USD a pesos argentinos usando dólar blue
-    const precioEnPesos = precioEnUsd * dollarBlue.venta;
-    console.log("💰 Precio en pesos (antes de ajuste):", precioEnPesos);
+    // 3. Multiplicar por 1000 para obtener el precio real en pesos
+    const precioEnPesos = precioRaw * 1000;
+    console.log("💰 Precio en pesos (×1000):", precioEnPesos);
 
     // 4. Aplicar ajuste del precio (factor de ajuste: 17429123 / 17900000 = 0.9726)
-    // Este ajuste se aplica antes del descuento del 5%
     const factorAjuste = 17429123 / 17900000;
     const precioAjustado = precioEnPesos * factorAjuste;
     console.log("💰 Precio ajustado (factor 0.9726):", precioAjustado);
 
-    // 5. Descontar 5%
-    const precioConDescuento = precioAjustado * 0.95;
-    console.log("💰 Precio final con descuento 5%:", precioConDescuento);
+    // 5. Descontar 12%
+    const precioConDescuento = precioAjustado * 0.88;
+    console.log("💰 Precio final con descuento 12%:", precioConDescuento);
 
     return precioConDescuento;
   };
@@ -150,13 +142,13 @@ export default function QuoteResultPage() {
   };
 
   // Calcular los 3 tipos de venta (en pesos)
-  // Inmediata es el precio base después de ajuste y descuento 5%
+  // Inmediata es el precio base después de ajuste y descuento 12%
   // Consignación es 10% más que Inmediata
   // Permuta es 5% más que Inmediata
   const calcularTiposVenta = () => {
     const precioBasePesos = obtenerPrecioBasePesos();
 
-    console.log("💰 Precio base en pesos (después de ajuste y descuento 5%):", precioBasePesos);
+    console.log("💰 Precio base en pesos (después de ajuste y descuento 12%):", precioBasePesos);
 
     // Si no hay precio base, retornar valores en 0
     if (!precioBasePesos || precioBasePesos === 0 || isNaN(precioBasePesos)) {
@@ -177,7 +169,7 @@ export default function QuoteResultPage() {
       };
     }
 
-    // Inmediata: precio base (ya viene con ajuste y descuento 5% aplicados)
+    // Inmediata: precio base (ya viene con ajuste y descuento 12% aplicados)
     const precioInmediata = precioBasePesos;
     console.log("💰 Inmediata (precio base):", precioInmediata);
 
@@ -413,6 +405,9 @@ export default function QuoteResultPage() {
                     <div className="bg-gradient-to-br from-slate-700 via-slate-600 to-slate-700 rounded-lg p-3 text-white shadow-md">
                       <div className="flex items-center justify-between mb-2">
                         <h4 className="text-sm font-bold">Consignación</h4>
+                        <span className="text-xs bg-white/30 px-2 py-0.5 rounded-full font-semibold">
+                          +10%
+                        </span>
                       </div>
                       <div className="mb-1">
                         {dollarBlue && !dollarLoading && !dollarError ? (

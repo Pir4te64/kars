@@ -9,6 +9,13 @@ interface QuoteEmailData {
   cotizacionDolar?: number;
   kilometraje: string;
   ubicacion: string;
+  precio_consignacion_ars?: string;
+  precio_consignacion_usd?: string;
+  precio_permuta_ars?: string;
+  precio_permuta_usd?: string;
+  precio_inmediata_ars?: string;
+  precio_inmediata_usd?: string;
+  dolar_blue?: string;
 }
 
 // Función para escapar HTML y prevenir XSS
@@ -68,35 +75,49 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
   const precioRaw = data.precio ? parseFloat(data.precio.toString()) : 0;
   const precio = data.precio ? escapeHtml(data.precio) : "Consultar";
 
-  // Formatear precio en USD
-  const precioUSD = precioRaw > 0
-    ? `USD $${precioRaw.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`
-    : "Consultar";
+  // Si recibimos los precios ya calculados, usarlos directamente
+  // Si no, calcular con la misma lógica que la página de resultado
+  const cotizacionDolar = data.cotizacionDolar || 1200;
 
-  // Convertir a ARS usando la cotización recibida o valor por defecto
-  const cotizacionDolar = data.cotizacionDolar || 1200; // Usar cotización recibida o fallback
+  let precioConsignacionARS: string;
+  let precioConsignacionUSD: string;
+  let precioPermutaARS: number;
+  let precioPermutaUSD: string;
+  let precioInmediataARS: number;
+  let precioInmediataUSD: string;
 
-  // Aplicar la misma lógica que en la página de resultado:
-  // 1. Descontar 5% del precio
-  // 2. Multiplicar por 1000
-  const precioBasePesos = precioRaw > 0
-    ? (precioRaw * 0.95 * 1000) // Mismo cálculo que obtenerPrecioBasePesos()
-    : 0;
+  if (data.precio_consignacion_ars && data.precio_consignacion_usd &&
+      data.precio_permuta_ars && data.precio_permuta_usd &&
+      data.precio_inmediata_ars && data.precio_inmediata_usd) {
+    // Usar valores ya calculados (ya vienen formateados)
+    precioConsignacionARS = data.precio_consignacion_ars.replace(/[^0-9]/g, '');
+    precioConsignacionUSD = data.precio_consignacion_usd.replace(/[^0-9.,]/g, '');
+    precioPermutaARS = parseFloat(data.precio_permuta_ars.replace(/[^0-9]/g, ''));
+    precioPermutaUSD = data.precio_permuta_usd.replace(/[^0-9.,]/g, '');
+    precioInmediataARS = parseFloat(data.precio_inmediata_ars.replace(/[^0-9]/g, ''));
+    precioInmediataUSD = data.precio_inmediata_usd.replace(/[^0-9.,]/g, '');
+  } else {
+    // Calcular con la misma lógica que la página de resultado:
+    // 1. Precio * 1000 = precio real en pesos
+    // 2. Aplicar factor de ajuste 0.9726
+    // 3. Descontar 12%
+    const precioEnPesos = precioRaw * 1000;
+    const factorAjuste = 17429123 / 17900000;
+    const precioAjustado = precioEnPesos * factorAjuste;
+    const precioBasePesos = precioAjustado * 0.88; // Descuento 12%
 
-  // Calcular los 3 tipos de venta (igual que en resultado/page.tsx)
-  const precioConsignacion = precioBasePesos; // 100% - Mejor precio
-  const precioPermuta = precioBasePesos * 0.95; // 95% - Menos 5%
-  const precioInmediata = precioBasePesos * 0.90; // 90% - Menos 10%
+    // Calcular los 3 tipos de venta
+    const precioInmediata = precioBasePesos; // Base
+    const precioConsignacion = precioInmediata * 1.1; // +10%
+    const precioPermuta = precioInmediata * 1.05; // +5%
 
-  // Formatear el precio de consignación (mejor precio) para el email
-  const precioARS = precioBasePesos > 0
-    ? precioConsignacion.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
-    : "Consultar";
-
-  // Precio en USD de consignación
-  const precioUSDConsignacion = precioBasePesos > 0 && cotizacionDolar > 0
-    ? (precioConsignacion / cotizacionDolar).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })
-    : "0";
+    precioConsignacionARS = precioConsignacion.toFixed(0);
+    precioConsignacionUSD = (precioConsignacion / cotizacionDolar).toFixed(0);
+    precioPermutaARS = precioPermuta;
+    precioPermutaUSD = (precioPermuta / cotizacionDolar).toFixed(0);
+    precioInmediataARS = precioInmediata;
+    precioInmediataUSD = (precioInmediata / cotizacionDolar).toFixed(0);
+  }
 
   // Formatear kilometraje
   const kmRaw = data.kilometraje ? parseFloat(data.kilometraje.toString()) : 0;
@@ -252,7 +273,7 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
                                                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                                         <tr>
                                                             <td style="color: #ffffff; font-size: 18px; font-weight: 700;">Consignación</td>
-                                                            <td align="right" style="background-color: rgba(255,255,255,0.3); color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; width: auto;">Mejor precio</td>
+                                                            <td align="right" style="background-color: rgba(255,255,255,0.3); color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; width: auto;">+10% | Mejor precio</td>
                                                         </tr>
                                                     </table>
                                                 </td>
@@ -262,12 +283,12 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
                                             </tr>
                                             <tr>
                                                 <td style="color: #ffffff; font-size: 36px; font-weight: 700; letter-spacing: -1px;">
-                                                    $${precioARS}
+                                                    $${parseFloat(precioConsignacionARS).toLocaleString('es-AR')}
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="padding-top: 10px; color: #999999; font-size: 16px;">
-                                                    USD $${precioUSDConsignacion}
+                                                    USD $${precioConsignacionUSD}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -290,19 +311,19 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
                                                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                                         <tr>
                                                             <td style="color: #ffffff; font-size: 16px; font-weight: 700;">Permuta</td>
-                                                            <td align="right" style="background-color: rgba(255,255,255,0.3); color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; width: auto;">-5%</td>
+                                                            <td align="right" style="background-color: rgba(255,255,255,0.3); color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; width: auto;">+5%</td>
                                                         </tr>
                                                     </table>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="color: #ffffff; font-size: 24px; font-weight: 700;">
-                                                    $${precioPermuta.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                                    $${precioPermutaARS.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="padding-top: 5px; color: #999999; font-size: 14px;">
-                                                    USD $${(precioPermuta / cotizacionDolar).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
+                                                    USD $${precioPermutaUSD}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -325,19 +346,18 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
                                                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                                         <tr>
                                                             <td style="color: #ffffff; font-size: 16px; font-weight: 700;">Compra inmediata</td>
-                                                            <td align="right" style="background-color: rgba(255,255,255,0.3); color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; width: auto;">-10%</td>
                                                         </tr>
                                                     </table>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="color: #ffffff; font-size: 24px; font-weight: 700;">
-                                                    $${precioInmediata.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                                    $${precioInmediataARS.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="padding-top: 5px; color: #999999; font-size: 14px;">
-                                                    USD $${(precioInmediata / cotizacionDolar).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
+                                                    USD $${precioInmediataUSD}
                                                 </td>
                                             </tr>
                                             <tr>

@@ -40,15 +40,16 @@ export default function QuoteResultPage() {
     formatDollarBlue,
   } = useDollarBlue();
 
-  const {
-    sendQuoteEmail,
-  } = useEmailJS();
+  const { sendQuoteEmail } = useEmailJS();
 
   useEffect(() => {
     const getQuoteData = (): QuoteData => {
       const savedData = localStorage.getItem("quoteData");
       if (savedData) {
-        return JSON.parse(savedData);
+        const parsed = JSON.parse(savedData);
+        console.log("📦 Datos leídos de localStorage:", parsed);
+        console.log("💰 Precio en los datos:", parsed.precio);
+        return parsed;
       }
 
       return {
@@ -66,7 +67,9 @@ export default function QuoteResultPage() {
       };
     };
 
-    setQuoteData(getQuoteData());
+    const data = getQuoteData();
+    console.log("📋 QuoteData establecido:", data);
+    setQuoteData(data);
   }, []);
 
   const handleDownloadImage = async () => {
@@ -94,18 +97,50 @@ export default function QuoteResultPage() {
     }
   };
 
-  // Convertir precio de InfoAuto (en miles de pesos sin 3 ceros) a precio real
+  // Convertir precio del modelo (usado) a precio real en pesos
+  // El precio viene en USD desde la API (ej: "7600" = 7600 USD para año 2008)
   const obtenerPrecioBasePesos = () => {
-    // 1. Precio de InfoAuto (ej: "772")
-    const precioInfoAuto = parseFloat(quoteData?.precio || "0");
+    // 1. Precio del modelo usado en USD (ej: "7600")
+    const precioString = quoteData?.precio || "0";
+    const precioEnUsd = parseFloat(precioString);
 
-    // 2. Descontar 5%
-    const precioConDescuento = precioInfoAuto * 0.95;
+    console.log("💰 QuoteData completo:", quoteData);
+    console.log("💰 Precio recibido (string):", precioString);
+    console.log("💰 Precio parseado (USD):", precioEnUsd);
+    console.log("💰 Año del vehículo:", quoteData?.año);
+    console.log("💰 Tipo de precio:", typeof precioString);
+    console.log("💰 Dólar blue:", dollarBlue);
+    console.log("💰 Dólar blue venta:", dollarBlue?.venta);
 
-    // 3. Multiplicar por 1000 para obtener pesos reales
-    const precioEnPesos = precioConDescuento * 1000;
+    // 2. Si el precio es 0, NaN, o no es un número válido, retornar 0
+    if (!precioEnUsd || precioEnUsd === 0 || isNaN(precioEnUsd)) {
+      console.warn(
+        "⚠️ Precio inválido o es 0, no se puede calcular. Precio recibido:",
+        precioString
+      );
+      return 0;
+    }
 
-    return precioEnPesos;
+    if (!dollarBlue || !dollarBlue.venta) {
+      console.warn("⚠️ No hay dólar blue disponible");
+      return 0;
+    }
+
+    // 3. Convertir USD a pesos argentinos usando dólar blue
+    const precioEnPesos = precioEnUsd * dollarBlue.venta;
+    console.log("💰 Precio en pesos (antes de ajuste):", precioEnPesos);
+
+    // 4. Aplicar ajuste del precio (factor de ajuste: 17429123 / 17900000 = 0.9726)
+    // Este ajuste se aplica antes del descuento del 5%
+    const factorAjuste = 17429123 / 17900000;
+    const precioAjustado = precioEnPesos * factorAjuste;
+    console.log("💰 Precio ajustado (factor 0.9726):", precioAjustado);
+
+    // 5. Descontar 5%
+    const precioConDescuento = precioAjustado * 0.95;
+    console.log("💰 Precio final con descuento 5%:", precioConDescuento);
+
+    return precioConDescuento;
   };
 
   // Convertir pesos a dólares
@@ -115,24 +150,50 @@ export default function QuoteResultPage() {
   };
 
   // Calcular los 3 tipos de venta (en pesos)
-  // Inmediata es el precio de referencia (17.900.000 → 17.429.123)
+  // Inmediata es el precio base después de ajuste y descuento 5%
   // Consignación es 10% más que Inmediata
   // Permuta es 5% más que Inmediata
   const calcularTiposVenta = () => {
     const precioBasePesos = obtenerPrecioBasePesos();
 
-    // Factor para ajustar 17.900.000 a 17.429.123
-    // 17.429.123 / 17.900.000 = 0.9726
-    const factorAjuste = 17429123 / 17900000;
+    console.log("💰 Precio base en pesos (después de ajuste y descuento 5%):", precioBasePesos);
 
-    // Inmediata: precio de referencia con el factor de ajuste
-    const precioInmediata = precioBasePesos * factorAjuste;
+    // Si no hay precio base, retornar valores en 0
+    if (!precioBasePesos || precioBasePesos === 0 || isNaN(precioBasePesos)) {
+      console.warn("⚠️ No hay precio base válido, retornando 0");
+      return {
+        inmediata: {
+          pesos: 0,
+          dolares: 0,
+        },
+        consignacion: {
+          pesos: 0,
+          dolares: 0,
+        },
+        permuta: {
+          pesos: 0,
+          dolares: 0,
+        },
+      };
+    }
+
+    // Inmediata: precio base (ya viene con ajuste y descuento 5% aplicados)
+    const precioInmediata = precioBasePesos;
+    console.log("💰 Inmediata (precio base):", precioInmediata);
 
     // Consignación: 10% más que Inmediata
     const precioConsignacion = precioInmediata * 1.1;
+    console.log("💰 Consignación (inmediata + 10%):", precioConsignacion);
 
     // Permuta: 5% más que Inmediata
     const precioPermuta = precioInmediata * 1.05;
+    console.log("💰 Permuta (inmediata + 5%):", precioPermuta);
+
+    console.log("💰 Precios calculados:", {
+      inmediata: precioInmediata,
+      consignacion: precioConsignacion,
+      permuta: precioPermuta,
+    });
 
     return {
       inmediata: {
@@ -155,6 +216,9 @@ export default function QuoteResultPage() {
   };
 
   const formatearPrecioPesos = (precio: number) => {
+    if (!precio || isNaN(precio) || precio === 0) {
+      return "$0 ARS";
+    }
     return new Intl.NumberFormat("es-AR", {
       style: "currency",
       currency: "ARS",
@@ -164,6 +228,9 @@ export default function QuoteResultPage() {
   };
 
   const formatearPrecioDolares = (precio: number) => {
+    if (!precio || isNaN(precio) || precio === 0) {
+      return "$0 USD";
+    }
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",

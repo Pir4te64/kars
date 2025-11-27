@@ -11,6 +11,8 @@ export interface Model {
   description: string;
   codia: string;
   brand_id?: number;
+  year_from?: number | null; // Año desde el cual el modelo está disponible
+  year_to?: number | null; // Año hasta el cual el modelo está disponible
 }
 
 export interface Group {
@@ -21,7 +23,8 @@ export interface Group {
 
 export interface YearPrice {
   year: number;
-  price: string;
+  price: string; // Precio formateado para mostrar
+  priceValue?: number | null; // Precio numérico (USD) para cálculos, puede ser null
 }
 
 export interface ModelFeature {

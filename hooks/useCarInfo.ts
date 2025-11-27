@@ -249,13 +249,15 @@ export function useCarInfo(): UseCarInfoReturn {
         console.log("Datos de modelos recibidos:", data);
 
         // Mapear los datos de InfoAuto al formato esperado
-        // El backend devuelve: { description, codia, brand: {id, name}, group: {id, name}, ... }
+        // El backend devuelve: { description, codia, brand: {id, name}, group: {id, name}, year_from, year_to, ... }
         const mappedModels = data.map((model: any) => ({
           id: model.codia,
           description: model.description || model.name || "",
           codia: model.codia?.toString() || String(model.codia),
           name: model.description || model.name || "",
           brand_id: model.brand?.id || model.brand_id,
+          year_from: model.year_from ?? null, // Año desde el cual el modelo está disponible
+          year_to: model.year_to ?? null, // Año hasta el cual el modelo está disponible
         }));
         
         console.log("🟢 Modelos mapeados:", mappedModels);
@@ -325,16 +327,40 @@ export function useCarInfo(): UseCarInfoReturn {
 
       // Procesar la respuesta del backend optimizado
       const priceData = data.data;
+      console.log("📊 Datos de precios recibidos:", priceData);
+      
       const allPrices = [
         ...(priceData.listPrice || []),
         ...(priceData.price || []),
       ];
+      
+      console.log("📊 Todos los precios combinados:", allPrices);
 
       // Mapear los datos al formato esperado
-      const mappedYears = allPrices.map((item: any) => ({
-        year: item.year,
-        price: item.price ? `$${item.price.toLocaleString()}` : "Consultar",
-      }));
+      // Guardar tanto el precio formateado como el valor numérico
+      const mappedYears = allPrices.map((item: any) => {
+        // El precio puede venir como item.price (número) o item.price_usd
+        // Asegurarse de obtener un número válido
+        let priceValue: number | null = null;
+        
+        if (item.price !== null && item.price !== undefined && !isNaN(Number(item.price))) {
+          priceValue = Number(item.price);
+        } else if (item.price_usd !== null && item.price_usd !== undefined && !isNaN(Number(item.price_usd))) {
+          priceValue = Number(item.price_usd);
+        }
+        
+        const priceFormatted = priceValue !== null ? `$${priceValue.toLocaleString()}` : "Consultar";
+        
+        console.log(`📊 Año ${item.year}: item.price=${item.price}, item.price_usd=${item.price_usd}, priceValue=${priceValue}, priceFormatted=${priceFormatted}`);
+        
+        return {
+          year: item.year,
+          price: priceFormatted,
+          priceValue: priceValue, // Precio numérico en USD (puede ser null)
+        };
+      });
+      
+      console.log("📊 Años mapeados:", mappedYears);
 
       // Ordenar por año descendente y eliminar duplicados
       const yearMap = new Map(

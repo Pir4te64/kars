@@ -129,17 +129,31 @@ export default function CarQuoteSection() {
   );
 
   // Filtrar modelos por año seleccionado si hay año
-  // Los modelos del backend tienen prices_from y prices_to que indican el rango de años
+  // Los modelos del backend tienen year_from y year_to que indican el rango de años
   const filteredModels = useMemo(() => {
     if (!formData.año) return typedModels;
     const selectedYear = Number(formData.año);
     if (isNaN(selectedYear)) return typedModels;
 
     // Filtrar modelos que tengan el año seleccionado en su rango
-    // Nota: Los modelos del backend tienen prices_from y prices_to
-    // Por ahora mostramos todos los modelos del grupo, ya que el filtrado
-    // por año se hace cuando se obtienen los precios del modelo específico
-    return typedModels;
+    // Un modelo es válido si: year_from <= año_seleccionado <= year_to
+    return typedModels.filter((model) => {
+      const yearFrom = model.year_from;
+      const yearTo = model.year_to;
+
+      // Si el modelo no tiene años definidos, mostrarlo (compatibilidad con modelos antiguos)
+      if (yearFrom === null || yearFrom === undefined) {
+        return true;
+      }
+
+      // Si solo tiene year_from, el modelo es válido si el año seleccionado >= year_from
+      if (yearTo === null || yearTo === undefined) {
+        return selectedYear >= yearFrom;
+      }
+
+      // Si tiene ambos, el año debe estar en el rango [year_from, year_to]
+      return selectedYear >= yearFrom && selectedYear <= yearTo;
+    });
   }, [typedModels, formData.año]);
 
   // Los años ahora vienen directamente del hook cuando se selecciona grupo
@@ -363,20 +377,50 @@ export default function CarQuoteSection() {
 
     const updatedFormData = { ...formData };
 
-    // Obtener nombres reales de los datos
-    if (typedYears && typedYears.length > 0 && formData.año) {
-      const yearData = typedYears.find(
-        (item) => Number(item.year) === Number(formData.año)
-      );
-      if (yearData) {
-        // Aplicar la fórmula de depreciación por kilómetros
-        const basePrice = parseFloat(yearData.price);
-        const adjustedPrice = calculatePriceByKilometers(
-          basePrice,
-          formData.kilometraje
+    // Obtener el precio del modelo para el año seleccionado desde la API
+    if (formData.modelo && formData.año) {
+      try {
+        const selectedYear = Number(formData.año);
+        console.log("📦 Obteniendo precio para modelo:", formData.modelo, "año:", selectedYear);
+        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
+        const response = await fetch(
+          `${backendUrl}/api/models/${formData.modelo}/list_price?year=${selectedYear}`
         );
-        updatedFormData.precio = adjustedPrice.toString();
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          console.error("❌ Error al obtener precio:", errorData);
+          throw new Error(errorData.message || "Error al obtener precio del modelo");
+        }
+
+        const data = await response.json();
+        console.log("✅ Respuesta de precio:", data);
+
+        if (data.success && data.data && typeof data.data.list_price === 'number') {
+          const price = data.data.list_price;
+          console.log("💰 Precio obtenido para año", selectedYear, ":", price, "USD");
+          
+          // Usar el precio como precio base (ya viene en USD)
+          updatedFormData.precio = price.toString();
+          console.log("💰 Precio guardado en formData:", updatedFormData.precio);
+        } else {
+          console.warn("⚠️ Respuesta de precio no tiene formato esperado:", data);
+          // Si no se puede obtener, usar precio 0
+          updatedFormData.precio = "0";
+        }
+      } catch (error) {
+        console.error("❌ Error al obtener precio:", error);
+        // Si falla, usar precio 0
+        updatedFormData.precio = "0";
       }
+    } else {
+      if (!formData.modelo) {
+        console.warn("⚠️ No hay modelo seleccionado, usando precio 0");
+      }
+      if (!formData.año) {
+        console.warn("⚠️ No hay año seleccionado, usando precio 0");
+      }
+      updatedFormData.precio = "0";
     }
 
     if (typedBrands && typedBrands.length > 0 && formData.marca) {

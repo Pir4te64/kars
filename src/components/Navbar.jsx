@@ -222,7 +222,7 @@ const Navbar = () => {
                     <span className="text-sm">Llamar</span>
                   </a>
                   <a
-                    href="https://wa.me/59812345678"
+                    href="https://wa.me/5491121596100"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center text-green-600 transition-colors hover:text-green-700">

@@ -34,7 +34,7 @@ function escapeHtml(text: string | number | null | undefined): string {
 // Función para generar URL de WhatsApp con los datos de la cotización
 export function generateWhatsAppUrl(
   data: QuoteEmailData,
-  phone: string = "5493764000000"
+  phone: string = "541121596100"
 ): string {
   const nombre = data.nombre || "";
   const marca = data.marca || "";

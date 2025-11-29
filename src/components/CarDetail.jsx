@@ -237,7 +237,7 @@ const CarDetail = () => {
                   carData?.telefono_contacto ||
                   null;
                 // Fallback number shown by the user
-                const fallbackPhone = "5491150186138";
+                const fallbackPhone = "5491121596100";
                 // Normalize phone: remove non-digit characters
                 const normalize = (s) =>
                   s ? String(s).replace(/[^0-9+]/g, "") : null;

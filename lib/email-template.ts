@@ -99,10 +99,8 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
   } else {
     // Calcular con la misma lógica que la página de resultado:
     // 1. Precio * 1000 = precio real en pesos
-    // 2. Aplicar factor de ajuste 0.9726
     const precioEnPesos = precioRaw * 1000;
-    const factorAjuste = 17429123 / 17900000;
-    const precioBasePesos = precioEnPesos * factorAjuste;
+    const precioBasePesos = precioEnPesos;
 
     // Calcular los 3 tipos de venta
     const precioInmediata = precioBasePesos; // Base
@@ -141,272 +139,238 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
 <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4;">
     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #f4f4f4;">
         <tr>
-            <td style="padding: 20px 0;">
-                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    
+            <td style="padding: 20px;">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 900px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+
                     <!-- Header -->
                     <tr>
-                        <td style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); padding: 40px 30px; text-align: center;">
-                            <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: 700; letter-spacing: 3px;">
+                        <td style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); padding: 25px 30px; text-align: center;">
+                            <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 700; letter-spacing: 3px;">
                                 KARS
                             </h1>
                         </td>
                     </tr>
-                    
+
                     <!-- Título Principal -->
                     <tr>
-                        <td style="padding: 40px 30px 20px; text-align: center; background-color: #ffffff;">
-                            <h2 style="margin: 0; color: #1a1a1a; font-size: 28px; font-weight: 700; line-height: 1.3;">
+                        <td style="padding: 25px 30px 10px; text-align: center; background-color: #ffffff;">
+                            <h2 style="margin: 0; color: #1a1a1a; font-size: 22px; font-weight: 700; line-height: 1.3;">
                                 ${titulo}
                             </h2>
                         </td>
                     </tr>
-                    
+
                     <!-- Subtítulo -->
                     <tr>
-                        <td style="padding: 0 30px 30px; text-align: center;">
-                            <p style="margin: 0; color: #555555; font-size: 18px; line-height: 1.6;">
-                                ¡Agendá una visita  hoy mismo y vendé tu auto en 48hs!
+                        <td style="padding: 0 30px 20px; text-align: center;">
+                            <p style="margin: 0; color: #555555; font-size: 16px; line-height: 1.5;">
+                                ¡Agendá una visita hoy mismo y vendé tu auto en 48hs!
                             </p>
                         </td>
                     </tr>
                     
-                    <!-- Información del Vehículo -->
+                    <!-- Información del Vehículo y Precios en dos columnas -->
                     <tr>
-                        <td style="padding: 20px 30px; background-color: #f9f9f9;">
-                            <h3 style="margin: 0 0 15px; color: #1a1a1a; font-size: 18px; font-weight: 600;">
-                                Detalles del vehículo:
-                            </h3>
+                        <td style="padding: 20px 30px; background-color: #ffffff;">
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <tr>
-                                    <td style="padding: 8px 0; color: #333333; font-size: 15px;">
-                                        <strong>Marca:</strong> ${marca}
+                                    <!-- Columna Izquierda: Detalles del Vehículo -->
+                                    <td style="width: 40%; vertical-align: top; padding-right: 15px;">
+                                        <h3 style="margin: 0 0 12px; color: #1a1a1a; font-size: 16px; font-weight: 600;">
+                                            Detalles del vehículo:
+                                        </h3>
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #f9f9f9; border-radius: 8px; padding: 12px;">
+                                            <tr>
+                                                <td style="padding: 5px 0; color: #333333; font-size: 13px;">
+                                                    <strong>Marca:</strong> ${marca}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 5px 0; color: #333333; font-size: 13px;">
+                                                    <strong>Modelo:</strong> ${modelo}
+                                                </td>
+                                            </tr>
+                                            ${
+                                              grupo
+                                                ? `<tr>
+                                                <td style="padding: 5px 0; color: #333333; font-size: 13px;">
+                                                    <strong>Grupo:</strong> ${grupo}
+                                                </td>
+                                            </tr>`
+                                                : ""
+                                            }
+                                            <tr>
+                                                <td style="padding: 5px 0; color: #333333; font-size: 13px;">
+                                                    <strong>Año:</strong> ${año}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 5px 0; color: #333333; font-size: 13px;">
+                                                    <strong>Kilometraje:</strong> ${
+                                                      kilometraje || "No especificado"
+                                                    }
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 5px 0; color: #333333; font-size: 13px;">
+                                                    <strong>Ubicación:</strong> ${ubicacion}
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 8px 0; color: #333333; font-size: 15px;">
-                                        <strong>Modelo:</strong> ${modelo}
-                                    </td>
-                                </tr>
-                                ${
-                                  grupo
-                                    ? `<tr>
-                                    <td style="padding: 8px 0; color: #333333; font-size: 15px;">
-                                        <strong>Grupo:</strong> ${grupo}
-                                    </td>
-                                </tr>`
-                                    : ""
-                                }
-                                <tr>
-                                    <td style="padding: 8px 0; color: #333333; font-size: 15px;">
-                                        <strong>Año:</strong> ${año}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 8px 0; color: #333333; font-size: 15px;">
-                                        <strong>Kilometraje:</strong> ${
-                                          kilometraje || "No especificado"
-                                        }
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 8px 0; color: #333333; font-size: 15px;">
-                                        <strong>Ubicación:</strong> ${ubicacion}
+
+                                    <!-- Columna Derecha: Opciones de Venta -->
+                                    <td style="width: 60%; vertical-align: top; padding-left: 15px;">
+                                        <h3 style="margin: 0 0 12px; color: #1a1a1a; font-size: 16px; font-weight: 600;">
+                                            Opciones de venta:
+                                        </h3>
+
+                                        <!-- Tres tarjetas de precios horizontales -->
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <!-- Consignación -->
+                                            <tr>
+                                                <td style="padding-bottom: 8px;">
+                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border-radius: 8px;">
+                                                        <tr>
+                                                            <td style="padding: 12px;">
+                                                                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                                    <tr>
+                                                                        <td style="color: #ffffff; font-size: 14px; font-weight: 700; width: 35%;">Consignación</td>
+                                                                        <td style="text-align: right; width: 65%;">
+                                                                            <div style="color: #ffffff; font-size: 18px; font-weight: 700;">
+                                                                                $${parseFloat(precioConsignacionARS).toLocaleString('es-AR')} ARS
+                                                                            </div>
+                                                                            <div style="color: #cccccc; font-size: 12px; margin-top: 2px;">
+                                                                                USD $${precioConsignacionUSD}
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <!-- Permuta -->
+                                            <tr>
+                                                <td style="padding-bottom: 8px;">
+                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); border-radius: 8px;">
+                                                        <tr>
+                                                            <td style="padding: 12px;">
+                                                                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                                    <tr>
+                                                                        <td style="color: #ffffff; font-size: 14px; font-weight: 700; width: 35%;">Permuta</td>
+                                                                        <td style="text-align: right; width: 65%;">
+                                                                            <div style="color: #ffffff; font-size: 18px; font-weight: 700;">
+                                                                                $${precioPermutaARS.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} ARS
+                                                                            </div>
+                                                                            <div style="color: #cccccc; font-size: 12px; margin-top: 2px;">
+                                                                                USD $${precioPermutaUSD}
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <!-- Compra Inmediata -->
+                                            <tr>
+                                                <td>
+                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); border-radius: 8px;">
+                                                        <tr>
+                                                            <td style="padding: 12px;">
+                                                                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                                    <tr>
+                                                                        <td style="color: #ffffff; font-size: 14px; font-weight: 700; width: 35%;">Compra inmediata</td>
+                                                                        <td style="text-align: right; width: 65%;">
+                                                                            <div style="color: #ffffff; font-size: 18px; font-weight: 700;">
+                                                                                $${precioInmediataARS.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} ARS
+                                                                            </div>
+                                                                            <div style="color: #cccccc; font-size: 12px; margin-top: 2px;">
+                                                                                USD $${precioInmediataUSD}
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </td>
                                 </tr>
                             </table>
                         </td>
                     </tr>
                     
-                    <!-- Próximos Pasos -->
+                    <!-- Próximos Pasos y CTA en una fila compacta -->
                     <tr>
                         <td style="padding: 20px 30px; background-color: #f9f9f9;">
-                            <h3 style="margin: 0 0 25px; color: #1a1a1a; font-size: 20px; font-weight: 600;">
-                                Próximos pasos:
-                            </h3>
-                            
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <tr>
-                                    <td style="padding: 12px 0; border-bottom: 1px solid #e0e0e0;">
-                                        <span style="display: inline-block; width: 30px; height: 30px; background-color: #1a1a1a; color: #ffffff; border-radius: 50%; text-align: center; line-height: 30px; font-weight: 700; margin-right: 15px;">1</span>
-                                        <span style="color: #333333; font-size: 16px; vertical-align: middle;">Cotizá tu auto</span>
+                                    <!-- Columna Izquierda: Próximos pasos -->
+                                    <td style="width: 50%; vertical-align: middle; padding-right: 15px;">
+                                        <h3 style="margin: 0 0 12px; color: #1a1a1a; font-size: 16px; font-weight: 600;">
+                                            Próximos pasos:
+                                        </h3>
+                                        <div style="color: #333333; font-size: 13px; line-height: 1.8;">
+                                            <div style="margin-bottom: 8px;">
+                                                <span style="display: inline-block; width: 24px; height: 24px; background-color: #1a1a1a; color: #ffffff; border-radius: 50%; text-align: center; line-height: 24px; font-weight: 700; margin-right: 10px; font-size: 12px;">✓</span>
+                                                <span style="vertical-align: middle;">Cotizá tu auto</span>
+                                            </div>
+                                            <div style="margin-bottom: 8px;">
+                                                <span style="display: inline-block; width: 24px; height: 24px; background-color: #1a1a1a; color: #ffffff; border-radius: 50%; text-align: center; line-height: 24px; font-weight: 700; margin-right: 10px; font-size: 12px;">✓</span>
+                                                <span style="vertical-align: middle;">Revisá tu oferta</span>
+                                            </div>
+                                            <div style="margin-bottom: 8px;">
+                                                <span style="display: inline-block; width: 24px; height: 24px; background-color: #0066FF; color: #ffffff; border-radius: 50%; text-align: center; line-height: 24px; font-weight: 700; margin-right: 10px; font-size: 12px;">→</span>
+                                                <span style="vertical-align: middle; font-weight: 600;">Agendá una inspección</span>
+                                            </div>
+                                            <div>
+                                                <span style="display: inline-block; width: 24px; height: 24px; background-color: #cccccc; color: #ffffff; border-radius: 50%; text-align: center; line-height: 24px; font-weight: 700; margin-right: 10px; font-size: 12px;">4</span>
+                                                <span style="vertical-align: middle;">Vendé tu auto</span>
+                                            </div>
+                                        </div>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 12px 0; border-bottom: 1px solid #e0e0e0;">
-                                        <span style="display: inline-block; width: 30px; height: 30px; background-color: #1a1a1a; color: #ffffff; border-radius: 50%; text-align: center; line-height: 30px; font-weight: 700; margin-right: 15px;">2</span>
-                                        <span style="color: #333333; font-size: 16px; vertical-align: middle;">Revisá tu oferta</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 12px 0; border-bottom: 1px solid #e0e0e0;">
-                                        <span style="display: inline-block; width: 30px; height: 30px; background-color: #0066FF; color: #ffffff; border-radius: 50%; text-align: center; line-height: 30px; font-weight: 700; margin-right: 15px;">3</span>
-                                        <span style="color: #333333; font-size: 16px; vertical-align: middle; font-weight: 600;">Agendá una inspección</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 12px 0;">
-                                        <span style="display: inline-block; width: 30px; height: 30px; background-color: #1a1a1a; color: #ffffff; border-radius: 50%; text-align: center; line-height: 30px; font-weight: 700; margin-right: 15px;">4</span>
-                                        <span style="color: #333333; font-size: 16px; vertical-align: middle;">Vendé tu auto</span>
+
+                                    <!-- Columna Derecha: CTA y Advertencia -->
+                                    <td style="width: 50%; vertical-align: middle; padding-left: 15px; text-align: center;">
+                                        <div style="background-color: #fff3cd; border-left: 4px solid #ff9800; padding: 12px; margin: 0 0 15px; border-radius: 4px; text-align: left;">
+                                            <p style="margin: 0; color: #856404; font-size: 13px; font-weight: 600;">
+                                                ⚠️ Oferta válida solo por 7 días
+                                            </p>
+                                        </div>
+                                        <a href="https://kars-sigma.vercel.app/cotizar/resultado" style="display: inline-block; background: linear-gradient(135deg, #0066FF 0%, #0052CC 100%); color: #ffffff; text-decoration: none; padding: 14px 35px; border-radius: 50px; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);">
+                                            Agendar Inspección
+                                        </a>
                                     </td>
                                 </tr>
                             </table>
                         </td>
                     </tr>
                     
-                    <!-- Oferta -->
+                    <!-- WhatsApp y Footer compactos -->
                     <tr>
-                        <td style="padding: 40px 30px; text-align: center; background-color: #ffffff;">
-                            <h3 style="margin: 0 0 20px; color: #1a1a1a; font-size: 22px; font-weight: 600;">
-                                Opciones de venta para tu auto:
-                            </h3>
-
-                            <!-- Consignación -->
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border-radius: 12px; margin: 0 0 15px;">
-                                <tr>
-                                    <td style="padding: 25px;">
-                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                                            <tr>
-                                                <td style="padding-bottom: 15px;">
-                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                                                        <tr>
-                                                            <td style="color: #ffffff; font-size: 18px; font-weight: 700;">Consignación</td>
-                                                            <td align="right" style="background-color: rgba(255,255,255,0.3); color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; width: auto;">+10% | Mejor precio</td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding-bottom: 5px; color: #cccccc; font-size: 14px;">Precio en Pesos (ARS):</td>
-                                            </tr>
-                                            <tr>
-                                                <td style="color: #ffffff; font-size: 36px; font-weight: 700; letter-spacing: -1px;">
-                                                    $${parseFloat(precioConsignacionARS).toLocaleString('es-AR')}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding-top: 10px; color: #999999; font-size: 16px;">
-                                                    USD $${precioConsignacionUSD}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding-top: 15px; color: #ffffff; font-size: 13px; opacity: 0.9;">
-                                                    Precio completo, pagas al vender
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <!-- Permuta -->
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); border-radius: 12px; margin: 0 0 15px;">
-                                <tr>
-                                    <td style="padding: 20px;">
-                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                                            <tr>
-                                                <td style="padding-bottom: 10px;">
-                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                                                        <tr>
-                                                            <td style="color: #ffffff; font-size: 16px; font-weight: 700;">Permuta</td>
-                                                            <td align="right" style="background-color: rgba(255,255,255,0.3); color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; width: auto;">+5%</td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="color: #ffffff; font-size: 24px; font-weight: 700;">
-                                                    $${precioPermutaARS.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding-top: 5px; color: #999999; font-size: 14px;">
-                                                    USD $${precioPermutaUSD}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding-top: 10px; color: #ffffff; font-size: 12px; opacity: 0.9;">
-                                                    Cambia tu auto por otro
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <!-- Compra Inmediata -->
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); border-radius: 12px; margin: 0 0 20px;">
-                                <tr>
-                                    <td style="padding: 20px;">
-                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                                            <tr>
-                                                <td style="padding-bottom: 10px;">
-                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                                                        <tr>
-                                                            <td style="color: #ffffff; font-size: 16px; font-weight: 700;">Compra inmediata</td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="color: #ffffff; font-size: 24px; font-weight: 700;">
-                                                    $${precioInmediataARS.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding-top: 5px; color: #999999; font-size: 14px;">
-                                                    USD $${precioInmediataUSD}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding-top: 10px; color: #ffffff; font-size: 12px; opacity: 0.9;">
-                                                    Dinero en el momento
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                            <div style="background-color: #fff3cd; border-left: 4px solid #ff9800; padding: 15px; margin: 0 0 30px; border-radius: 4px;">
-                                <p style="margin: 0; color: #856404; font-size: 15px; font-weight: 600;">
-                                    ⚠️ Oferta válida solo por 7 días
-                                </p>
-                            </div>
-                            <p style="margin: 0 0 25px; color: #333333; font-size: 18px; font-weight: 600;">
-                                ¡No pierdas tu oferta y agendá una inspección ahora!
-                            </p>
-                            
-                            <!-- CTA Principal -->
-                            <a href="https://kars-sigma.vercel.app/cotizar/resultado" style="display: inline-block; background: linear-gradient(135deg, #0066FF 0%, #0052CC 100%); color: #ffffff; text-decoration: none; padding: 18px 50px; border-radius: 50px; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);">
-                                Agendar Inspección
+                        <td style="padding: 20px 30px; text-align: center; background-color: #ffffff;">
+                            <a href="${whatsappUrl}" style="display: inline-block; background-color: #25D366; color: #ffffff; text-decoration: none; padding: 10px 25px; border-radius: 25px; font-size: 14px; font-weight: 600; margin-bottom: 10px;">
+                                📱 ¿Tenés dudas? Escribinos al WhatsApp
                             </a>
                         </td>
                     </tr>
-                    
-                    <!-- ¿Tenés dudas? -->
-                    <tr>
-                        <td style="padding: 30px; text-align: center; background-color: #f9f9f9;">
-                            <h4 style="margin: 0 0 15px; color: #1a1a1a; font-size: 18px; font-weight: 600;">
-                                ¿Tenés dudas?
-                            </h4>
-                            <a href="${whatsappUrl}" style="display: inline-block; background-color: #25D366; color: #ffffff; text-decoration: none; padding: 12px 30px; border-radius: 25px; font-size: 16px; font-weight: 600;">
-                                📱 Escribinos al WhatsApp
-                            </a>
-                        </td>
-                    </tr>
-                    
+
                     <!-- Footer -->
                     <tr>
-                        <td style="padding: 30px; text-align: center; background-color: #1a1a1a; color: #ffffff;">
-                            <p style="margin: 0 0 10px; font-size: 24px; font-weight: 700; letter-spacing: 2px;">
+                        <td style="padding: 20px 30px; text-align: center; background-color: #1a1a1a; color: #ffffff;">
+                            <p style="margin: 0 0 5px; font-size: 20px; font-weight: 700; letter-spacing: 2px;">
                                 KARS
                             </p>
-                            <p style="margin: 0 0 15px; color: #cccccc; font-size: 14px;">
-                                Tu concesionario de confianza
-                            </p>
-                            <p style="margin: 0; color: #999999; font-size: 12px; line-height: 1.6;">
-                                Este email fue enviado desde <a href="https://kars-sigma.vercel.app" style="color: #0066FF; text-decoration: none;">KARS</a><br>
-                                Si ya no querés recibir estos emails, podés <a href="#" style="color: #999999; text-decoration: underline;">ajustar tus preferencias</a>
+                            <p style="margin: 0; color: #999999; font-size: 11px;">
+                                Tu concesionario de confianza | <a href="https://kars-sigma.vercel.app" style="color: #0066FF; text-decoration: none;">kars-sigma.vercel.app</a>
                             </p>
                         </td>
                     </tr>

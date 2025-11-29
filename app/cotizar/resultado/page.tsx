@@ -128,11 +128,7 @@ export default function QuoteResultPage() {
     const precioAjustado = precioEnPesos * factorAjuste;
     console.log("💰 Precio ajustado (factor 0.9726):", precioAjustado);
 
-    // 5. Descontar 12%
-    const precioConDescuento = precioAjustado * 0.88;
-    console.log("💰 Precio final con descuento 12%:", precioConDescuento);
-
-    return precioConDescuento;
+    return precioAjustado;
   };
 
   // Convertir pesos a dólares
@@ -142,13 +138,13 @@ export default function QuoteResultPage() {
   };
 
   // Calcular los 3 tipos de venta (en pesos)
-  // Inmediata es el precio base después de ajuste y descuento 12%
+  // Inmediata es el precio base después de ajuste
   // Consignación es 10% más que Inmediata
   // Permuta es 5% más que Inmediata
   const calcularTiposVenta = () => {
     const precioBasePesos = obtenerPrecioBasePesos();
 
-    console.log("💰 Precio base en pesos (después de ajuste y descuento 12%):", precioBasePesos);
+    console.log("💰 Precio base en pesos (después de ajuste):", precioBasePesos);
 
     // Si no hay precio base, retornar valores en 0
     if (!precioBasePesos || precioBasePesos === 0 || isNaN(precioBasePesos)) {
@@ -169,7 +165,7 @@ export default function QuoteResultPage() {
       };
     }
 
-    // Inmediata: precio base (ya viene con ajuste y descuento 12% aplicados)
+    // Inmediata: precio base (ya viene con ajuste aplicado)
     const precioInmediata = precioBasePesos;
     console.log("💰 Inmediata (precio base):", precioInmediata);
 

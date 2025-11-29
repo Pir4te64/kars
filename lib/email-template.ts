@@ -100,11 +100,9 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
     // Calcular con la misma lógica que la página de resultado:
     // 1. Precio * 1000 = precio real en pesos
     // 2. Aplicar factor de ajuste 0.9726
-    // 3. Descontar 12%
     const precioEnPesos = precioRaw * 1000;
     const factorAjuste = 17429123 / 17900000;
-    const precioAjustado = precioEnPesos * factorAjuste;
-    const precioBasePesos = precioAjustado * 0.88; // Descuento 12%
+    const precioBasePesos = precioEnPesos * factorAjuste;
 
     // Calcular los 3 tipos de venta
     const precioInmediata = precioBasePesos; // Base

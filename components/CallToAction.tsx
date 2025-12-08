@@ -24,7 +24,7 @@ export default function CallToAction() {
                 Explora nuestro catálogo de vehículos verificados y encuentra el auto perfecto para ti.
               </p>
               <button className="bg-white border border-gray-400 text-gray-700 hover:bg-gray-50 font-medium py-3 px-6 rounded-full transition-colors duration-200 text-base flex items-center gap-2">
-                Empezar
+                Empezar 
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>

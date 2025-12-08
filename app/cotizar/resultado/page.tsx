@@ -8,6 +8,10 @@ import Footer from "@/components/Footer";
 import { useDollarBlue } from "@/hooks/useDollarBlue";
 import { useEmailJS } from "@/hooks/useEmailJS";
 import { toast } from "sonner";
+import {
+  getPriceAdjustment,
+  applyPriceAdjustment,
+} from "@/constants/priceAdjustments";
 
 interface QuoteData {
   marca: string;
@@ -119,8 +123,43 @@ export default function QuoteResultPage() {
       return 0;
     }
 
-    // 3. Multiplicar por 1000 para obtener el precio real en pesos
-    const precioEnPesos = precioRaw * 1000;
+    // 3. Aplicar ajuste de precio según marca, modelo y año
+    let precioAjustado = precioRaw;
+    if (quoteData?.marca && quoteData?.modelo && quoteData?.año) {
+      const año = parseInt(quoteData.año);
+      if (!isNaN(año)) {
+        const adjustment = getPriceAdjustment(
+          quoteData.marca,
+          quoteData.modelo,
+          año
+        );
+
+        if (adjustment !== null) {
+          const precioConAjuste = applyPriceAdjustment(precioRaw, adjustment);
+          if (precioConAjuste !== null) {
+            precioAjustado = precioConAjuste;
+            console.log(
+              `💰 Ajuste aplicado: ${adjustment > 0 ? "+" : ""}${adjustment}%`
+            );
+            console.log(
+              `💰 Precio base: ${precioRaw} USD -> Precio ajustado: ${precioAjustado} USD`
+            );
+          } else {
+            console.warn(
+              "⚠️ El modelo no está disponible para este rango de años"
+            );
+            return 0; // Modelo no disponible para ese rango
+          }
+        } else {
+          console.log(
+            "ℹ️ No hay ajuste configurado para este modelo, usando precio base"
+          );
+        }
+      }
+    }
+
+    // 4. Multiplicar por 1000 para obtener el precio real en pesos
+    const precioEnPesos = precioAjustado * 1000;
     console.log("💰 Precio en pesos (×1000):", precioEnPesos);
 
     return precioEnPesos;
@@ -130,6 +169,60 @@ export default function QuoteResultPage() {
   const convertirPesosADolares = (precioEnPesos: number): number => {
     if (!dollarBlue || !dollarBlue.venta) return 0;
     return precioEnPesos / dollarBlue.venta;
+  };
+
+  // Determinar si se debe mostrar la opción de compra inmediata
+  // Reglas:
+  // - 2008-2018: mostrar todas las opciones (compra inmediata, consignación, permuta)
+  // - 2019 en adelante O precio >= 15000 USD: mostrar solo permuta y consignación (NO compra inmediata)
+  const debeMostrarCompraInmediata = (): boolean => {
+    if (!quoteData?.año) return true; // Por defecto mostrar si no hay año
+
+    const año = parseInt(quoteData.año);
+    if (isNaN(año)) return true; // Por defecto mostrar si el año no es válido
+
+    // Si el año está entre 2008 y 2018, mostrar compra inmediata
+    if (año >= 2008 && año <= 2018) {
+      return true;
+    }
+
+    // Si el año es 2019 o superior, verificar el precio
+    if (año >= 2019) {
+      const precioString = quoteData?.precio || "0";
+      const precioRaw = parseFloat(precioString);
+
+      if (!precioRaw || precioRaw === 0 || isNaN(precioRaw)) {
+        return false; // Si no hay precio válido, no mostrar compra inmediata
+      }
+
+      // Aplicar ajuste de precio si existe
+      let precioAjustado = precioRaw;
+      if (quoteData?.marca && quoteData?.modelo) {
+        const adjustment = getPriceAdjustment(
+          quoteData.marca,
+          quoteData.modelo,
+          año
+        );
+
+        if (adjustment !== null) {
+          const precioConAjuste = applyPriceAdjustment(precioRaw, adjustment);
+          if (precioConAjuste !== null) {
+            precioAjustado = precioConAjuste;
+          }
+        }
+      }
+
+      // Si el precio ajustado es >= 15000 USD, NO mostrar compra inmediata
+      if (precioAjustado >= 15000) {
+        return false;
+      }
+
+      // Si el precio es < 15000 USD, mostrar compra inmediata
+      return true;
+    }
+
+    // Para años anteriores a 2008, mostrar compra inmediata
+    return true;
   };
 
   // Calcular los 3 tipos de venta (en pesos)
@@ -467,39 +560,42 @@ export default function QuoteResultPage() {
                     </div>
 
                     {/* Compra Inmediata - Precio de referencia */}
-                    <div className="bg-gradient-to-br from-slate-700 via-slate-600 to-slate-700 rounded-lg p-3 text-white shadow-md">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="text-sm font-bold">Compra inmediata</h4>
-                      </div>
-                      <div className="mb-1">
-                        {dollarBlue && !dollarLoading && !dollarError ? (
-                          <>
-                            <div className="text-sm font-bold text-white/90">
+                    {/* Solo mostrar si cumple las condiciones: 2008-2018 o (2019+ y precio < 15000 USD) */}
+                    {debeMostrarCompraInmediata() && (
+                      <div className="bg-gradient-to-br from-slate-700 via-slate-600 to-slate-700 rounded-lg p-3 text-white shadow-md">
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="text-sm font-bold">Compra inmediata</h4>
+                        </div>
+                        <div className="mb-1">
+                          {dollarBlue && !dollarLoading && !dollarError ? (
+                            <>
+                              <div className="text-sm font-bold text-white/90">
+                                {formatearPrecioPesos(
+                                  calcularTiposVenta().inmediata.pesos
+                                )}{" "}
+                                ARS
+                              </div>
+                              <div className="text-xl font-black">
+                                {formatearPrecioDolares(
+                                  calcularTiposVenta().inmediata.dolares
+                                )}{" "}
+                                USD
+                              </div>
+                            </>
+                          ) : (
+                            <div className="text-xl font-black">
                               {formatearPrecioPesos(
                                 calcularTiposVenta().inmediata.pesos
                               )}{" "}
                               ARS
                             </div>
-                            <div className="text-xl font-black">
-                              {formatearPrecioDolares(
-                                calcularTiposVenta().inmediata.dolares
-                              )}{" "}
-                              USD
-                            </div>
-                          </>
-                        ) : (
-                          <div className="text-xl font-black">
-                            {formatearPrecioPesos(
-                              calcularTiposVenta().inmediata.pesos
-                            )}{" "}
-                            ARS
-                          </div>
-                        )}
+                          )}
+                        </div>
+                        <p className="text-xs text-white/90">
+                          Dinero en el momento
+                        </p>
                       </div>
-                      <p className="text-xs text-white/90">
-                        Dinero en el momento
-                      </p>
-                    </div>
+                    )}
 
                     {dollarBlue && !dollarLoading && !dollarError && (
                       <div className="bg-slate-50 rounded-lg p-2 border border-slate-200 text-center">

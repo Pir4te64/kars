@@ -4,7 +4,7 @@ import getModelHelper from "../utils/getModelHelper";
 import getGroupHelper from "../utils/getGroupHelper";
 import { useAuth } from "./useAuth";
 import getPriceHelper from "../utils/getPriceHelper";
-import { isBrandAllowed, isModelAllowed, ALLOWED_CARS, likeMatch } from "../../constants/allowedCars";
+import { isBrandAllowed, isModelAllowed, ALLOWED_CARS, likeMatch, normalizeForComparison } from "../../constants/allowedCars";
 
 export function useCarInfo() {
   const { accessToken, refresh } = useAuth();
@@ -141,6 +141,229 @@ export function useCarInfo() {
               return allowedModels.some((allowedModel) => 
                 likeMatch(allowedModel, modelName)
               );
+            });
+          }
+
+          // Filtro adicional para excluir modelos específicos de Volkswagen
+          // Excluir modelos que contengan palabras clave prohibidas
+          if (likeMatch("Volkswagen", currentBrand.name)) {
+            const excludedKeywords = [
+              "Passat",
+              "Scirocco",
+              "Beetle",
+              "Touareg",
+              "Virtus",
+            ];
+
+            filteredModels = filteredModels.filter((model) => {
+              const modelName = normalizeForComparison(
+                model.description || model.name || ""
+              );
+              return !excludedKeywords.some((keyword) => {
+                const normalizedKeyword = normalizeForComparison(keyword);
+                return modelName.includes(normalizedKeyword);
+              });
+            });
+          }
+
+          // Filtro adicional para excluir modelos específicos de Chevrolet
+          // Excluir modelos que contengan palabras clave prohibidas
+          if (likeMatch("Chevrolet", currentBrand.name)) {
+            const excludedKeywords = [
+              "Blazer",
+              "Captiva",
+              "Cobalt",
+              "Equinox",
+              "S10",
+              "Sonic",
+              "Spark",
+              "Trailblazer",
+              "Vectra",
+            ];
+
+            filteredModels = filteredModels.filter((model) => {
+              const modelName = normalizeForComparison(
+                model.description || model.name || ""
+              );
+              return !excludedKeywords.some((keyword) => {
+                const normalizedKeyword = normalizeForComparison(keyword);
+                return modelName.includes(normalizedKeyword);
+              });
+            });
+          }
+
+          // Filtro adicional para excluir modelos específicos de Renault
+          // Excluir modelos que contengan palabras clave prohibidas
+          if (likeMatch("Renault", currentBrand.name)) {
+            const excludedKeywords = [
+              "Latitude",
+              "Megane III",
+            ];
+
+            filteredModels = filteredModels.filter((model) => {
+              const modelName = normalizeForComparison(
+                model.description || model.name || ""
+              );
+              return !excludedKeywords.some((keyword) => {
+                const normalizedKeyword = normalizeForComparison(keyword);
+                return modelName.includes(normalizedKeyword);
+              });
+            });
+          }
+
+          // Filtro adicional para excluir modelos específicos de Citroën
+          // Excluir modelos que contengan palabras clave prohibidas
+          if (likeMatch("Citroen", currentBrand.name) || likeMatch("Citroën", currentBrand.name)) {
+            const excludedKeywords = [
+              "C3 Aircross",
+              "C3 Picasso",
+              "C4 Aircross",
+              "C4 Cactus",
+              "C4 Picasso",
+              "C4 Spacetourer",
+              "C-Elysée",
+              "Grand C4 Picasso",
+              "Grand C4 Spacetourer",
+              "Xsara Picasso",
+              "DS3",
+              "DS4",
+            ];
+
+            filteredModels = filteredModels.filter((model) => {
+              const modelName = normalizeForComparison(
+                model.description || model.name || ""
+              );
+              return !excludedKeywords.some((keyword) => {
+                const normalizedKeyword = normalizeForComparison(keyword);
+                return modelName.includes(normalizedKeyword);
+              });
+            });
+          }
+
+          // Filtro adicional para excluir modelos específicos de Peugeot
+          // Excluir modelos que contengan palabras clave prohibidas
+          if (likeMatch("Peugeot", currentBrand.name)) {
+            const excludedKeywords = [
+              "301",
+              "407",
+              "508",
+              "607",
+              "4008",
+              "5008",
+              "Hoggar",
+            ];
+
+            filteredModels = filteredModels.filter((model) => {
+              const modelName = normalizeForComparison(
+                model.description || model.name || ""
+              );
+              return !excludedKeywords.some((keyword) => {
+                const normalizedKeyword = normalizeForComparison(keyword);
+                return modelName.includes(normalizedKeyword);
+              });
+            });
+          }
+
+          // Filtro adicional para excluir modelos específicos de Fiat
+          // Excluir modelos que contengan palabras clave prohibidas
+          if (likeMatch("Fiat", currentBrand.name)) {
+            const excludedKeywords = [
+              "500L",
+              "500X",
+              "Doblo",
+              "Stilo",
+              "Tipo",
+            ];
+
+            filteredModels = filteredModels.filter((model) => {
+              const modelName = normalizeForComparison(
+                model.description || model.name || ""
+              );
+              return !excludedKeywords.some((keyword) => {
+                const normalizedKeyword = normalizeForComparison(keyword);
+                return modelName.includes(normalizedKeyword);
+              });
+            });
+          }
+
+          // Filtro adicional para excluir modelos específicos de Ford
+          // Excluir modelos que contengan palabras clave prohibidas
+          if (likeMatch("Ford", currentBrand.name)) {
+            const excludedKeywords = [
+              "Courier",
+              "F-100",
+              "Kuga",
+              "Mondeo",
+              "S-Max",
+            ];
+
+            filteredModels = filteredModels.filter((model) => {
+              const modelName = normalizeForComparison(
+                model.description || model.name || ""
+              );
+              return !excludedKeywords.some((keyword) => {
+                const normalizedKeyword = normalizeForComparison(keyword);
+                return modelName.includes(normalizedKeyword);
+              });
+            });
+          }
+
+          // Filtro adicional para excluir modelos específicos de Nissan
+          // Excluir modelos que contengan palabras clave prohibidas
+          if (likeMatch("Nissan", currentBrand.name)) {
+            const excludedKeywords = [
+              "Murano",
+              "NP300",
+              "Pathfinder",
+            ];
+
+            filteredModels = filteredModels.filter((model) => {
+              const modelName = normalizeForComparison(
+                model.description || model.name || ""
+              );
+              return !excludedKeywords.some((keyword) => {
+                const normalizedKeyword = normalizeForComparison(keyword);
+                return modelName.includes(normalizedKeyword);
+              });
+            });
+          }
+
+          // Filtro adicional para excluir modelos específicos de Toyota
+          // Excluir modelos que contengan palabras clave prohibidas
+          if (likeMatch("Toyota", currentBrand.name)) {
+            const excludedKeywords = [
+              "Camry",
+              "Innova",
+              "Land Cruiser",
+              "Prius",
+            ];
+
+            filteredModels = filteredModels.filter((model) => {
+              const modelName = normalizeForComparison(
+                model.description || model.name || ""
+              );
+              return !excludedKeywords.some((keyword) => {
+                const normalizedKeyword = normalizeForComparison(keyword);
+                return modelName.includes(normalizedKeyword);
+              });
+            });
+          }
+
+          // Filtro adicional para excluir modelos específicos de Suzuki
+          // Excluir modelos que contengan palabras clave prohibidas
+          if (likeMatch("Suzuki", currentBrand.name)) {
+            const excludedKeywords = [
+              "Baleno",
+            ];
+
+            filteredModels = filteredModels.filter((model) => {
+              const modelName = normalizeForComparison(
+                model.description || model.name || ""
+              );
+              return !excludedKeywords.some((keyword) => {
+                const normalizedKeyword = normalizeForComparison(keyword);
+                return modelName.includes(normalizedKeyword);
+              });
             });
           }
         }

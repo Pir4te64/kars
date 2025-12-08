@@ -119,49 +119,84 @@ export default function CotizarPage() {
       console.log("📋 Completando cotización - año:", formData.año);
       console.log("📋 Datos del año encontrado:", yearData);
       console.log("📋 Precio actual en formData:", formData.precio);
-      
+
       if (yearData) {
         // Guardar el precio numérico (USD) para los cálculos en el resultado
         // Priorizar priceValue (el precio numérico directo)
         let precioFinal: string | null = null;
-        
-        if (yearData.priceValue !== null && yearData.priceValue !== undefined && !isNaN(Number(yearData.priceValue))) {
+
+        if (
+          yearData.priceValue !== null &&
+          yearData.priceValue !== undefined &&
+          !isNaN(Number(yearData.priceValue))
+        ) {
           precioFinal = String(yearData.priceValue);
-          console.log("✅ Precio final guardado desde priceValue:", precioFinal);
+          console.log(
+            "✅ Precio final guardado desde priceValue:",
+            precioFinal
+          );
         } else if (yearData.price && yearData.price !== "Consultar") {
           // Extraer el número del string formateado (ej: "$7,700" -> 7700)
           const numericPrice = yearData.price.replace(/[^0-9]/g, "");
-          if (numericPrice && numericPrice !== "" && !isNaN(Number(numericPrice))) {
+          if (
+            numericPrice &&
+            numericPrice !== "" &&
+            !isNaN(Number(numericPrice))
+          ) {
             precioFinal = numericPrice;
             console.log("✅ Precio final extraído del string:", precioFinal);
           } else {
-            console.warn("⚠️ No se pudo extraer precio válido del string:", yearData.price);
+            console.warn(
+              "⚠️ No se pudo extraer precio válido del string:",
+              yearData.price
+            );
           }
         } else {
-          console.warn("⚠️ No se encontró precio en yearData. yearData:", yearData);
+          console.warn(
+            "⚠️ No se encontró precio en yearData. yearData:",
+            yearData
+          );
         }
-        
+
         // Solo actualizar si tenemos un precio válido
-        if (precioFinal !== null && precioFinal !== "" && !isNaN(Number(precioFinal))) {
+        if (
+          precioFinal !== null &&
+          precioFinal !== "" &&
+          !isNaN(Number(precioFinal))
+        ) {
           updatedFormData.precio = precioFinal;
         } else {
-          console.error("❌ No se pudo obtener precio válido. Usando precio actual o 0");
-          if (!updatedFormData.precio || updatedFormData.precio === "" || updatedFormData.precio === "NaN" || isNaN(Number(updatedFormData.precio))) {
+          console.error(
+            "❌ No se pudo obtener precio válido. Usando precio actual o 0"
+          );
+          if (
+            !updatedFormData.precio ||
+            updatedFormData.precio === "" ||
+            updatedFormData.precio === "NaN" ||
+            isNaN(Number(updatedFormData.precio))
+          ) {
             updatedFormData.precio = "0";
           }
         }
       } else {
         console.warn("⚠️ No se encontró yearData para el año:", formData.año);
         console.warn("⚠️ typedYears disponibles:", typedYears);
-        if (!updatedFormData.precio || updatedFormData.precio === "" || updatedFormData.precio === "NaN" || isNaN(Number(updatedFormData.precio))) {
+        if (
+          !updatedFormData.precio ||
+          updatedFormData.precio === "" ||
+          updatedFormData.precio === "NaN" ||
+          isNaN(Number(updatedFormData.precio))
+        ) {
           updatedFormData.precio = "0";
         }
       }
     } else if (!updatedFormData.precio || updatedFormData.precio === "") {
       updatedFormData.precio = "0";
-      console.warn("⚠️ No hay año seleccionado o años disponibles, usando precio 0");
+      console.warn(
+        "⚠️ No hay año seleccionado o años disponibles, usando precio 0"
+      );
     }
-    
+
     console.log("💾 Datos finales a guardar:", updatedFormData);
 
     if (typedBrands && typedBrands.length > 0 && formData.marca) {
@@ -186,10 +221,10 @@ export default function CotizarPage() {
 
     console.log("💾 Guardando en localStorage:", updatedFormData);
     console.log("💰 Precio que se guarda:", updatedFormData.precio);
-    
+
     localStorage.removeItem("quoteData");
     localStorage.setItem("quoteData", JSON.stringify(updatedFormData));
-    
+
     // Verificar que se guardó correctamente
     const verify = localStorage.getItem("quoteData");
     if (verify) {
@@ -333,9 +368,18 @@ export default function CotizarPage() {
               {typedBrands && typedBrands.length > 0 ? (
                 typedBrands
                   .filter((brand) =>
-                    ["FORD", "HONDA", "PEUGEOT", "CHEVROLET"].includes(
-                      brand.name
-                    )
+                    [
+                      "VOLKSWAGEN",
+                      "CHEVROLET",
+                      "RENAULT",
+                      "CITROEN",
+                      "PEUGEOT",
+                      "FIAT",
+                      "FORD",
+                      "NISSAN",
+                      "TOYOTA",
+                      "SUZUKI",
+                    ].includes(brand.name.toUpperCase())
                   )
                   .map((brand) => (
                     <option key={brand.id || brand.name} value={brand.id}>
@@ -384,7 +428,7 @@ export default function CotizarPage() {
               value={formData.año}
               onChange={(e) => {
                 const selectedYear = e.target.value;
-                
+
                 // Actualizar el precio cuando se selecciona un año
                 if (selectedYear && typedYears.length > 0) {
                   const yearData = typedYears.find(
@@ -392,38 +436,76 @@ export default function CotizarPage() {
                   );
                   console.log("📅 Año seleccionado:", selectedYear);
                   console.log("💰 Datos del año:", yearData);
-                  
+
                   if (yearData) {
                     let precioToSave: string | null = null;
-                    
+
                     // Guardar el precio numérico (USD) para los cálculos
                     // Verificar que priceValue sea un número válido
-                    if (yearData.priceValue !== null && yearData.priceValue !== undefined && !isNaN(Number(yearData.priceValue))) {
+                    if (
+                      yearData.priceValue !== null &&
+                      yearData.priceValue !== undefined &&
+                      !isNaN(Number(yearData.priceValue))
+                    ) {
                       precioToSave = String(yearData.priceValue);
-                      console.log("✅ Precio guardado desde priceValue:", precioToSave);
-                    } else if (yearData.price && yearData.price !== "Consultar") {
+                      console.log(
+                        "✅ Precio guardado desde priceValue:",
+                        precioToSave
+                      );
+                    } else if (
+                      yearData.price &&
+                      yearData.price !== "Consultar"
+                    ) {
                       // Extraer el número del string formateado (ej: "$7,700" -> 7700)
-                      const numericPrice = yearData.price.replace(/[^0-9]/g, "");
-                      if (numericPrice && numericPrice !== "" && !isNaN(Number(numericPrice))) {
+                      const numericPrice = yearData.price.replace(
+                        /[^0-9]/g,
+                        ""
+                      );
+                      if (
+                        numericPrice &&
+                        numericPrice !== "" &&
+                        !isNaN(Number(numericPrice))
+                      ) {
                         precioToSave = numericPrice;
-                        console.log("✅ Precio extraído del string:", precioToSave);
+                        console.log(
+                          "✅ Precio extraído del string:",
+                          precioToSave
+                        );
                       } else {
-                        console.warn("⚠️ No se pudo extraer precio válido del string:", yearData.price);
+                        console.warn(
+                          "⚠️ No se pudo extraer precio válido del string:",
+                          yearData.price
+                        );
                       }
                     } else {
-                      console.warn("⚠️ No se encontró precio para el año", selectedYear, "yearData:", yearData);
+                      console.warn(
+                        "⚠️ No se encontró precio para el año",
+                        selectedYear,
+                        "yearData:",
+                        yearData
+                      );
                     }
-                    
+
                     // Solo actualizar si tenemos un precio válido
-                    if (precioToSave !== null && precioToSave !== "" && !isNaN(Number(precioToSave))) {
+                    if (
+                      precioToSave !== null &&
+                      precioToSave !== "" &&
+                      !isNaN(Number(precioToSave))
+                    ) {
                       setFormData((prev) => ({
                         ...prev,
                         año: selectedYear,
                         precio: precioToSave,
                       }));
-                      console.log("💾 FormData actualizado - precio:", precioToSave);
+                      console.log(
+                        "💾 FormData actualizado - precio:",
+                        precioToSave
+                      );
                     } else {
-                      console.error("❌ No se pudo guardar precio válido. precioToSave:", precioToSave);
+                      console.error(
+                        "❌ No se pudo guardar precio válido. precioToSave:",
+                        precioToSave
+                      );
                       setFormData((prev) => ({
                         ...prev,
                         año: selectedYear,
@@ -431,7 +513,10 @@ export default function CotizarPage() {
                       }));
                     }
                   } else {
-                    console.warn("⚠️ No se encontró yearData para el año", selectedYear);
+                    console.warn(
+                      "⚠️ No se encontró yearData para el año",
+                      selectedYear
+                    );
                     setFormData((prev) => ({
                       ...prev,
                       año: selectedYear,

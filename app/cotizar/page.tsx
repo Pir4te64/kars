@@ -1,7 +1,7 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any */
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -15,6 +15,20 @@ export default function CotizarPage() {
   const [isModelDropdownOpen, setIsModelDropdownOpen] = useState(false);
   const modelDropdownRef = useRef<HTMLDivElement>(null);
 
+  // Marcas permitidas en el cotizador
+  const ALLOWED_BRANDS = [
+    "VOLKSWAGEN",
+    "CHEVROLET",
+    "RENAULT",
+    "CITROEN",
+    "PEUGEOT",
+    "FIAT",
+    "FORD",
+    "NISSAN",
+    "TOYOTA",
+    "SUZUKI",
+  ];
+
   const {
     brands,
     models,
@@ -26,7 +40,21 @@ export default function CotizarPage() {
   } = useCarInfo();
 
   // Tipos explícitos para evitar errores de TypeScript
-  const typedBrands: Brand[] = brands || [];
+  // Filtrar solo las marcas permitidas (eliminar espacios y normalizar)
+  // Excluir explícitamente DODGE y JEEP
+  const typedBrands: Brand[] = useMemo(() => {
+    if (!brands || brands.length === 0) return [];
+    return brands.filter((brand) => {
+      if (!brand || !brand.name) return false;
+      const normalizedName = brand.name.toUpperCase().trim();
+      // Excluir explícitamente DODGE y JEEP
+      if (normalizedName === "DODGE" || normalizedName === "JEEP") {
+        return false;
+      }
+      // Solo incluir las marcas permitidas
+      return ALLOWED_BRANDS.includes(normalizedName);
+    });
+  }, [brands]);
   const typedModels: Model[] = models || [];
   const typedYears: YearPrice[] = years || [];
 
@@ -366,26 +394,11 @@ export default function CotizarPage() {
               disabled={loadingBrands}>
               <option value="">Marca</option>
               {typedBrands && typedBrands.length > 0 ? (
-                typedBrands
-                  .filter((brand) =>
-                    [
-                      "VOLKSWAGEN",
-                      "CHEVROLET",
-                      "RENAULT",
-                      "CITROEN",
-                      "PEUGEOT",
-                      "FIAT",
-                      "FORD",
-                      "NISSAN",
-                      "TOYOTA",
-                      "SUZUKI",
-                    ].includes(brand.name.toUpperCase())
-                  )
-                  .map((brand) => (
-                    <option key={brand.id || brand.name} value={brand.id}>
-                      {brand.name}
-                    </option>
-                  ))
+                typedBrands.map((brand) => (
+                  <option key={brand.id || brand.name} value={brand.id}>
+                    {brand.name}
+                  </option>
+                ))
               ) : (
                 <option value="" disabled>
                   {loadingBrands

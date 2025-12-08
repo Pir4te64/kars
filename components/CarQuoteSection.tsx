@@ -116,8 +116,8 @@ export default function CarQuoteSection() {
   // Esto asegura que siempre usemos estos IDs específicos
   const typedBrands: Brand[] = [
     ...filteredBaseBrands,
-    jeepBrand, // Siempre agregar JEEP con ID -1
-    dodgeBrand, // Siempre agregar DODGE con ID -2
+    // jeepBrand, // Siempre agregar JEEP con ID -1
+    // dodgeBrand, // Siempre agregar DODGE con ID -2
   ].sort((a, b) => a.name.localeCompare(b.name));
 
   const typedModels: Model[] = useMemo(() => models || [], [models]);
@@ -381,8 +381,14 @@ export default function CarQuoteSection() {
     if (formData.modelo && formData.año) {
       try {
         const selectedYear = Number(formData.año);
-        console.log("📦 Obteniendo precio para modelo:", formData.modelo, "año:", selectedYear);
-        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
+        console.log(
+          "📦 Obteniendo precio para modelo:",
+          formData.modelo,
+          "año:",
+          selectedYear
+        );
+        const backendUrl =
+          process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
         const response = await fetch(
           `${backendUrl}/api/models/${formData.modelo}/list_price?year=${selectedYear}`
         );
@@ -390,21 +396,39 @@ export default function CarQuoteSection() {
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
           console.error("❌ Error al obtener precio:", errorData);
-          throw new Error(errorData.message || "Error al obtener precio del modelo");
+          throw new Error(
+            errorData.message || "Error al obtener precio del modelo"
+          );
         }
 
         const data = await response.json();
         console.log("✅ Respuesta de precio:", data);
 
-        if (data.success && data.data && typeof data.data.list_price === 'number') {
+        if (
+          data.success &&
+          data.data &&
+          typeof data.data.list_price === "number"
+        ) {
           const price = data.data.list_price;
-          console.log("💰 Precio obtenido para año", selectedYear, ":", price, "USD");
-          
+          console.log(
+            "💰 Precio obtenido para año",
+            selectedYear,
+            ":",
+            price,
+            "USD"
+          );
+
           // Usar el precio como precio base (ya viene en USD)
           updatedFormData.precio = price.toString();
-          console.log("💰 Precio guardado en formData:", updatedFormData.precio);
+          console.log(
+            "💰 Precio guardado en formData:",
+            updatedFormData.precio
+          );
         } else {
-          console.warn("⚠️ Respuesta de precio no tiene formato esperado:", data);
+          console.warn(
+            "⚠️ Respuesta de precio no tiene formato esperado:",
+            data
+          );
           // Si no se puede obtener, usar precio 0
           updatedFormData.precio = "0";
         }

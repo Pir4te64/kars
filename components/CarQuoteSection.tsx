@@ -66,12 +66,7 @@ export default function CarQuoteSection() {
   const safeGetGroupYears =
     getGroupYears ||
     ((brandId: string, groupId: string) => {
-      console.error(
-        "❌ getGroupYears no está disponible. brandId:",
-        brandId,
-        "groupId:",
-        groupId
-      );
+      // getGroupYears no está disponible
     });
 
   // Declarar formData primero para evitar errores de inicialización
@@ -163,7 +158,6 @@ export default function CarQuoteSection() {
     setFormData((prev) => {
       // Si cambia la marca, limpiar modelo y pedir modelos nuevos
       if (field === "marca") {
-        console.log("🟢 handleInputChange - Cambiando marca a:", value);
         // Llamar a getGroup con el nuevo brandId
         // El hook se encargará de limpiar grupos y modelos cuando detecte el cambio de marca
         getGroup(value);
@@ -178,25 +172,14 @@ export default function CarQuoteSection() {
       }
       if (field === "grupo") {
         // Buscar el grupo seleccionado para obtener su ID
-        console.log("🟢 handleInputChange - Cambiando grupo a:", value);
         const selectedGroup = typedGroups.find(
           (group: Group) => group.name === value
         );
         if (selectedGroup) {
           // Usar codia si id no está disponible (el backend retorna codia como ID)
           const groupId = selectedGroup.id || selectedGroup.codia;
-          console.log(
-            "🟢 Obteniendo años para marca:",
-            prev.marca,
-            "y grupo:",
-            groupId
-          );
           // Llamar a getGroupYears en lugar de getModel
           safeGetGroupYears(prev.marca, groupId?.toString() || "");
-        } else {
-          console.log(
-            "ERROR: No se encontró el grupo seleccionado en el array"
-          );
         }
         return {
           ...prev,
@@ -206,19 +189,12 @@ export default function CarQuoteSection() {
         };
       }
       if (field === "año") {
-        console.log("🟢 handleInputChange - Cambiando año a:", value);
         // Cuando se selecciona un año, obtener los modelos del grupo
         const selectedGroup = typedGroups.find(
           (group: Group) => group.name === prev.grupo
         );
         if (selectedGroup && prev.marca) {
           const groupId = selectedGroup.id || selectedGroup.codia;
-          console.log(
-            "🟢 Obteniendo modelos para marca:",
-            prev.marca,
-            "y grupo:",
-            groupId
-          );
           getModel(prev.marca, groupId?.toString() || "");
         }
         return {
@@ -228,8 +204,6 @@ export default function CarQuoteSection() {
         };
       }
       if (field === "modelo") {
-        console.log("🟢 handleInputChange - Cambiando modelo a:", value);
-        console.log("🟢 Llamando getPrice con codia:", value);
         getPrice(value);
         return {
           ...prev,
@@ -248,7 +222,6 @@ export default function CarQuoteSection() {
     handleInputChange("modelo", model.codia);
   };
   const handleGroupSelect = (group: Group) => {
-    console.log("handleGroupSelect llamado con:", group);
     setIsGroupDropdownOpen(!isGroupDropdownOpen);
     handleInputChange("grupo", group.name);
   };
@@ -261,23 +234,12 @@ export default function CarQuoteSection() {
     return selectedModel ? selectedModel.description : "Modelo";
   };
   const getSelectedGroupText = () => {
-    console.log("grupo seleccionado");
     if (!formData.grupo) return "Grupo";
     const selectedGroup = typedGroups.find(
       (item) => item.name === formData.grupo
     );
     return selectedGroup ? selectedGroup.name : "Grupo";
   };
-
-  // Debug: Log para verificar modelos
-  useEffect(() => {
-    console.log("🔍 DEBUG MODELOS:");
-    console.log("  - models (del hook):", models);
-    console.log("  - typedModels:", typedModels);
-    console.log("  - filteredModels:", filteredModels);
-    console.log("  - formData.año:", formData.año);
-    console.log("  - loadingModels:", loadingModels);
-  }, [models, typedModels, filteredModels, formData.año, loadingModels]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
@@ -378,15 +340,10 @@ export default function CarQuoteSection() {
     const updatedFormData = { ...formData };
 
     // Obtener el precio del modelo para el año seleccionado desde la API
+    let precioBaseUSD = 0;
     if (formData.modelo && formData.año) {
       try {
         const selectedYear = Number(formData.año);
-        console.log(
-          "📦 Obteniendo precio para modelo:",
-          formData.modelo,
-          "año:",
-          selectedYear
-        );
         const backendUrl =
           process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
         const response = await fetch(
@@ -395,57 +352,73 @@ export default function CarQuoteSection() {
 
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
-          console.error("❌ Error al obtener precio:", errorData);
           throw new Error(
             errorData.message || "Error al obtener precio del modelo"
           );
         }
 
         const data = await response.json();
-        console.log("✅ Respuesta de precio:", data);
 
         if (
           data.success &&
           data.data &&
           typeof data.data.list_price === "number"
         ) {
-          const price = data.data.list_price;
-          console.log(
-            "💰 Precio obtenido para año",
-            selectedYear,
-            ":",
-            price,
-            "USD"
-          );
-
-          // Usar el precio como precio base (ya viene en USD)
-          updatedFormData.precio = price.toString();
-          console.log(
-            "💰 Precio guardado en formData:",
-            updatedFormData.precio
-          );
+          precioBaseUSD = data.data.list_price;
+          console.log(`💰 Precio que arroja la API: ${precioBaseUSD} USD`);
+          updatedFormData.precio = precioBaseUSD.toString();
         } else {
-          console.warn(
-            "⚠️ Respuesta de precio no tiene formato esperado:",
-            data
-          );
-          // Si no se puede obtener, usar precio 0
+          precioBaseUSD = 0;
           updatedFormData.precio = "0";
         }
       } catch (error) {
-        console.error("❌ Error al obtener precio:", error);
-        // Si falla, usar precio 0
+        precioBaseUSD = 0;
         updatedFormData.precio = "0";
       }
     } else {
-      if (!formData.modelo) {
-        console.warn("⚠️ No hay modelo seleccionado, usando precio 0");
-      }
-      if (!formData.año) {
-        console.warn("⚠️ No hay año seleccionado, usando precio 0");
-      }
+      precioBaseUSD = 0;
       updatedFormData.precio = "0";
     }
+
+    // Obtener cotización del dólar blue
+    const cotizacionDolar = dollarBlue?.venta || 1200;
+
+    // Calcular las tres cotizaciones
+    // 1. Precio base en pesos (precio USD * 1000 * cotización dólar)
+    const precioBasePesos = precioBaseUSD * 1000 * cotizacionDolar;
+
+    // 2. Compra Inmediata: precio base
+    const precioInmediataPesos = precioBasePesos;
+    const precioInmediataUSD = precioBaseUSD;
+
+    // 3. Consignación: 10% más que Inmediata
+    const precioConsignacionPesos = precioInmediataPesos * 1.1;
+    const precioConsignacionUSD = precioInmediataUSD * 1.1;
+
+    // 4. Permuta: 5% más que Inmediata
+    const precioPermutaPesos = precioInmediataPesos * 1.05;
+    const precioPermutaUSD = precioInmediataUSD * 1.05;
+
+    // Formatear precios
+    const formatearPrecioPesos = (precio: number) => {
+      if (!precio || isNaN(precio) || precio === 0) return "0";
+      return new Intl.NumberFormat("es-AR", {
+        style: "currency",
+        currency: "ARS",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(precio);
+    };
+
+    const formatearPrecioDolares = (precio: number) => {
+      if (!precio || isNaN(precio) || precio === 0) return "0";
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(precio);
+    };
 
     if (typedBrands && typedBrands.length > 0 && formData.marca) {
       const brandData = typedBrands.find(
@@ -478,9 +451,9 @@ export default function CarQuoteSection() {
     localStorage.removeItem("quoteData");
     localStorage.setItem("quoteData", JSON.stringify(updatedFormData));
 
-    // Guardar lead en la base de datos
+    // Guardar lead en la base de datos con las tres cotizaciones
     try {
-      console.log("🔄 Guardando lead...");
+      console.log("�� Guardando lead con las tres cotizaciones...");
       const leadResponse = await fetch("/api/leads", {
         method: "POST",
         headers: {
@@ -497,26 +470,32 @@ export default function CarQuoteSection() {
           año: updatedFormData.año,
           kilometraje: updatedFormData.kilometraje,
           precio: updatedFormData.precio,
+          // Agregar las tres cotizaciones
+          precio_inmediata_ars: formatearPrecioPesos(precioInmediataPesos),
+          precio_inmediata_usd: formatearPrecioDolares(precioInmediataUSD),
+          precio_consignacion_ars: formatearPrecioPesos(
+            precioConsignacionPesos
+          ),
+          precio_consignacion_usd: formatearPrecioDolares(
+            precioConsignacionUSD
+          ),
+          precio_permuta_ars: formatearPrecioPesos(precioPermutaPesos),
+          precio_permuta_usd: formatearPrecioDolares(precioPermutaUSD),
+          cotizacion_dolar: cotizacionDolar.toString(),
         }),
       });
 
       const leadData = await leadResponse.json();
 
       if (!leadResponse.ok) {
-        console.error("❌ Error al guardar el lead:", leadData);
-      } else {
-        console.log("✅ Lead guardado exitosamente:", leadData);
+        // Error al guardar lead, pero no bloqueamos el flujo
       }
     } catch (error) {
-      console.error("❌ Error saving lead:", error);
-      // No bloqueamos el flujo si falla el guardado del lead
+      // Error al guardar lead, pero no bloqueamos el flujo
     }
 
     // Enviar email
     try {
-      // Obtener cotización del dólar blue
-      const cotizacionDolar = dollarBlue?.venta || 1200; // Fallback a 1200 si no está disponible
-
       const response = await fetch("/api/send-quote-email", {
         method: "POST",
         headers: {
@@ -530,9 +509,20 @@ export default function CarQuoteSection() {
           grupo: updatedFormData.grupo,
           año: updatedFormData.año,
           precio: updatedFormData.precio,
-          cotizacionDolar: cotizacionDolar, // Enviar la cotización actual
+          cotizacionDolar: cotizacionDolar,
           kilometraje: updatedFormData.kilometraje,
           ubicacion: updatedFormData.ubicacion,
+          // Enviar las tres cotizaciones al email también
+          precio_inmediata_ars: formatearPrecioPesos(precioInmediataPesos),
+          precio_inmediata_usd: formatearPrecioDolares(precioInmediataUSD),
+          precio_consignacion_ars: formatearPrecioPesos(
+            precioConsignacionPesos
+          ),
+          precio_consignacion_usd: formatearPrecioDolares(
+            precioConsignacionUSD
+          ),
+          precio_permuta_ars: formatearPrecioPesos(precioPermutaPesos),
+          precio_permuta_usd: formatearPrecioDolares(precioPermutaUSD),
         }),
       });
 
@@ -545,7 +535,6 @@ export default function CarQuoteSection() {
       // Si todo está bien, navegar a la página de resultado
       router.push("/cotizar/resultado");
     } catch (error) {
-      console.error("Error sending email:", error);
       setEmailError(
         error instanceof Error ? error.message : "Error al enviar el email"
       );
@@ -626,12 +615,6 @@ export default function CarQuoteSection() {
                         const selectedBrand = typedBrands.find(
                           (b) => b.id.toString() === formData.marca
                         );
-                        console.log(
-                          "🔍 Mostrando marca seleccionada - formData.marca:",
-                          formData.marca,
-                          "selectedBrand:",
-                          selectedBrand?.name
-                        );
                         return selectedBrand?.name || "Marca";
                       })()}
                     </span>
@@ -676,12 +659,6 @@ export default function CarQuoteSection() {
                       key={`brand-${brand.id}-${brand.name}-${index}`}
                       className="px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors duration-150 flex items-center gap-3"
                       onClick={() => {
-                        console.log(
-                          "🔵 Seleccionando marca:",
-                          brand.name,
-                          "ID:",
-                          brand.id.toString()
-                        );
                         handleInputChange("marca", brand.id.toString());
                         setIsBrandDropdownOpen(false);
                       }}
@@ -888,29 +865,12 @@ export default function CarQuoteSection() {
             <div
               className="w-full h-full flex items-center justify-between cursor-pointer px-3"
               onClick={() => {
-                console.log("=== CLICK EN MODELO ===");
-                console.log("formData.año:", formData.año);
-                console.log("loadingModels:", loadingModels);
-                console.log("typedModels.length:", typedModels.length);
-                console.log("typedModels:", typedModels);
-                console.log("filteredModels.length:", filteredModels.length);
-                console.log("filteredModels:", filteredModels);
                 if (
                   formData.año &&
                   !loadingModels &&
                   filteredModels.length > 0
                 ) {
-                  console.log("Abriendo dropdown de modelos");
                   setIsModelDropdownOpen(!isModelDropdownOpen);
-                } else {
-                  console.log(
-                    "No se puede abrir dropdown - condiciones no cumplidas",
-                    {
-                      tieneAño: !!formData.año,
-                      noEstaCargando: !loadingModels,
-                      tieneModelos: filteredModels.length > 0,
-                    }
-                  );
                 }
               }}
               style={{
@@ -1287,6 +1247,55 @@ export default function CarQuoteSection() {
             border: "1px solid rgba(148, 163, 184, 0.2)",
             boxShadow: "0px 4px 16px rgba(0, 0, 0, 0.06)",
           }}>
+          {/* Banner de construcción */}
+          <div className="mb-4 px-3 md:px-4">
+            <div
+              className="bg-gradient-to-r from-amber-50 via-yellow-50 to-amber-50 border-l-4 border-amber-400 rounded-lg p-4 shadow-sm"
+              style={{
+                borderLeftWidth: "4px",
+                borderLeftColor: "#fbbf24",
+              }}>
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="w-6 h-6 text-amber-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-sm md:text-base font-bold text-amber-900 mb-1">
+                    ⚠️ Cotizador en construcción
+                  </h3>
+                  <p className="text-xs md:text-sm text-amber-800 mb-3">
+                    Estamos mejorando el sistema. Para una respuesta rápida y
+                    personalizada, contactanos directamente por WhatsApp.
+                  </p>
+                  <a
+                    href="https://wa.me/541121596100?text=Hola!%20Quiero%20cotizar%20mi%20vehículo"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white font-semibold px-4 py-2 rounded-lg transition-colors duration-200 text-xs md:text-sm shadow-md hover:shadow-lg">
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 24 24">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                    </svg>
+                    Contactar por WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {currentStep === 1 ? renderStep1() : renderStep2()}
         </div>
       </div>

@@ -10,6 +10,7 @@ import { useEmailJS } from "@/hooks/useEmailJS";
 import { toast } from "sonner";
 import {
   getPriceAdjustment,
+  getPriceAdjustmentSync,
   applyPriceAdjustment,
 } from "@/constants/priceAdjustments";
 
@@ -31,6 +32,11 @@ export default function QuoteResultPage() {
   const cardRef = useRef<HTMLDivElement>(null);
   const [quoteData, setQuoteData] = useState<QuoteData | null>(null);
   const [userEmail, setUserEmail] = useState("");
+  const [tiposVenta, setTiposVenta] = useState<{
+    inmediata: { pesos: number; dolares: number };
+    consignacion: { pesos: number; dolares: number };
+    permuta: { pesos: number; dolares: number };
+  } | null>(null);
 
   const encodedMessage = encodeURIComponent(
     "Hola soy Ramon, tengo un fiat toro 2017 100mil km tal modelo a 17mil usd"
@@ -51,8 +57,6 @@ export default function QuoteResultPage() {
       const savedData = localStorage.getItem("quoteData");
       if (savedData) {
         const parsed = JSON.parse(savedData);
-        console.log("📦 Datos leídos de localStorage:", parsed);
-        console.log("💰 Precio en los datos:", parsed.precio);
         return parsed;
       }
 
@@ -72,7 +76,6 @@ export default function QuoteResultPage() {
     };
 
     const data = getQuoteData();
-    console.log("📋 QuoteData establecido:", data);
     setQuoteData(data);
   }, []);
 
@@ -94,7 +97,6 @@ export default function QuoteResultPage() {
       link.href = dataUrl;
       link.click();
     } catch (err) {
-      console.error("No se pudo generar la imagen:", err);
       alert(
         "No se pudo descargar la imagen en este momento. Por favor, intenta nuevamente."
       );
@@ -103,23 +105,13 @@ export default function QuoteResultPage() {
 
   // Convertir precio del modelo a precio real en pesos
   // El precio viene de la API sin los últimos 3 ceros (ej: "7600" = 7,600,000 pesos)
-  const obtenerPrecioBasePesos = () => {
+  const obtenerPrecioBasePesos = async (): Promise<number> => {
     // 1. Precio del modelo (ej: "7600")
     const precioString = quoteData?.precio || "0";
     const precioRaw = parseFloat(precioString);
 
-    console.log("💰 QuoteData completo:", quoteData);
-    console.log("💰 Precio recibido (string):", precioString);
-    console.log("💰 Precio parseado:", precioRaw);
-    console.log("💰 Año del vehículo:", quoteData?.año);
-    console.log("💰 Tipo de precio:", typeof precioString);
-
     // 2. Si el precio es 0, NaN, o no es un número válido, retornar 0
     if (!precioRaw || precioRaw === 0 || isNaN(precioRaw)) {
-      console.warn(
-        "⚠️ Precio inválido o es 0, no se puede calcular. Precio recibido:",
-        precioString
-      );
       return 0;
     }
 
@@ -128,39 +120,32 @@ export default function QuoteResultPage() {
     if (quoteData?.marca && quoteData?.modelo && quoteData?.año) {
       const año = parseInt(quoteData.año);
       if (!isNaN(año)) {
-        const adjustment = getPriceAdjustment(
+        console.log(`💰 Precio que arroja la API: ${precioRaw} USD`);
+
+        const adjustment = await getPriceAdjustment(
           quoteData.marca,
           quoteData.modelo,
           año
         );
 
         if (adjustment !== null) {
+          console.log(
+            `📈 Porcentaje aplicado: ${adjustment > 0 ? "+" : ""}${adjustment}%`
+          );
+
           const precioConAjuste = applyPriceAdjustment(precioRaw, adjustment);
           if (precioConAjuste !== null) {
             precioAjustado = precioConAjuste;
-            console.log(
-              `💰 Ajuste aplicado: ${adjustment > 0 ? "+" : ""}${adjustment}%`
-            );
-            console.log(
-              `💰 Precio base: ${precioRaw} USD -> Precio ajustado: ${precioAjustado} USD`
-            );
+            console.log(`✅ Precio con el % aplicado: ${precioAjustado} USD`);
           } else {
-            console.warn(
-              "⚠️ El modelo no está disponible para este rango de años"
-            );
             return 0; // Modelo no disponible para ese rango
           }
-        } else {
-          console.log(
-            "ℹ️ No hay ajuste configurado para este modelo, usando precio base"
-          );
         }
       }
     }
 
     // 4. Multiplicar por 1000 para obtener el precio real en pesos
     const precioEnPesos = precioAjustado * 1000;
-    console.log("💰 Precio en pesos (×1000):", precioEnPesos);
 
     return precioEnPesos;
   };
@@ -195,10 +180,10 @@ export default function QuoteResultPage() {
         return false; // Si no hay precio válido, no mostrar compra inmediata
       }
 
-      // Aplicar ajuste de precio si existe
+      // Aplicar ajuste de precio si existe (usar versión síncrona para render rápido)
       let precioAjustado = precioRaw;
       if (quoteData?.marca && quoteData?.modelo) {
-        const adjustment = getPriceAdjustment(
+        const adjustment = getPriceAdjustmentSync(
           quoteData.marca,
           quoteData.modelo,
           año
@@ -229,14 +214,11 @@ export default function QuoteResultPage() {
   // Inmediata es el precio base directo de la API
   // Consignación es 10% más que Inmediata
   // Permuta es 5% más que Inmediata
-  const calcularTiposVenta = () => {
-    const precioBasePesos = obtenerPrecioBasePesos();
-
-    console.log("💰 Precio base en pesos (directo de API):", precioBasePesos);
+  const calcularTiposVenta = async () => {
+    const precioBasePesos = await obtenerPrecioBasePesos();
 
     // Si no hay precio base, retornar valores en 0
     if (!precioBasePesos || precioBasePesos === 0 || isNaN(precioBasePesos)) {
-      console.warn("⚠️ No hay precio base válido, retornando 0");
       return {
         inmediata: {
           pesos: 0,
@@ -255,21 +237,12 @@ export default function QuoteResultPage() {
 
     // Inmediata: precio base directo de la API
     const precioInmediata = precioBasePesos;
-    console.log("💰 Inmediata (precio base):", precioInmediata);
 
     // Consignación: 10% más que Inmediata
     const precioConsignacion = precioInmediata * 1.1;
-    console.log("💰 Consignación (inmediata + 10%):", precioConsignacion);
 
     // Permuta: 5% más que Inmediata
     const precioPermuta = precioInmediata * 1.05;
-    console.log("💰 Permuta (inmediata + 5%):", precioPermuta);
-
-    console.log("💰 Precios calculados:", {
-      inmediata: precioInmediata,
-      consignacion: precioConsignacion,
-      permuta: precioPermuta,
-    });
 
     return {
       inmediata: {
@@ -286,6 +259,20 @@ export default function QuoteResultPage() {
       },
     };
   };
+
+  // Calcular tipos de venta cuando cambian los datos
+  useEffect(() => {
+    if (quoteData && dollarBlue) {
+      calcularTiposVenta()
+        .then(setTiposVenta)
+        .catch(() => {
+          setTiposVenta(null);
+        });
+    } else {
+      setTiposVenta(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quoteData, dollarBlue]);
 
   const formatearPrecio = (precio: number) => {
     return precio.toFixed(0);
@@ -327,7 +314,10 @@ export default function QuoteResultPage() {
       return;
     }
 
-    const tiposVenta = calcularTiposVenta();
+    if (!tiposVenta) {
+      toast.error("Calculando precios, por favor espera...");
+      return;
+    }
 
     const emailParams = {
       to_email: userEmail,
@@ -494,27 +484,33 @@ export default function QuoteResultPage() {
                         </span>
                       </div>
                       <div className="mb-1">
-                        {dollarBlue && !dollarLoading && !dollarError ? (
-                          <>
-                            <div className="text-sm font-bold text-white/90">
+                        {tiposVenta ? (
+                          dollarBlue && !dollarLoading && !dollarError ? (
+                            <>
+                              <div className="text-sm font-bold text-white/90">
+                                {formatearPrecioPesos(
+                                  tiposVenta.consignacion.pesos
+                                )}{" "}
+                                ARS
+                              </div>
+                              <div className="text-xl font-black">
+                                {formatearPrecioDolares(
+                                  tiposVenta.consignacion.dolares
+                                )}{" "}
+                                USD
+                              </div>
+                            </>
+                          ) : (
+                            <div className="text-xl font-black">
                               {formatearPrecioPesos(
-                                calcularTiposVenta().consignacion.pesos
+                                tiposVenta.consignacion.pesos
                               )}{" "}
                               ARS
                             </div>
-                            <div className="text-xl font-black">
-                              {formatearPrecioDolares(
-                                calcularTiposVenta().consignacion.dolares
-                              )}{" "}
-                              USD
-                            </div>
-                          </>
+                          )
                         ) : (
-                          <div className="text-xl font-black">
-                            {formatearPrecioPesos(
-                              calcularTiposVenta().consignacion.pesos
-                            )}{" "}
-                            ARS
+                          <div className="text-sm text-white/70">
+                            Cargando...
                           </div>
                         )}
                       </div>
@@ -530,27 +526,29 @@ export default function QuoteResultPage() {
                         </span>
                       </div>
                       <div className="mb-1">
-                        {dollarBlue && !dollarLoading && !dollarError ? (
-                          <>
-                            <div className="text-sm font-bold text-white/90">
-                              {formatearPrecioPesos(
-                                calcularTiposVenta().permuta.pesos
-                              )}{" "}
+                        {tiposVenta ? (
+                          dollarBlue && !dollarLoading && !dollarError ? (
+                            <>
+                              <div className="text-sm font-bold text-white/90">
+                                {formatearPrecioPesos(tiposVenta.permuta.pesos)}{" "}
+                                ARS
+                              </div>
+                              <div className="text-xl font-black">
+                                {formatearPrecioDolares(
+                                  tiposVenta.permuta.dolares
+                                )}{" "}
+                                USD
+                              </div>
+                            </>
+                          ) : (
+                            <div className="text-xl font-black">
+                              {formatearPrecioPesos(tiposVenta.permuta.pesos)}
                               ARS
                             </div>
-                            <div className="text-xl font-black">
-                              {formatearPrecioDolares(
-                                calcularTiposVenta().permuta.dolares
-                              )}{" "}
-                              USD
-                            </div>
-                          </>
+                          )
                         ) : (
-                          <div className="text-xl font-black">
-                            {formatearPrecioPesos(
-                              calcularTiposVenta().permuta.pesos
-                            )}
-                            ARS
+                          <div className="text-sm text-white/70">
+                            Cargando...
                           </div>
                         )}
                       </div>
@@ -564,30 +562,38 @@ export default function QuoteResultPage() {
                     {debeMostrarCompraInmediata() && (
                       <div className="bg-gradient-to-br from-slate-700 via-slate-600 to-slate-700 rounded-lg p-3 text-white shadow-md">
                         <div className="flex items-center justify-between mb-2">
-                          <h4 className="text-sm font-bold">Compra inmediata</h4>
+                          <h4 className="text-sm font-bold">
+                            Compra inmediata
+                          </h4>
                         </div>
                         <div className="mb-1">
-                          {dollarBlue && !dollarLoading && !dollarError ? (
-                            <>
-                              <div className="text-sm font-bold text-white/90">
+                          {tiposVenta ? (
+                            dollarBlue && !dollarLoading && !dollarError ? (
+                              <>
+                                <div className="text-sm font-bold text-white/90">
+                                  {formatearPrecioPesos(
+                                    tiposVenta.inmediata.pesos
+                                  )}{" "}
+                                  ARS
+                                </div>
+                                <div className="text-xl font-black">
+                                  {formatearPrecioDolares(
+                                    tiposVenta.inmediata.dolares
+                                  )}{" "}
+                                  USD
+                                </div>
+                              </>
+                            ) : (
+                              <div className="text-xl font-black">
                                 {formatearPrecioPesos(
-                                  calcularTiposVenta().inmediata.pesos
+                                  tiposVenta.inmediata.pesos
                                 )}{" "}
                                 ARS
                               </div>
-                              <div className="text-xl font-black">
-                                {formatearPrecioDolares(
-                                  calcularTiposVenta().inmediata.dolares
-                                )}{" "}
-                                USD
-                              </div>
-                            </>
+                            )
                           ) : (
-                            <div className="text-xl font-black">
-                              {formatearPrecioPesos(
-                                calcularTiposVenta().inmediata.pesos
-                              )}{" "}
-                              ARS
+                            <div className="text-sm text-white/70">
+                              Cargando...
                             </div>
                           )}
                         </div>

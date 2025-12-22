@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseKey =
+  process.env.SUPABASE_SERVICE_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -26,6 +28,14 @@ export async function POST(request: Request) {
       año,
       kilometraje,
       precio,
+      // Nuevos campos para las tres cotizaciones
+      precio_inmediata_ars,
+      precio_inmediata_usd,
+      precio_consignacion_ars,
+      precio_consignacion_usd,
+      precio_permuta_ars,
+      precio_permuta_usd,
+      cotizacion_dolar,
     } = body;
 
     // Validar campos requeridos
@@ -34,17 +44,20 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error: "Faltan campos requeridos",
-          missing: { nombre: !nombre, email: !email, telefono: !telefono, ubicacion: !ubicacion }
+          missing: {
+            nombre: !nombre,
+            email: !email,
+            telefono: !telefono,
+            ubicacion: !ubicacion,
+          },
         },
         { status: 400 }
       );
     }
 
     console.log("✅ Validación OK, guardando en Supabase...");
-    console.log("🔑 Supabase URL:", supabaseUrl);
-    console.log("🔑 Usando key:", supabaseKey ? "Configurada ✓" : "NO CONFIGURADA ✗");
 
-    // Guardar lead en Supabase
+    // Guardar lead en Supabase con las tres cotizaciones
     const { data, error } = await supabase
       .from("leads")
       .insert([
@@ -59,6 +72,14 @@ export async function POST(request: Request) {
           año,
           kilometraje,
           precio,
+          // Agregar las tres cotizaciones
+          precio_inmediata_ars,
+          precio_inmediata_usd,
+          precio_consignacion_ars,
+          precio_consignacion_usd,
+          precio_permuta_ars,
+          precio_permuta_usd,
+          cotizacion_dolar,
           estado: "nuevo",
         },
       ])
@@ -77,7 +98,10 @@ export async function POST(request: Request) {
       );
     }
 
-    console.log("✅ Lead guardado exitosamente:", data[0]);
+    console.log(
+      "✅ Lead guardado exitosamente con las tres cotizaciones:",
+      data[0]
+    );
     return NextResponse.json({
       success: true,
       lead: data[0],
@@ -154,7 +178,7 @@ export async function PATCH(request: Request) {
       .from("leads")
       .update({
         estado,
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       })
       .eq("id", id)
       .select();
@@ -197,10 +221,7 @@ export async function DELETE(request: Request) {
       );
     }
 
-    const { error } = await supabase
-      .from("leads")
-      .delete()
-      .eq("id", id);
+    const { error } = await supabase.from("leads").delete().eq("id", id);
 
     if (error) {
       console.error("Error deleting lead:", error);

@@ -825,13 +825,13 @@ export function getYearRange(year: number): keyof YearRangeAdjustment {
 }
 
 /**
- * Obtiene el porcentaje de ajuste para un modelo específico y año
+ * Obtiene el porcentaje de ajuste desde el archivo TypeScript (fallback)
  * @param brandName Nombre de la marca (ej: "Volkswagen")
  * @param modelName Nombre del modelo (ej: "Amarok")
  * @param year Año del vehículo
  * @returns Porcentaje de ajuste (null si no está disponible para ese rango)
  */
-export function getPriceAdjustment(
+function getPriceAdjustmentFromFile(
   brandName: string,
   modelName: string,
   year: number
@@ -866,6 +866,67 @@ export function getPriceAdjustment(
   const modelAdjustments = brandAdjustments[modelKey];
   const yearRange = getYearRange(year);
   return modelAdjustments[yearRange];
+}
+
+/**
+ * Obtiene el porcentaje de ajuste para un modelo específico y año
+ * Primero consulta Supabase, luego usa el archivo como fallback
+ * @param brandName Nombre de la marca (ej: "Volkswagen")
+ * @param modelName Nombre del modelo (ej: "Amarok")
+ * @param year Año del vehículo
+ * @returns Porcentaje de ajuste (null si no está disponible para ese rango)
+ */
+export async function getPriceAdjustment(
+  brandName: string,
+  modelName: string,
+  year: number
+): Promise<number | null> {
+  // Intentar obtener desde Supabase primero
+  try {
+    const {
+      getPriceAdjustmentFromSupabase,
+      getAllPriceAdjustmentsFromSupabase,
+    } = await import("../lib/supabase-price-adjustments");
+
+    // Primero verificar si el modelo existe en Supabase
+    const allAdjustments = await getAllPriceAdjustmentsFromSupabase(
+      brandName,
+      modelName
+    );
+
+    // Si encontramos el modelo en Supabase (tiene ajustes configurados)
+    if (allAdjustments !== null) {
+      // Obtener el ajuste específico para el año
+      const supabaseAdjustment = await getPriceAdjustmentFromSupabase(
+        brandName,
+        modelName,
+        year
+      );
+      // Retornar el ajuste (puede ser null si no está disponible para ese año)
+      return supabaseAdjustment;
+    }
+  } catch (error) {
+    // Si hay error al consultar Supabase, usar fallback
+    console.warn(
+      "Error al consultar ajustes desde Supabase, usando fallback:",
+      error
+    );
+  }
+
+  // Fallback al archivo TypeScript
+  return getPriceAdjustmentFromFile(brandName, modelName, year);
+}
+
+/**
+ * Versión síncrona de getPriceAdjustment (solo usa archivo, para compatibilidad)
+ * @deprecated Usar la versión asíncrona getPriceAdjustment() en su lugar
+ */
+export function getPriceAdjustmentSync(
+  brandName: string,
+  modelName: string,
+  year: number
+): number | null {
+  return getPriceAdjustmentFromFile(brandName, modelName, year);
 }
 
 /**

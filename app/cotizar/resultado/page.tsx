@@ -120,7 +120,7 @@ export default function QuoteResultPage() {
     if (quoteData?.marca && quoteData?.modelo && quoteData?.año) {
       const año = parseInt(quoteData.año);
       if (!isNaN(año)) {
-        console.log(`💰 Precio que arroja la API: ${precioRaw} USD`);
+        console.log(`💰 Precio que arroja la API: ${precioRaw} ARS`);
 
         const adjustment = await getPriceAdjustment(
           quoteData.marca,
@@ -136,7 +136,7 @@ export default function QuoteResultPage() {
           const precioConAjuste = applyPriceAdjustment(precioRaw, adjustment);
           if (precioConAjuste !== null) {
             precioAjustado = precioConAjuste;
-            console.log(`✅ Precio con el % aplicado: ${precioAjustado} USD`);
+            console.log(`✅ Precio con el % aplicado: ${precioAjustado} ARS`);
           } else {
             return 0; // Modelo no disponible para ese rango
           }

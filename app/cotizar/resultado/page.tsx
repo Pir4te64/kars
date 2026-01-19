@@ -13,6 +13,7 @@ import {
   getPriceAdjustmentSync,
   applyPriceAdjustment,
 } from "@/constants/priceAdjustments";
+import { calculatePriceByKilometers } from "@/lib/car-quote";
 
 interface QuoteData {
   marca: string;
@@ -145,7 +146,18 @@ export default function QuoteResultPage() {
     }
 
     // 4. Multiplicar por 1000 para obtener el precio real en pesos
-    const precioEnPesos = precioAjustado * 1000;
+    let precioEnPesos = precioAjustado * 1000;
+
+    // 5. Aplicar ajuste por kilometraje si está disponible
+    if (quoteData?.kilometraje && quoteData?.año && precioEnPesos > 0) {
+      const precioConAjusteKm = calculatePriceByKilometers(
+        precioEnPesos,
+        quoteData.kilometraje,
+        quoteData.año
+      );
+      precioEnPesos = precioConAjusteKm;
+      console.log(`📏 Ajuste por kilometraje aplicado: ${quoteData.kilometraje} km`);
+    }
 
     return precioEnPesos;
   };

@@ -143,32 +143,61 @@ export async function getPrice(
 
 /**
  * Calcula el precio ajustado según los kilómetros del vehículo
- * Fórmula: Precio = precioBase × e^(-0.00000289 × km)
- * Basado en una depreciación de ~2.9% cada 10,000 km
+ * Fórmula mejorada para mercado argentino: considera kilometraje base esperado según antigüedad
+ * Solo aplica descuento sobre el exceso de kilómetros respecto al esperado
+ * 
+ * Fórmula: Precio = precioBase × e^(-0.00000289 × kmExceso)
+ * Donde kmExceso = max(0, kmReal - kmBaseEsperado)
+ * Y kmBaseEsperado = (añoActual - añoVehiculo) × 15000
+ * 
+ * Basado en una depreciación de ~2.9% cada 10,000 km sobre el exceso
  *
- * @param basePrice - Precio base del vehículo (precio a 0 km)
+ * @param basePrice - Precio base del vehículo (después de ajustes por marca/modelo/año)
  * @param kilometraje - Kilómetros exactos del vehículo (número o string)
+ * @param añoVehiculo - Año del vehículo (opcional, para calcular km base esperado)
  * @returns Precio ajustado según los kilómetros
  */
 export function calculatePriceByKilometers(
   basePrice: number,
-  kilometraje: string | number
+  kilometraje: string | number,
+  añoVehiculo?: number | string
 ): number {
   if (!kilometraje || !basePrice) {
     return basePrice;
   }
 
   // Convertir kilometraje a número
-  const km = typeof kilometraje === 'string' ? parseFloat(kilometraje) : kilometraje;
+  const km = typeof kilometraje === 'string' ? parseFloat(kilometraje.replace(/[.,]/g, '')) : kilometraje;
 
   // Si no es un número válido, retornar precio base
   if (isNaN(km) || km < 0) {
     return basePrice;
   }
 
-  // Aplicar la fórmula: Precio = precioBase × e^(-0.00000289 × km)
+  // Calcular kilometraje base esperado según antigüedad (solo si se proporciona el año)
+  let kmExceso = km;
+  if (añoVehiculo !== undefined && añoVehiculo !== null) {
+    const año = typeof añoVehiculo === 'string' ? parseInt(añoVehiculo) : añoVehiculo;
+    const añoActual = new Date().getFullYear();
+    
+    if (!isNaN(año) && año > 0 && año <= añoActual) {
+      // Calcular km base esperado: 15,000 km por año de antigüedad
+      const añosAntigüedad = añoActual - año;
+      const kmBaseEsperado = añosAntigüedad * 15000;
+      
+      // Solo aplicar descuento sobre el exceso de kilómetros
+      kmExceso = Math.max(0, km - kmBaseEsperado);
+      
+      // Si el vehículo tiene menos km del esperado, no hay descuento adicional
+      if (kmExceso === 0) {
+        return basePrice;
+      }
+    }
+  }
+
+  // Aplicar la fórmula: Precio = precioBase × e^(-0.00000289 × kmExceso)
   const deprecationRate = 0.00000289;
-  const adjustedPrice = basePrice * Math.exp(-deprecationRate * km);
+  const adjustedPrice = basePrice * Math.exp(-deprecationRate * kmExceso);
 
   // Redondear a 2 decimales
   return Math.round(adjustedPrice * 100) / 100;

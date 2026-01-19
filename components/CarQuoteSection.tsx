@@ -385,11 +385,23 @@ export default function CarQuoteSection() {
 
     // Calcular las tres cotizaciones
     // 1. Precio base en pesos (precio USD * 1000 * cotización dólar)
-    const precioBasePesos = precioBaseUSD * 1000 * cotizacionDolar;
+    let precioBasePesos = precioBaseUSD * 1000 * cotizacionDolar;
+
+    // Aplicar ajuste por kilometraje si está disponible
+    if (formData.kilometraje && formData.año && precioBasePesos > 0) {
+      const precioConAjusteKm = calculatePriceByKilometers(
+        precioBasePesos,
+        formData.kilometraje,
+        formData.año
+      );
+      precioBasePesos = precioConAjusteKm;
+      console.log(`📏 Ajuste por kilometraje aplicado: ${formData.kilometraje} km`);
+    }
 
     // 2. Compra Inmediata: precio base
     const precioInmediataPesos = precioBasePesos;
-    const precioInmediataUSD = precioBaseUSD;
+    // Recalcular USD basado en el precio ajustado por km
+    const precioInmediataUSD = precioBasePesos / (1000 * cotizacionDolar);
 
     // 3. Consignación: 10% más que Inmediata
     const precioConsignacionPesos = precioInmediataPesos * 1.1;

@@ -143,18 +143,24 @@ export async function getPrice(
 
 /**
  * Calcula el precio ajustado según los kilómetros del vehículo
- * Fórmula mejorada para mercado argentino: considera kilometraje base esperado según antigüedad
- * Solo aplica descuento sobre el exceso de kilómetros respecto al esperado
+ * El precio base corresponde a 50,000 km
+ * Aplica la fórmula sobre la diferencia respecto a 50,000 km
  * 
- * Fórmula: Precio = precioBase × e^(-0.00000289 × kmExceso)
- * Donde kmExceso = max(0, kmReal - kmBaseEsperado)
- * Y kmBaseEsperado = (añoActual - añoVehiculo) × 15000
+ * Fórmula: Precio = precioBase × e^(-0.00000394 × kmDiferencia)
+ * Donde kmDiferencia = kmReal - 50000 (puede ser negativo, positivo o cero)
  * 
- * Basado en una depreciación de ~2.9% cada 10,000 km sobre el exceso
+ * Comportamiento:
+ * - Si kmDiferencia = 0 (km igual a 50,000): Precio = precioBase
+ * - Si kmDiferencia < 0 (menos km que 50,000): Precio > precioBase (incremento)
+ * - Si kmDiferencia > 0 (más km que 50,000): Precio < precioBase (descuento)
+ * 
+ * Tasa de depreciación ajustada para que:
+ * - 50,000 km → precioBase
+ * - 150,000 km → precioBase × 0.6742 (ej: 19.800.000 → 13.350.000 ARS)
  *
- * @param basePrice - Precio base del vehículo (después de ajustes por marca/modelo/año)
+ * @param basePrice - Precio base del vehículo (corresponde a 50,000 km)
  * @param kilometraje - Kilómetros exactos del vehículo (número o string)
- * @param añoVehiculo - Año del vehículo (opcional, para calcular km base esperado)
+ * @param añoVehiculo - Año del vehículo (opcional, solo para logs)
  * @returns Precio ajustado según los kilómetros
  */
 export function calculatePriceByKilometers(
@@ -163,6 +169,9 @@ export function calculatePriceByKilometers(
   añoVehiculo?: number | string
 ): number {
   if (!kilometraje || !basePrice) {
+    console.log(
+      `⚠️ calculatePriceByKilometers: No se aplica ajuste - kilometraje: ${kilometraje}, basePrice: ${basePrice}`
+    );
     return basePrice;
   }
 
@@ -171,33 +180,63 @@ export function calculatePriceByKilometers(
 
   // Si no es un número válido, retornar precio base
   if (isNaN(km) || km < 0) {
+    console.log(
+      `⚠️ calculatePriceByKilometers: Kilometraje inválido - km: ${km}, basePrice: ${basePrice}`
+    );
     return basePrice;
   }
 
-  // Calcular kilometraje base esperado según antigüedad (solo si se proporciona el año)
-  let kmExceso = km;
-  if (añoVehiculo !== undefined && añoVehiculo !== null) {
+  // El precio base corresponde a 50,000 km
+  // Calcular diferencia respecto a 50,000 km (puede ser negativo, positivo o cero)
+  const kmBaseReferencia = 50000;
+  const kmDiferencia = km - kmBaseReferencia;
+  const tieneAño = añoVehiculo !== undefined && añoVehiculo !== null;
+  
+  if (tieneAño) {
     const año = typeof añoVehiculo === 'string' ? parseInt(añoVehiculo) : añoVehiculo;
     const añoActual = new Date().getFullYear();
     
     if (!isNaN(año) && año > 0 && año <= añoActual) {
-      // Calcular km base esperado: 15,000 km por año de antigüedad
-      const añosAntigüedad = añoActual - año;
-      const kmBaseEsperado = añosAntigüedad * 15000;
-      
-      // Solo aplicar descuento sobre el exceso de kilómetros
-      kmExceso = Math.max(0, km - kmBaseEsperado);
-      
-      // Si el vehículo tiene menos km del esperado, no hay descuento adicional
-      if (kmExceso === 0) {
-        return basePrice;
-      }
+      console.log(
+        `📊 Cálculo de ajuste por kilometraje: Año ${año}, Km real: ${km.toLocaleString()}, Km base referencia: ${kmBaseReferencia.toLocaleString()}, Km diferencia: ${kmDiferencia.toLocaleString()} ${kmDiferencia > 0 ? '(mayor a referencia)' : kmDiferencia < 0 ? '(menor a referencia)' : '(igual a referencia)'}`
+      );
+    } else {
+      console.log(
+        `⚠️ calculatePriceByKilometers: Año inválido - año: ${año}, añoActual: ${añoActual}. Aplicando descuento sobre diferencia respecto a ${kmBaseReferencia.toLocaleString()} km.`
+      );
     }
+  } else {
+    console.log(
+      `📊 Cálculo de ajuste por kilometraje: Km real: ${km.toLocaleString()}, Km base referencia: ${kmBaseReferencia.toLocaleString()}, Km diferencia: ${kmDiferencia.toLocaleString()}`
+    );
   }
 
-  // Aplicar la fórmula: Precio = precioBase × e^(-0.00000289 × kmExceso)
-  const deprecationRate = 0.00000289;
-  const adjustedPrice = basePrice * Math.exp(-deprecationRate * kmExceso);
+  // Aplicar la fórmula: Precio = precioBase × e^(-0.00000289 × kmDiferencia)
+  // Si kmDiferencia es negativo (menos km que 50,000), el precio será mayor
+  // Si kmDiferencia es positivo (más km que 50,000), el precio será menor
+  // Si kmDiferencia es cero (igual a 50,000), el precio será igual al base
+  // 
+  // Calcular tasa de depreciación para que 50,000 km = precioBase y 150,000 km = precioBase × 0.6742
+  // 13.350.000 = 19.800.000 × e^(-rate × 100,000)
+  // rate = -ln(13.350.000 / 19.800.000) / 100,000 = 0.00000394
+  const deprecationRate = 0.00000394; // Ajustada para que 150,000 km = 13.350.000 ARS cuando precioBase = 19.800.000 ARS
+  const adjustedPrice = basePrice * Math.exp(-deprecationRate * kmDiferencia);
+  const diferenciaPrecio = adjustedPrice - basePrice;
+  const porcentajeAjuste = (diferenciaPrecio / basePrice) * 100;
+
+  if (kmDiferencia === 0) {
+    console.log(
+      `✅ calculatePriceByKilometers: El vehículo tiene exactamente el kilometraje de referencia (${kmBaseReferencia.toLocaleString()} km). Precio base: ${basePrice.toLocaleString()} ARS, Precio ajustado: ${adjustedPrice.toLocaleString()} ARS`
+    );
+  } else if (kmDiferencia < 0) {
+    console.log(
+      `✅ calculatePriceByKilometers: Ajuste aplicado (menor kilometraje que referencia) - Precio base: ${basePrice.toLocaleString()} ARS, Precio ajustado: ${adjustedPrice.toLocaleString()} ARS, Incremento: ${diferenciaPrecio.toLocaleString()} ARS (+${Math.abs(porcentajeAjuste).toFixed(2)}%)`
+    );
+  } else {
+    console.log(
+      `✅ calculatePriceByKilometers: Ajuste aplicado (mayor kilometraje que referencia) - Precio base: ${basePrice.toLocaleString()} ARS, Precio ajustado: ${adjustedPrice.toLocaleString()} ARS, Descuento: ${Math.abs(diferenciaPrecio).toLocaleString()} ARS (${porcentajeAjuste.toFixed(2)}%)`
+    );
+  }
 
   // Redondear a 2 decimales
   return Math.round(adjustedPrice * 100) / 100;

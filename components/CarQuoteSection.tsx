@@ -8,6 +8,10 @@ import type { Brand, Model, Group, YearPrice } from "@/types/car";
 import { calculatePriceByKilometers } from "@/lib/car-quote";
 import { useDollarBlue } from "@/hooks/useDollarBlue";
 import PhoneInput from "@/components/PhoneInput";
+import {
+  getPriceAdjustment,
+  applyPriceAdjustment,
+} from "@/constants/priceAdjustments";
 
 interface CarFormData {
   marca: string;
@@ -380,22 +384,79 @@ export default function CarQuoteSection() {
       updatedFormData.precio = "0";
     }
 
+    // Aplicar ajuste de precio según marca, modelo y año (antes de convertir a pesos)
+    let precioAjustadoUSD = precioBaseUSD;
+    if (formData.marca && formData.modelo && formData.año && precioBaseUSD > 0) {
+      const año = parseInt(formData.año);
+      if (!isNaN(año)) {
+        try {
+          console.log(
+            `🔍 Buscando ajuste por año para: ${formData.marca} ${formData.modelo} ${año}`
+          );
+          const adjustment = await getPriceAdjustment(
+            formData.marca,
+            formData.modelo,
+            año
+          );
+
+          if (adjustment !== null) {
+            console.log(
+              `📈 Porcentaje aplicado: ${adjustment > 0 ? "+" : ""}${adjustment}%`
+            );
+
+            const precioConAjuste = applyPriceAdjustment(
+              precioBaseUSD,
+              adjustment
+            );
+            if (precioConAjuste !== null) {
+              precioAjustadoUSD = precioConAjuste;
+              console.log(
+                `✅ Precio con el % aplicado: ${precioAjustadoUSD} USD (antes: ${precioBaseUSD} USD)`
+              );
+            }
+          } else {
+            console.log(
+              `ℹ️ No se encontró ajuste por año para ${formData.marca} ${formData.modelo} ${año}, usando precio base`
+            );
+          }
+        } catch (error) {
+          console.warn(
+            "Error al obtener ajuste de precio, usando precio base:",
+            error
+          );
+        }
+      }
+    } else {
+      console.log(
+        `⚠️ No se puede aplicar ajuste por año - marca: ${formData.marca}, modelo: ${formData.modelo}, año: ${formData.año}, precioBaseUSD: ${precioBaseUSD}`
+      );
+    }
+
     // Obtener cotización del dólar blue
     const cotizacionDolar = dollarBlue?.venta || 1200;
 
     // Calcular las tres cotizaciones
-    // 1. Precio base en pesos (precio USD * 1000 * cotización dólar)
-    let precioBasePesos = precioBaseUSD * 1000 * cotizacionDolar;
+    // 1. Precio base en pesos (precio USD ajustado * 1000 * cotización dólar)
+    let precioBasePesos = precioAjustadoUSD * 1000 * cotizacionDolar;
 
     // Aplicar ajuste por kilometraje si está disponible
     if (formData.kilometraje && formData.año && precioBasePesos > 0) {
+      console.log(
+        `🔍 Aplicando ajuste por kilometraje - Precio antes: ${precioBasePesos.toLocaleString()} ARS, Kilometraje: ${formData.kilometraje} km, Año: ${formData.año}`
+      );
       const precioConAjusteKm = calculatePriceByKilometers(
         precioBasePesos,
         formData.kilometraje,
         formData.año
       );
       precioBasePesos = precioConAjusteKm;
-      console.log(`📏 Ajuste por kilometraje aplicado: ${formData.kilometraje} km`);
+      console.log(
+        `📏 Precio después del ajuste por kilometraje: ${precioBasePesos.toLocaleString()} ARS`
+      );
+    } else {
+      console.log(
+        `⚠️ No se aplica ajuste por kilometraje - kilometraje: ${formData.kilometraje}, año: ${formData.año}, precioBasePesos: ${precioBasePesos}`
+      );
     }
 
     // 2. Compra Inmediata: precio base

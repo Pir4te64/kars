@@ -79,7 +79,7 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
   // Si no, calcular con la misma lógica que la página de resultado
   const cotizacionDolar = data.cotizacionDolar || 1200;
 
-  let precioConsignacionARS: string;
+  let precioConsignacionARS: number;
   let precioConsignacionUSD: string;
   let precioPermutaARS: number;
   let precioPermutaUSD: string;
@@ -89,13 +89,16 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
   if (data.precio_consignacion_ars && data.precio_consignacion_usd &&
       data.precio_permuta_ars && data.precio_permuta_usd &&
       data.precio_inmediata_ars && data.precio_inmediata_usd) {
-    // Usar valores ya calculados (ya vienen formateados)
-    precioConsignacionARS = data.precio_consignacion_ars.replace(/[^0-9]/g, '');
-    precioConsignacionUSD = data.precio_consignacion_usd.replace(/[^0-9.,]/g, '');
-    precioPermutaARS = parseFloat(data.precio_permuta_ars.replace(/[^0-9]/g, ''));
-    precioPermutaUSD = data.precio_permuta_usd.replace(/[^0-9.,]/g, '');
-    precioInmediataARS = parseFloat(data.precio_inmediata_ars.replace(/[^0-9]/g, ''));
-    precioInmediataUSD = data.precio_inmediata_usd.replace(/[^0-9.,]/g, '');
+    // Usar valores ya calculados (ya vienen formateados como "$7.394.097 ARS" o "$4,979 USD")
+    // Extraer solo los números para ARS (eliminar puntos, comas, símbolos de moneda, etc.)
+    precioConsignacionARS = parseFloat(data.precio_consignacion_ars.replace(/[^0-9]/g, '')) || 0;
+    precioPermutaARS = parseFloat(data.precio_permuta_ars.replace(/[^0-9]/g, '')) || 0;
+    precioInmediataARS = parseFloat(data.precio_inmediata_ars.replace(/[^0-9]/g, '')) || 0;
+    
+    // Para USD, mantener el formato con comas si existe, pero extraer números
+    precioConsignacionUSD = data.precio_consignacion_usd.replace(/[^0-9.,]/g, '').replace(/,/g, '');
+    precioPermutaUSD = data.precio_permuta_usd.replace(/[^0-9.,]/g, '').replace(/,/g, '');
+    precioInmediataUSD = data.precio_inmediata_usd.replace(/[^0-9.,]/g, '').replace(/,/g, '');
   } else {
     // Calcular con la misma lógica que la página de resultado:
     // 1. Precio * 1000 = precio real en pesos
@@ -238,7 +241,7 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
                                                                         <td style="color: #ffffff; font-size: 14px; font-weight: 700; width: 35%;">Consignación</td>
                                                                         <td style="text-align: right; width: 65%;">
                                                                             <div style="color: #ffffff; font-size: 18px; font-weight: 700;">
-                                                                                $${parseFloat(precioConsignacionARS).toLocaleString('es-AR')} ARS
+                                                                                $${precioConsignacionARS.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} ARS
                                                                             </div>
                                                                             <div style="color: #cccccc; font-size: 12px; margin-top: 2px;">
                                                                                 USD $${precioConsignacionUSD}

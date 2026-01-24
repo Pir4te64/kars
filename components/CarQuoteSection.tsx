@@ -524,6 +524,15 @@ export default function CarQuoteSection() {
     localStorage.removeItem("quoteData");
     localStorage.setItem("quoteData", JSON.stringify(updatedFormData));
 
+    // Navegar a la página de resultado
+    // El email y el lead se guardarán desde la página de resultados
+    // usando los precios exactos que el usuario ve en pantalla
+    router.push("/cotizar/resultado");
+    setIsSendingEmail(false);
+    return;
+
+    // CÓDIGO ELIMINADO - El guardado de lead y envío de email se hace desde la página de resultados
+    /*
     // Guardar lead en la base de datos con las tres cotizaciones
     try {
       console.log("�� Guardando lead con las tres cotizaciones...");
@@ -604,9 +613,6 @@ export default function CarQuoteSection() {
       if (!response.ok) {
         throw new Error(data.error || "Error al enviar el email");
       }
-
-      // Si todo está bien, navegar a la página de resultado
-      router.push("/cotizar/resultado");
     } catch (error) {
       setEmailError(
         error instanceof Error ? error.message : "Error al enviar el email"
@@ -614,6 +620,7 @@ export default function CarQuoteSection() {
     } finally {
       setIsSendingEmail(false);
     }
+    */
   };
 
   const renderStep1 = () => (

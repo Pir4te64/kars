@@ -6,7 +6,6 @@ import * as htmlToImage from "html-to-image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useDollarBlue } from "@/hooks/useDollarBlue";
-import { useEmailJS } from "@/hooks/useEmailJS";
 import { toast } from "sonner";
 import {
   getPriceAdjustment,
@@ -32,7 +31,6 @@ interface QuoteData {
 export default function QuoteResultPage() {
   const cardRef = useRef<HTMLDivElement>(null);
   const [quoteData, setQuoteData] = useState<QuoteData | null>(null);
-  const [userEmail, setUserEmail] = useState("");
   const [tiposVenta, setTiposVenta] = useState<{
     inmediata: { pesos: number; dolares: number };
     consignacion: { pesos: number; dolares: number };
@@ -50,8 +48,6 @@ export default function QuoteResultPage() {
     error: dollarError,
     formatDollarBlue,
   } = useDollarBlue();
-
-  const { sendQuoteEmail } = useEmailJS();
 
   useEffect(() => {
     const getQuoteData = (): QuoteData => {
@@ -286,6 +282,138 @@ export default function QuoteResultPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quoteData, dollarBlue]);
 
+  // Enviar email automáticamente cuando los resultados estén listos
+  useEffect(() => {
+    const enviarEmailAutomatico = async () => {
+      // Solo enviar si:
+      // 1. Hay datos de cotización
+      // 2. Hay email en quoteData
+      // 3. Los tipos de venta están calculados
+      // 4. Hay cotización del dólar
+      // 5. No se ha enviado ya (usar una bandera para evitar múltiples envíos)
+      if (
+        quoteData &&
+        quoteData.email &&
+        quoteData.email.includes("@") &&
+        tiposVenta &&
+        dollarBlue &&
+        dollarBlue.venta
+      ) {
+        // Evitar múltiples envíos usando una bandera en sessionStorage
+        const emailEnviadoKey = `email_enviado_${quoteData.marca}_${quoteData.modelo}_${quoteData.año}_${quoteData.kilometraje}`;
+        const emailYaEnviado = sessionStorage.getItem(emailEnviadoKey);
+        
+        if (!emailYaEnviado) {
+          console.log("📧 Enviando email automáticamente...");
+          
+          try {
+            const emailBody = {
+              email: quoteData.email,
+              nombre: quoteData.nombre || "",
+              marca: quoteData.marca,
+              modelo: quoteData.modelo,
+              grupo: quoteData.grupo,
+              año: quoteData.año,
+              precio: quoteData.precio,
+              cotizacionDolar: dollarBlue.venta,
+              kilometraje: quoteData.kilometraje || "",
+              ubicacion: quoteData.ubicacion || "",
+              // Enviar las tres cotizaciones al email también
+              precio_inmediata_ars: formatearPrecioPesos(
+                tiposVenta.inmediata.pesos
+              ),
+              precio_inmediata_usd: formatearPrecioDolares(
+                tiposVenta.inmediata.dolares
+              ),
+              precio_consignacion_ars: formatearPrecioPesos(
+                tiposVenta.consignacion.pesos
+              ),
+              precio_consignacion_usd: formatearPrecioDolares(
+                tiposVenta.consignacion.dolares
+              ),
+              precio_permuta_ars: formatearPrecioPesos(tiposVenta.permuta.pesos),
+              precio_permuta_usd: formatearPrecioDolares(
+                tiposVenta.permuta.dolares
+              ),
+              dolar_blue: formatDollarBlue(),
+            };
+
+            const response = await fetch("/api/send-quote-email", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(emailBody),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+              throw new Error(data.error || "Error al enviar el email");
+            }
+
+            // Marcar como enviado
+            sessionStorage.setItem(emailEnviadoKey, "true");
+
+            // Guardar lead en Supabase con los precios exactos que se muestran en pantalla
+            try {
+              console.log("💾 Guardando lead en Supabase con precios finales...");
+              const leadResponse = await fetch("/api/leads", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  nombre: quoteData.nombre || "",
+                  email: quoteData.email,
+                  telefono: "", // El teléfono no se captura en la página de resultados
+                  ubicacion: quoteData.ubicacion || "",
+                  marca: quoteData.marca,
+                  modelo: quoteData.modelo,
+                  grupo: quoteData.grupo,
+                  año: quoteData.año,
+                  kilometraje: quoteData.kilometraje || "",
+                  precio: quoteData.precio,
+                  // Usar los valores numéricos exactos de tiposVenta (los que se muestran en pantalla)
+                  // Convertir a strings para Supabase (que espera VARCHAR/TEXT)
+                  precio_inmediata_ars: tiposVenta.inmediata.pesos.toFixed(0),
+                  precio_inmediata_usd: tiposVenta.inmediata.dolares.toFixed(2),
+                  precio_consignacion_ars: tiposVenta.consignacion.pesos.toFixed(0),
+                  precio_consignacion_usd: tiposVenta.consignacion.dolares.toFixed(2),
+                  precio_permuta_ars: tiposVenta.permuta.pesos.toFixed(0),
+                  precio_permuta_usd: tiposVenta.permuta.dolares.toFixed(2),
+                  cotizacion_dolar: dollarBlue.venta.toString(),
+                }),
+              });
+
+              const leadData = await leadResponse.json();
+
+              if (!leadResponse.ok) {
+                console.warn(
+                  "⚠️ Error al guardar lead en Supabase:",
+                  leadData.error || "Error desconocido"
+                );
+              } else {
+                console.log("✅ Lead guardado exitosamente en Supabase");
+              }
+            } catch (leadError) {
+              console.error("❌ Error al guardar lead:", leadError);
+            }
+
+            toast.success("¡Cotización enviada a tu email!");
+            console.log("✅ Email enviado automáticamente");
+          } catch (error) {
+            console.error("❌ Error al enviar email automáticamente:", error);
+            // No mostrar error al usuario para no interrumpir la experiencia
+          }
+        }
+      }
+    };
+
+    enviarEmailAutomatico();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quoteData, tiposVenta, dollarBlue]);
+
   const formatearPrecio = (precio: number) => {
     return precio.toFixed(0);
   };
@@ -314,56 +442,7 @@ export default function QuoteResultPage() {
     }).format(precio);
   };
 
-  // Manejar envío de email
-  const handleSendEmail = async () => {
-    if (!userEmail || !userEmail.includes("@")) {
-      toast.error("Por favor ingresa un email válido");
-      return;
-    }
-
-    if (!quoteData) {
-      toast.error("No hay datos de cotización disponibles");
-      return;
-    }
-
-    if (!tiposVenta) {
-      toast.error("Calculando precios, por favor espera...");
-      return;
-    }
-
-    const emailParams = {
-      to_email: userEmail,
-      from_name: "KARS - Tu concesionario de confianza",
-      marca: quoteData.marca,
-      modelo: quoteData.modelo,
-      grupo: quoteData.grupo,
-      año: quoteData.año,
-      precio_consignacion_usd: formatearPrecioDolares(
-        tiposVenta.consignacion.dolares
-      ),
-      precio_consignacion_ars: formatearPrecioPesos(
-        tiposVenta.consignacion.pesos
-      ),
-      precio_permuta_usd: formatearPrecioDolares(tiposVenta.permuta.dolares),
-      precio_permuta_ars: formatearPrecioPesos(tiposVenta.permuta.pesos),
-      precio_inmediata_usd: formatearPrecioDolares(
-        tiposVenta.inmediata.dolares
-      ),
-      precio_inmediata_ars: formatearPrecioPesos(tiposVenta.inmediata.pesos),
-      dolar_blue: dollarBlue ? formatDollarBlue() : "No disponible",
-    };
-
-    const success = await sendQuoteEmail(emailParams);
-
-    if (success) {
-      toast.success("¡Cotización enviada exitosamente!");
-      setUserEmail(""); // Limpiar el campo
-    } else {
-      toast.error(
-        "Error al enviar la cotización. Por favor intenta nuevamente."
-      );
-    }
-  };
+  // El email se envía automáticamente en el useEffect cuando los resultados están listos
 
   if (!quoteData) {
     return (

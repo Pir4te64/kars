@@ -110,7 +110,7 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
     const precioConsignacion = precioInmediata * 1.1; // +10%
     const precioPermuta = precioInmediata * 1.05; // +5%
 
-    precioConsignacionARS = precioConsignacion.toFixed(0);
+    precioConsignacionARS = precioConsignacion;
     precioConsignacionUSD = (precioConsignacion / cotizacionDolar).toFixed(0);
     precioPermutaARS = precioPermuta;
     precioPermutaUSD = (precioPermuta / cotizacionDolar).toFixed(0);
@@ -363,6 +363,17 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
                             <a href="${whatsappUrl}" style="display: inline-block; background-color: #25D366; color: #ffffff; text-decoration: none; padding: 10px 25px; border-radius: 25px; font-size: 14px; font-weight: 600; margin-bottom: 10px;">
                                 📱 ¿Tenés dudas? Escribinos al WhatsApp
                             </a>
+                        </td>
+                    </tr>
+
+                    <!-- Mensaje informativo -->
+                    <tr>
+                        <td style="padding: 20px 30px; background-color: #ffffff;">
+                            <div style="background-color: #e0f2fe; border: 1px solid #0284c7; border-radius: 8px; padding: 16px; text-align: center;">
+                                <p style="margin: 0; color: #0c4a6e; font-size: 13px; line-height: 1.6;">
+                                    Este valor es una referencia inicial. Un asesor de KARS te va a contactar para evaluar tu caso y ofrecerte la mejor opción
+                                </p>
+                            </div>
                         </td>
                     </tr>
 

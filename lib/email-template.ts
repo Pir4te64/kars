@@ -137,6 +137,35 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light" />
+    <meta name="supported-color-schemes" content="light" />
+    <style>
+        :root { color-scheme: light; }
+        html, body { 
+            color-scheme: light;
+            background-color: #f4f4f4 !important;
+            color: #1a1a1a !important;
+        }
+        @media (prefers-color-scheme: dark) {
+            html, body { 
+                background-color: #f4f4f4 !important;
+                color: #1a1a1a !important;
+            }
+            /* Forzar colores claros en todos los elementos principales */
+            table, td, div, p, h1, h2, h3, span, a {
+                background-color: inherit !important;
+                color: inherit !important;
+            }
+            /* Prevenir inversión de colores en tablas */
+            table[role="presentation"] {
+                background-color: #ffffff !important;
+            }
+            /* Mantener colores de fondo explícitos */
+            td[style*="background-color"] {
+                background-color: inherit !important;
+            }
+        }
+    </style>
     <title>Tu cotización de KARS</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4;">

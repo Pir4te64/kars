@@ -739,6 +739,15 @@ export default function QuoteResultPage() {
                 </div>
               </div>
             </div>
+
+            {/* Mensaje informativo */}
+            <div className="mt-6 pt-6 border-t border-slate-200">
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                <p className="text-sm text-slate-700 text-center leading-relaxed">
+                  Este valor es una referencia inicial. Un asesor de KARS te va a contactar para evaluar tu caso y ofrecerte la mejor opción
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

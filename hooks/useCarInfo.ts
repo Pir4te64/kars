@@ -250,15 +250,15 @@ export function useCarInfo(): UseCarInfoReturn {
         console.log("Datos de modelos recibidos:", data);
 
         // Mapear los datos de InfoAuto al formato esperado
-        // El backend devuelve: { description, codia, brand: {id, name}, group: {id, name}, year_from, year_to, ... }
+        // El backend puede devolver year_from/year_to o prices_from/prices_to (formato InfoAuto)
         const mappedModels = data.map((model: any) => ({
           id: model.codia,
           description: model.description || model.name || "",
           codia: model.codia?.toString() || String(model.codia),
           name: model.description || model.name || "",
           brand_id: model.brand?.id || model.brand_id,
-          year_from: model.year_from ?? null, // Año desde el cual el modelo está disponible
-          year_to: model.year_to ?? null, // Año hasta el cual el modelo está disponible
+          year_from: model.year_from ?? model.prices_from ?? null,
+          year_to: model.year_to ?? model.prices_to ?? null,
         }));
         
         console.log("🟢 Modelos mapeados:", mappedModels);

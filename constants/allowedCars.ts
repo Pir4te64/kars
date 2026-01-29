@@ -207,12 +207,13 @@ export function likeMatch(str1: string, str2: string): boolean {
   // Coincidencia exacta
   if (normalized1 === normalized2) return true;
 
-  // Una contiene a la otra (para casos como "focus-1.6" vs "focus")
+  // Una contiene a la otra (para casos como "focus-1.6" vs "focus", "Ka" vs "KA 1.0 FLY")
   if (normalized1.includes(normalized2) || normalized2.includes(normalized1)) {
-    // Solo aceptar si la longitud del más corto es al menos 3 caracteres
-    // para evitar coincidencias muy cortas (ej: "a" vs "am")
+    // Solo aceptar si la longitud del más corto es al menos 2 caracteres
+    // para evitar coincidencias de un solo carácter (ej: "a" vs "am")
+    // 2 caracteres permite que "Ka" coincida con "KA 1.0 AMBIENTE", etc.
     const minLength = Math.min(normalized1.length, normalized2.length);
-    if (minLength >= 3) {
+    if (minLength >= 2) {
       return true;
     }
   }

@@ -14,7 +14,7 @@ const QuoteResult = () => {
       return JSON.parse(savedData);
     }
 
-    // Datos por defecto si no hay datos guardados 
+    // Datos por defecto si no hay datos guardados  
     return {
       marca: "Chevrolet",
       grupo: "Onix",

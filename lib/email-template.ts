@@ -259,20 +259,20 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
 
                                         <!-- Tres tarjetas de precios horizontales -->
                                         <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                                            <!-- Consignación -->
+                                            <!-- Consignación (fondo claro + texto oscuro para Gmail iOS modo oscuro) -->
                                             <tr>
                                                 <td style="padding-bottom: 8px;">
-                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border-radius: 8px;">
+                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #e8e8e8; border: 1px solid #cccccc; border-radius: 8px;">
                                                         <tr>
-                                                            <td style="padding: 12px;">
+                                                            <td style="padding: 12px; background-color: #e8e8e8;">
                                                                 <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                                                     <tr>
-                                                                        <td style="color: #ffffff; font-size: 14px; font-weight: 700; width: 35%;">Consignación</td>
-                                                                        <td style="text-align: right; width: 65%;">
-                                                                            <div style="color: #ffffff; font-size: 18px; font-weight: 700;">
+                                                                        <td style="color: #1a1a1a; font-size: 14px; font-weight: 700; width: 35%; background-color: #e8e8e8;">Consignación</td>
+                                                                        <td style="text-align: right; width: 65%; background-color: #e8e8e8;">
+                                                                            <div style="color: #1a1a1a; font-size: 18px; font-weight: 700;">
                                                                                 $${precioConsignacionARS.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} ARS
                                                                             </div>
-                                                                            <div style="color: #cccccc; font-size: 12px; margin-top: 2px;">
+                                                                            <div style="color: #555555; font-size: 12px; margin-top: 2px;">
                                                                                 USD $${precioConsignacionUSD}
                                                                             </div>
                                                                         </td>
@@ -284,20 +284,20 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
                                                 </td>
                                             </tr>
 
-                                            <!-- Permuta -->
+                                            <!-- Permuta (fondo claro + texto oscuro para Gmail iOS modo oscuro) -->
                                             <tr>
                                                 <td style="padding-bottom: 8px;">
-                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); border-radius: 8px;">
+                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #e8e8e8; border: 1px solid #cccccc; border-radius: 8px;">
                                                         <tr>
-                                                            <td style="padding: 12px;">
+                                                            <td style="padding: 12px; background-color: #e8e8e8;">
                                                                 <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                                                     <tr>
-                                                                        <td style="color: #ffffff; font-size: 14px; font-weight: 700; width: 35%;">Permuta</td>
-                                                                        <td style="text-align: right; width: 65%;">
-                                                                            <div style="color: #ffffff; font-size: 18px; font-weight: 700;">
+                                                                        <td style="color: #1a1a1a; font-size: 14px; font-weight: 700; width: 35%; background-color: #e8e8e8;">Permuta</td>
+                                                                        <td style="text-align: right; width: 65%; background-color: #e8e8e8;">
+                                                                            <div style="color: #1a1a1a; font-size: 18px; font-weight: 700;">
                                                                                 $${precioPermutaARS.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} ARS
                                                                             </div>
-                                                                            <div style="color: #cccccc; font-size: 12px; margin-top: 2px;">
+                                                                            <div style="color: #555555; font-size: 12px; margin-top: 2px;">
                                                                                 USD $${precioPermutaUSD}
                                                                             </div>
                                                                         </td>
@@ -309,20 +309,20 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
                                                 </td>
                                             </tr>
 
-                                            <!-- Compra Inmediata -->
+                                            <!-- Compra Inmediata (fondo claro + texto oscuro para Gmail iOS modo oscuro) -->
                                             <tr>
                                                 <td>
-                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); border-radius: 8px;">
+                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #e8e8e8; border: 1px solid #cccccc; border-radius: 8px;">
                                                         <tr>
-                                                            <td style="padding: 12px;">
+                                                            <td style="padding: 12px; background-color: #e8e8e8;">
                                                                 <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                                                     <tr>
-                                                                        <td style="color: #ffffff; font-size: 14px; font-weight: 700; width: 35%;">Compra inmediata</td>
-                                                                        <td style="text-align: right; width: 65%;">
-                                                                            <div style="color: #ffffff; font-size: 18px; font-weight: 700;">
+                                                                        <td style="color: #1a1a1a; font-size: 14px; font-weight: 700; width: 35%; background-color: #e8e8e8;">Compra inmediata</td>
+                                                                        <td style="text-align: right; width: 65%; background-color: #e8e8e8;">
+                                                                            <div style="color: #1a1a1a; font-size: 18px; font-weight: 700;">
                                                                                 $${precioInmediataARS.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} ARS
                                                                             </div>
-                                                                            <div style="color: #cccccc; font-size: 12px; margin-top: 2px;">
+                                                                            <div style="color: #555555; font-size: 12px; margin-top: 2px;">
                                                                                 USD $${precioInmediataUSD}
                                                                             </div>
                                                                         </td>

@@ -304,6 +304,9 @@ export default function QuoteResultPage() {
         const emailYaEnviado = sessionStorage.getItem(emailEnviadoKey);
         
         if (!emailYaEnviado) {
+          // Marcar como enviado ANTES del fetch para evitar doble envío
+          // (el useEffect puede ejecutarse dos veces por Strict Mode o por cambios de deps)
+          sessionStorage.setItem(emailEnviadoKey, "true");
           console.log("📧 Enviando email automáticamente...");
           
           try {
@@ -351,9 +354,6 @@ export default function QuoteResultPage() {
             if (!response.ok) {
               throw new Error(data.error || "Error al enviar el email");
             }
-
-            // Marcar como enviado
-            sessionStorage.setItem(emailEnviadoKey, "true");
 
             // Guardar lead en Supabase con los precios exactos que se muestran en pantalla
             try {
@@ -404,6 +404,8 @@ export default function QuoteResultPage() {
             console.log("✅ Email enviado automáticamente");
           } catch (error) {
             console.error("❌ Error al enviar email automáticamente:", error);
+            // Si falla, quitar la marca para permitir reintento al recargar
+            sessionStorage.removeItem(emailEnviadoKey);
             // No mostrar error al usuario para no interrumpir la experiencia
           }
         }

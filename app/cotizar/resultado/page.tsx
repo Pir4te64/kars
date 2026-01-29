@@ -9,7 +9,6 @@ import { useDollarBlue } from "@/hooks/useDollarBlue";
 import { toast } from "sonner";
 import {
   getPriceAdjustment,
-  getPriceAdjustmentSync,
   applyPriceAdjustment,
 } from "@/constants/priceAdjustments";
 import { calculatePriceByKilometers } from "@/lib/car-quote";
@@ -164,57 +163,8 @@ export default function QuoteResultPage() {
     return precioEnPesos / dollarBlue.venta;
   };
 
-  // Determinar si se debe mostrar la opción de compra inmediata
-  // Reglas:
-  // - 2008-2018: mostrar todas las opciones (compra inmediata, consignación, permuta)
-  // - 2019 en adelante O precio >= 15000 USD: mostrar solo permuta y consignación (NO compra inmediata)
+  // Mostrar siempre las tres opciones (consignación, permuta, compra inmediata) para todos los años
   const debeMostrarCompraInmediata = (): boolean => {
-    if (!quoteData?.año) return true; // Por defecto mostrar si no hay año
-
-    const año = parseInt(quoteData.año);
-    if (isNaN(año)) return true; // Por defecto mostrar si el año no es válido
-
-    // Si el año está entre 2008 y 2018, mostrar compra inmediata
-    if (año >= 2008 && año <= 2018) {
-      return true;
-    }
-
-    // Si el año es 2019 o superior, verificar el precio
-    if (año >= 2019) {
-      const precioString = quoteData?.precio || "0";
-      const precioRaw = parseFloat(precioString);
-
-      if (!precioRaw || precioRaw === 0 || isNaN(precioRaw)) {
-        return false; // Si no hay precio válido, no mostrar compra inmediata
-      }
-
-      // Aplicar ajuste de precio si existe (usar versión síncrona para render rápido)
-      let precioAjustado = precioRaw;
-      if (quoteData?.marca && quoteData?.modelo) {
-        const adjustment = getPriceAdjustmentSync(
-          quoteData.marca,
-          quoteData.modelo,
-          año
-        );
-
-        if (adjustment !== null) {
-          const precioConAjuste = applyPriceAdjustment(precioRaw, adjustment);
-          if (precioConAjuste !== null) {
-            precioAjustado = precioConAjuste;
-          }
-        }
-      }
-
-      // Si el precio ajustado es >= 15000 USD, NO mostrar compra inmediata
-      if (precioAjustado >= 15000) {
-        return false;
-      }
-
-      // Si el precio es < 15000 USD, mostrar compra inmediata
-      return true;
-    }
-
-    // Para años anteriores a 2008, mostrar compra inmediata
     return true;
   };
 

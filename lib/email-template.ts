@@ -377,7 +377,7 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
                                                 ⚠️ Oferta válida solo por 7 días
                                             </p>
                                         </div>
-                                        <a href="https://kars-sigma.vercel.app/cotizar/resultado" style="display: inline-block; background: linear-gradient(135deg, #0066FF 0%, #0052CC 100%); color: #ffffff; text-decoration: none; padding: 14px 35px; border-radius: 50px; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);">
+                                        <a href="https://tidycal.com/kars/cotice-mi-auto" style="display: inline-block; background: linear-gradient(135deg, #0066FF 0%, #0052CC 100%); color: #ffffff; text-decoration: none; padding: 14px 35px; border-radius: 50px; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);">
                                             Agendar Inspección
                                         </a>
                                     </td>

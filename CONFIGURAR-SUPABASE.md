@@ -1,4 +1,4 @@
-# 🚀 Configuración de Supabase para Leads
+ # 🚀 Configuración de Supabase para Leads
 
 ## ⚠️ IMPORTANTE: Esto es OBLIGATORIO para que funcionen los leads
 

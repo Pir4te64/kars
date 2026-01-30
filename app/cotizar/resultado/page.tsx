@@ -163,7 +163,13 @@ export default function QuoteResultPage() {
     return precioEnPesos / dollarBlue.venta;
   };
 
-  // Mostrar siempre las tres opciones (consignación, permuta, compra inmediata) para todos los años
+  // Si el año es 2019 en adelante, solo mostrar consignación (no permuta ni compra inmediata)
+  const soloConsignacion = ((): boolean => {
+    if (!quoteData?.año) return false;
+    const anio = parseInt(quoteData.año, 10);
+    return !isNaN(anio) && anio >= 2019;
+  })();
+
   const debeMostrarCompraInmediata = (): boolean => {
     return true;
   };
@@ -560,49 +566,50 @@ export default function QuoteResultPage() {
                       <p className="text-xs text-white/90">Cobras al vender</p>
                     </div>
 
-                    {/* Permuta - 5% más que Inmediata */}
-                    <div className="bg-gradient-to-br from-slate-700 via-slate-600 to-slate-700 rounded-lg p-3 text-white shadow-md">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="text-sm font-bold">Permuta</h4>
-                        <span className="text-xs bg-white/30 px-2 py-0.5 rounded-full font-semibold">
-                          +5%
-                        </span>
-                      </div>
-                      <div className="mb-1">
-                        {tiposVenta ? (
-                          dollarBlue && !dollarLoading && !dollarError ? (
-                            <>
-                              <div className="text-sm font-bold text-white/90">
-                                {formatearPrecioPesos(tiposVenta.permuta.pesos)}{" "}
+                    {/* Permuta - 5% más que Inmediata. No mostrar si año >= 2019 (solo consignación) */}
+                    {!soloConsignacion && (
+                      <div className="bg-gradient-to-br from-slate-700 via-slate-600 to-slate-700 rounded-lg p-3 text-white shadow-md">
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="text-sm font-bold">Permuta</h4>
+                          <span className="text-xs bg-white/30 px-2 py-0.5 rounded-full font-semibold">
+                            +5%
+                          </span>
+                        </div>
+                        <div className="mb-1">
+                          {tiposVenta ? (
+                            dollarBlue && !dollarLoading && !dollarError ? (
+                              <>
+                                <div className="text-sm font-bold text-white/90">
+                                  {formatearPrecioPesos(tiposVenta.permuta.pesos)}{" "}
+                                  ARS
+                                </div>
+                                <div className="text-xl font-black">
+                                  {formatearPrecioDolares(
+                                    tiposVenta.permuta.dolares
+                                  )}{" "}
+                                  USD
+                                </div>
+                              </>
+                            ) : (
+                              <div className="text-xl font-black">
+                                {formatearPrecioPesos(tiposVenta.permuta.pesos)}
                                 ARS
                               </div>
-                              <div className="text-xl font-black">
-                                {formatearPrecioDolares(
-                                  tiposVenta.permuta.dolares
-                                )}{" "}
-                                USD
-                              </div>
-                            </>
+                            )
                           ) : (
-                            <div className="text-xl font-black">
-                              {formatearPrecioPesos(tiposVenta.permuta.pesos)}
-                              ARS
+                            <div className="text-sm text-white/70">
+                              Cargando...
                             </div>
-                          )
-                        ) : (
-                          <div className="text-sm text-white/70">
-                            Cargando...
-                          </div>
-                        )}
+                          )}
+                        </div>
+                        <p className="text-xs text-white/90">
+                          Cambia tu auto por otro
+                        </p>
                       </div>
-                      <p className="text-xs text-white/90">
-                        Cambia tu auto por otro
-                      </p>
-                    </div>
+                    )}
 
-                    {/* Compra Inmediata - Precio de referencia */}
-                    {/* Solo mostrar si cumple las condiciones: 2008-2018 o (2019+ y precio < 15000 USD) */}
-                    {debeMostrarCompraInmediata() && (
+                    {/* Compra Inmediata - Precio de referencia. No mostrar si año >= 2019 (solo consignación) */}
+                    {!soloConsignacion && debeMostrarCompraInmediata() && (
                       <div className="bg-gradient-to-br from-slate-700 via-slate-600 to-slate-700 rounded-lg p-3 text-white shadow-md">
                         <div className="flex items-center justify-between mb-2">
                           <h4 className="text-sm font-bold">

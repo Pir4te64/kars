@@ -126,6 +126,10 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
 
   const ubicacion = escapeHtml(data.ubicacion || "");
 
+  // Si el año es 2019 en adelante, en el email solo mostramos consignación (no permuta ni compra inmediata)
+  const anioNum = data.año ? parseInt(String(data.año), 10) : 0;
+  const soloConsignacion = !isNaN(anioNum) && anioNum >= 2019;
+
   // Construir el título con los datos reales
   const titulo = `Agendá una visita para vender tu ${marca} ${modelo} ${año}`;
 
@@ -279,11 +283,11 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
                                                                     </tr>
                                                                 </table>
                                                             </td>
-                                                        </tr>
-                                                    </table>
+                                            </tr>
+                                        </table>
                                                 </td>
                                             </tr>
-
+                                            ${!soloConsignacion ? `
                                             <!-- Permuta (fondo claro + texto oscuro para Gmail iOS modo oscuro) -->
                                             <tr>
                                                 <td style="padding-bottom: 8px;">
@@ -333,6 +337,7 @@ export function generateQuoteEmailHTML(data: QuoteEmailData): string {
                                                     </table>
                                                 </td>
                                             </tr>
+                                            ` : ''}
                                         </table>
                                     </td>
                                 </tr>

@@ -1,0 +1,115 @@
+-- Migración de Curvas de Depreciación 2019-2026
+-- Generado automáticamente desde autos2019-2026.csv
+-- Fecha: 2026-02-25
+--
+-- 2026 = 0% (año base, sin depreciación)
+-- Años anteriores = porcentaje negativo (más viejo = más depreciación)
+--
+-- Los datos existentes (2008-2018) NO se modifican.
+-- Se agregan/actualizan las claves 2019-2026 al JSONB existente usando ||.
+
+-- Chevrolet Cruze (base: 2023, precio medio: $32.000.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -32.03,   "2020": -34.84,   "2021": -15.62,   "2022": -15.62,   "2023": 0}'::jsonb
+WHERE LOWER(name) LIKE '%cruze%' OR LOWER(description) LIKE '%cruze%';
+
+-- Chevrolet joy (base: 2023, precio medio: $21.900.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -31.96,   "2020": -33.79,   "2021": -22.37,   "2022": -42.92,   "2023": 0}'::jsonb
+WHERE LOWER(name) LIKE '%joy%' OR LOWER(description) LIKE '%joy%';
+
+-- Chevrolet Montana (base: 2026, precio medio: $40.000.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -40,   "2020": -41.25,   "2021": -34.37,   "2022": -27.5,   "2023": -20.62,   "2024": -13.75,   "2025": -6.87,   "2026": 0}'::jsonb
+WHERE LOWER(name) LIKE '%montana%' OR LOWER(description) LIKE '%montana%';
+
+-- Chevrolet Onix (base: 2026, precio medio: $27.500.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -36.36,   "2020": -25.45,   "2021": -29.09,   "2022": -25.45,   "2023": -17.27,   "2024": -9.09,   "2025": -4.54,   "2026": 0}'::jsonb
+WHERE LOWER(name) LIKE '%onix%' OR LOWER(description) LIKE '%onix%';
+
+-- Chevrolet Prisma (base: 2020, precio medio: $17.350.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -9.51,   "2020": 0}'::jsonb
+WHERE LOWER(name) LIKE '%prisma%' OR LOWER(description) LIKE '%prisma%';
+
+-- Chevrolet Spin (base: 2026, precio medio: $35.000.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -45.71,   "2020": -33.71,   "2021": -29.14,   "2022": -24.57,   "2023": -20,   "2024": -13.33,   "2025": -6.67,   "2026": 0}'::jsonb
+WHERE LOWER(name) LIKE '%spin%' OR LOWER(description) LIKE '%spin%';
+
+-- Chevrolet Tracker (base: 2025, precio medio: $41.300.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -47.94,   "2020": -39.47,   "2021": -41.89,   "2022": -34.62,   "2023": -27.36,   "2024": -13.68,   "2025": 0}'::jsonb
+WHERE LOWER(name) LIKE '%tracker%' OR LOWER(description) LIKE '%tracker%';
+
+-- Ford EcoSport (base: 2023, precio medio: $29.000.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -27.59,   "2020": -24.14,   "2021": -17.24,   "2022": -8.62,   "2023": 0}'::jsonb
+WHERE LOWER(name) LIKE '%ecosport%' OR LOWER(description) LIKE '%ecosport%';
+
+-- Ford Fiesta Kinetic Design (base: 2020, precio medio: $18.540.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -5.04,   "2020": 0}'::jsonb
+WHERE LOWER(name) LIKE '%fiesta kinetic design%' OR LOWER(description) LIKE '%fiesta kinetic design%';
+
+-- Ford Ranger (base: 2025, precio medio: $53.500.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -40.19,   "2020": -42.06,   "2021": -31.78,   "2022": -30.84,   "2023": -4.67,   "2024": 2.8,   "2025": 0}'::jsonb
+WHERE LOWER(name) LIKE '%ranger%' OR LOWER(description) LIKE '%ranger%';
+
+-- Fiat 500 (base: 2021, precio medio: $29.000.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -11.62,   "2020": -5.81,   "2021": 0}'::jsonb
+WHERE LOWER(name) LIKE '%500%' OR LOWER(description) LIKE '%500%';
+
+-- Fiat Argo (base: 2025, precio medio: $24.500.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -22.45,   "2020": -24.49,   "2021": -36.73,   "2022": -14.29,   "2023": -2.04,   "2024": -1.02,   "2025": 0}'::jsonb
+WHERE LOWER(name) LIKE '%argo%' OR LOWER(description) LIKE '%argo%';
+
+-- Fiat Cronos (base: 2025, precio medio: $28.000.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -35.71,   "2020": -32.14,   "2021": -30.36,   "2022": -26.79,   "2023": -21.43,   "2024": -1.79,   "2025": 0}'::jsonb
+WHERE LOWER(name) LIKE '%cronos%' OR LOWER(description) LIKE '%cronos%';
+
+-- Fiat Fiorino (base: 2025, precio medio: $22.500.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -24.44,   "2020": -18.22,   "2021": -22.22,   "2022": -8.89,   "2023": -4.89,   "2024": -4.44,   "2025": 0}'::jsonb
+WHERE LOWER(name) LIKE '%fiorino%' OR LOWER(description) LIKE '%fiorino%';
+
+-- Fiat Mobi (base: 2025, precio medio: $22.000.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -39.77,   "2020": -32.27,   "2021": -35.23,   "2022": -26.14,   "2023": -14.55,   "2024": -11.36,   "2025": 0}'::jsonb
+WHERE LOWER(name) LIKE '%mobi%' OR LOWER(description) LIKE '%mobi%';
+
+-- Toyota Etios (base: 2024, precio medio: $22.000.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -17.5,   "2020": -9.07,   "2021": -0.64,   "2022": -1.57,   "2023": -7.89,   "2024": 0}'::jsonb
+WHERE LOWER(name) LIKE '%etios%' OR LOWER(description) LIKE '%etios%';
+
+-- Toyota SW4 (base: 2026, precio medio: $94.500.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -39.15,   "2020": -35.18,   "2021": -31.22,   "2022": -26.45,   "2023": -21.69,   "2024": -8.99,   "2025": -4.49,   "2026": 0}'::jsonb
+WHERE LOWER(name) LIKE '%sw4%' OR LOWER(description) LIKE '%sw4%';
+
+-- Toyota Yaris (base: 2026, precio medio: $36.250.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -35.86,   "2020": -28.28,   "2021": -24.83,   "2022": -21.38,   "2023": -17.93,   "2024": 0,   "2025": 0,   "2026": 0}'::jsonb
+WHERE LOWER(name) LIKE '%yaris%' OR LOWER(description) LIKE '%yaris%';
+
+-- Volkswagen Amarok (base: 2026, precio medio: $65.000.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -42.57,   "2020": -33.6,   "2021": -24.62,   "2022": -15.64,   "2023": -6.67,   "2024": 2.31,   "2025": 1.16,   "2026": 0}'::jsonb
+WHERE LOWER(name) LIKE '%amarok%' OR LOWER(description) LIKE '%amarok%';
+
+-- Nissan kicks (base: 2025, precio medio: $56.000.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -59.82,   "2020": -56.7,   "2021": -44.11,   "2022": -47.39,   "2023": -41.52,   "2024": -30.36,   "2025": 0}'::jsonb
+WHERE LOWER(name) LIKE '%kicks%' OR LOWER(description) LIKE '%kicks%';
+
+-- Nissan Versa (base: 2026, precio medio: $40.000.000)
+UPDATE models
+SET price_adjustments = COALESCE(price_adjustments, '{}'::jsonb) || '{  "2019": -53.75,   "2020": -50,   "2021": -47.5,   "2022": -36.25,   "2023": -25,   "2024": -35,   "2025": -17.5,   "2026": 0}'::jsonb
+WHERE LOWER(name) LIKE '%versa%' OR LOWER(description) LIKE '%versa%';
+

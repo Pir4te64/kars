@@ -1,0 +1,6982 @@
+[
+  {
+    "id": 320238,
+    "name": "106  S16",
+    "description": "106  S16",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60006,
+    "name": "100 AVANT 2.8 V6",
+    "description": "100 AVANT 2.8 V6",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60018,
+    "name": "100 GL5 S",
+    "description": "100 GL5 S",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60024,
+    "name": "200 TURBO",
+    "description": "200 TURBO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60020,
+    "name": "100 LIMOUSINE 2.8 E V6 AUT",
+    "description": "100 LIMOUSINE 2.8 E V6 AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60159,
+    "name": "90 QUATTRO",
+    "description": "90 QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60001,
+    "name": "80",
+    "description": "80",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60016,
+    "name": "80 AVANT 1.9 TDI",
+    "description": "80 AVANT 1.9 TDI",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60014,
+    "name": "80 AVANT 2.0 AUT",
+    "description": "80 AVANT 2.0 AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60015,
+    "name": "80 AVANT 2.0 E",
+    "description": "80 AVANT 2.0 E",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60017,
+    "name": "80 D",
+    "description": "80 D",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60022,
+    "name": "80 LIMOUSINE 2.0 E",
+    "description": "80 LIMOUSINE 2.0 E",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60023,
+    "name": "80 LIMOUSINE 2.8 V6",
+    "description": "80 LIMOUSINE 2.8 V6",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60415,
+    "name": "A1 1.2T ATTRACTION",
+    "description": "A1 1.2T ATTRACTION",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60387,
+    "name": "A1 1.4T AMBITION",
+    "description": "A1 1.4T AMBITION",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60391,
+    "name": "A1 1.4T AMBITION SECURITY",
+    "description": "A1 1.4T AMBITION SECURITY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60392,
+    "name": "A1 1.4T AMBITION SECURITY STRONIC",
+    "description": "A1 1.4T AMBITION SECURITY STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60443,
+    "name": "A1 1.4T AMBITION TECHNO",
+    "description": "A1 1.4T AMBITION TECHNO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60444,
+    "name": "A1 1.4T AMBITION TECHNO STRONIC",
+    "description": "A1 1.4T AMBITION TECHNO STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60385,
+    "name": "A1 1.4T ATTRACTION",
+    "description": "A1 1.4T ATTRACTION",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60386,
+    "name": "A1 1.4T ATTRACTION  STRONIC",
+    "description": "A1 1.4T ATTRACTION  STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60389,
+    "name": "A1 1.4T ATTRACTION SECURITY",
+    "description": "A1 1.4T ATTRACTION SECURITY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60390,
+    "name": "A1 1.4T ATTRACTION SECURITY STRO.",
+    "description": "A1 1.4T ATTRACTION SECURITY STRO.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60416,
+    "name": "A1 1.4T S LINE STRONIC",
+    "description": "A1 1.4T S LINE STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60417,
+    "name": "A1 1.4T S LINE STRONIC TECHNO",
+    "description": "A1 1.4T S LINE STRONIC TECHNO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60450,
+    "name": "A1 1.4T SPORTBACK AMBITION",
+    "description": "A1 1.4T SPORTBACK AMBITION",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60534,
+    "name": "A1 30T  SPORTBACK STRONIC",
+    "description": "A1 30T  SPORTBACK STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60533,
+    "name": "A1 35T  SPORTBACK STRONIC",
+    "description": "A1 35T  SPORTBACK STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60564,
+    "name": "A1 40T SPORTBACK STRONIC S-LINE",
+    "description": "A1 40T SPORTBACK STRONIC S-LINE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60373,
+    "name": "A3 1.4T FSI L/10",
+    "description": "A3 1.4T FSI L/10",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60396,
+    "name": "A3 1.4T FSI L/10 PLUS",
+    "description": "A3 1.4T FSI L/10 PLUS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60374,
+    "name": "A3 1.4T FSI L/10 S TRONIC",
+    "description": "A3 1.4T FSI L/10 S TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60454,
+    "name": "A3 1.4T FSI L/13",
+    "description": "A3 1.4T FSI L/13",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60455,
+    "name": "A3 1.4T FSI L/13 S-TRONIC",
+    "description": "A3 1.4T FSI L/13 S-TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60473,
+    "name": "A3 1.4T FSI L/13 TECHNOLOGY",
+    "description": "A3 1.4T FSI L/13 TECHNOLOGY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60474,
+    "name": "A3 1.4T FSI L/13 TECHNOLOGY S-TRO.",
+    "description": "A3 1.4T FSI L/13 TECHNOLOGY S-TRO.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60497,
+    "name": "A3 1.4T FSI L/17",
+    "description": "A3 1.4T FSI L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60498,
+    "name": "A3 1.4T FSI L/17 S-TRONIC",
+    "description": "A3 1.4T FSI L/17 S-TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60101,
+    "name": "A3 1.6 3 PTAS",
+    "description": "A3 1.6 3 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60163,
+    "name": "A3 1.6 3 PTAS L/04",
+    "description": "A3 1.6 3 PTAS L/04",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60335,
+    "name": "A3 1.6 3 PTAS L/04 PLUS",
+    "description": "A3 1.6 3 PTAS L/04 PLUS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60171,
+    "name": "A3 1.6 3 PTAS L/04 PREMIUM CUERO",
+    "description": "A3 1.6 3 PTAS L/04 PREMIUM CUERO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60102,
+    "name": "A3 1.6 5 PTAS",
+    "description": "A3 1.6 5 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60025,
+    "name": "A3 1.8 3 PTAS",
+    "description": "A3 1.8 3 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60045,
+    "name": "A3 1.8 3 PTAS AUT",
+    "description": "A3 1.8 3 PTAS AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60092,
+    "name": "A3 1.8 5 PTAS",
+    "description": "A3 1.8 5 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60111,
+    "name": "A3 1.8T 150 HP 3 P",
+    "description": "A3 1.8T 150 HP 3 P",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60046,
+    "name": "A3 1.8T 150 HP 3 P ATTRACTION AUT",
+    "description": "A3 1.8T 150 HP 3 P ATTRACTION AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60112,
+    "name": "A3 1.8T 150 HP 5 P",
+    "description": "A3 1.8T 150 HP 5 P",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60093,
+    "name": "A3 1.8T 150 HP 5 P ATTRACTION",
+    "description": "A3 1.8T 150 HP 5 P ATTRACTION",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60095,
+    "name": "A3 1.8T 180 HP 3 P",
+    "description": "A3 1.8T 180 HP 3 P",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60143,
+    "name": "A3 1.8T 180 HP 3 P  TIPTRONIC",
+    "description": "A3 1.8T 180 HP 3 P  TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60145,
+    "name": "A3 1.8T 180 HP 3 P AMBITION",
+    "description": "A3 1.8T 180 HP 3 P AMBITION",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60147,
+    "name": "A3 1.8T 180 HP 3 P AMBITION  TIP.",
+    "description": "A3 1.8T 180 HP 3 P AMBITION  TIP.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60096,
+    "name": "A3 1.8T 180 HP 3 P QUATTRO",
+    "description": "A3 1.8T 180 HP 3 P QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60142,
+    "name": "A3 1.8T 180 HP 5 P",
+    "description": "A3 1.8T 180 HP 5 P",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60144,
+    "name": "A3 1.8T 180 HP 5 P  TIPTRONIC",
+    "description": "A3 1.8T 180 HP 5 P  TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60146,
+    "name": "A3 1.8T 180 HP 5 P AMBITION",
+    "description": "A3 1.8T 180 HP 5 P AMBITION",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60148,
+    "name": "A3 1.8T 180 HP 5 P AMBITION  TIP.",
+    "description": "A3 1.8T 180 HP 5 P AMBITION  TIP.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60312,
+    "name": "A3 1.8TFSI L/09",
+    "description": "A3 1.8TFSI L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60021,
+    "name": "100 CD",
+    "description": "100 CD",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60315,
+    "name": "A3 1.8TFSI L/09 PLUS",
+    "description": "A3 1.8TFSI L/09 PLUS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60319,
+    "name": "A3 1.8TFSI L/09 PLUS STRONIC",
+    "description": "A3 1.8TFSI L/09 PLUS STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60313,
+    "name": "A3 1.8TFSI L/09.PREMIUM",
+    "description": "A3 1.8TFSI L/09.PREMIUM",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60314,
+    "name": "A3 1.8TFSI L/09.PREMIUM CUERO",
+    "description": "A3 1.8TFSI L/09.PREMIUM CUERO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60322,
+    "name": "A3 1.8TFSI L/09.PREMIUM CUERO STRONIC",
+    "description": "A3 1.8TFSI L/09.PREMIUM CUERO STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60316,
+    "name": "A3 1.8TFSI L/09.PREMIUM PLUS",
+    "description": "A3 1.8TFSI L/09.PREMIUM PLUS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60317,
+    "name": "A3 1.8TFSI L/09.PREMIUM PLUS CUERO",
+    "description": "A3 1.8TFSI L/09.PREMIUM PLUS CUERO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60323,
+    "name": "A3 1.8TFSI L/09.PREMIUM PLUS CUERO STRO",
+    "description": "A3 1.8TFSI L/09.PREMIUM PLUS CUERO STRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60456,
+    "name": "A3 1.8TFSI L/13",
+    "description": "A3 1.8TFSI L/13",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60457,
+    "name": "A3 1.8TFSI L/13 S-TRONIC",
+    "description": "A3 1.8TFSI L/13 S-TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60458,
+    "name": "A3 1.8TFSI L/13 S-TRONIC QUATTRO",
+    "description": "A3 1.8TFSI L/13 S-TRONIC QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60068,
+    "name": "A3 1.9  TDI  90 HP 3 P",
+    "description": "A3 1.9  TDI  90 HP 3 P",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60094,
+    "name": "A3 1.9  TDI  90 HP 5 P",
+    "description": "A3 1.9  TDI  90 HP 5 P",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60279,
+    "name": "A3 1.9  TDI 105 HP 3 P",
+    "description": "A3 1.9  TDI 105 HP 3 P",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60149,
+    "name": "A3 1.9  TDI 110 HP 3 P",
+    "description": "A3 1.9  TDI 110 HP 3 P",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60070,
+    "name": "A3 1.9  TDI 110 HP 3 P  AUT",
+    "description": "A3 1.9  TDI 110 HP 3 P  AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60103,
+    "name": "A3 1.9  TDI 110 HP 3 P ATTRACTION",
+    "description": "A3 1.9  TDI 110 HP 3 P ATTRACTION",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60150,
+    "name": "A3 1.9  TDI 110 HP 5 P",
+    "description": "A3 1.9  TDI 110 HP 5 P",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60125,
+    "name": "A3 1.9  TDI 110 HP 5 P ATTRACTION",
+    "description": "A3 1.9  TDI 110 HP 5 P ATTRACTION",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60164,
+    "name": "A3 2.0  FSI 3 PTAS",
+    "description": "A3 2.0  FSI 3 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60170,
+    "name": "A3 2.0  FSI 3 PTAS PREMIUM CUERO",
+    "description": "A3 2.0  FSI 3 PTAS PREMIUM CUERO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60165,
+    "name": "A3 2.0  FSI 3 PTAS TIP.",
+    "description": "A3 2.0  FSI 3 PTAS TIP.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60173,
+    "name": "A3 2.0  FSI 3 PTAS TIP. PREMIUM CU",
+    "description": "A3 2.0  FSI 3 PTAS TIP. PREMIUM CU",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60166,
+    "name": "A3 2.0  TDI 3 PTAS",
+    "description": "A3 2.0  TDI 3 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60207,
+    "name": "A3 2.0  TDI 3 PTAS DSG",
+    "description": "A3 2.0  TDI 3 PTAS DSG",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60208,
+    "name": "A3 2.0  TDI 3 PTAS QUATTRO",
+    "description": "A3 2.0  TDI 3 PTAS QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60225,
+    "name": "A3 2.0  TDI 3 PTAS S TRONIC",
+    "description": "A3 2.0  TDI 3 PTAS S TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60466,
+    "name": "A3 2.0  TDI 3 PTAS S TRONIC L/13",
+    "description": "A3 2.0  TDI 3 PTAS S TRONIC L/13",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60223,
+    "name": "A3 2.0T FSI 3 PTAS          L/07",
+    "description": "A3 2.0T FSI 3 PTAS          L/07",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60224,
+    "name": "A3 2.0T FSI 3 PTAS S-TRONIC L/07",
+    "description": "A3 2.0T FSI 3 PTAS S-TRONIC L/07",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60499,
+    "name": "A3 2.0T FSI 3 PTAS S-TRONIC L/17",
+    "description": "A3 2.0T FSI 3 PTAS S-TRONIC L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60167,
+    "name": "A3 3.2 V6 3 P. QUATTRO",
+    "description": "A3 3.2 V6 3 P. QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60168,
+    "name": "A3 3.2 V6 3 P. QUATTRO DSG",
+    "description": "A3 3.2 V6 3 P. QUATTRO DSG",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60174,
+    "name": "A3 3.2 V6 3 P. QUATTRO PREMIUM",
+    "description": "A3 3.2 V6 3 P. QUATTRO PREMIUM",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60226,
+    "name": "A3 3.2 V6 3 P. QUATTRO S TRONIC",
+    "description": "A3 3.2 V6 3 P. QUATTRO S TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60418,
+    "name": "A3 CABRIO 1.8T",
+    "description": "A3 CABRIO 1.8T",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60419,
+    "name": "A3 CABRIO 1.8T S-TRONIC",
+    "description": "A3 CABRIO 1.8T S-TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60488,
+    "name": "A3 SEDAN 1.4T L/16",
+    "description": "A3 SEDAN 1.4T L/16",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60479,
+    "name": "A3 SEDAN 1.4T L/14 S-TRONIC",
+    "description": "A3 SEDAN 1.4T L/14 S-TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60504,
+    "name": "A3 SEDAN 1.4T L/17",
+    "description": "A3 SEDAN 1.4T L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60505,
+    "name": "A3 SEDAN 1.4T L/17 S-TRONIC",
+    "description": "A3 SEDAN 1.4T L/17 S-TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60580,
+    "name": "A3 SEDAN 1.4T L/25 TIPTRONIC",
+    "description": "A3 SEDAN 1.4T L/25 TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60581,
+    "name": "A3 SEDAN 1.4T L/25 TIPTRONIC ADVANCED",
+    "description": "A3 SEDAN 1.4T L/25 TIPTRONIC ADVANCED",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60489,
+    "name": "A3 SEDAN 1.8T L/16",
+    "description": "A3 SEDAN 1.8T L/16",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60490,
+    "name": "A3 SEDAN 1.8T L/16 S-TRONIC",
+    "description": "A3 SEDAN 1.8T L/16 S-TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60491,
+    "name": "A3 SEDAN 1.8T L/16 S-TRONIC QUA.",
+    "description": "A3 SEDAN 1.8T L/16 S-TRONIC QUA.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60535,
+    "name": "A3 SEDAN 2.0T L/17 S-TRO.S LINE ST",
+    "description": "A3 SEDAN 2.0T L/17 S-TRO.S LINE ST",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60506,
+    "name": "A3 SEDAN 2.0T L/17 S-TRONIC",
+    "description": "A3 SEDAN 2.0T L/17 S-TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60560,
+    "name": "A3 SEDAN 2.0T L/22 40 TIPTONIC S-LINE",
+    "description": "A3 SEDAN 2.0T L/22 40 TIPTONIC S-LINE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60375,
+    "name": "A3 SPORTBACK 1.4T",
+    "description": "A3 SPORTBACK 1.4T",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60376,
+    "name": "A3 SPORTBACK 1.4T  S TRONIC",
+    "description": "A3 SPORTBACK 1.4T  S TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60393,
+    "name": "A3 SPORTBACK 1.4T  S TRONIC PLUS",
+    "description": "A3 SPORTBACK 1.4T  S TRONIC PLUS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60467,
+    "name": "A3 SPORTBACK 1.4T L/13",
+    "description": "A3 SPORTBACK 1.4T L/13",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60468,
+    "name": "A3 SPORTBACK 1.4T L/13 STRO",
+    "description": "A3 SPORTBACK 1.4T L/13 STRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60475,
+    "name": "A3 SPORTBACK 1.4T L/13 TECHNO",
+    "description": "A3 SPORTBACK 1.4T L/13 TECHNO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60004,
+    "name": "A4 2.8 V6",
+    "description": "A4 2.8 V6",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60500,
+    "name": "A3 SPORTBACK 1.4T L/17",
+    "description": "A3 SPORTBACK 1.4T L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60501,
+    "name": "A3 SPORTBACK 1.4T L/17 STRO",
+    "description": "A3 SPORTBACK 1.4T L/17 STRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60557,
+    "name": "A3 SPORTBACK 1.4T L/22 35 TIPTRONIC",
+    "description": "A3 SPORTBACK 1.4T L/22 35 TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60582,
+    "name": "A3 SPORTBACK 1.4T L/25 TIPTRONIC",
+    "description": "A3 SPORTBACK 1.4T L/25 TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60176,
+    "name": "A3 SPORTBACK 1.6",
+    "description": "A3 SPORTBACK 1.6",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60281,
+    "name": "A3 SPORTBACK 1.6   S TRONIC",
+    "description": "A3 SPORTBACK 1.6   S TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60184,
+    "name": "A3 SPORTBACK 1.6  PREMIUM CUERO",
+    "description": "A3 SPORTBACK 1.6  PREMIUM CUERO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60177,
+    "name": "A3 SPORTBACK 1.6  TIP.",
+    "description": "A3 SPORTBACK 1.6  TIP.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60185,
+    "name": "A3 SPORTBACK 1.6  TIP. PREMIUM CU.",
+    "description": "A3 SPORTBACK 1.6  TIP. PREMIUM CU.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60326,
+    "name": "A3 SPORTBACK 1.8T",
+    "description": "A3 SPORTBACK 1.8T",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60329,
+    "name": "A3 SPORTBACK 1.8T  STRONIC",
+    "description": "A3 SPORTBACK 1.8T  STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60324,
+    "name": "A3 SPORTBACK 1.8T PLUS",
+    "description": "A3 SPORTBACK 1.8T PLUS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60327,
+    "name": "A3 SPORTBACK 1.8T PREMIUM",
+    "description": "A3 SPORTBACK 1.8T PREMIUM",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60330,
+    "name": "A3 SPORTBACK 1.8T PREMIUM  STRONIC",
+    "description": "A3 SPORTBACK 1.8T PREMIUM  STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60328,
+    "name": "A3 SPORTBACK 1.8T PREMIUM CUERO",
+    "description": "A3 SPORTBACK 1.8T PREMIUM CUERO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60331,
+    "name": "A3 SPORTBACK 1.8T PREMIUM CUERO STRONIC",
+    "description": "A3 SPORTBACK 1.8T PREMIUM CUERO STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60311,
+    "name": "A3 SPORTBACK 1.8T PREMIUM PLUS",
+    "description": "A3 SPORTBACK 1.8T PREMIUM PLUS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60333,
+    "name": "A3 SPORTBACK 1.8T PREMIUM PLUS STRONIC",
+    "description": "A3 SPORTBACK 1.8T PREMIUM PLUS STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60325,
+    "name": "A3 SPORTBACK 1.8T PREMIUM PLUS CUERO",
+    "description": "A3 SPORTBACK 1.8T PREMIUM PLUS CUERO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60334,
+    "name": "A3 SPORTBACK 1.8T PREMIUM PLUS CUERO STR",
+    "description": "A3 SPORTBACK 1.8T PREMIUM PLUS CUERO STR",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60469,
+    "name": "A3 SPORTBACK 1.8T FSI L/13",
+    "description": "A3 SPORTBACK 1.8T FSI L/13",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60470,
+    "name": "A3 SPORTBACK 1.8T FSI L/13 STRONIC",
+    "description": "A3 SPORTBACK 1.8T FSI L/13 STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60471,
+    "name": "A3 SPORTBACK 1.8T FSI L/13 QUAT ST",
+    "description": "A3 SPORTBACK 1.8T FSI L/13 QUAT ST",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60280,
+    "name": "A3 SPORTBACK 1.9  TDI",
+    "description": "A3 SPORTBACK 1.9  TDI",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60178,
+    "name": "A3 SPORTBACK 2.0  FSI",
+    "description": "A3 SPORTBACK 2.0  FSI",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60179,
+    "name": "A3 SPORTBACK 2.0  FSI  TIP.",
+    "description": "A3 SPORTBACK 2.0  FSI  TIP.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60186,
+    "name": "A3 SPORTBACK 2.0  FSI PREMIUM CUERO",
+    "description": "A3 SPORTBACK 2.0  FSI PREMIUM CUERO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60180,
+    "name": "A3 SPORTBACK 2.0  TDI",
+    "description": "A3 SPORTBACK 2.0  TDI",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60584,
+    "name": "A3 SPORTBACK 2.0 TDI L/09",
+    "description": "A3 SPORTBACK 2.0 TDI L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60181,
+    "name": "A3 SPORTBACK 2.0  TDI DSG",
+    "description": "A3 SPORTBACK 2.0  TDI DSG",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60188,
+    "name": "A3 SPORTBACK 2.0  TDI PREMIUM CUERO",
+    "description": "A3 SPORTBACK 2.0  TDI PREMIUM CUERO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60189,
+    "name": "A3 SPORTBACK 2.0  TDI PREMIUM CUERO DSG",
+    "description": "A3 SPORTBACK 2.0  TDI PREMIUM CUERO DSG",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60209,
+    "name": "A3 SPORTBACK 2.0  TDI QUATTRO",
+    "description": "A3 SPORTBACK 2.0  TDI QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60260,
+    "name": "A3 SPORTBACK 2.0  TDI QUATTRO PREMIUM",
+    "description": "A3 SPORTBACK 2.0  TDI QUATTRO PREMIUM",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60229,
+    "name": "A3 SPORTBACK 2.0  TDI STRONIC",
+    "description": "A3 SPORTBACK 2.0  TDI STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60585,
+    "name": "A3 SPORTBACK 2.0 TDI STRONIC L/09",
+    "description": "A3 SPORTBACK 2.0 TDI STRONIC L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60472,
+    "name": "A3 SPORTBACK 2.0  TDI STRONIC L/13",
+    "description": "A3 SPORTBACK 2.0  TDI STRONIC L/13",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60227,
+    "name": "A3 SPORTBACK 2.0T",
+    "description": "A3 SPORTBACK 2.0T",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60228,
+    "name": "A3 SPORTBACK 2.0T   STRONIC",
+    "description": "A3 SPORTBACK 2.0T   STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60249,
+    "name": "A3 SPORTBACK 2.0T  PREMIUM",
+    "description": "A3 SPORTBACK 2.0T  PREMIUM",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60250,
+    "name": "A3 SPORTBACK 2.0T  PREMIUM STRONIC",
+    "description": "A3 SPORTBACK 2.0T  PREMIUM STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60502,
+    "name": "A3 SPORTBACK 2.0T L/17 STRONIC",
+    "description": "A3 SPORTBACK 2.0T L/17 STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60558,
+    "name": "A3 SPORTBACK 2.0 T L/22 40 TIPTRONIC",
+    "description": "A3 SPORTBACK 2.0 T L/22 40 TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60350,
+    "name": "A3 SPORTBACK 3.2  QUAT PRE STR LIN",
+    "description": "A3 SPORTBACK 3.2  QUAT PRE STR LIN",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60182,
+    "name": "A3 SPORTBACK 3.2  QUATTRO",
+    "description": "A3 SPORTBACK 3.2  QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60183,
+    "name": "A3 SPORTBACK 3.2  QUATTRO DSG",
+    "description": "A3 SPORTBACK 3.2  QUATTRO DSG",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60190,
+    "name": "A3 SPORTBACK 3.2  QUATTRO PREMIUM",
+    "description": "A3 SPORTBACK 3.2  QUATTRO PREMIUM",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60230,
+    "name": "A3 SPORTBACK 3.2  QUATTRO S TRONIC",
+    "description": "A3 SPORTBACK 3.2  QUATTRO S TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60002,
+    "name": "A4 1.8",
+    "description": "A4 1.8",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60003,
+    "name": "A4 1.8  AUT",
+    "description": "A4 1.8  AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60047,
+    "name": "A4 1.8  QUATTRO",
+    "description": "A4 1.8  QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60030,
+    "name": "A4 1.8 AVANT",
+    "description": "A4 1.8 AVANT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60031,
+    "name": "A4 1.8 AVANT AUT",
+    "description": "A4 1.8 AVANT AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60032,
+    "name": "A4 1.8 AVANT QUATTRO",
+    "description": "A4 1.8 AVANT QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60048,
+    "name": "A4 1.8 T.",
+    "description": "A4 1.8 T.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60050,
+    "name": "A4 1.8 T.  QUATTRO",
+    "description": "A4 1.8 T.  QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60051,
+    "name": "A4 1.8 T.  QUATTRO TIPTRONIC",
+    "description": "A4 1.8 T.  QUATTRO TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60033,
+    "name": "A4 1.8 T. AVANT",
+    "description": "A4 1.8 T. AVANT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60034,
+    "name": "A4 1.8 T. AVANT  TIPTRONIC",
+    "description": "A4 1.8 T. AVANT  TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60035,
+    "name": "A4 1.8 T. AVANT QUATTRO",
+    "description": "A4 1.8 T. AVANT QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60114,
+    "name": "A4 1.8 T..L/01",
+    "description": "A4 1.8 T..L/01",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60127,
+    "name": "A4 1.8 T..L/01 LUXURY",
+    "description": "A4 1.8 T..L/01 LUXURY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60129,
+    "name": "A4 1.8 T..L/01 MULTITRONIC LUX",
+    "description": "A4 1.8 T..L/01 MULTITRONIC LUX",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60128,
+    "name": "A4 1.8 T..L/01 MULTITRONIC SPORT",
+    "description": "A4 1.8 T..L/01 MULTITRONIC SPORT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60155,
+    "name": "A4 1.8 T..L/01 QUATTRO",
+    "description": "A4 1.8 T..L/01 QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60126,
+    "name": "A4 1.8 T..L/01 SPORT",
+    "description": "A4 1.8 T..L/01 SPORT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60192,
+    "name": "A4 1.8 T..L/05",
+    "description": "A4 1.8 T..L/05",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60203,
+    "name": "A4 1.8 T..L/05  SPORT",
+    "description": "A4 1.8 T..L/05  SPORT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60193,
+    "name": "A4 1.8 T..L/05 MULTITRONIC",
+    "description": "A4 1.8 T..L/05 MULTITRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60206,
+    "name": "A4 1.8 T..L/05 MULTITRONIC SPORT",
+    "description": "A4 1.8 T..L/05 MULTITRONIC SPORT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60261,
+    "name": "A4 1.8 TFSI L/08      (ATTRACTION)",
+    "description": "A4 1.8 TFSI L/08      (ATTRACTION)",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60265,
+    "name": "A4 1.8 TFSI L/08 MULTI.(ATTRACTION",
+    "description": "A4 1.8 TFSI L/08 MULTI.(ATTRACTION",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60263,
+    "name": "A4 1.8 TFSI L/08 PLUS",
+    "description": "A4 1.8 TFSI L/08 PLUS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60267,
+    "name": "A4 1.8 TFSI L/08 PLUS MULTITRONIC",
+    "description": "A4 1.8 TFSI L/08 PLUS MULTITRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60268,
+    "name": "A4 1.8 TFSI L/08 PLUS SP CU MUL AM",
+    "description": "A4 1.8 TFSI L/08 PLUS SP CU MUL AM",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60262,
+    "name": "A4 1.8 TFSI L/08 SPORT CUERO",
+    "description": "A4 1.8 TFSI L/08 SPORT CUERO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60266,
+    "name": "A4 1.8 TFSI L/08 SPORT CUERO MULTI",
+    "description": "A4 1.8 TFSI L/08 SPORT CUERO MULTI",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60430,
+    "name": "A4 1.8 TFSI L/12 AMBITION",
+    "description": "A4 1.8 TFSI L/12 AMBITION",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60431,
+    "name": "A4 1.8 TFSI L/12 AMBITION MULTI.",
+    "description": "A4 1.8 TFSI L/12 AMBITION MULTI.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60428,
+    "name": "A4 1.8 TFSI L/12 ATTRACTION",
+    "description": "A4 1.8 TFSI L/12 ATTRACTION",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60429,
+    "name": "A4 1.8 TFSI L/12 ATTRACTION MULTI.",
+    "description": "A4 1.8 TFSI L/12 ATTRACTION MULTI.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60282,
+    "name": "A4 1.8.TFSI AVANT     (ATTRACTION)",
+    "description": "A4 1.8.TFSI AVANT     (ATTRACTION)",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60283,
+    "name": "A4 1.8.TFSI AVANT MUL (ATTRACTION)",
+    "description": "A4 1.8.TFSI AVANT MUL (ATTRACTION)",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60288,
+    "name": "A4 1.8.TFSI AVANT PL SP CU    (AMB",
+    "description": "A4 1.8.TFSI AVANT PL SP CU    (AMB",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60289,
+    "name": "A4 1.8.TFSI AVANT PL SP CU MUL(AMB",
+    "description": "A4 1.8.TFSI AVANT PL SP CU MUL(AMB",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60284,
+    "name": "A4 1.8.TFSI AVANT PLUS",
+    "description": "A4 1.8.TFSI AVANT PLUS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60285,
+    "name": "A4 1.8.TFSI AVANT PLUS MULTITRONIC",
+    "description": "A4 1.8.TFSI AVANT PLUS MULTITRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60286,
+    "name": "A4 1.8.TFSI AVANT SPORT CUERO",
+    "description": "A4 1.8.TFSI AVANT SPORT CUERO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60287,
+    "name": "A4 1.8.TFSI AVANT SPORT CUERO MUL.",
+    "description": "A4 1.8.TFSI AVANT SPORT CUERO MUL.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60054,
+    "name": "A4 1.9 TDI",
+    "description": "A4 1.9 TDI",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60056,
+    "name": "A4 1.9 TDI   AUT",
+    "description": "A4 1.9 TDI   AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60055,
+    "name": "A4 1.9 TDI    QUATTRO",
+    "description": "A4 1.9 TDI    QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60097,
+    "name": "A4 1.9 TDI   TIPTRONIC",
+    "description": "A4 1.9 TDI   TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60041,
+    "name": "A4 1.9 TDI  AVANT",
+    "description": "A4 1.9 TDI  AVANT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60043,
+    "name": "A4 1.9 TDI  AVANT AUT",
+    "description": "A4 1.9 TDI  AVANT AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60116,
+    "name": "A4 1.9 TDI .L/01",
+    "description": "A4 1.9 TDI .L/01",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60131,
+    "name": "A4 1.9 TDI .L/01 LUXURY",
+    "description": "A4 1.9 TDI .L/01 LUXURY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60117,
+    "name": "A4 1.9 TDI .L/01 MULTITRONIC",
+    "description": "A4 1.9 TDI .L/01 MULTITRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60130,
+    "name": "A4 1.9 TDI .L/01 SPORT",
+    "description": "A4 1.9 TDI .L/01 SPORT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60169,
+    "name": "A4 1.9 TDI .L/01 SPORT MULTITRONIC",
+    "description": "A4 1.9 TDI .L/01 SPORT MULTITRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60212,
+    "name": "A4 2.0 T L/06 QUATTRO",
+    "description": "A4 2.0 T L/06 QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60236,
+    "name": "A4 2.0 T L/06 QUATTRO TIP. S LINE",
+    "description": "A4 2.0 T L/06 QUATTRO TIP. S LINE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60213,
+    "name": "A4 2.0 T L/06 QUATTRO TIPTRO.",
+    "description": "A4 2.0 T L/06 QUATTRO TIPTRO.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60299,
+    "name": "A4 2.0 T L/09 QUATTRO",
+    "description": "A4 2.0 T L/09 QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60344,
+    "name": "A4 2.0 T L/09 QUATTRO  STRONIC",
+    "description": "A4 2.0 T L/09 QUATTRO  STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60341,
+    "name": "A4 2.0 T L/09 QUATTRO PLUS (ATTRAC",
+    "description": "A4 2.0 T L/09 QUATTRO PLUS (ATTRAC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60345,
+    "name": "A4 2.0 T L/09 QUATTRO PLUS STR ATT",
+    "description": "A4 2.0 T L/09 QUATTRO PLUS STR ATT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60342,
+    "name": "A4 2.0 T L/09 QUATTRO SP CU",
+    "description": "A4 2.0 T L/09 QUATTRO SP CU",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60346,
+    "name": "A4 2.0 T L/09 QUATTRO SP CU STRO",
+    "description": "A4 2.0 T L/09 QUATTRO SP CU STRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60347,
+    "name": "A4 2.0 T L/09 QUATTRO SP CU PL ST",
+    "description": "A4 2.0 T L/09 QUATTRO SP CU PL ST",
+    "price_adjustments": {}
+  },
+  {
+    "id": 320267,
+    "name": "106 MAX 1.4 5 PTAS",
+    "description": "106 MAX 1.4 5 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60352,
+    "name": "A4 2.0 T L/10  PLUS   (ATTRACTION)",
+    "description": "A4 2.0 T L/10  PLUS   (ATTRACTION)",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60356,
+    "name": "A4 2.0 T L/10  PLUS MULT (ATTRAC.)",
+    "description": "A4 2.0 T L/10  PLUS MULT (ATTRAC.)",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60353,
+    "name": "A4 2.0 T L/10  SPORT CU",
+    "description": "A4 2.0 T L/10  SPORT CU",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60357,
+    "name": "A4 2.0 T L/10  SPORT CU MULTITRO.",
+    "description": "A4 2.0 T L/10  SPORT CU MULTITRO.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60354,
+    "name": "A4 2.0 T L/10 SPORT CU PLUS (AMBI)",
+    "description": "A4 2.0 T L/10 SPORT CU PLUS (AMBI)",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60358,
+    "name": "A4 2.0 T L/10  SPORT CU PL MUL(AMB",
+    "description": "A4 2.0 T L/10  SPORT CU PL MUL(AMB",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60433,
+    "name": "A4 2.0 T L/12 AMBITION",
+    "description": "A4 2.0 T L/12 AMBITION",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60435,
+    "name": "A4 2.0 T L/12 AMBITION MULTITRONIC",
+    "description": "A4 2.0 T L/12 AMBITION MULTITRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60437,
+    "name": "A4 2.0 T L/12 AMBITION QUATTRO STR",
+    "description": "A4 2.0 T L/12 AMBITION QUATTRO STR",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60432,
+    "name": "A4 2.0 T L/12 ATTRACTION",
+    "description": "A4 2.0 T L/12 ATTRACTION",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60434,
+    "name": "A4 2.0 T L/12 ATTRACTION MULTITRO.",
+    "description": "A4 2.0 T L/12 ATTRACTION MULTITRO.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60436,
+    "name": "A4 2.0 T L/12 ATTRACTION QUATTR ST",
+    "description": "A4 2.0 T L/12 ATTRACTION QUATTR ST",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60484,
+    "name": "A4 2.0 T L/16 190HP",
+    "description": "A4 2.0 T L/16 190HP",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60485,
+    "name": "A4 2.0 T L/16 190HP S-TRONIC",
+    "description": "A4 2.0 T L/16 190HP S-TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60530,
+    "name": "A4 2.0 T L/16 252HP S-TRONIC",
+    "description": "A4 2.0 T L/16 252HP S-TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60549,
+    "name": "A4 2.0 T 40 L/20 190HP S-TRONIC MH",
+    "description": "A4 2.0 T 40 L/20 190HP S-TRONIC MH",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60569,
+    "name": "A4 2.0 T 45 L/23 S-TRONIC QUATTRO ADV.MH",
+    "description": "A4 2.0 T 45 L/23 S-TRONIC QUATTRO ADV.MH",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60570,
+    "name": "A4 2.0 T 45 L/23  ALLROAD QUATTRO STR MH",
+    "description": "A4 2.0 T 45 L/23  ALLROAD QUATTRO STR MH",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60194,
+    "name": "A4 2.0 TDI L/05",
+    "description": "A4 2.0 TDI L/05",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60195,
+    "name": "A4 2.0 TDI L/05  MULTITRONIC",
+    "description": "A4 2.0 TDI L/05  MULTITRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60205,
+    "name": "A4 2.0 TDI L/05  SPORT",
+    "description": "A4 2.0 TDI L/05  SPORT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60204,
+    "name": "A4 2.0 TDI L/05  SPORT MULTITRONIC",
+    "description": "A4 2.0 TDI L/05  SPORT MULTITRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60200,
+    "name": "A4 2.0 TDI L/05 AVANT",
+    "description": "A4 2.0 TDI L/05 AVANT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60201,
+    "name": "A4 2.0 TDI L/05 AVANT MULTITRONIC",
+    "description": "A4 2.0 TDI L/05 AVANT MULTITRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60235,
+    "name": "A4 2.0 TDI L/07 S LINE",
+    "description": "A4 2.0 TDI L/07 S LINE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60273,
+    "name": "A4 2.0 TDI L/08 MULTI (ATTRACTION)",
+    "description": "A4 2.0 TDI L/08 MULTI (ATTRACTION)",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60271,
+    "name": "A4 2.0 TDI L/08 PLUS",
+    "description": "A4 2.0 TDI L/08 PLUS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60275,
+    "name": "A4 2.0 TDI L/08 PLUS  MULTITRONIC",
+    "description": "A4 2.0 TDI L/08 PLUS  MULTITRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60276,
+    "name": "A4 2.0 TDI L/08 PLUS CU MUL(AMBI)",
+    "description": "A4 2.0 TDI L/08 PLUS CU MUL(AMBI)",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60272,
+    "name": "A4 2.0 TDI L/08 PLUS SPORT  CUERO",
+    "description": "A4 2.0 TDI L/08 PLUS SPORT  CUERO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60270,
+    "name": "A4 2.0 TDI L/08 SPORT CUERO",
+    "description": "A4 2.0 TDI L/08 SPORT CUERO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60274,
+    "name": "A4 2.0 TDI L/08 SPORT CUERO MULTI.",
+    "description": "A4 2.0 TDI L/08 SPORT CUERO MULTI.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60290,
+    "name": "A4 2.0.TDI L/08 AVANT",
+    "description": "A4 2.0.TDI L/08 AVANT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60291,
+    "name": "A4 2.0.TDI L/08 AVANT MUL (ATTRACT",
+    "description": "A4 2.0.TDI L/08 AVANT MUL (ATTRACT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60297,
+    "name": "A4 2.0.TDI L/08 AVANT PL.SP.CU(AMB",
+    "description": "A4 2.0.TDI L/08 AVANT PL.SP.CU(AMB",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60292,
+    "name": "A4 2.0.TDI L/08 AVANT PLUS",
+    "description": "A4 2.0.TDI L/08 AVANT PLUS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60293,
+    "name": "A4 2.0.TDI L/08 AVANT PLUS MULTI.",
+    "description": "A4 2.0.TDI L/08 AVANT PLUS MULTI.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60296,
+    "name": "A4 2.0.TDI L/08 AVANT PLUS SPO. CU",
+    "description": "A4 2.0.TDI L/08 AVANT PLUS SPO. CU",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60294,
+    "name": "A4 2.0.TDI L/08 AVANT SPORT  CUERO",
+    "description": "A4 2.0.TDI L/08 AVANT SPORT  CUERO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60295,
+    "name": "A4 2.0.TDI L/08 AVANT SPORT CU.MUL",
+    "description": "A4 2.0.TDI L/08 AVANT SPORT CU.MUL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60439,
+    "name": "A4 2.0.TDI L/12 AMBITION MULTITRO.",
+    "description": "A4 2.0.TDI L/12 AMBITION MULTITRO.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60438,
+    "name": "A4 2.0.TDI L/12 ATTRACTION MULTI.",
+    "description": "A4 2.0.TDI L/12 ATTRACTION MULTI.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60082,
+    "name": "A4 2.4 V6",
+    "description": "A4 2.4 V6",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60083,
+    "name": "A4 2.4 V6   TIPTRONIC",
+    "description": "A4 2.4 V6   TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60084,
+    "name": "A4 2.4 V6  QUATTRO",
+    "description": "A4 2.4 V6  QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60085,
+    "name": "A4 2.4 V6 AVANT",
+    "description": "A4 2.4 V6 AVANT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60087,
+    "name": "A4 2.4 V6 AVANT.QUATTRO",
+    "description": "A4 2.4 V6 AVANT.QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60118,
+    "name": "A4 2.5 TDI",
+    "description": "A4 2.5 TDI",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60119,
+    "name": "A4 2.5 TDI   MULTITRONIC",
+    "description": "A4 2.5 TDI   MULTITRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60132,
+    "name": "A4 2.5 TDI  LUXURY",
+    "description": "A4 2.5 TDI  LUXURY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60156,
+    "name": "A4 2.5 TDI  QUATTRO",
+    "description": "A4 2.5 TDI  QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60138,
+    "name": "A4 2.5 TDI AVANT",
+    "description": "A4 2.5 TDI AVANT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60139,
+    "name": "A4 2.5 TDI AVANT MULTITRONIC",
+    "description": "A4 2.5 TDI AVANT MULTITRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60351,
+    "name": "A4 2.0 T L/10",
+    "description": "A4 2.0 T L/10",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60005,
+    "name": "A4 2.8 V6  QUATTRO",
+    "description": "A4 2.8 V6  QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60053,
+    "name": "A4 2.8 V6  QUATTRO TIPTRONIC",
+    "description": "A4 2.8 V6  QUATTRO TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60037,
+    "name": "A4 2.8 V6 AVANT",
+    "description": "A4 2.8 V6 AVANT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60038,
+    "name": "A4 2.8 V6 AVANT  TIPTRONIC",
+    "description": "A4 2.8 V6 AVANT  TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60039,
+    "name": "A4 2.8 V6 AVANT QUATTRO",
+    "description": "A4 2.8 V6 AVANT QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60040,
+    "name": "A4 2.8 V6 AVANT QUATTRO TIP.",
+    "description": "A4 2.8 V6 AVANT QUATTRO TIP.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60196,
+    "name": "A4 3.0 TDI QUATTRO L/05",
+    "description": "A4 3.0 TDI QUATTRO L/05",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60197,
+    "name": "A4 3.0 TDI QUATTRO L/05 TIPTRONIC",
+    "description": "A4 3.0 TDI QUATTRO L/05 TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60300,
+    "name": "A4 3.0 TDI QUATTRO L/08",
+    "description": "A4 3.0 TDI QUATTRO L/08",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60413,
+    "name": "A4 3.0 TDI QUATTRO STRONIC",
+    "description": "A4 3.0 TDI QUATTRO STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60202,
+    "name": "A4 3.0 TDI QUATTRO TIPTRONIC AVANT",
+    "description": "A4 3.0 TDI QUATTRO TIPTRONIC AVANT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60120,
+    "name": "A4 3.0 V6  MULTITRONIC L/01",
+    "description": "A4 3.0 V6  MULTITRONIC L/01",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60135,
+    "name": "A4 3.0 V6  MULTITRONIC L/01 LUXURY",
+    "description": "A4 3.0 V6  MULTITRONIC L/01 LUXURY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60121,
+    "name": "A4 3.0 V6  QUATTRO L/01",
+    "description": "A4 3.0 V6  QUATTRO L/01",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60136,
+    "name": "A4 3.0 V6  QUATTRO L/01 TIPTRO.LUX",
+    "description": "A4 3.0 V6  QUATTRO L/01 TIPTRO.LUX",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60122,
+    "name": "A4 3.0 V6  QUATTRO L/01 TIPTRONIC",
+    "description": "A4 3.0 V6  QUATTRO L/01 TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60198,
+    "name": "A4 3.0 V6  QUATTRO L/05",
+    "description": "A4 3.0 V6  QUATTRO L/05",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60440,
+    "name": "A4 3.0.TFSI QUATTRO STRONIC",
+    "description": "A4 3.0.TFSI QUATTRO STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60214,
+    "name": "A4 3.2 FSI QUATTRO",
+    "description": "A4 3.2 FSI QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60215,
+    "name": "A4 3.2 FSI QUATTRO TIPTRONIC",
+    "description": "A4 3.2 FSI QUATTRO TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60277,
+    "name": "A4 3.2 QUATTRO",
+    "description": "A4 3.2 QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60278,
+    "name": "A4 3.2 QUATTRO TIPTRONIC",
+    "description": "A4 3.2 QUATTRO TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60298,
+    "name": "A4 3.2 QUATTRO TIPTRONIC AVANT",
+    "description": "A4 3.2 QUATTRO TIPTRONIC AVANT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60151,
+    "name": "A4 CABRIOLET 3.0 V6",
+    "description": "A4 CABRIOLET 3.0 V6",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60359,
+    "name": "A5 2.0 T",
+    "description": "A5 2.0 T",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60360,
+    "name": "A5 2.0 T  MULTITRONIC",
+    "description": "A5 2.0 T  MULTITRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60394,
+    "name": "A5 2.0 T  SPORT PLUS",
+    "description": "A5 2.0 T  SPORT PLUS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60414,
+    "name": "A5 2.0 T  SPORT PLUS MULTITRONIC",
+    "description": "A5 2.0 T  SPORT PLUS MULTITRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60421,
+    "name": "A5 2.0 T LUXURY",
+    "description": "A5 2.0 T LUXURY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60422,
+    "name": "A5 2.0 T LUXURY MULTITRONIC",
+    "description": "A5 2.0 T LUXURY MULTITRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60565,
+    "name": "A5 2.0 T 40 S TRONIC L/23",
+    "description": "A5 2.0 T 40 S TRONIC L/23",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60361,
+    "name": "A5 2.0 T QUATTRO",
+    "description": "A5 2.0 T QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60362,
+    "name": "A5 2.0 T QUATTRO S TRONIC",
+    "description": "A5 2.0 T QUATTRO S TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60384,
+    "name": "A5 2.0 T QUATTRO S TRONIC LUXURY",
+    "description": "A5 2.0 T QUATTRO S TRONIC LUXURY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60512,
+    "name": "A5 2.0 T QUATTRO S TRONIC     L/17",
+    "description": "A5 2.0 T QUATTRO S TRONIC     L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60566,
+    "name": "A5 2.0 T 45 QUATTRO S TRONIC L/23",
+    "description": "A5 2.0 T 45 QUATTRO S TRONIC L/23",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60449,
+    "name": "A5 3.0 T STRONIC QUATTRO",
+    "description": "A5 3.0 T STRONIC QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60256,
+    "name": "A5 3.2   QUATTRO",
+    "description": "A5 3.2   QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60257,
+    "name": "A5 3.2   QUATTRO TIPTRONIC",
+    "description": "A5 3.2   QUATTRO TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60442,
+    "name": "A5 CABRIOLET 3.0 QUATTRO S TRONIC",
+    "description": "A5 CABRIOLET 3.0 QUATTRO S TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60363,
+    "name": "A5 CABRIOLET 3.2 QUATTRO S TRONIC",
+    "description": "A5 CABRIOLET 3.2 QUATTRO S TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60589,
+    "name": "A5 SEDAN 2.0 TFSI ADVANCE",
+    "description": "A5 SEDAN 2.0 TFSI ADVANCE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60590,
+    "name": "A5 SEDAN 2.0 TFSI QUATTRO S-LINE",
+    "description": "A5 SEDAN 2.0 TFSI QUATTRO S-LINE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60379,
+    "name": "A5 SPORTBACK 2.0 T",
+    "description": "A5 SPORTBACK 2.0 T",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60380,
+    "name": "A5 SPORTBACK 2.0 T  MULTITRONIC",
+    "description": "A5 SPORTBACK 2.0 T  MULTITRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60424,
+    "name": "A5 SPORTBACK 2.0 T. LUXURY",
+    "description": "A5 SPORTBACK 2.0 T. LUXURY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60425,
+    "name": "A5 SPORTBACK 2.0 T. LUXURY MULTI.",
+    "description": "A5 SPORTBACK 2.0 T. LUXURY MULTI.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60515,
+    "name": "A5 SPORTBACK 2.0 T  S TRONIC   L17",
+    "description": "A5 SPORTBACK 2.0 T  S TRONIC   L17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60381,
+    "name": "A5 SPORTBACK 2.0 T QUATTRO",
+    "description": "A5 SPORTBACK 2.0 T QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60426,
+    "name": "A5 SPORTBACK 2.0 T. LUXURY STR.QUA",
+    "description": "A5 SPORTBACK 2.0 T. LUXURY STR.QUA",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60514,
+    "name": "A5 SPORTBACK 2.0 T QUATTRO STR L17",
+    "description": "A5 SPORTBACK 2.0 T QUATTRO STR L17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60568,
+    "name": "A5 SPORTBACK 2.0 T 45 QUATTRO STRO L/23",
+    "description": "A5 SPORTBACK 2.0 T 45 QUATTRO STRO L/23",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60427,
+    "name": "A5 SPORTBACK 3.0 QUATTRO STRONIC",
+    "description": "A5 SPORTBACK 3.0 QUATTRO STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60383,
+    "name": "A5 SPORTBACK 3.2 QUATTRO S TRONIC",
+    "description": "A5 SPORTBACK 3.2 QUATTRO S TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60059,
+    "name": "A6 2.4",
+    "description": "A6 2.4",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60060,
+    "name": "A6 2.4   TIPTRONIC",
+    "description": "A6 2.4   TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60061,
+    "name": "A6 2.4  QUATTRO",
+    "description": "A6 2.4  QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60071,
+    "name": "A6 2.4 AVANT",
+    "description": "A6 2.4 AVANT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60073,
+    "name": "A6 2.4 AVANT QUATTRO",
+    "description": "A6 2.4 AVANT QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60074,
+    "name": "A6 2.4 AVANT QUATTRO TIPTRONIC",
+    "description": "A6 2.4 AVANT QUATTRO TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60098,
+    "name": "A6 2.5 TDI",
+    "description": "A6 2.5 TDI",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60099,
+    "name": "A6 2.5 TDI  TIPTRONIC",
+    "description": "A6 2.5 TDI  TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60100,
+    "name": "A6 2.5 TDI  TIPTRONIC QUATTRO",
+    "description": "A6 2.5 TDI  TIPTRONIC QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60027,
+    "name": "A6 2.5 TDI AVANT",
+    "description": "A6 2.5 TDI AVANT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60069,
+    "name": "A6 2.5 TDI AVANT TIP. QUATTRO",
+    "description": "A6 2.5 TDI AVANT TIP. QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60234,
+    "name": "A6 2.7 TDI MULTITRONIC",
+    "description": "A6 2.7 TDI MULTITRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60104,
+    "name": "A6 2.7 TIPTRONIC QUATTRO",
+    "description": "A6 2.7 TIPTRONIC QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60152,
+    "name": "A6 2.7 TIPTRONIC QUATTRO SECURITY",
+    "description": "A6 2.7 TIPTRONIC QUATTRO SECURITY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60364,
+    "name": "A6 2.8 FSI MULTITRONIC        L/10",
+    "description": "A6 2.8 FSI MULTITRONIC        L/10",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60008,
+    "name": "A6 2.8 V6   L/94",
+    "description": "A6 2.8 V6   L/94",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60009,
+    "name": "A6 2.8 V6   L/94 AUT",
+    "description": "A6 2.8 V6   L/94 AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60013,
+    "name": "A6 2.8 V6   L/94 AVANT",
+    "description": "A6 2.8 V6   L/94 AVANT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60063,
+    "name": "A6 2.8 V6   L/98",
+    "description": "A6 2.8 V6   L/98",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60064,
+    "name": "A6 2.8 V6   L/98 TIPTRONIC",
+    "description": "A6 2.8 V6   L/98 TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60066,
+    "name": "A6 2.8 V6   L/98 TIPTRONIC QUATTRO",
+    "description": "A6 2.8 V6   L/98 TIPTRONIC QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60075,
+    "name": "A6 2.8 V6 L/98 AVANT",
+    "description": "A6 2.8 V6 L/98 AVANT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60077,
+    "name": "A6 2.8 V6 L/98 AVANT QUATTRO",
+    "description": "A6 2.8 V6 L/98 AVANT QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60076,
+    "name": "A6 2.8 V6 L/98 AVANT TIPTRONIC",
+    "description": "A6 2.8 V6 L/98 AVANT TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60162,
+    "name": "A6 3.0 TDI TIPTRONIC QUATTRO  L/04",
+    "description": "A6 3.0 TDI TIPTRONIC QUATTRO  L/04",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60366,
+    "name": "A6 3.0 TDI TIPTRONIC QUATTRO  L/10",
+    "description": "A6 3.0 TDI TIPTRONIC QUATTRO  L/10",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60539,
+    "name": "A6 3.0 TFSI STRONIC QUATTRO   L/19",
+    "description": "A6 3.0 TFSI STRONIC QUATTRO   L/19",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60365,
+    "name": "A6 3.0 TFSI TIPTRONIC QUATTRO",
+    "description": "A6 3.0 TFSI TIPTRONIC QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60124,
+    "name": "A6 3.0 V6   TIPTRONIC QUATTRO",
+    "description": "A6 3.0 V6   TIPTRONIC QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60218,
+    "name": "A6 3.2 FSI  TIPTRONIC QUATTRO",
+    "description": "A6 3.2 FSI  TIPTRONIC QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60105,
+    "name": "A6 4.2 FSI  TIPTRONIC QUATTRO",
+    "description": "A6 4.2 FSI  TIPTRONIC QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60464,
+    "name": "A6 ALLROAD 3.0 T QUATTRO  STRONIC",
+    "description": "A6 ALLROAD 3.0 T QUATTRO  STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60369,
+    "name": "A6 ALLROAD 3.0 T QUATTRO TIPTRONIC",
+    "description": "A6 ALLROAD 3.0 T QUATTRO TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60465,
+    "name": "A6 ALLROAD 3.0 TDI STRONIC QUATTRO",
+    "description": "A6 ALLROAD 3.0 TDI STRONIC QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60370,
+    "name": "A6 ALLROAD 3.0 TDI TIPTRO. QUATTRO",
+    "description": "A6 ALLROAD 3.0 TDI TIPTRO. QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60371,
+    "name": "A6 ALLROAD 4.2 FSI TIPTRO. QUATTRO",
+    "description": "A6 ALLROAD 4.2 FSI TIPTRO. QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60420,
+    "name": "A7 SPORTBACK 3.0 TDI  QUATTRO STRO",
+    "description": "A7 SPORTBACK 3.0 TDI  QUATTRO STRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60412,
+    "name": "A7 SPORTBACK 3.0T QUATTRO STRO",
+    "description": "A7 SPORTBACK 3.0T QUATTRO STRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60540,
+    "name": "A7 SPORTBACK 3.0T QUATTRO STRO L19",
+    "description": "A7 SPORTBACK 3.0T QUATTRO STRO L19",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60461,
+    "name": "A8 4.0 FSI QUATTRO TIPTRONIC",
+    "description": "A8 4.0 FSI QUATTRO TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60541,
+    "name": "A8 4.0 FSI QUATTRO TIPTRONIC   L19",
+    "description": "A8 4.0 FSI QUATTRO TIPTRONIC   L19",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60462,
+    "name": "A8 4.0 FSI QUATTRO TIPTRONIC L",
+    "description": "A8 4.0 FSI QUATTRO TIPTRONIC L",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60542,
+    "name": "A8 4.0 FSI QUATTRO TIPTRONIC L L19",
+    "description": "A8 4.0 FSI QUATTRO TIPTRONIC L L19",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60044,
+    "name": "A8 4.2 FSI QUATTRO TIPTRONIC",
+    "description": "A8 4.2 FSI QUATTRO TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60246,
+    "name": "A8 4.2 FSI QUATTRO TIPTRONIC  L/07",
+    "description": "A8 4.2 FSI QUATTRO TIPTRONIC  L/07",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60247,
+    "name": "A8 4.2 FSI QUATTRO TIPTRONIC L",
+    "description": "A8 4.2 FSI QUATTRO TIPTRONIC L",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60398,
+    "name": "A8 4.2 FSI QUATTRO TIPTRONIC  L/11",
+    "description": "A8 4.2 FSI QUATTRO TIPTRONIC  L/11",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60108,
+    "name": "ALLROAD 2.5 TDI QUATTRO",
+    "description": "ALLROAD 2.5 TDI QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60109,
+    "name": "ALLROAD 2.5 TDI QUATTRO TIPTRONIC",
+    "description": "ALLROAD 2.5 TDI QUATTRO TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60110,
+    "name": "ALLROAD 2.7 T   QUATTRO TIPTRONIC",
+    "description": "ALLROAD 2.7 T   QUATTRO TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60220,
+    "name": "ALLROAD 3.0 TDI QUATTRO TIPTRONIC",
+    "description": "ALLROAD 3.0 TDI QUATTRO TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60221,
+    "name": "ALLROAD 3.2 FSI QUATTRO TIPTRONIC",
+    "description": "ALLROAD 3.2 FSI QUATTRO TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60057,
+    "name": "A4 2.8 V6  CABRIOLET",
+    "description": "A4 2.8 V6  CABRIOLET",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60058,
+    "name": "A4 2.8 V6  CABRIOLET TIPTRONIC",
+    "description": "A4 2.8 V6  CABRIOLET TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 180111,
+    "name": "FAIRLANE LTD",
+    "description": "FAIRLANE LTD",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60554,
+    "name": "E-TRON 55 QUATTRO",
+    "description": "E-TRON 55 QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60123,
+    "name": "DKW  AUTO UNION",
+    "description": "DKW  AUTO UNION",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60561,
+    "name": "Q2 1.4 T 150HP 35 TIPTRONIC L/22",
+    "description": "Q2 1.4 T 150HP 35 TIPTRONIC L/22",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60509,
+    "name": "Q2 1.4 T 150HP STRONIC",
+    "description": "Q2 1.4 T 150HP STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60527,
+    "name": "Q2 1.4 T 150HP STRONIC OFFROAD STY",
+    "description": "Q2 1.4 T 150HP STRONIC OFFROAD STY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60510,
+    "name": "Q2 1.4 T 150HP STRONIC SPORT",
+    "description": "Q2 1.4 T 150HP STRONIC SPORT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60529,
+    "name": "Q2 2.0 T 190HP STRONIC QUATTRO",
+    "description": "Q2 2.0 T 190HP STRONIC QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60481,
+    "name": "Q3 1.4 T 150HP",
+    "description": "Q3 1.4 T 150HP",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60482,
+    "name": "Q3 1.4 T 150HP  STRONIC",
+    "description": "Q3 1.4 T 150HP  STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60543,
+    "name": "Q3 1.4 T 150HP 35 STRONIC",
+    "description": "Q3 1.4 T 150HP 35 STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60548,
+    "name": "Q3 1.4 T 150HP 35 STRONIC SPORTBACK",
+    "description": "Q3 1.4 T 150HP 35 STRONIC SPORTBACK",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60519,
+    "name": "Q3 1.4 T 150HP SPORT",
+    "description": "Q3 1.4 T 150HP SPORT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60518,
+    "name": "Q3 1.4 T 150HP SPORT STRONIC",
+    "description": "Q3 1.4 T 150HP SPORT STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60446,
+    "name": "Q3 2.0 T 170HP QUATTRO",
+    "description": "Q3 2.0 T 170HP QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60447,
+    "name": "Q3 2.0 T 170HP QUATTRO STRONIC",
+    "description": "Q3 2.0 T 170HP QUATTRO STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60544,
+    "name": "Q3 2.0 T 180HP 40 STRONIC QUATTRO",
+    "description": "Q3 2.0 T 180HP 40 STRONIC QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60571,
+    "name": "Q3 2.0 T 180HP 40 STRONIC QUATTRO SPORTB",
+    "description": "Q3 2.0 T 180HP 40 STRONIC QUATTRO SPORTB",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60448,
+    "name": "Q3 2.0 T 211HP QUATTRO STRONIC",
+    "description": "Q3 2.0 T 211HP QUATTRO STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60493,
+    "name": "Q3 2.0 T 220HP QUATTRO STRONIC",
+    "description": "Q3 2.0 T 220HP QUATTRO STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60459,
+    "name": "Q3 2.0 TDI QUATTRO STRONIC",
+    "description": "Q3 2.0 TDI QUATTRO STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60303,
+    "name": "Q5 2.0 T QUA.180HP",
+    "description": "Q5 2.0 T QUA.180HP",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60305,
+    "name": "Q5 2.0 T QUA.211HP  STRONIC",
+    "description": "Q5 2.0 T QUA.211HP  STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60304,
+    "name": "Q5 2.0 T QUA.211HP LUXURY",
+    "description": "Q5 2.0 T QUA.211HP LUXURY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60306,
+    "name": "Q5 2.0 T QUA.211HP LUXURY STRONIC",
+    "description": "Q5 2.0 T QUA.211HP LUXURY STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60460,
+    "name": "Q5 2.0 T QUA.225HP",
+    "description": "Q5 2.0 T QUA.225HP",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60531,
+    "name": "Q5 2.0 T QUA.225HP  STRONIC",
+    "description": "Q5 2.0 T QUA.225HP  STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60556,
+    "name": "Q5 2.0 T QUA.245HP 45 OFFROAD STRONIC MH",
+    "description": "Q5 2.0 T QUA.245HP 45 OFFROAD STRONIC MH",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60572,
+    "name": "Q5 2.0 T QUA.245HP 45 SPORTBACK MH ADVAN",
+    "description": "Q5 2.0 T QUA.245HP 45 SPORTBACK MH ADVAN",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60573,
+    "name": "Q5 2.0 T QUA.245HP 45 SPORTBACK MH SLINE",
+    "description": "Q5 2.0 T QUA.245HP 45 SPORTBACK MH SLINE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60445,
+    "name": "Q5 2.0 T QUA.252HP  STRONIC",
+    "description": "Q5 2.0 T QUA.252HP  STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60528,
+    "name": "Q5 2.0 T QUA.252HP  STRONIC SECURITY",
+    "description": "Q5 2.0 T QUA.252HP  STRONIC SECURITY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60546,
+    "name": "Q5 2.0 T QUA.252HP 45 OFFROAD STRONIC",
+    "description": "Q5 2.0 T QUA.252HP 45 OFFROAD STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60307,
+    "name": "Q5 2.0 TDI QUATTRO",
+    "description": "Q5 2.0 TDI QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60399,
+    "name": "Q5 2.0 TDI QUATTRO STRONIC",
+    "description": "Q5 2.0 TDI QUATTRO STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60308,
+    "name": "Q5 3.0 TDI QUATTRO STRONIC",
+    "description": "Q5 3.0 TDI QUATTRO STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60478,
+    "name": "Q5 3.0.T   QUATTRO TIPTRONIC",
+    "description": "Q5 3.0.T   QUATTRO TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60309,
+    "name": "Q5 3.2 FSI QUATTRO STRONIC",
+    "description": "Q5 3.2 FSI QUATTRO STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 180481,
+    "name": "FALCON COUPE",
+    "description": "FALCON COUPE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60402,
+    "name": "Q7 3.0 FSI TIPT. QUATTRO 272HP SECURITY",
+    "description": "Q7 3.0 FSI TIPT. QUATTRO 272HP SECURITY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60404,
+    "name": "Q7 3.0 FSI TIPT. QUATTRO 272HP SPORT SEC",
+    "description": "Q7 3.0 FSI TIPT. QUATTRO 272HP SPORT SEC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60405,
+    "name": "Q7 3.0 FSI TIPT. QUATTRO 333HP",
+    "description": "Q7 3.0 FSI TIPT. QUATTRO 333HP",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60406,
+    "name": "Q7 3.0 FSI TIPT. QUATTRO 333HP SECURITY",
+    "description": "Q7 3.0 FSI TIPT. QUATTRO 333HP SECURITY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60407,
+    "name": "Q7 3.0 FSI TIPT. QUATTRO 333HP SPORT",
+    "description": "Q7 3.0 FSI TIPT. QUATTRO 333HP SPORT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60210,
+    "name": "Q7 3.0 TDI TIPT. QUATTRO",
+    "description": "Q7 3.0 TDI TIPT. QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60222,
+    "name": "Q7 3.0 TDI TIPT. QUATTRO SECURITY",
+    "description": "Q7 3.0 TDI TIPT. QUATTRO SECURITY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60211,
+    "name": "Q7 4.2 FSI TIPT. QUATTRO",
+    "description": "Q7 4.2 FSI TIPT. QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60232,
+    "name": "Q7 4.2 FSI TIPT. QUATTRO LUXURY",
+    "description": "Q7 4.2 FSI TIPT. QUATTRO LUXURY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60233,
+    "name": "Q7 4.2 FSI TIPT. QUATTRO SECURITY",
+    "description": "Q7 4.2 FSI TIPT. QUATTRO SECURITY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60253,
+    "name": "Q7 4.2 TDI TIPT. QUATTRO",
+    "description": "Q7 4.2 TDI TIPT. QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60254,
+    "name": "Q7 4.2 TDI TIPT. QUATTRO LUXURY",
+    "description": "Q7 4.2 TDI TIPT. QUATTRO LUXURY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60255,
+    "name": "Q7 4.2 TDI TIPT. QUATTRO SECURITY",
+    "description": "Q7 4.2 TDI TIPT. QUATTRO SECURITY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60550,
+    "name": "Q7 45  TDI TIP. QUATTRO S-LINE",
+    "description": "Q7 45  TDI TIP. QUATTRO S-LINE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60551,
+    "name": "Q7 55 MILD HIBRID TIPTRONIC QUATTRO",
+    "description": "Q7 55 MILD HIBRID TIPTRONIC QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60552,
+    "name": "Q7 55 MILD HIBRID TIP. QUA. S-LINE",
+    "description": "Q7 55 MILD HIBRID TIP. QUA. S-LINE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60537,
+    "name": "Q8 45 TDI  QUATTRO",
+    "description": "Q8 45 TDI  QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60594,
+    "name": "Q6 E-TRON PERFORMANCE",
+    "description": "Q6 E-TRON PERFORMANCE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60538,
+    "name": "Q8 55 TFSI QUATTRO",
+    "description": "Q8 55 TFSI QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60576,
+    "name": "Q8 55 QUATTRO E-TRON",
+    "description": "Q8 55 QUATTRO E-TRON",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60251,
+    "name": "R8  4.2 V8  QUATTRO",
+    "description": "R8  4.2 V8  QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60252,
+    "name": "R8  4.2 V8  QUATTRO R TRONIC",
+    "description": "R8  4.2 V8  QUATTRO R TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60377,
+    "name": "R8  5.2 V10 QUATTRO",
+    "description": "R8  5.2 V10 QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60410,
+    "name": "R8  5.2 V10 QUATTRO SPYDER",
+    "description": "R8  5.2 V10 QUATTRO SPYDER",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60411,
+    "name": "R8  5.2 V10 QUATTRO SPYDER R",
+    "description": "R8  5.2 V10 QUATTRO SPYDER R",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60508,
+    "name": "R8  5.2 V10 QUATTRO STRONIC   L/17",
+    "description": "R8  5.2 V10 QUATTRO STRONIC   L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60524,
+    "name": "R8  5.2 V10 QUATTRO SPYDER PLUS",
+    "description": "R8  5.2 V10 QUATTRO SPYDER PLUS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60526,
+    "name": "RS3 2.5 TFSI QUATTRO SEDAN STRONIC",
+    "description": "RS3 2.5 TFSI QUATTRO SEDAN STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60523,
+    "name": "RS3 2.5 TFSI QUATTRO SPORTBACK STRONIC",
+    "description": "RS3 2.5 TFSI QUATTRO SPORTBACK STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60587,
+    "name": "RS3 2.5 TFSI QUATTRO SEDAN STRONIC L/25",
+    "description": "RS3 2.5 TFSI QUATTRO SEDAN STRONIC L/25",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60586,
+    "name": "RS3 2.5 TFSI QUATTRO SPORTBACK STR. L/25",
+    "description": "RS3 2.5 TFSI QUATTRO SPORTBACK STR. L/25",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60113,
+    "name": "RS4 2.7 V6 TURBO QUATTRO",
+    "description": "RS4 2.7 V6 TURBO QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60217,
+    "name": "RS4 4.2 V8 QUATTRO",
+    "description": "RS4 4.2 V8 QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60532,
+    "name": "RS5 2.9 V6 TFSI TIPTRONIC QUATTRO",
+    "description": "RS5 2.9 V6 TFSI TIPTRONIC QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60397,
+    "name": "RS5 4.2 V8 FSI S TRONIC QUATTRO",
+    "description": "RS5 4.2 V8 FSI S TRONIC QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60153,
+    "name": "RS6 4.2 V8 TIPTRONIC QUATTRO",
+    "description": "RS6 4.2 V8 TIPTRONIC QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60336,
+    "name": "RS6 5.0 V8 TFSI TIPTRONIC QUATTRO",
+    "description": "RS6 5.0 V8 TFSI TIPTRONIC QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60480,
+    "name": "RS7 4.0 V8 TFSI TIPTRO. SPORTBACK",
+    "description": "RS7 4.0 V8 TFSI TIPTRO. SPORTBACK",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60563,
+    "name": "RS E-TRON GT QUATTRO",
+    "description": "RS E-TRON GT QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60578,
+    "name": "RSQ3 2.5 QUATTRO SPORTBACK",
+    "description": "RSQ3 2.5 QUATTRO SPORTBACK",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60553,
+    "name": "RSQ8 4.0 V8 QUATTRO MILD HIBRID",
+    "description": "RSQ8 4.0 V8 QUATTRO MILD HIBRID",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60588,
+    "name": "RSQ8 4.0 V8 QUATTRO MILD HYBRID PERF.",
+    "description": "RSQ8 4.0 V8 QUATTRO MILD HYBRID PERF.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60090,
+    "name": "S3  1.8 T QUATTRO",
+    "description": "S3  1.8 T QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60248,
+    "name": "S3  2.0 T QUATTRO",
+    "description": "S3  2.0 T QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60310,
+    "name": "S3  2.0 T QUATTRO S TRONIC",
+    "description": "S3  2.0 T QUATTRO S TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60507,
+    "name": "S3  2.0 T SEDAN S TRONIC QUATTRO L/17",
+    "description": "S3  2.0 T SEDAN S TRONIC QUATTRO L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60574,
+    "name": "S3 2.0 T SEDAN S TRONIC QUATTRO L/24",
+    "description": "S3 2.0 T SEDAN S TRONIC QUATTRO L/24",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60591,
+    "name": "S3 2.0 T SEDAN S TRONIC QUATTRO L/25",
+    "description": "S3 2.0 T SEDAN S TRONIC QUATTRO L/25",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60301,
+    "name": "S3  2.0 T SPORTBACK",
+    "description": "S3  2.0 T SPORTBACK",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60302,
+    "name": "S3  2.0 T SPORTBACK S TRONIC QUAT",
+    "description": "S3  2.0 T SPORTBACK S TRONIC QUAT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60503,
+    "name": "S3  2.0 T SPORTBACK S TRONIC QUAT L/17",
+    "description": "S3  2.0 T SPORTBACK S TRONIC QUAT L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60575,
+    "name": "S3 2.0 T SPORTBACK S TRONIC QUAT L/24",
+    "description": "S3 2.0 T SPORTBACK S TRONIC QUAT L/24",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60592,
+    "name": "S3 2.0 T SPORTBACK S TRONIC QUATTRO L/25",
+    "description": "S3 2.0 T SPORTBACK S TRONIC QUATTRO L/25",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60091,
+    "name": "S4  2.7 V6 TURBO  QUATTRO",
+    "description": "S4  2.7 V6 TURBO  QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60348,
+    "name": "S4  3.0 V6 T. FSI QUATTRO",
+    "description": "S4  3.0 V6 T. FSI QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60516,
+    "name": "S4  3.0 V6 T. FSI QUATTRO TIP L/17",
+    "description": "S4  3.0 V6 T. FSI QUATTRO TIP L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60154,
+    "name": "S4  4.2 V8 QUATTRO",
+    "description": "S4  4.2 V8 QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60216,
+    "name": "S4  4.2 V8 QUATTRO TIPTRONIC",
+    "description": "S4  4.2 V8 QUATTRO TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60441,
+    "name": "S5  3.0 V6 QUATTRO STRONIC",
+    "description": "S5  3.0 V6 QUATTRO STRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60521,
+    "name": "S5  3.0 V6 QUATTRO TIP. SBACK.L/17",
+    "description": "S5  3.0 V6 QUATTRO TIP. SBACK.L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60520,
+    "name": "S5  3.0 V6 QUATTRO TIPTRONIC  L/17",
+    "description": "S5  3.0 V6 QUATTRO TIPTRONIC  L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60258,
+    "name": "S5  4.2 V8 QUATTRO",
+    "description": "S5  4.2 V8 QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60259,
+    "name": "S5  4.2 V8 QUATTRO TIPTRONIC",
+    "description": "S5  4.2 V8 QUATTRO TIPTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60477,
+    "name": "S6  4.0 T  QUATTRO S TRONIC",
+    "description": "S6  4.0 T  QUATTRO S TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60463,
+    "name": "S7  4.0 T  QUATTRO SPORTBACK STRON",
+    "description": "S7  4.0 T  QUATTRO SPORTBACK STRON",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60517,
+    "name": "SQ5 3.0 T FSI QUATTRO TIP.",
+    "description": "SQ5 3.0 T FSI QUATTRO TIP.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60593,
+    "name": "SQ5 3.0 T FSI QUATTRO TIP. SPORTBK L/25",
+    "description": "SQ5 3.0 T FSI QUATTRO TIP. SPORTBK L/25",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60088,
+    "name": "TT 1.8 20V TURBO",
+    "description": "TT 1.8 20V TURBO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60089,
+    "name": "TT 1.8 20V TURBO QUATTRO",
+    "description": "TT 1.8 20V TURBO QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60107,
+    "name": "TT 1.8 20V TURBO ROADSTER",
+    "description": "TT 1.8 20V TURBO ROADSTER",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60337,
+    "name": "TT 1.8 FSI TURBO",
+    "description": "TT 1.8 FSI TURBO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60338,
+    "name": "TT 1.8 FSI TURBO  PREMIUM",
+    "description": "TT 1.8 FSI TURBO  PREMIUM",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60453,
+    "name": "S4  2.5 V6 TDI AVANT",
+    "description": "S4  2.5 V6 TDI AVANT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60340,
+    "name": "TT 1.8 FSI TURBO  SPORT PREMIUM",
+    "description": "TT 1.8 FSI TURBO  SPORT PREMIUM",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60395,
+    "name": "TT 1.8 FSI TURBO ROADSTER",
+    "description": "TT 1.8 FSI TURBO ROADSTER",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60237,
+    "name": "TT 2.0 FSI TURBO",
+    "description": "TT 2.0 FSI TURBO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60238,
+    "name": "TT 2.0 FSI TURBO  S TRONIC",
+    "description": "TT 2.0 FSI TURBO  S TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60241,
+    "name": "TT 2.0 FSI TURBO ROADSTER",
+    "description": "TT 2.0 FSI TURBO ROADSTER",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60242,
+    "name": "TT 2.0 FSI TURBO ROADSTER S TRONIC",
+    "description": "TT 2.0 FSI TURBO ROADSTER S TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60494,
+    "name": "TT 2.0 TFSI S TRONIC (230CV)",
+    "description": "TT 2.0 TFSI S TRONIC (230CV)",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60408,
+    "name": "TT 2.5 FSI  RS",
+    "description": "TT 2.5 FSI  RS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60409,
+    "name": "TT 2.5 FSI  RS S TRONIC",
+    "description": "TT 2.5 FSI  RS S TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60522,
+    "name": "TT 2.5 TFSI RS                L/17",
+    "description": "TT 2.5 TFSI RS                L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60239,
+    "name": "TT 3.2 V6  QUATTRO",
+    "description": "TT 3.2 V6  QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60161,
+    "name": "TT 3.2 V6  QUATTRO DSG",
+    "description": "TT 3.2 V6  QUATTRO DSG",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60243,
+    "name": "TT 3.2 V6  QUATTRO ROADSTER",
+    "description": "TT 3.2 V6  QUATTRO ROADSTER",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60240,
+    "name": "TT 3.2 V6  QUATTRO S TRONIC",
+    "description": "TT 3.2 V6  QUATTRO S TRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60244,
+    "name": "TT 3.2 V6  QUATTRO S TRONIC ROAD.",
+    "description": "TT 3.2 V6  QUATTRO S TRONIC ROAD.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60495,
+    "name": "TTS 2.0 T. S TRONIC QUATTRO",
+    "description": "TTS 2.0 T. S TRONIC QUATTRO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 60525,
+    "name": "TTS 2.0 T. S TRONIC QUATTRO ROADS.",
+    "description": "TTS 2.0 T. S TRONIC QUATTRO ROADS.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080028,
+    "name": "ARRIZO 5 1.5 CONFORT",
+    "description": "ARRIZO 5 1.5 CONFORT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080029,
+    "name": "ARRIZO 5 1.5 LUXURY",
+    "description": "ARRIZO 5 1.5 LUXURY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080027,
+    "name": "ARRIZO 5 1.5 LUXURY AUT",
+    "description": "ARRIZO 5 1.5 LUXURY AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080002,
+    "name": "FACE  1.3 LUXURY",
+    "description": "FACE  1.3 LUXURY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080011,
+    "name": "FULWIN    1.5 4 PTAS",
+    "description": "FULWIN    1.5 4 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080012,
+    "name": "FULWIN    1.5 5 PTAS",
+    "description": "FULWIN    1.5 5 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080016,
+    "name": "FULWIN II 1.5 4 PTAS",
+    "description": "FULWIN II 1.5 4 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080017,
+    "name": "FULWIN II 1.5 5 PTAS",
+    "description": "FULWIN II 1.5 5 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080019,
+    "name": "QQ 1.0 LIGHT   SECURITY",
+    "description": "QQ 1.0 LIGHT   SECURITY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080004,
+    "name": "QQ 1.1 BASIC",
+    "description": "QQ 1.1 BASIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080006,
+    "name": "QQ 1.1 CONFORT",
+    "description": "QQ 1.1 CONFORT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080007,
+    "name": "QQ 1.1 EDICION ESPECIAL",
+    "description": "QQ 1.1 EDICION ESPECIAL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080005,
+    "name": "QQ 1.1 LIGHT",
+    "description": "QQ 1.1 LIGHT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080008,
+    "name": "SKIN 1.6 4 PTAS",
+    "description": "SKIN 1.6 4 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080009,
+    "name": "SKIN 1.6 5 PTAS",
+    "description": "SKIN 1.6 5 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080001,
+    "name": "TIGGO   2.0 4X2 CONFORT",
+    "description": "TIGGO   2.0 4X2 CONFORT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080010,
+    "name": "TIGGO   2.0 4X2 CONFORT       L/13",
+    "description": "TIGGO   2.0 4X2 CONFORT       L/13",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080013,
+    "name": "TIGGO   2.0 4X2 LUXURY  AUT   L/13",
+    "description": "TIGGO   2.0 4X2 LUXURY  AUT   L/13",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080003,
+    "name": "TIGGO   2.0 4X4 LUXURY",
+    "description": "TIGGO   2.0 4X4 LUXURY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080014,
+    "name": "TIGGO   2.0 4X4 LUXURY        L/13",
+    "description": "TIGGO   2.0 4X4 LUXURY        L/13",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080031,
+    "name": "TIGGO 2 1.5 4X2 CONFORT",
+    "description": "TIGGO 2 1.5 4X2 CONFORT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080033,
+    "name": "TIGGO 2 1.5 4X2 CONFORT CVT   L/20",
+    "description": "TIGGO 2 1.5 4X2 CONFORT CVT   L/20",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080032,
+    "name": "TIGGO 2 1.5 4X2 LUXURY",
+    "description": "TIGGO 2 1.5 4X2 LUXURY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080046,
+    "name": "TIGGO 2 1.5 4X2 PRO STD",
+    "description": "TIGGO 2 1.5 4X2 PRO STD",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080039,
+    "name": "TIGGO 2 1.5 4X2 PRO CONFORT",
+    "description": "TIGGO 2 1.5 4X2 PRO CONFORT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080040,
+    "name": "TIGGO 2 1.5 4X2 PRO CONFORT CVT",
+    "description": "TIGGO 2 1.5 4X2 PRO CONFORT CVT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080041,
+    "name": "TIGGO 2 1.5 4X2 PRO LUXURY",
+    "description": "TIGGO 2 1.5 4X2 PRO LUXURY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080049,
+    "name": "TIGGO 4 1.5 4X2 HYBRID DHT HEV PREMIUM",
+    "description": "TIGGO 4 1.5 4X2 HYBRID DHT HEV PREMIUM",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080020,
+    "name": "TIGGO 3 1.6 4x2 CONFORT       L/16",
+    "description": "TIGGO 3 1.6 4x2 CONFORT       L/16",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080024,
+    "name": "TIGGO 3 1.6 4X2 CONFORT CVT   L/17",
+    "description": "TIGGO 3 1.6 4X2 CONFORT CVT   L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080026,
+    "name": "TIGGO 3 1.6 4X2 LUXURY  CVT   L/17",
+    "description": "TIGGO 3 1.6 4X2 LUXURY  CVT   L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080037,
+    "name": "TIGGO 4 1.5 4X2 CONFORT",
+    "description": "TIGGO 4 1.5 4X2 CONFORT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080038,
+    "name": "TIGGO 4 1.5 4X2 CONFORT CVT",
+    "description": "TIGGO 4 1.5 4X2 CONFORT CVT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080043,
+    "name": "TIGGO 4 1.5 4X2 PRO CONFORT",
+    "description": "TIGGO 4 1.5 4X2 PRO CONFORT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080044,
+    "name": "TIGGO 4 1.5 4X2 PRO CONFORT CVT",
+    "description": "TIGGO 4 1.5 4X2 PRO CONFORT CVT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080042,
+    "name": "TIGGO 4 1.5 4X2 PRO LUXURY CVT",
+    "description": "TIGGO 4 1.5 4X2 PRO LUXURY CVT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080034,
+    "name": "TIGGO 4 2.0 4X2 CONFORT",
+    "description": "TIGGO 4 2.0 4X2 CONFORT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080035,
+    "name": "TIGGO 4 2.0 4X2 CONFORT CVT",
+    "description": "TIGGO 4 2.0 4X2 CONFORT CVT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080047,
+    "name": "TIGGO 2 1.5 4X2 PRO-MAX COMFORT",
+    "description": "TIGGO 2 1.5 4X2 PRO-MAX COMFORT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 180395,
+    "name": "FIESTA 1.6 4 PTAS MAX AMB",
+    "description": "FIESTA 1.6 4 PTAS MAX AMB",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 320108,
+    "name": "106 XR  1.4 3 PTAS FULL",
+    "description": "106 XR  1.4 3 PTAS FULL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 180597,
+    "name": "FIESTA  1.6 4P SE PLUS POWER. (KD)",
+    "description": "FIESTA  1.6 4P SE PLUS POWER. (KD)",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180599,
+    "name": "FIESTA  1.6 4P TITANIUM POWER.(KD)",
+    "description": "FIESTA  1.6 4P TITANIUM POWER.(KD)",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180766,
+    "name": "FIESTA 1.6 4P TITANIUM POWER.(KD) L/18",
+    "description": "FIESTA 1.6 4P TITANIUM POWER.(KD) L/18",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180546,
+    "name": "FIESTA  1.6 4P TREND PLUS     (KD)",
+    "description": "FIESTA  1.6 4P TREND PLUS     (KD)",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180621,
+    "name": "FIESTA  1.6 5P S  PLUS        (KD)",
+    "description": "FIESTA  1.6 5P S  PLUS        (KD)",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180622,
+    "name": "FIESTA  1.6 5P SE             (KD)",
+    "description": "FIESTA  1.6 5P SE             (KD)",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 1080022,
+    "name": "TIGGO 5 2.0 4X2 CONFORT CVT   L/17",
+    "description": "TIGGO 5 2.0 4X2 CONFORT CVT   L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080030,
+    "name": "TIGGO 5 2.0 4X2 LUXURY        L/17",
+    "description": "TIGGO 5 2.0 4X2 LUXURY        L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080023,
+    "name": "TIGGO 5 2.0 4X2 LUXURY  CVT   L/17",
+    "description": "TIGGO 5 2.0 4X2 LUXURY  CVT   L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080051,
+    "name": "TIGGO 8 1.6 4X2 PRO 290T LUXURY 7DCT",
+    "description": "TIGGO 8 1.6 4X2 PRO 290T LUXURY 7DCT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080045,
+    "name": "TIGGO 8 1.6 4X2 PRO LUXURY CVT",
+    "description": "TIGGO 8 1.6 4X2 PRO LUXURY CVT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120123,
+    "name": "230",
+    "description": "230",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120140,
+    "name": "250",
+    "description": "250",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120058,
+    "name": "400",
+    "description": "400",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120120,
+    "name": "400 DE LUJO",
+    "description": "400 DE LUJO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120070,
+    "name": "400 RALLY SPORT",
+    "description": "400 RALLY SPORT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120059,
+    "name": "400 S",
+    "description": "400 S",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120071,
+    "name": "400 SS",
+    "description": "400 SS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120248,
+    "name": "51 DELUXE",
+    "description": "51 DELUXE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120097,
+    "name": "ASTRO VAN",
+    "description": "ASTRO VAN",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120169,
+    "name": "ASTRA CD  2.0 4 PTAS FULL",
+    "description": "ASTRA CD  2.0 4 PTAS FULL",
+    "price_adjustments": {
+      "2008": 0,
+      "2009": 0,
+      "2010": 0,
+      "2011": 0,
+      "2012": 0,
+      "2013": 0,
+      "2014": 0,
+      "2015": 0,
+      "2016": 0,
+      "2017": 0,
+      "2018": 0,
+      "2019": 0,
+      "2020": 0,
+      "2021": 0,
+      "2022": 0,
+      "2023": 0,
+      "2024": 0,
+      "2025": 0,
+      "2026": 0
+    }
+  },
+  {
+    "id": 120200,
+    "name": "ASTRA CDX 2.0 4 PTAS",
+    "description": "ASTRA CDX 2.0 4 PTAS",
+    "price_adjustments": {
+      "2008": 0,
+      "2009": 0,
+      "2010": 0,
+      "2011": 0,
+      "2012": 0,
+      "2013": 0,
+      "2014": 0,
+      "2015": 0,
+      "2016": 0,
+      "2017": 0,
+      "2018": 0,
+      "2019": 0,
+      "2020": 0,
+      "2021": 0,
+      "2022": 0,
+      "2023": 0,
+      "2024": 0,
+      "2025": 0,
+      "2026": 0
+    }
+  },
+  {
+    "id": 120028,
+    "name": "BLAZER 4X2 160 HP",
+    "description": "BLAZER 4X2 160 HP",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120263,
+    "name": "AVALANCHE 4X4",
+    "description": "AVALANCHE 4X4",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120187,
+    "name": "BALENO GLX 1.6 4 PTAS",
+    "description": "BALENO GLX 1.6 4 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120188,
+    "name": "BALENO GLX 1.6 WAGON",
+    "description": "BALENO GLX 1.6 WAGON",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120080,
+    "name": "BERETTA GT COUPE",
+    "description": "BERETTA GT COUPE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120030,
+    "name": "BLAZER 4X4 200 HP",
+    "description": "BLAZER 4X4 200 HP",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120029,
+    "name": "BLAZER 4X4 160 HP",
+    "description": "BLAZER 4X4 160 HP",
+    "price_adjustments": {}
+  },
+  {
+    "id": 1080036,
+    "name": "TIGGO 7 1.5 4X2 LUXURY",
+    "description": "TIGGO 7 1.5 4X2 LUXURY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 180521,
+    "name": "FIESTA 1.6 5 PTAS ONE AMBIEN.",
+    "description": "FIESTA 1.6 5 PTAS ONE AMBIEN.",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180587,
+    "name": "FIESTA  1.6 5P SE PLUS        (KD)",
+    "description": "FIESTA  1.6 5P SE PLUS        (KD)",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180767,
+    "name": "FIESTA 1.6 5P SE PLUS (KD) L/18",
+    "description": "FIESTA 1.6 5P SE PLUS (KD) L/18",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180537,
+    "name": "FIESTA  1.6 5P TITANIUM       (KD)",
+    "description": "FIESTA  1.6 5P TITANIUM       (KD)",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180593,
+    "name": "FIESTA  1.6 5P TITANIUM POWER.(KD)",
+    "description": "FIESTA  1.6 5P TITANIUM POWER.(KD)",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 120174,
+    "name": "BLAZER 4X4 4.3 EXECUTIVE AUT",
+    "description": "BLAZER 4X4 4.3 EXECUTIVE AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120044,
+    "name": "BLAZER DLX 2.2 4X2",
+    "description": "BLAZER DLX 2.2 4X2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120289,
+    "name": "BLAZER DLX 2.4 4X2",
+    "description": "BLAZER DLX 2.4 4X2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120105,
+    "name": "BLAZER DLX 2.5 TD  4X2",
+    "description": "BLAZER DLX 2.5 TD  4X2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120142,
+    "name": "BLAZER DLX 2.5 TD  4X4",
+    "description": "BLAZER DLX 2.5 TD  4X4",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120196,
+    "name": "BLAZER DLX 2.8 TDI 4X2",
+    "description": "BLAZER DLX 2.8 TDI 4X2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120291,
+    "name": "BLAZER DLX 2.8 TDI 4X2 L/06",
+    "description": "BLAZER DLX 2.8 TDI 4X2 L/06",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120319,
+    "name": "BLAZER DLX 2.8 TDI 4X2 L/09",
+    "description": "BLAZER DLX 2.8 TDI 4X2 L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120197,
+    "name": "BLAZER DLX 2.8 TDI 4X4",
+    "description": "BLAZER DLX 2.8 TDI 4X4",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120292,
+    "name": "BLAZER DLX 2.8 TDI 4X4 L/06",
+    "description": "BLAZER DLX 2.8 TDI 4X4 L/06",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120320,
+    "name": "BLAZER DLX 2.8 TDI 4X4 L/09",
+    "description": "BLAZER DLX 2.8 TDI 4X4 L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120132,
+    "name": "CAPRICE",
+    "description": "CAPRICE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120423,
+    "name": "CAMARO SS",
+    "description": "CAMARO SS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120546,
+    "name": "CAMARO SS                     L/17",
+    "description": "CAMARO SS                     L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120564,
+    "name": "CAMARO SS CONVERTIBLE         L/17",
+    "description": "CAMARO SS CONVERTIBLE         L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120133,
+    "name": "CAVALIER",
+    "description": "CAVALIER",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120306,
+    "name": "CAPTIVA 2.0 D LT",
+    "description": "CAPTIVA 2.0 D LT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120307,
+    "name": "CAPTIVA 2.0 D LTZ AUT",
+    "description": "CAPTIVA 2.0 D LTZ AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120408,
+    "name": "CAPTIVA 2.2 D LT",
+    "description": "CAPTIVA 2.2 D LT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120409,
+    "name": "CAPTIVA 2.2 D LTZ AUT",
+    "description": "CAPTIVA 2.2 D LTZ AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120542,
+    "name": "CAPTIVA 2.2 D LTZ AUT         L/17",
+    "description": "CAPTIVA 2.2 D LTZ AUT         L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120406,
+    "name": "CAPTIVA 2.4 LS",
+    "description": "CAPTIVA 2.4 LS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120540,
+    "name": "CAPTIVA 2.4 LS                L/17",
+    "description": "CAPTIVA 2.4 LS                L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120311,
+    "name": "CAPTIVA 2.4 LT",
+    "description": "CAPTIVA 2.4 LT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120407,
+    "name": "CAPTIVA 2.4 LT                L/12",
+    "description": "CAPTIVA 2.4 LT                L/12",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120127,
+    "name": "CELEBRITY",
+    "description": "CELEBRITY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120034,
+    "name": "CHEVETTE 1.4 2 PTAS",
+    "description": "CHEVETTE 1.4 2 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120035,
+    "name": "CHEVETTE 1.6 2 PTAS",
+    "description": "CHEVETTE 1.6 2 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120036,
+    "name": "CHEVETTE 1.6 4 PTAS",
+    "description": "CHEVETTE 1.6 4 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120098,
+    "name": "CHEVY",
+    "description": "CHEVY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120072,
+    "name": "CHEVY CHEVROMATIC",
+    "description": "CHEVY CHEVROMATIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120073,
+    "name": "CHEVY CHEVRON",
+    "description": "CHEVY CHEVRON",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120075,
+    "name": "CHEVY DE LUJO",
+    "description": "CHEVY DE LUJO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120076,
+    "name": "CHEVY MALIBU",
+    "description": "CHEVY MALIBU",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120062,
+    "name": "CHEVY S",
+    "description": "CHEVY S",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120074,
+    "name": "CHEVY SERIE 2",
+    "description": "CHEVY SERIE 2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120077,
+    "name": "CHEVY SS",
+    "description": "CHEVY SS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120087,
+    "name": "CHEVY SUPER 230",
+    "description": "CHEVY SUPER 230",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120088,
+    "name": "CHEVY SUPER 250",
+    "description": "CHEVY SUPER 250",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120204,
+    "name": "VAN",
+    "description": "VAN",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120063,
+    "name": "CITATION",
+    "description": "CITATION",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120061,
+    "name": "CAMARO",
+    "description": "CAMARO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120284,
+    "name": "P-UP S10 2.8TD DC 4X2         L/06",
+    "description": "P-UP S10 2.8TD DC 4X2         L/06",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120514,
+    "name": "P-UP S10 2.8TD DC 4X2 LT      L/17",
+    "description": "P-UP S10 2.8TD DC 4X2 LT      L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120640,
+    "name": "P-UP S10 2.8TD DC 4X4 HC AT L/24",
+    "description": "P-UP S10 2.8TD DC 4X4 HC AT L/24",
+    "price_adjustments": {}
+  },
+  {
+    "id": 320231,
+    "name": "106 XR  1.4 3 PTAS ROLAND GARROS",
+    "description": "106 XR  1.4 3 PTAS ROLAND GARROS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 180392,
+    "name": "FIESTA 1.4 4 PTAS TDCI MAX AMB",
+    "description": "FIESTA 1.4 4 PTAS TDCI MAX AMB",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 320199,
+    "name": "106 XR  1.4 5 PTAS",
+    "description": "106 XR  1.4 5 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120448,
+    "name": "COBALT 1.3 TD LT",
+    "description": "COBALT 1.3 TD LT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120449,
+    "name": "COBALT 1.3 TD LTZ",
+    "description": "COBALT 1.3 TD LTZ",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120445,
+    "name": "COBALT 1.8 LT",
+    "description": "COBALT 1.8 LT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120509,
+    "name": "COBALT 1.8 LT                 L/17",
+    "description": "COBALT 1.8 LT                 L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120484,
+    "name": "COBALT 1.8 LT  ADVANTAGE",
+    "description": "COBALT 1.8 LT  ADVANTAGE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120446,
+    "name": "COBALT 1.8 LTZ",
+    "description": "COBALT 1.8 LTZ",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120447,
+    "name": "COBALT 1.8 LTZ AUT",
+    "description": "COBALT 1.8 LTZ AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120507,
+    "name": "COBALT 1.8 LTZ AUT            L/17",
+    "description": "COBALT 1.8 LTZ AUT            L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120485,
+    "name": "COBALT 1.8 LTZ ADVANTAGE",
+    "description": "COBALT 1.8 LTZ ADVANTAGE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120486,
+    "name": "COBALT 1.8 LTZ ADVANTAGE AUT",
+    "description": "COBALT 1.8 LTZ ADVANTAGE AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120198,
+    "name": "CORSA 1.0 3 P CITY",
+    "description": "CORSA 1.0 3 P CITY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120201,
+    "name": "CORSA 1.0 5 P",
+    "description": "CORSA 1.0 5 P",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120336,
+    "name": "CORSA 1.4 3 P BASE            L/09",
+    "description": "CORSA 1.4 3 P BASE            L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120337,
+    "name": "CORSA 1.4 3 P CITY            L/09",
+    "description": "CORSA 1.4 3 P CITY            L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120363,
+    "name": "CORSA 1.4 3 P CITY AA         L/09",
+    "description": "CORSA 1.4 3 P CITY AA         L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120001,
+    "name": "CORSA 1.4 3 P GL",
+    "description": "CORSA 1.4 3 P GL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120338,
+    "name": "CORSA 1.4 3 P GL              L/09",
+    "description": "CORSA 1.4 3 P GL              L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120002,
+    "name": "CORSA 1.4 3 P GL    AA",
+    "description": "CORSA 1.4 3 P GL    AA",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120099,
+    "name": "CORSA 1.4 3 P GL    FULL",
+    "description": "CORSA 1.4 3 P GL    FULL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120344,
+    "name": "CORSA 1.4 3 P GLS             L/09",
+    "description": "CORSA 1.4 3 P GLS             L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120346,
+    "name": "CORSA 1.4 3 P LIFE            L/09",
+    "description": "CORSA 1.4 3 P LIFE            L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120206,
+    "name": "CORSA 1.4 3 P SUPER/SPORT 16V",
+    "description": "CORSA 1.4 3 P SUPER/SPORT 16V",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120339,
+    "name": "CORSA 1.4 4 P BASE            L/09",
+    "description": "CORSA 1.4 4 P BASE            L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120340,
+    "name": "CORSA 1.4 4 P GL              L/09",
+    "description": "CORSA 1.4 4 P GL              L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120342,
+    "name": "CORSA 1.4 4 P GLS             L/09",
+    "description": "CORSA 1.4 4 P GLS             L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120003,
+    "name": "CORSA 1.4 5 P GL",
+    "description": "CORSA 1.4 5 P GL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120100,
+    "name": "CORSA 1.4 5 P GL AA",
+    "description": "CORSA 1.4 5 P GL AA",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120004,
+    "name": "CORSA 1.4 5 P GL FULL",
+    "description": "CORSA 1.4 5 P GL FULL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120322,
+    "name": "CORSA 1.6 3 P BASE            L/08",
+    "description": "CORSA 1.6 3 P BASE            L/08",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120321,
+    "name": "CORSA 1.6 3 P CARGO           L/08",
+    "description": "CORSA 1.6 3 P CARGO           L/08",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120332,
+    "name": "CORSA 1.6 3 P CITY            L/08",
+    "description": "CORSA 1.6 3 P CITY            L/08",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120323,
+    "name": "CORSA 1.6 3 P GL AA           L/08",
+    "description": "CORSA 1.6 3 P GL AA           L/08",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120053,
+    "name": "CORSA 1.6 3 P GL AA DH",
+    "description": "CORSA 1.6 3 P GL AA DH",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120051,
+    "name": "CORSA 1.6 3 P GL CITY",
+    "description": "CORSA 1.6 3 P GL CITY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120054,
+    "name": "CORSA 1.6 3 P GL FULL",
+    "description": "CORSA 1.6 3 P GL FULL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120324,
+    "name": "CORSA 1.6 3 P GLS             L/08",
+    "description": "CORSA 1.6 3 P GLS             L/08",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120298,
+    "name": "CORSA 1.6 3 P SE ESP",
+    "description": "CORSA 1.6 3 P SE ESP",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120303,
+    "name": "CORSA 1.6 3 P SE ESP 2",
+    "description": "CORSA 1.6 3 P SE ESP 2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120005,
+    "name": "CORSA 1.6 3 P WIND",
+    "description": "CORSA 1.6 3 P WIND",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120325,
+    "name": "CORSA 1.6 4 P BASE  L/08",
+    "description": "CORSA 1.6 4 P BASE  L/08",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120047,
+    "name": "CORSA 1.6 4 P GL",
+    "description": "CORSA 1.6 4 P GL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120052,
+    "name": "CORSA 1.6 4 P GL AA SUPER",
+    "description": "CORSA 1.6 4 P GL AA SUPER",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120235,
+    "name": "CORSA 1.6 4 P GL FULL",
+    "description": "CORSA 1.6 4 P GL FULL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120249,
+    "name": "CORSA 1.6 4 P GL GNC",
+    "description": "CORSA 1.6 4 P GL GNC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120250,
+    "name": "CORSA 1.6 4 P GL GNC FULL",
+    "description": "CORSA 1.6 4 P GL GNC FULL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120048,
+    "name": "CORSA 1.6 4 P GLS",
+    "description": "CORSA 1.6 4 P GLS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120327,
+    "name": "CORSA 1.6 4 P GLS             L/08",
+    "description": "CORSA 1.6 4 P GLS             L/08",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120125,
+    "name": "CORSA 1.6 4 P GLS 16V",
+    "description": "CORSA 1.6 4 P GLS 16V",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120171,
+    "name": "CORSA 1.6 4 P SUPER",
+    "description": "CORSA 1.6 4 P SUPER",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120282,
+    "name": "CORSA 1.6 4 P SUPER PACK",
+    "description": "CORSA 1.6 4 P SUPER PACK",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120293,
+    "name": "CORSA 1.6 4 P SUPER PACK ESTILO",
+    "description": "CORSA 1.6 4 P SUPER PACK ESTILO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120275,
+    "name": "CORSA 1.6 4 P SUPER VERANO",
+    "description": "CORSA 1.6 4 P SUPER VERANO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120172,
+    "name": "CORSA 1.6 4 P WIND",
+    "description": "CORSA 1.6 4 P WIND",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120141,
+    "name": "CORSA 1.6 4 P WORLD CUP",
+    "description": "CORSA 1.6 4 P WORLD CUP",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120056,
+    "name": "CORSA 1.6 5 P GL",
+    "description": "CORSA 1.6 5 P GL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120101,
+    "name": "CORSA 1.6 5 P GL AA DH",
+    "description": "CORSA 1.6 5 P GL AA DH",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120057,
+    "name": "CORSA 1.6 5 P GL FULL",
+    "description": "CORSA 1.6 5 P GL FULL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120145,
+    "name": "CORSA 1.6 5 P WIND",
+    "description": "CORSA 1.6 5 P WIND",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120055,
+    "name": "CORSA 1.6 PICK-UP GL",
+    "description": "CORSA 1.6 PICK-UP GL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120211,
+    "name": "CORSA 1.7 D 3 P GL AA DH",
+    "description": "CORSA 1.7 D 3 P GL AA DH",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120178,
+    "name": "CORSA 1.7 D 3 P WIND",
+    "description": "CORSA 1.7 D 3 P WIND",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120151,
+    "name": "CORSA 1.7 D 4 P GL",
+    "description": "CORSA 1.7 D 4 P GL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120152,
+    "name": "CORSA 1.7 D 4 P GL AA",
+    "description": "CORSA 1.7 D 4 P GL AA",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120153,
+    "name": "CORSA 1.7 D 4 P GLS FULL",
+    "description": "CORSA 1.7 D 4 P GLS FULL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120160,
+    "name": "CORSA 1.7 D 4 P WIND",
+    "description": "CORSA 1.7 D 4 P WIND",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120091,
+    "name": "CORSA 1.7 D 5 P GL",
+    "description": "CORSA 1.7 D 5 P GL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120131,
+    "name": "CORSA 1.7 D PICK UP GL",
+    "description": "CORSA 1.7 D PICK UP GL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120231,
+    "name": "CORSA 2 1.7 TD 4 P CD  ABS",
+    "description": "CORSA 2 1.7 TD 4 P CD  ABS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120227,
+    "name": "CORSA 2 1.7 TD 4 P GL",
+    "description": "CORSA 2 1.7 TD 4 P GL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120270,
+    "name": "CORSA 2 1.7 TD 4 P GL  AA DH",
+    "description": "CORSA 2 1.7 TD 4 P GL  AA DH",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120229,
+    "name": "CORSA 2 1.7 TD 4 P GL  PACK 2",
+    "description": "CORSA 2 1.7 TD 4 P GL  PACK 2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120230,
+    "name": "CORSA 2 1.7 TD 4 P GLS",
+    "description": "CORSA 2 1.7 TD 4 P GLS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120217,
+    "name": "CORSA 2 1.7 TD 5 P GL",
+    "description": "CORSA 2 1.7 TD 5 P GL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120271,
+    "name": "CORSA 2 1.7 TD 5 P GL  AA DH",
+    "description": "CORSA 2 1.7 TD 5 P GL  AA DH",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120218,
+    "name": "CORSA 2 1.7 TD 5 P GL  PACK 1",
+    "description": "CORSA 2 1.7 TD 5 P GL  PACK 1",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120219,
+    "name": "CORSA 2 1.7 TD 5 P GL  PACK 2",
+    "description": "CORSA 2 1.7 TD 5 P GL  PACK 2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120220,
+    "name": "CORSA 2 1.7 TD 5 P GLS",
+    "description": "CORSA 2 1.7 TD 5 P GLS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120221,
+    "name": "CORSA 2 1.7 TD 5 P GLS FULL",
+    "description": "CORSA 2 1.7 TD 5 P GLS FULL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120226,
+    "name": "CORSA 2 1.8 4 P CD  ABS",
+    "description": "CORSA 2 1.8 4 P CD  ABS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120277,
+    "name": "CORSA 2 1.8 4 P GL",
+    "description": "CORSA 2 1.8 4 P GL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120222,
+    "name": "CORSA 2 1.8 4 P GL  (INTERNET)",
+    "description": "CORSA 2 1.8 4 P GL  (INTERNET)",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120272,
+    "name": "CORSA 2 1.8 4 P GL  AA DH",
+    "description": "CORSA 2 1.8 4 P GL  AA DH",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120223,
+    "name": "CORSA 2 1.8 4 P GL  PACK 1",
+    "description": "CORSA 2 1.8 4 P GL  PACK 1",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120224,
+    "name": "CORSA 2 1.8 4 P GL  PACK 2",
+    "description": "CORSA 2 1.8 4 P GL  PACK 2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120225,
+    "name": "CORSA 2 1.8 4 P GLS",
+    "description": "CORSA 2 1.8 4 P GLS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120216,
+    "name": "CORSA 2 1.8 5 P CD  ABS",
+    "description": "CORSA 2 1.8 5 P CD  ABS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120297,
+    "name": "CORSA 2 1.8 5 P CD  EASYTRONIC",
+    "description": "CORSA 2 1.8 5 P CD  EASYTRONIC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120278,
+    "name": "CORSA 2 1.8 5 P GL",
+    "description": "CORSA 2 1.8 5 P GL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120212,
+    "name": "CORSA 2 1.8 5 P GL  (INTERNET)",
+    "description": "CORSA 2 1.8 5 P GL  (INTERNET)",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120251,
+    "name": "CORSA 2 1.8 5 P GL  (REEF)",
+    "description": "CORSA 2 1.8 5 P GL  (REEF)",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120273,
+    "name": "CORSA 2 1.8 5 P GL  AA DH",
+    "description": "CORSA 2 1.8 5 P GL  AA DH",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120345,
+    "name": "CORSA 2 1.8 5 P GL  LIFE",
+    "description": "CORSA 2 1.8 5 P GL  LIFE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120213,
+    "name": "CORSA 2 1.8 5 P GL  PACK 1",
+    "description": "CORSA 2 1.8 5 P GL  PACK 1",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120214,
+    "name": "CORSA 2 1.8 5 P GL  PACK 2",
+    "description": "CORSA 2 1.8 5 P GL  PACK 2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120215,
+    "name": "CORSA 2 1.8 5 P GLS",
+    "description": "CORSA 2 1.8 5 P GLS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120173,
+    "name": "CORSA TIGRA 1.6 16V",
+    "description": "CORSA TIGRA 1.6 16V",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120348,
+    "name": "CORSA WAGON 1.4 GLS           L/09",
+    "description": "CORSA WAGON 1.4 GLS           L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120347,
+    "name": "CORSA WAGON 1.4 LIFE          L/09",
+    "description": "CORSA WAGON 1.4 LIFE          L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120328,
+    "name": "CORSA WAGON 1.6 GL AA         L/08",
+    "description": "CORSA WAGON 1.6 GL AA         L/08",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120121,
+    "name": "CORSA WAGON 1.6 GL AA DH",
+    "description": "CORSA WAGON 1.6 GL AA DH",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120122,
+    "name": "CORSA WAGON 1.6 GL FULL",
+    "description": "CORSA WAGON 1.6 GL FULL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120245,
+    "name": "CORSA WAGON 1.6 GL TAXI",
+    "description": "CORSA WAGON 1.6 GL TAXI",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120139,
+    "name": "CORSA WAGON 1.6 GLS 16V",
+    "description": "CORSA WAGON 1.6 GLS 16V",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120300,
+    "name": "CORSA WAGON 1.6 SE ESP",
+    "description": "CORSA WAGON 1.6 SE ESP",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120401,
+    "name": "CORSA 1.7 D 5 P GL AA",
+    "description": "CORSA 1.7 D 5 P GL AA",
+    "price_adjustments": {}
+  },
+  {
+    "id": 180401,
+    "name": "FIESTA 1.4 4 PTAS TDCI MAX FRESH",
+    "description": "FIESTA 1.4 4 PTAS TDCI MAX FRESH",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 120186,
+    "name": "JIMNY 1.3 JLX",
+    "description": "JIMNY 1.3 JLX",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120185,
+    "name": "JIMNY 1.3 JX",
+    "description": "JIMNY 1.3 JX",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120006,
+    "name": "KADETT 1.8 GL",
+    "description": "KADETT 1.8 GL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120007,
+    "name": "KADETT 1.8 GLS AA",
+    "description": "KADETT 1.8 GLS AA",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120110,
+    "name": "KADETT 1.8 SLE",
+    "description": "KADETT 1.8 SLE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120109,
+    "name": "KADETT 2.0 GSI",
+    "description": "KADETT 2.0 GSI",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120301,
+    "name": "COUPE",
+    "description": "COUPE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 180531,
+    "name": "FIESTA 1.4 4 PTAS TDCI ONE MAX EDG",
+    "description": "FIESTA 1.4 4 PTAS TDCI ONE MAX EDG",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180385,
+    "name": "FIESTA 1.4 5 PTAS TDCI AMBIEN PLUS",
+    "description": "FIESTA 1.4 5 PTAS TDCI AMBIEN PLUS",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180339,
+    "name": "FIESTA 1.4 5 PTAS TDCI ENERGY",
+    "description": "FIESTA 1.4 5 PTAS TDCI ENERGY",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180529,
+    "name": "FIESTA 1.4 5 PTAS TDCI ONE EDGE",
+    "description": "FIESTA 1.4 5 PTAS TDCI ONE EDGE",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 120290,
+    "name": "CORSA WAGON 1.6 SUPER PACK",
+    "description": "CORSA WAGON 1.6 SUPER PACK",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120294,
+    "name": "CORSA WAGON 1.6 SUPER PACK ESTILO",
+    "description": "CORSA WAGON 1.6 SUPER PACK ESTILO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120276,
+    "name": "CORSA WAGON 1.6 SUPER PACK VERANO",
+    "description": "CORSA WAGON 1.6 SUPER PACK VERANO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120209,
+    "name": "CORSA WAGON 1.6 WIND",
+    "description": "CORSA WAGON 1.6 WIND",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120154,
+    "name": "CORSA WAGON 1.7 D GL AA DH",
+    "description": "CORSA WAGON 1.7 D GL AA DH",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120155,
+    "name": "CORSA WAGON 1.7 D GLS",
+    "description": "CORSA WAGON 1.7 D GLS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120203,
+    "name": "CORSA WAGON 1.7 D WIND",
+    "description": "CORSA WAGON 1.7 D WIND",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120064,
+    "name": "CORSICA LT",
+    "description": "CORSICA LT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120112,
+    "name": "CORVETTE Z-06",
+    "description": "CORVETTE Z-06",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120358,
+    "name": "EL CAMINO",
+    "description": "EL CAMINO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120113,
+    "name": "GRUMET",
+    "description": "GRUMET",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120561,
+    "name": "EQUINOX 1.5T FWD AT6",
+    "description": "EQUINOX 1.5T FWD AT6",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120560,
+    "name": "EQUINOX 1.5T AWD AT6 PREMIER",
+    "description": "EQUINOX 1.5T AWD AT6 PREMIER",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120621,
+    "name": "EQUINOX 1.5T AWD AT6 PREMIER L/22",
+    "description": "EQUINOX 1.5T AWD AT6 PREMIER L/22",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120623,
+    "name": "EQUINOX 1.5T FWD AT6 LT L/22",
+    "description": "EQUINOX 1.5T FWD AT6 LT L/22",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120622,
+    "name": "EQUINOX 1.5T FWD AT6 RS L/22",
+    "description": "EQUINOX 1.5T FWD AT6 RS L/22",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120359,
+    "name": "GMC SAFARI",
+    "description": "GMC SAFARI",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120210,
+    "name": "IMPALA",
+    "description": "IMPALA",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120159,
+    "name": "GRAND BLAZER DLX 4.2 TD",
+    "description": "GRAND BLAZER DLX 4.2 TD",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120194,
+    "name": "GRAND VITARA 1.6 3 PTAS",
+    "description": "GRAND VITARA 1.6 3 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120195,
+    "name": "GRAND VITARA 2.0 3 PTAS",
+    "description": "GRAND VITARA 2.0 3 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120180,
+    "name": "GRAND VITARA 2.0 5 PTAS",
+    "description": "GRAND VITARA 2.0 5 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120181,
+    "name": "GRAND VITARA 2.0 5 PTAS AUT",
+    "description": "GRAND VITARA 2.0 5 PTAS AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120182,
+    "name": "GRAND VITARA 2.0 5 PTAS TDI",
+    "description": "GRAND VITARA 2.0 5 PTAS TDI",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120184,
+    "name": "GRAND VITARA 2.5 5 PTAS",
+    "description": "GRAND VITARA 2.5 5 PTAS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120262,
+    "name": "GRUMMAN OLSON",
+    "description": "GRUMMAN OLSON",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120067,
+    "name": "KADETT 1.8 SL",
+    "description": "KADETT 1.8 SL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120008,
+    "name": "IPANEMA 1.8 GL",
+    "description": "IPANEMA 1.8 GL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120009,
+    "name": "IPANEMA 1.8 GL FULL",
+    "description": "IPANEMA 1.8 GL FULL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120010,
+    "name": "IPANEMA 1.8 GLS",
+    "description": "IPANEMA 1.8 GLS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 180396,
+    "name": "FIESTA 1.6 4 PTAS MAX AMB PLUS",
+    "description": "FIESTA 1.6 4 PTAS MAX AMB PLUS",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180437,
+    "name": "FIESTA 1.6 4 PTAS MAX EDG PLU AT",
+    "description": "FIESTA 1.6 4 PTAS MAX EDG PLU AT",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180398,
+    "name": "FIESTA 1.6 4 PTAS MAX FRESH",
+    "description": "FIESTA 1.6 4 PTAS MAX FRESH",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180526,
+    "name": "FIESTA 1.6 4 PTAS ONE MAX AMB PLUS",
+    "description": "FIESTA 1.6 4 PTAS ONE MAX AMB PLUS",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180524,
+    "name": "FIESTA 1.6 4 PTAS ONE MAX ENERGY",
+    "description": "FIESTA 1.6 4 PTAS ONE MAX ENERGY",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180434,
+    "name": "FIESTA 1.6 5 PTAS AMBIEN. AUT",
+    "description": "FIESTA 1.6 5 PTAS AMBIEN. AUT",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180365,
+    "name": "FIESTA 1.6 5 PTAS AMBIEN. PLUS",
+    "description": "FIESTA 1.6 5 PTAS AMBIEN. PLUS",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180337,
+    "name": "FIESTA 1.6 5 PTAS EDGE",
+    "description": "FIESTA 1.6 5 PTAS EDGE",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180435,
+    "name": "FIESTA 1.6 5 PTAS EDGE PLUS AUT",
+    "description": "FIESTA 1.6 5 PTAS EDGE PLUS AUT",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180335,
+    "name": "FIESTA 1.6 5 PTAS ENERGY",
+    "description": "FIESTA 1.6 5 PTAS ENERGY",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180362,
+    "name": "FIESTA 1.6 5 PTAS FRESH",
+    "description": "FIESTA 1.6 5 PTAS FRESH",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 120033,
+    "name": "LUMINA 3.8",
+    "description": "LUMINA 3.8",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120134,
+    "name": "MONTECARLO",
+    "description": "MONTECARLO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120149,
+    "name": "MONZA 1.8 GL",
+    "description": "MONZA 1.8 GL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120069,
+    "name": "MONZA 1.8 SL",
+    "description": "MONZA 1.8 SL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120049,
+    "name": "MONZA 1.8 SLE",
+    "description": "MONZA 1.8 SLE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120013,
+    "name": "MONZA 2.0 GL PLUS",
+    "description": "MONZA 2.0 GL PLUS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120011,
+    "name": "MONZA 2.0 GL",
+    "description": "MONZA 2.0 GL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120012,
+    "name": "MONZA 2.0 GLS FULL",
+    "description": "MONZA 2.0 GLS FULL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120015,
+    "name": "OMEGA 2.0 GLS",
+    "description": "OMEGA 2.0 GLS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120016,
+    "name": "OMEGA 2.2 GLS",
+    "description": "OMEGA 2.2 GLS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120081,
+    "name": "OMEGA 4.1 CD",
+    "description": "OMEGA 4.1 CD",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120264,
+    "name": "METRO LSI",
+    "description": "METRO LSI",
+    "price_adjustments": {}
+  },
+  {
+    "id": 180523,
+    "name": "FIESTA 1.6 5 PTAS ONE EDGE PLUS",
+    "description": "FIESTA 1.6 5 PTAS ONE EDGE PLUS",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180043,
+    "name": "FIESTA CL  1.3 3 PTAS",
+    "description": "FIESTA CL  1.3 3 PTAS",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180468,
+    "name": "FIESTA CL  1.8 3 PTAS D",
+    "description": "FIESTA CL  1.8 3 PTAS D",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180045,
+    "name": "FIESTA CLX 1.3 3 PTAS BASE",
+    "description": "FIESTA CLX 1.3 3 PTAS BASE",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 120312,
+    "name": "APACHE",
+    "description": "APACHE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120084,
+    "name": "BRAVA",
+    "description": "BRAVA",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120343,
+    "name": "P-UP",
+    "description": "P-UP",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120040,
+    "name": "P-UP C10 CUSTOM 3 VEL",
+    "description": "P-UP C10 CUSTOM 3 VEL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120060,
+    "name": "P-UP C10 CUSTOM 3 VEL LUXE",
+    "description": "P-UP C10 CUSTOM 3 VEL LUXE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120041,
+    "name": "P-UP C10 CUSTOM 4 VEL",
+    "description": "P-UP C10 CUSTOM 4 VEL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120079,
+    "name": "P-UP C10 CUSTOM 4 VEL LUXE",
+    "description": "P-UP C10 CUSTOM 4 VEL LUXE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120042,
+    "name": "P-UP C10 CUSTOM TDI",
+    "description": "P-UP C10 CUSTOM TDI",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120038,
+    "name": "P-UP C10 SILVER 3 VEL",
+    "description": "P-UP C10 SILVER 3 VEL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120039,
+    "name": "P-UP C10 SILVER 4 VEL",
+    "description": "P-UP C10 SILVER 4 VEL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120093,
+    "name": "P-UP C10 SILVERADO D",
+    "description": "P-UP C10 SILVERADO D",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120078,
+    "name": "P-UP CHEYENNE",
+    "description": "P-UP CHEYENNE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120043,
+    "name": "P-UP C20 CUSTOM",
+    "description": "P-UP C20 CUSTOM",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120025,
+    "name": "P-UP C20 DELUXE",
+    "description": "P-UP C20 DELUXE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120380,
+    "name": "P-UP D40 TURBO PLUS",
+    "description": "P-UP D40 TURBO PLUS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120065,
+    "name": "P-UP D20 CONQUEST",
+    "description": "P-UP D20 CONQUEST",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120026,
+    "name": "P-UP D20 CUSTOM",
+    "description": "P-UP D20 CUSTOM",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120045,
+    "name": "P-UP D20 TURBO PLUS",
+    "description": "P-UP D20 TURBO PLUS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120027,
+    "name": "P-UP D20 TURBO PLUS DELUXE",
+    "description": "P-UP D20 TURBO PLUS DELUXE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120175,
+    "name": "GMC YUKON 4X4 (TAHOE)",
+    "description": "GMC YUKON 4X4 (TAHOE)",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120124,
+    "name": "GMC YUKON 4X4 (TAHOE) TD",
+    "description": "GMC YUKON 4X4 (TAHOE) TD",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120021,
+    "name": "P-UP LUV 2.3    D/CAB 4X2",
+    "description": "P-UP LUV 2.3    D/CAB 4X2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120068,
+    "name": "P-UP LUV 2.3    D/CAB 4X2 DLX",
+    "description": "P-UP LUV 2.3    D/CAB 4X2 DLX",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120022,
+    "name": "P-UP LUV 2.3    D/CAB 4X4",
+    "description": "P-UP LUV 2.3    D/CAB 4X4",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120108,
+    "name": "P-UP LUV 2.3    D/CAB 4X4 AA",
+    "description": "P-UP LUV 2.3    D/CAB 4X4 AA",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120020,
+    "name": "P-UP LUV 2.3    S/CAB 4X2",
+    "description": "P-UP LUV 2.3    S/CAB 4X2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120138,
+    "name": "P-UP LUV 2.3    S/CAB 4X2 AA",
+    "description": "P-UP LUV 2.3    S/CAB 4X2 AA",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120024,
+    "name": "P-UP LUV 2.5 D  D/CAB 4X2",
+    "description": "P-UP LUV 2.5 D  D/CAB 4X2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120119,
+    "name": "P-UP LUV 2.5 D  D/CAB 4X2 AA",
+    "description": "P-UP LUV 2.5 D  D/CAB 4X2 AA",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120023,
+    "name": "P-UP LUV 2.5 D  S/CAB 4X2",
+    "description": "P-UP LUV 2.5 D  S/CAB 4X2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120086,
+    "name": "P-UP LUV 2.5 D  S/CAB 4X2 AA",
+    "description": "P-UP LUV 2.5 D  S/CAB 4X2 AA",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120165,
+    "name": "P-UP LUV 2.5 TD D/CAB 4X2",
+    "description": "P-UP LUV 2.5 TD D/CAB 4X2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120166,
+    "name": "P-UP LUV 2.5 TD D/CAB 4X2 AA",
+    "description": "P-UP LUV 2.5 TD D/CAB 4X2 AA",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120164,
+    "name": "P-UP LUV 2.5 TD S/CAB 4X2",
+    "description": "P-UP LUV 2.5 TD S/CAB 4X2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120167,
+    "name": "P-UP LUV 2.8 TD D/CAB 4X4 AA",
+    "description": "P-UP LUV 2.8 TD D/CAB 4X4 AA",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120083,
+    "name": "P-UP S10 2.2   SC 4X2",
+    "description": "P-UP S10 2.2   SC 4X2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120094,
+    "name": "P-UP S10 2.2   SC 4X2 DLX",
+    "description": "P-UP S10 2.2   SC 4X2 DLX",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120106,
+    "name": "P-UP S10 2.5TD DC 4X2",
+    "description": "P-UP S10 2.5TD DC 4X2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120107,
+    "name": "P-UP S10 2.5TD DC 4X2 DLX",
+    "description": "P-UP S10 2.5TD DC 4X2 DLX",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120157,
+    "name": "OPALA DIPLOMATA",
+    "description": "OPALA DIPLOMATA",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120095,
+    "name": "P-UP S10 2.5TD SC 4X2",
+    "description": "P-UP S10 2.5TD SC 4X2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120128,
+    "name": "P-UP S10 2.5TD SC 4X2 AA",
+    "description": "P-UP S10 2.5TD SC 4X2 AA",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120096,
+    "name": "P-UP S10 2.5TD SC 4X2 DLX",
+    "description": "P-UP S10 2.5TD SC 4X2 DLX",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120143,
+    "name": "P-UP S10 2.5TD SC 4X4 DLX",
+    "description": "P-UP S10 2.5TD SC 4X4 DLX",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120190,
+    "name": "P-UP S10 2.8TD DC 4X2",
+    "description": "P-UP S10 2.8TD DC 4X2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120314,
+    "name": "P-UP S10 2.8TD DC 4X2         L/09",
+    "description": "P-UP S10 2.8TD DC 4X2         L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120191,
+    "name": "P-UP S10 2.8TD DC 4X2 AA",
+    "description": "P-UP S10 2.8TD DC 4X2 AA",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120192,
+    "name": "P-UP S10 2.8TD DC 4X2 DLX",
+    "description": "P-UP S10 2.8TD DC 4X2 DLX",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120285,
+    "name": "P-UP S10 2.8TD DC 4X2 DLX     L/06",
+    "description": "P-UP S10 2.8TD DC 4X2 DLX     L/06",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120315,
+    "name": "P-UP S10 2.8TD DC 4X2 DLX     L/09",
+    "description": "P-UP S10 2.8TD DC 4X2 DLX     L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120268,
+    "name": "P-UP S10 2.8TD DC 4X2 PLUS",
+    "description": "P-UP S10 2.8TD DC 4X2 PLUS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120497,
+    "name": "P-UP S10 2.8TD DC 4X2 HC",
+    "description": "P-UP S10 2.8TD DC 4X2 HC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120521,
+    "name": "P-UP S10 2.8TD DC 4X2 HC      L/17",
+    "description": "P-UP S10 2.8TD DC 4X2 HC      L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120548,
+    "name": "P-UP S10 2.8TD DC 4X2 HC L/17 100 YEARS",
+    "description": "P-UP S10 2.8TD DC 4X2 HC L/17 100 YEARS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120428,
+    "name": "P-UP S10 2.8TD DC 4X2 LS      L/12",
+    "description": "P-UP S10 2.8TD DC 4X2 LS      L/12",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120468,
+    "name": "P-UP S10 2.8TD DC 4X2 LS      L/14",
+    "description": "P-UP S10 2.8TD DC 4X2 LS      L/14",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120512,
+    "name": "P-UP S10 2.8TD DC 4X2 LS      L/17",
+    "description": "P-UP S10 2.8TD DC 4X2 LS      L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120589,
+    "name": "P-UP S10 2.8TD DC 4X2 LS L/21",
+    "description": "P-UP S10 2.8TD DC 4X2 LS L/21",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120421,
+    "name": "P-UP S10 2.8TD DC 4X2 LT      L/12",
+    "description": "P-UP S10 2.8TD DC 4X2 LT      L/12",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120469,
+    "name": "P-UP S10 2.8TD DC 4X2 LT      L/14",
+    "description": "P-UP S10 2.8TD DC 4X2 LT      L/14",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120592,
+    "name": "P-UP S10 2.8TD DC 4X2 LT L/21",
+    "description": "P-UP S10 2.8TD DC 4X2 LT L/21",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120413,
+    "name": "P-UP S10 2.8TD DC 4X2 LTZ     L/12",
+    "description": "P-UP S10 2.8TD DC 4X2 LTZ     L/12",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120470,
+    "name": "P-UP S10 2.8TD DC 4X2 LTZ     L/14",
+    "description": "P-UP S10 2.8TD DC 4X2 LTZ     L/14",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120595,
+    "name": "P-UP S10 2.8TD DC 4X2 LTZ L/21",
+    "description": "P-UP S10 2.8TD DC 4X2 LTZ L/21",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120558,
+    "name": "P-UP S10 2.8TD DC 4X2 MIDNIGHT",
+    "description": "P-UP S10 2.8TD DC 4X2 MIDNIGHT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120638,
+    "name": "P-UP S10 2.8TD DC 4X2 WT L/24",
+    "description": "P-UP S10 2.8TD DC 4X2 WT L/24",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120234,
+    "name": "P-UP S10 2.8TD DC 4X4 AA",
+    "description": "P-UP S10 2.8TD DC 4X4 AA",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120286,
+    "name": "P-UP S10 2.8TD DC 4X4 AA      L/06",
+    "description": "P-UP S10 2.8TD DC 4X4 AA      L/06",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120316,
+    "name": "P-UP S10 2.8TD DC 4X4 AA      L/09",
+    "description": "P-UP S10 2.8TD DC 4X4 AA      L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120265,
+    "name": "P-UP S10 2.8TD DC 4X4 CARDON",
+    "description": "P-UP S10 2.8TD DC 4X4 CARDON",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120193,
+    "name": "P-UP S10 2.8TD DC 4X4 DLX",
+    "description": "P-UP S10 2.8TD DC 4X4 DLX",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120287,
+    "name": "P-UP S10 2.8TD DC 4X4 DLX     L/06",
+    "description": "P-UP S10 2.8TD DC 4X4 DLX     L/06",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120317,
+    "name": "P-UP S10 2.8TD DC 4X4 DLX     L/09",
+    "description": "P-UP S10 2.8TD DC 4X4 DLX     L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120498,
+    "name": "P-UP S10 2.8TD DC 4X4 HC",
+    "description": "P-UP S10 2.8TD DC 4X4 HC",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120519,
+    "name": "P-UP S10 2.8TD DC 4X4 HC      L/17",
+    "description": "P-UP S10 2.8TD DC 4X4 HC      L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120549,
+    "name": "P-UP S10 2.8TD DC 4X4 HC AT 100 YE",
+    "description": "P-UP S10 2.8TD DC 4X4 HC AT 100 YE",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120499,
+    "name": "P-UP S10 2.8TD DC 4X4 HC AT",
+    "description": "P-UP S10 2.8TD DC 4X4 HC AT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120520,
+    "name": "P-UP S10 2.8TD DC 4X4 HC AT  L/17",
+    "description": "P-UP S10 2.8TD DC 4X4 HC AT  L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120597,
+    "name": "P-UP S10 2.8TD DC 4X4 HC AT L/21",
+    "description": "P-UP S10 2.8TD DC 4X4 HC AT L/21",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120429,
+    "name": "P-UP S10 2.8TD DC 4X4 LS      L/12",
+    "description": "P-UP S10 2.8TD DC 4X4 LS      L/12",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120471,
+    "name": "P-UP S10 2.8TD DC 4X4 LS      L/14",
+    "description": "P-UP S10 2.8TD DC 4X4 LS      L/14",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120513,
+    "name": "P-UP S10 2.8TD DC 4X4 LS      L/17",
+    "description": "P-UP S10 2.8TD DC 4X4 LS      L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120422,
+    "name": "P-UP S10 2.8TD DC 4X4 LT      L/12",
+    "description": "P-UP S10 2.8TD DC 4X4 LT      L/12",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120472,
+    "name": "P-UP S10 2.8TD DC 4X4 LT      L/14",
+    "description": "P-UP S10 2.8TD DC 4X4 LT      L/14",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120515,
+    "name": "P-UP S10 2.8TD DC 4X4 LT      L/17",
+    "description": "P-UP S10 2.8TD DC 4X4 LT      L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120584,
+    "name": "P-UP S10 2.8TD DC 4X4 LT L/17 AT",
+    "description": "P-UP S10 2.8TD DC 4X4 LT L/17 AT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120593,
+    "name": "P-UP S10 2.8TD DC 4X4 LT L/21",
+    "description": "P-UP S10 2.8TD DC 4X4 LT L/21",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120594,
+    "name": "P-UP S10 2.8TD DC 4X4 LT L/21 AT",
+    "description": "P-UP S10 2.8TD DC 4X4 LT L/21 AT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120232,
+    "name": "P-UP S10 2.8TD DC 4X4 LTD",
+    "description": "P-UP S10 2.8TD DC 4X4 LTD",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120288,
+    "name": "P-UP S10 2.8TD DC 4X4 LTD     L/06",
+    "description": "P-UP S10 2.8TD DC 4X4 LTD     L/06",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120318,
+    "name": "P-UP S10 2.8TD DC 4X4 LTD     L/09",
+    "description": "P-UP S10 2.8TD DC 4X4 LTD     L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120547,
+    "name": "P-UP S10 2.8TD DC 4X4 LTZ     L/12",
+    "description": "P-UP S10 2.8TD DC 4X4 LTZ     L/12",
+    "price_adjustments": {}
+  },
+  {
+    "id": 180255,
+    "name": "FIESTA CLX 1.6 5 PTAS",
+    "description": "FIESTA CLX 1.6 5 PTAS",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 120517,
+    "name": "P-UP S10 2.8TD DC 4X4 LTZ     L/17",
+    "description": "P-UP S10 2.8TD DC 4X4 LTZ     L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120414,
+    "name": "P-UP S10 2.8TD DC 4X4 LTZ AT L/12",
+    "description": "P-UP S10 2.8TD DC 4X4 LTZ AT L/12",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120473,
+    "name": "P-UP S10 2.8TD DC 4X4 LTZ AT L/14",
+    "description": "P-UP S10 2.8TD DC 4X4 LTZ AT L/14",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120518,
+    "name": "P-UP S10 2.8TD DC 4X4 LTZ AT L/17",
+    "description": "P-UP S10 2.8TD DC 4X4 LTZ AT L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120596,
+    "name": "P-UP S10 2.8TD DC 4X4 LTZ AT L/21",
+    "description": "P-UP S10 2.8TD DC 4X4 LTZ AT L/21",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120559,
+    "name": "P-UP S10 2.8TD DC 4X4 MIDNIGHT",
+    "description": "P-UP S10 2.8TD DC 4X4 MIDNIGHT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120626,
+    "name": "P-UP S10 2.8TD DC 4X4 MIGNIGHT L/24",
+    "description": "P-UP S10 2.8TD DC 4X4 MIGNIGHT L/24",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120645,
+    "name": "P-UP S10 2.8TD DC 4X4 WT L/24",
+    "description": "P-UP S10 2.8TD DC 4X4 WT L/24",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120647,
+    "name": "P-UP S10 2.8TD DC 4X4 WT L/24 AT",
+    "description": "P-UP S10 2.8TD DC 4X4 WT L/24 AT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120616,
+    "name": "P-UP S10 2.8TD DC 4X4 Z71 AT",
+    "description": "P-UP S10 2.8TD DC 4X4 Z71 AT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120649,
+    "name": "P-UP S10 2.8TD DC 4X4 Z71 AT L/25",
+    "description": "P-UP S10 2.8TD DC 4X4 Z71 AT L/25",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120189,
+    "name": "P-UP S10 2.8TD SC 4X2",
+    "description": "P-UP S10 2.8TD SC 4X2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120283,
+    "name": "P-UP S10 2.8TD SC 4X2         L/06",
+    "description": "P-UP S10 2.8TD SC 4X2         L/06",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120313,
+    "name": "P-UP S10 2.8TD SC 4X2         L/09",
+    "description": "P-UP S10 2.8TD SC 4X2         L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120441,
+    "name": "P-UP S10 2.8TD SC 4X2 LS      L/12",
+    "description": "P-UP S10 2.8TD SC 4X2 LS      L/12",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120466,
+    "name": "P-UP S10 2.8TD SC 4X2 LS      L/14",
+    "description": "P-UP S10 2.8TD SC 4X2 LS      L/14",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120510,
+    "name": "P-UP S10 2.8TD SC 4X2 LS      L/17",
+    "description": "P-UP S10 2.8TD SC 4X2 LS      L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120590,
+    "name": "P-UP S10 2.8TD SC 4X2 LS L/21",
+    "description": "P-UP S10 2.8TD SC 4X2 LS L/21",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120442,
+    "name": "P-UP S10 2.8TD SC 4X4 LS      L/12",
+    "description": "P-UP S10 2.8TD SC 4X4 LS      L/12",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120467,
+    "name": "P-UP S10 2.8TD SC 4X4 LS      L/14",
+    "description": "P-UP S10 2.8TD SC 4X4 LS      L/14",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120511,
+    "name": "P-UP S10 2.8TD SC 4X4 LS      L/17",
+    "description": "P-UP S10 2.8TD SC 4X4 LS      L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120591,
+    "name": "P-UP S10 2.8TD SC 4X4 LS L/21",
+    "description": "P-UP S10 2.8TD SC 4X4 LS L/21",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120114,
+    "name": "P-UP SILVERADO 4.1",
+    "description": "P-UP SILVERADO 4.1",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120115,
+    "name": "P-UP SILVERADO 4.1 D MAXION",
+    "description": "P-UP SILVERADO 4.1 D MAXION",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120129,
+    "name": "P-UP SILVERADO 4.1 D MAXION AA LL",
+    "description": "P-UP SILVERADO 4.1 D MAXION AA LL",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120156,
+    "name": "P-UP SILVERADO 4.1 D MAXION CONQ.",
+    "description": "P-UP SILVERADO 4.1 D MAXION CONQ.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120116,
+    "name": "P-UP SILVERADO 4.2 TD MWM",
+    "description": "P-UP SILVERADO 4.2 TD MWM",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120117,
+    "name": "P-UP SILVERADO 4.2 TD MWM AA",
+    "description": "P-UP SILVERADO 4.2 TD MWM AA",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120163,
+    "name": "P-UP SILVERADO 4.2 TD MWM CONQ.",
+    "description": "P-UP SILVERADO 4.2 TD MWM CONQ.",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120118,
+    "name": "P-UP SILVERADO 4.2 TD MWM DLX",
+    "description": "P-UP SILVERADO 4.2 TD MWM DLX",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120126,
+    "name": "P-UP SILVERADO 4.2 TD MWM DLX ABS",
+    "description": "P-UP SILVERADO 4.2 TD MWM DLX ABS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120644,
+    "name": "P-UP SILVERADO 5.3 HIGH COUNTRY",
+    "description": "P-UP SILVERADO 5.3 HIGH COUNTRY",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120643,
+    "name": "P-UP SILVERADO 5.3 Z71 TRAIL BOSS",
+    "description": "P-UP SILVERADO 5.3 Z71 TRAIL BOSS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120205,
+    "name": "SATURN",
+    "description": "SATURN",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120418,
+    "name": "SONIC 1.6 4 PTAS LT",
+    "description": "SONIC 1.6 4 PTAS LT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120490,
+    "name": "SONIC 1.6 4 PTAS LT           L/15",
+    "description": "SONIC 1.6 4 PTAS LT           L/15",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120419,
+    "name": "SONIC 1.6 4 PTAS LTZ",
+    "description": "SONIC 1.6 4 PTAS LTZ",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120491,
+    "name": "SONIC 1.6 4 PTAS LTZ          L/15",
+    "description": "SONIC 1.6 4 PTAS LTZ          L/15",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120420,
+    "name": "SONIC 1.6 4 PTAS LTZ AUT",
+    "description": "SONIC 1.6 4 PTAS LTZ AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120492,
+    "name": "SONIC 1.6 4 PTAS LTZ AUT      L/15",
+    "description": "SONIC 1.6 4 PTAS LTZ AUT      L/15",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120415,
+    "name": "SONIC 1.6 5 PTAS LT",
+    "description": "SONIC 1.6 5 PTAS LT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120493,
+    "name": "SONIC 1.6 5 PTAS LT           L/15",
+    "description": "SONIC 1.6 5 PTAS LT           L/15",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120416,
+    "name": "SONIC 1.6 5 PTAS LTZ",
+    "description": "SONIC 1.6 5 PTAS LTZ",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120494,
+    "name": "SONIC 1.6 5 PTAS LTZ          L/15",
+    "description": "SONIC 1.6 5 PTAS LTZ          L/15",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120417,
+    "name": "SONIC 1.6 5 PTAS LTZ AUT",
+    "description": "SONIC 1.6 5 PTAS LTZ AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120481,
+    "name": "PRIZM  1.6 GEO",
+    "description": "PRIZM  1.6 GEO",
+    "price_adjustments": {}
+  },
+  {
+    "id": 180048,
+    "name": "FIESTA CLX 1.8 5 PTAS D",
+    "description": "FIESTA CLX 1.8 5 PTAS D",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180126,
+    "name": "FIESTA LX  1.3 3 PTAS",
+    "description": "FIESTA LX  1.3 3 PTAS",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180253,
+    "name": "FIESTA LX  1.6 3 PTAS",
+    "description": "FIESTA LX  1.6 3 PTAS",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180306,
+    "name": "FIESTA LX  1.6 5 PTAS AA",
+    "description": "FIESTA LX  1.6 5 PTAS AA",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180130,
+    "name": "FIESTA LX  1.8 5 PTAS D",
+    "description": "FIESTA LX  1.8 5 PTAS D",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180764,
+    "name": "FIESTA 1.6 4P SE PLUS (KD) L/18",
+    "description": "FIESTA 1.6 4P SE PLUS (KD) L/18",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180598,
+    "name": "FIESTA  1.6 4P TITANIUM       (KD)",
+    "description": "FIESTA  1.6 4P TITANIUM       (KD)",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180765,
+    "name": "FIESTA 1.6 4P TITANIUM (KD) L/18",
+    "description": "FIESTA 1.6 4P TITANIUM (KD) L/18",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180545,
+    "name": "FIESTA  1.6 4P TREND          (KD)",
+    "description": "FIESTA  1.6 4P TREND          (KD)",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180619,
+    "name": "FIESTA  1.6 5P S              (KD)",
+    "description": "FIESTA  1.6 5P S              (KD)",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 120483,
+    "name": "SONIC 1.6 5 PTAS LTZ EFFECT   L/15",
+    "description": "SONIC 1.6 5 PTAS LTZ EFFECT   L/15",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120330,
+    "name": "SPARK 1.0 LS",
+    "description": "SPARK 1.0 LS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120331,
+    "name": "SPARK 1.0 LT",
+    "description": "SPARK 1.0 LT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120397,
+    "name": "SPARK 1.2 LT",
+    "description": "SPARK 1.2 LT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120650,
+    "name": "SPARK EUV",
+    "description": "SPARK EUV",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120176,
+    "name": "SUBURBAN TD 4X4",
+    "description": "SUBURBAN TD 4X4",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120018,
+    "name": "SUPREMA GLS 2.2",
+    "description": "SUPREMA GLS 2.2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120438,
+    "name": "TRAILBLAZER 2.8 4X4 LT  AUT",
+    "description": "TRAILBLAZER 2.8 4X4 LT  AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120439,
+    "name": "TRAILBLAZER 2.8 4X4 LTZ AUT",
+    "description": "TRAILBLAZER 2.8 4X4 LTZ AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120522,
+    "name": "TRAILBLAZER 2.8 4X4 LTZ AUT   L/17",
+    "description": "TRAILBLAZER 2.8 4X4 LTZ AUT   L/17",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120598,
+    "name": "TRAILBLAZER 2.8 4X4 LTZ AUT PREMIER L/21",
+    "description": "TRAILBLAZER 2.8 4X4 LTZ AUT PREMIER L/21",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120648,
+    "name": "TRAILBLAZER 2.8 4X4 HIGH COUNTRY AT L/25",
+    "description": "TRAILBLAZER 2.8 4X4 HIGH COUNTRY AT L/25",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120082,
+    "name": "VECTRA CD  2.0",
+    "description": "VECTRA CD  2.0",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120147,
+    "name": "VECTRA CD  2.2",
+    "description": "VECTRA CD  2.2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120158,
+    "name": "VECTRA CD  2.2 AUT",
+    "description": "VECTRA CD  2.2 AUT",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120279,
+    "name": "VECTRA CD  2.4",
+    "description": "VECTRA CD  2.4",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120351,
+    "name": "VECTRA CD  2.4                L/09",
+    "description": "VECTRA CD  2.4                L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120046,
+    "name": "SUPREMA GLS 2.0",
+    "description": "SUPREMA GLS 2.0",
+    "price_adjustments": {}
+  },
+  {
+    "id": 110129,
+    "name": "BERLINGO FURGON 1.4I",
+    "description": "BERLINGO FURGON 1.4I",
+    "price_adjustments": {
+      "2008": -17,
+      "2009": -15,
+      "2010": -14,
+      "2011": -12,
+      "2012": -11,
+      "2013": -9,
+      "2014": -10,
+      "2015": -10,
+      "2016": -11,
+      "2017": -11,
+      "2018": -12,
+      "2019": -13,
+      "2020": -13,
+      "2021": -14,
+      "2022": -15,
+      "2023": -16,
+      "2024": -16,
+      "2025": -16,
+      "2026": -17
+    }
+  },
+  {
+    "id": 180825,
+    "name": "FIESTA 1.6 5P S PLUS (KD) L/18",
+    "description": "FIESTA 1.6 5P S PLUS (KD) L/18",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 180046,
+    "name": "FIESTA CLX 1.3 5 PTAS FULL",
+    "description": "FIESTA CLX 1.3 5 PTAS FULL",
+    "price_adjustments": {
+      "2008": 25,
+      "2009": 25,
+      "2010": 25,
+      "2011": 25,
+      "2012": 25,
+      "2013": 25,
+      "2014": 25,
+      "2015": 25,
+      "2016": 25,
+      "2017": 25,
+      "2018": 25,
+      "2019": 25,
+      "2020": 25,
+      "2021": 25,
+      "2022": 25,
+      "2023": 25,
+      "2024": 25,
+      "2025": 25,
+      "2026": 25
+    }
+  },
+  {
+    "id": 120352,
+    "name": "VECTRA CD  2.4 AUT            L/09",
+    "description": "VECTRA CD  2.4 AUT            L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120136,
+    "name": "VECTRA DTI 2.0",
+    "description": "VECTRA DTI 2.0",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120130,
+    "name": "VECTRA GL  2.0",
+    "description": "VECTRA GL  2.0",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120148,
+    "name": "VECTRA GL  2.2",
+    "description": "VECTRA GL  2.2",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120019,
+    "name": "VECTRA GLS 2.0",
+    "description": "VECTRA GLS 2.0",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120390,
+    "name": "VECTRA GLS 2.0                L/11",
+    "description": "VECTRA GLS 2.0                L/11",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120111,
+    "name": "VECTRA GLS 2.0 ABS",
+    "description": "VECTRA GLS 2.0 ABS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120146,
+    "name": "VECTRA GLS 2.2 ABS",
+    "description": "VECTRA GLS 2.2 ABS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120281,
+    "name": "VECTRA GLS 2.4",
+    "description": "VECTRA GLS 2.4",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120350,
+    "name": "VECTRA GLS 2.4                L/09",
+    "description": "VECTRA GLS 2.4                L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120308,
+    "name": "VECTRA GT  2.0 GLS",
+    "description": "VECTRA GT  2.0 GLS",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120353,
+    "name": "VECTRA GT  2.0 GLS            L/09",
+    "description": "VECTRA GT  2.0 GLS            L/09",
+    "price_adjustments": {}
+  },
+  {
+    "id": 120378,
+    "name": "VECTRA GT  2.0 GLS LIFE",
+    "description": "VECTRA GT  2.0 GLS LIFE",
+    "price_adjustments": {}
+  }
+]

@@ -7,7 +7,8 @@
  * - Cada modelo tiene porcentajes para rangos de años:
  *   - 2008-2012: porcentaje de la columna "2008"
  *   - 2013-2017: porcentaje de la columna "2013"
- *   - 2018-actualidad: porcentaje de la columna "2018"
+ *   - 2018: porcentaje de la columna "2018"
+ *   - 2019-2026: curva de depreciación (2026=0%, años anteriores negativos)
  * 
  * Si un porcentaje es null, significa que el modelo no está disponible para ese rango (celda roja)
  * Si el porcentaje tiene signo negativo (-), es un decremento
@@ -23,8 +24,10 @@ export interface YearRangeAdjustment {
   range2008_2012: number | null;
   /** Porcentaje para años 2013-2017 */
   range2013_2017: number | null;
-  /** Porcentaje para años 2018-actualidad */
+  /** Porcentaje para año 2018 */
   range2018_plus: number | null;
+  /** Porcentaje para años 2019-2026 (2026=0%, años anteriores = depreciación negativa) */
+  range2019_2026?: number | null;
 }
 
 export interface ModelAdjustments {
@@ -38,9 +41,10 @@ export interface BrandAdjustments {
 export const PRICE_ADJUSTMENTS: BrandAdjustments = {
   Volkswagen: {
     "Amarok": {
-      range2008_2012: null, // Celda roja - no disponible
-      range2013_2017: 1.17, // 1,17%
-      range2018_plus: 11.00, // 11%
+      range2008_2012: null,
+      range2013_2017: 1.17,
+      range2018_plus: 11.00,
+      range2019_2026: -15.64, // CSV: 2026=0%, ~2022 midpoint
     },
     "Bora": {
       range2008_2012: null,
@@ -174,11 +178,13 @@ export const PRICE_ADJUSTMENTS: BrandAdjustments = {
       range2008_2012: null,
       range2013_2017: null,
       range2018_plus: null,
+      range2019_2026: -15.62, // CSV: base 2023, ~2022 midpoint
     },
     "Cruze II": {
-      range2008_2012: null, // Celda roja - no disponible
-      range2013_2017: null, // Celda roja - no disponible
-      range2018_plus: 6.50, // 6,50%
+      range2008_2012: null,
+      range2013_2017: null,
+      range2018_plus: 6.50,
+      range2019_2026: -15.62,
     },
     "Grand Vitara": {
       range2008_2012: null,
@@ -191,34 +197,40 @@ export const PRICE_ADJUSTMENTS: BrandAdjustments = {
       range2018_plus: null, // Celda roja - no disponible
     },
     "Montana": {
-      range2008_2012: null, // Celda roja - no disponible
-      range2013_2017: -25.00, // -25,00%
-      range2018_plus: -23.50, // -23,50%
+      range2008_2012: null,
+      range2013_2017: -25.00,
+      range2018_plus: -23.50,
+      range2019_2026: -27.50, // CSV: base 2026, ~2022 midpoint
     },
     "Onix": {
-      range2008_2012: null, // Celda roja - no disponible
-      range2013_2017: 3.50, // 3,50%
-      range2018_plus: 3.50, // 3,50%
+      range2008_2012: null,
+      range2013_2017: 3.50,
+      range2018_plus: 3.50,
+      range2019_2026: -25.45, // CSV: base 2026, ~2022 midpoint
     },
     "Ónix": {
-      range2008_2012: null, // Celda roja - no disponible
-      range2013_2017: 3.50, // 3,50%
-      range2018_plus: 3.50, // 3,50%
+      range2008_2012: null,
+      range2013_2017: 3.50,
+      range2018_plus: 3.50,
+      range2019_2026: -25.45,
     },
     "Prisma": {
-      range2008_2012: null, // Celda roja - no disponible
-      range2013_2017: 0.00, // 0,00%
-      range2018_plus: 10.70, // 10,70%
+      range2008_2012: null,
+      range2013_2017: 0.00,
+      range2018_plus: 10.70,
+      range2019_2026: -9.51, // CSV: base 2020, solo 2019-2020
     },
     "Spin": {
-      range2008_2012: null, // Celda roja - no disponible
-      range2013_2017: 2.50, // 2,50%
-      range2018_plus: 18.00, // 18,00%
+      range2008_2012: null,
+      range2013_2017: 2.50,
+      range2018_plus: 18.00,
+      range2019_2026: -24.57, // CSV: base 2026, ~2022 midpoint
     },
     "Tracker": {
-      range2008_2012: null, // Celda roja - no disponible
-      range2013_2017: 16.00, // 16,00%
-      range2018_plus: 10.60, // 10,60%
+      range2008_2012: null,
+      range2013_2017: 16.00,
+      range2018_plus: 10.60,
+      range2019_2026: -34.62, // CSV: base 2025, ~2022 midpoint
     },
     "Zafira": {
       range2008_2012: null, // Celda roja - no disponible
@@ -518,14 +530,16 @@ export const PRICE_ADJUSTMENTS: BrandAdjustments = {
   },
   Fiat: {
     "500": {
-      range2008_2012: null, // Celda roja - no disponible
-      range2013_2017: null, // Celda amarilla - 0%
-      range2018_plus: -9.00, // -9,00%
+      range2008_2012: null,
+      range2013_2017: null,
+      range2018_plus: -9.00,
+      range2019_2026: -11.62, // CSV: base 2021
     },
     "Argo": {
-      range2008_2012: null, // Celda roja - no disponible
-      range2013_2017: null, // Celda roja - no disponible
-      range2018_plus: -1.00, // -1,00%
+      range2008_2012: null,
+      range2013_2017: null,
+      range2018_plus: -1.00,
+      range2019_2026: -14.29, // CSV: base 2025, ~2022
     },
     "Bravo": {
       range2008_2012: null, // Celda roja - no disponible
@@ -533,9 +547,10 @@ export const PRICE_ADJUSTMENTS: BrandAdjustments = {
       range2018_plus: null, // Celda roja - no disponible
     },
     "Cronos": {
-      range2008_2012: null, // Celda roja - no disponible
-      range2013_2017: null, // Celda roja - no disponible
-      range2018_plus: 11.00, // 11,00%
+      range2008_2012: null,
+      range2013_2017: null,
+      range2018_plus: 11.00,
+      range2019_2026: -26.79, // CSV: base 2025, ~2022
     },
     "Fastback": {
       range2008_2012: null,
@@ -543,9 +558,10 @@ export const PRICE_ADJUSTMENTS: BrandAdjustments = {
       range2018_plus: null,
     },
     "Fiorino": {
-      range2008_2012: -8.00, // -8,00%
-      range2013_2017: -5.00, // -5,00%
-      range2018_plus: -11.00, // -11,00%
+      range2008_2012: -8.00,
+      range2013_2017: -5.00,
+      range2018_plus: -11.00,
+      range2019_2026: -8.89, // CSV: base 2025, ~2022
     },
     "Grand Siena": {
       range2008_2012: null, // Celda roja - no disponible
@@ -568,9 +584,10 @@ export const PRICE_ADJUSTMENTS: BrandAdjustments = {
       range2018_plus: null, // Celda roja - no disponible
     },
     "Mobi": {
-      range2008_2012: null, // Celda roja - no disponible
-      range2013_2017: null, // Celda roja - no disponible
-      range2018_plus: -11.00, // -11,00%
+      range2008_2012: null,
+      range2013_2017: null,
+      range2018_plus: -11.00,
+      range2019_2026: -26.14, // CSV: base 2025, ~2022
     },
     "Palio": {
       range2008_2012: -8.00, // -8,00%
@@ -626,9 +643,16 @@ export const PRICE_ADJUSTMENTS: BrandAdjustments = {
   },
   Ford: {
     "Ecosport": {
-      range2008_2012: 0.00, // 0,00% (celda amarilla)
-      range2013_2017: -1.00, // -1,00%
-      range2018_plus: -17.00, // -17,00%
+      range2008_2012: 0.00,
+      range2013_2017: -1.00,
+      range2018_plus: -17.00,
+      range2019_2026: -8.62, // CSV: base 2023, ~2022 midpoint
+    },
+    "EcoSport": {
+      range2008_2012: 0.00,
+      range2013_2017: -1.00,
+      range2018_plus: -17.00,
+      range2019_2026: -8.62,
     },
     "Everest": {
       range2008_2012: null,
@@ -671,9 +695,10 @@ export const PRICE_ADJUSTMENTS: BrandAdjustments = {
       range2018_plus: null,
     },
     "Ranger": {
-      range2008_2012: 0.00, // 0,00% (celda amarilla)
-      range2013_2017: -11.00, // -11,00%
-      range2018_plus: -3.00, // -3,00%
+      range2008_2012: 0.00,
+      range2013_2017: -11.00,
+      range2018_plus: -3.00,
+      range2019_2026: -30.84, // CSV: base 2025, ~2022 midpoint
     },
     "Ranger 3.0 XLS V6": {
       range2008_2012: null,
@@ -694,9 +719,10 @@ export const PRICE_ADJUSTMENTS: BrandAdjustments = {
       range2018_plus: 0.00, // 0,00% (celda amarilla)
     },
     "Kicks": {
-      range2008_2012: 0.00, // 0,00% (celda amarilla)
-      range2013_2017: 0.00, // 0,00% (celda amarilla)
-      range2018_plus: 0.00, // 0,00% (celda amarilla)
+      range2008_2012: 0.00,
+      range2013_2017: 0.00,
+      range2018_plus: 0.00,
+      range2019_2026: -47.39, // CSV: base 2025, ~2022
     },
     "March": {
       range2008_2012: 0.00, // 0,00% (celda amarilla)
@@ -719,9 +745,10 @@ export const PRICE_ADJUSTMENTS: BrandAdjustments = {
       range2018_plus: -2.00, // -2,00%
     },
     "Versa": {
-      range2008_2012: 0.00, // 0,00% (celda amarilla)
-      range2013_2017: -6.00, // -6,00%
-      range2018_plus: -7.00, // -7,00%
+      range2008_2012: 0.00,
+      range2013_2017: -6.00,
+      range2018_plus: -7.00,
+      range2019_2026: -36.25, // CSV: base 2026, ~2022
     },
     "X-terra": {
       range2008_2012: 0.00, // 0,00% (celda amarilla)
@@ -742,9 +769,10 @@ export const PRICE_ADJUSTMENTS: BrandAdjustments = {
   },
   Toyota: {
     "Corolla": {
-      range2008_2012: null, // Celda roja - no disponible
-      range2013_2017: -8.00, // -8,00%
-      range2018_plus: -4.00, // -4,00%
+      range2008_2012: null,
+      range2013_2017: -8.00,
+      range2018_plus: -4.00,
+      range2019_2026: null, // CSV: solo 1 dato (2025), insuficiente
     },
     "Corolla Cross": {
       range2008_2012: null,
@@ -752,9 +780,10 @@ export const PRICE_ADJUSTMENTS: BrandAdjustments = {
       range2018_plus: null,
     },
     "Etios": {
-      range2008_2012: null, // Celda roja - no disponible
-      range2013_2017: -12.00, // -12,00%
-      range2018_plus: -2.00, // -2,00%
+      range2008_2012: null,
+      range2013_2017: -12.00,
+      range2018_plus: -2.00,
+      range2019_2026: -1.57, // CSV: base 2024, ~2022
     },
     "Hiace": {
       range2008_2012: null,
@@ -772,14 +801,22 @@ export const PRICE_ADJUSTMENTS: BrandAdjustments = {
       range2018_plus: null, // Celda roja - no disponible
     },
     "Sw4": {
-      range2008_2012: -0.50, // -0,50%
-      range2013_2017: -7.00, // -7,00%
-      range2018_plus: 1.00, // 1,00%
+      range2008_2012: -0.50,
+      range2013_2017: -7.00,
+      range2018_plus: 1.00,
+      range2019_2026: -26.45, // CSV: base 2026, ~2022
+    },
+    "SW4": {
+      range2008_2012: -0.50,
+      range2013_2017: -7.00,
+      range2018_plus: 1.00,
+      range2019_2026: -26.45,
     },
     "Yaris": {
-      range2008_2012: null, // Celda roja - no disponible
-      range2013_2017: null, // Celda roja - no disponible
-      range2018_plus: -1.00, // -1,00%
+      range2008_2012: null,
+      range2013_2017: null,
+      range2018_plus: -1.00,
+      range2019_2026: -21.38, // CSV: base 2026, ~2022
     },
     // Agregar más modelos según sea necesario
   },
@@ -813,12 +850,14 @@ export const PRICE_ADJUSTMENTS: BrandAdjustments = {
  * Determina el rango de años basado en el año seleccionado
  */
 export function getYearRange(year: number): keyof YearRangeAdjustment {
-  if (year >= 2008 && year <= 2012) {
-    return "range2008_2012";
+  if (year >= 2019) {
+    return "range2019_2026";
+  } else if (year === 2018) {
+    return "range2018_plus";
   } else if (year >= 2013 && year <= 2017) {
     return "range2013_2017";
-  } else if (year >= 2018) {
-    return "range2018_plus";
+  } else if (year >= 2008 && year <= 2012) {
+    return "range2008_2012";
   }
   // Por defecto, si el año es anterior a 2008, usar el rango más antiguo
   return "range2008_2012";

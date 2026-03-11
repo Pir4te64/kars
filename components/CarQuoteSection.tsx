@@ -447,7 +447,8 @@ export default function CarQuoteSection() {
       const precioConAjusteKm = calculatePriceByKilometers(
         precioBasePesos,
         formData.kilometraje,
-        formData.año
+        formData.año,
+        formData.modelo
       );
       precioBasePesos = precioConAjusteKm;
       console.log(

@@ -148,7 +148,8 @@ export default function QuoteResultPage() {
       const precioConAjusteKm = calculatePriceByKilometers(
         precioEnPesos,
         quoteData.kilometraje,
-        quoteData.año
+        quoteData.año,
+        quoteData.modelo
       );
       precioEnPesos = precioConAjusteKm;
       console.log(`📏 Ajuste por kilometraje aplicado: ${quoteData.kilometraje} km`);

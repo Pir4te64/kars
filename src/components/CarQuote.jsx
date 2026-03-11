@@ -112,7 +112,9 @@ const CarQuote = () => {
         const basePrice = parseFloat(yearData.price);
         const adjustedPrice = calculatePriceByKilometers(
           basePrice,
-          formData.kilometraje
+          formData.kilometraje,
+          formData.año,
+          formData.modelo
         );
         formData.precio = adjustedPrice.toString();
       }

@@ -160,13 +160,15 @@ export async function getPrice(
  *
  * @param basePrice - Precio base del vehículo (corresponde a 50,000 km)
  * @param kilometraje - Kilómetros exactos del vehículo (número o string)
- * @param añoVehiculo - Año del vehículo (opcional, solo para logs)
+ * @param añoVehiculo - Año del vehículo (opcional)
+ * @param modelName - Nombre del modelo (opcional, para tasa diferenciada)
  * @returns Precio ajustado según los kilómetros
  */
 export function calculatePriceByKilometers(
   basePrice: number,
   kilometraje: string | number,
-  añoVehiculo?: number | string
+  añoVehiculo?: number | string,
+  modelName?: string
 ): number {
   if (!kilometraje || !basePrice) {
     console.log(
@@ -211,15 +213,28 @@ export function calculatePriceByKilometers(
     );
   }
 
-  // Aplicar la fórmula: Precio = precioBase × e^(-0.00000289 × kmDiferencia)
-  // Si kmDiferencia es negativo (menos km que 50,000), el precio será mayor
-  // Si kmDiferencia es positivo (más km que 50,000), el precio será menor
-  // Si kmDiferencia es cero (igual a 50,000), el precio será igual al base
-  // 
-  // Calcular tasa de depreciación para que 50,000 km = precioBase y 150,000 km = precioBase × 0.6742
-  // 13.350.000 = 19.800.000 × e^(-rate × 100,000)
-  // rate = -ln(13.350.000 / 19.800.000) / 100,000 = 0.00000394
-  const deprecationRate = 0.00000394; // Ajustada para que 150,000 km = 13.350.000 ARS cuando precioBase = 19.800.000 ARS
+  // Tasas de depreciación por km (calibradas con datos de mercado Kavak):
+  // - Utilitarios/pickups/SUVs: 0.00000262 (curva suave, retienen más valor por km)
+  // - Autos (sedanes/hatchbacks): 0.00000386 (curva estándar)
+  // - 2008-2018: tasa original 0.00000394 (sin cambio)
+  const UTILITARIOS = [
+    'partner', 'berlingo', 'kangoo', 'doblo', 'fiorino', 'caddy',
+    'amarok', 'ranger', 'hilux', 'frontier', 'saveiro', 's10', 'alaskan', 'maverick', 'montana',
+    'sw4', 'fortuner', 'territory', 'bronco',
+    'sprinter', 'master', 'boxer', 'ducato', 'transit', 'daily',
+    'trafic', 'expert', 'jumpy', 'vito',
+  ];
+  const añoNum = typeof añoVehiculo === 'string' ? parseInt(String(añoVehiculo)) : (añoVehiculo ?? 0);
+  const esModerno = !isNaN(añoNum) && añoNum >= 2019;
+
+  let deprecationRate: number;
+  if (!esModerno) {
+    deprecationRate = 0.00000394; // 2008-2018: tasa original
+  } else {
+    const modelLower = (modelName || '').toLowerCase();
+    const esUtilitario = UTILITARIOS.some(u => modelLower.includes(u));
+    deprecationRate = esUtilitario ? 0.00000262 : 0.00000386;
+  }
   const adjustedPrice = basePrice * Math.exp(-deprecationRate * kmDiferencia);
   const diferenciaPrecio = adjustedPrice - basePrice;
   const porcentajeAjuste = (diferenciaPrecio / basePrice) * 100;

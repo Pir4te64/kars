@@ -1,0 +1,120 @@
+import { NextResponse } from "next/server";
+import { createClient } from "@supabase/supabase-js";
+
+export const dynamic = "force-dynamic";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseKey =
+  process.env.SUPABASE_SERVICE_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// GET - Obtener modelos con filtros
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const brand_id = searchParams.get("brand_id");
+    const search = searchParams.get("search");
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "50");
+    const offset = (page - 1) * limit;
+
+    let query = supabase
+      .from("models")
+      .select("id, name, brand_id, codia, year_from, year_to, price_adjustments", { count: "exact" })
+      .order("name", { ascending: true });
+
+    if (brand_id) {
+      query = query.eq("brand_id", brand_id);
+    }
+
+    if (search) {
+      query = query.ilike("name", `%${search}%`);
+    }
+
+    query = query.range(offset, offset + limit - 1);
+
+    const { data, error, count } = await query;
+
+    if (error) {
+      return NextResponse.json(
+        { error: "Error al obtener modelos", details: error.message },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      models: data,
+      total: count,
+      page,
+      limit,
+    });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: "Error interno del servidor",
+        details: error instanceof Error ? error.message : "Error desconocido",
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function OPTIONS() {
+  return NextResponse.json({ ok: true });
+}
+
+// PATCH - Actualizar price_adjustments y/o custom_prices de un modelo
+export async function PATCH(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, price_adjustments, custom_prices } = body;
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "Falta el ID del modelo" },
+        { status: 400 }
+      );
+    }
+
+    if (price_adjustments === undefined && custom_prices === undefined) {
+      return NextResponse.json(
+        { error: "Faltan los datos a actualizar" },
+        { status: 400 }
+      );
+    }
+
+    const updatePayload: Record<string, unknown> = {};
+    if (price_adjustments !== undefined) updatePayload.price_adjustments = price_adjustments;
+    if (custom_prices !== undefined) updatePayload.custom_prices = custom_prices;
+
+    const { data, error } = await supabase
+      .from("models")
+      .update(updatePayload)
+      .eq("id", id)
+      .select("id, name, price_adjustments");
+
+    if (error) {
+      return NextResponse.json(
+        { error: "Error al actualizar", details: error.message },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      model: data[0],
+      message: "Actualizado correctamente",
+    });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: "Error interno del servidor",
+        details: error instanceof Error ? error.message : "Error desconocido",
+      },
+      { status: 500 }
+    );
+  }
+}

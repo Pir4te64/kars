@@ -1,6 +1,75 @@
 import { supabase } from "./supabase";
 
 /**
+ * Obtiene el precio fijo personalizado desde Supabase para un modelo y año específico.
+ * Busca por codia (exacto). Si existe, tiene prioridad sobre InfoAuto + ajuste %.
+ */
+export async function getCustomPriceFromSupabase(
+  codia: string,
+  year: number
+): Promise<CustomPriceEntry | null> {
+  try {
+    const { data, error } = await supabase
+      .from("models")
+      .select("custom_prices")
+      .eq("codia", codia)
+      .limit(1);
+
+    if (error || !data || data.length === 0) return null;
+    return extractCustomPrice(data[0].custom_prices, year);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Obtiene el precio fijo personalizado buscando por nombre de modelo.
+ * Usado en el cotizador cuando solo se tiene marca/modelo/año (sin codia).
+ * Si existe, tiene prioridad absoluta sobre el precio de InfoAuto + ajuste porcentual.
+ */
+export async function getCustomPriceByModelName(
+  modelName: string,
+  year: number
+): Promise<CustomPriceEntry | null> {
+  try {
+    const normalized = modelName.trim().toLowerCase();
+    const { data, error } = await supabase
+      .from("models")
+      .select("custom_prices")
+      .or(`name.ilike.%${normalized}%,description.ilike.%${normalized}%`)
+      .limit(1);
+
+    if (error || !data || data.length === 0) return null;
+    return extractCustomPrice(data[0].custom_prices, year);
+  } catch {
+    return null;
+  }
+}
+
+export interface CustomPriceEntry {
+  amount: number;
+  currency: "ARS" | "USD";
+}
+
+export function extractCustomPrice(customPrices: unknown, year: number): CustomPriceEntry | null {
+  if (!customPrices || typeof customPrices !== "object") return null;
+  const value = (customPrices as Record<string, unknown>)[year.toString()];
+  if (value === null || value === undefined) return null;
+
+  // Formato nuevo: { amount, currency }
+  if (typeof value === "object" && value !== null && "amount" in value) {
+    const entry = value as { amount: unknown; currency?: unknown };
+    const amount = typeof entry.amount === "number" ? entry.amount : parseFloat(String(entry.amount));
+    const currency = entry.currency === "USD" ? "USD" : "ARS";
+    return isNaN(amount) ? null : { amount, currency };
+  }
+
+  // Formato legacy: número plano (tratado como ARS)
+  const num = typeof value === "number" ? value : parseFloat(String(value));
+  return isNaN(num) ? null : { amount: num, currency: "ARS" };
+}
+
+/**
  * Obtiene el ajuste de precio desde Supabase para un modelo específico y año
  * @param brandName Nombre de la marca (ej: "Volkswagen")
  * @param modelName Nombre del modelo (ej: "Amarok")

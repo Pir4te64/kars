@@ -12,6 +12,7 @@ import {
   getPriceAdjustment,
   applyPriceAdjustment,
 } from "@/constants/priceAdjustments";
+import { getCustomPriceByModelName } from "@/lib/supabase-price-adjustments";
 
 interface CarFormData {
   marca: string;
@@ -435,9 +436,31 @@ export default function CarQuoteSection() {
     // Obtener cotización del dólar blue
     const cotizacionDolar = dollarBlue?.venta || 1200;
 
-    // Calcular las tres cotizaciones
-    // 1. Precio base en pesos (precio USD ajustado * 1000 * cotización dólar)
-    let precioBasePesos = precioAjustadoUSD * 1000 * cotizacionDolar;
+    // Verificar si hay precio fijo configurado manualmente en admin
+    let precioBasePesos = 0;
+    if (formData.modelo && formData.año) {
+      const añoNum = parseInt(formData.año);
+      if (!isNaN(añoNum)) {
+        const customPrice = await getCustomPriceByModelName(formData.modelo, añoNum);
+        if (customPrice !== null) {
+          if (customPrice.currency === "USD") {
+            const blue = dollarBlue?.venta || 0;
+            if (blue > 0) {
+              precioBasePesos = customPrice.amount * blue;
+              console.log(`💜 Precio fijo admin USD: ${customPrice.amount} USD → ${precioBasePesos.toLocaleString()} ARS`);
+            }
+          } else {
+            precioBasePesos = customPrice.amount;
+            console.log(`💜 Precio fijo admin ARS: ${precioBasePesos.toLocaleString()} ARS`);
+          }
+        }
+      }
+    }
+
+    // Si no hay precio fijo, calcular desde InfoAuto
+    if (precioBasePesos === 0) {
+      precioBasePesos = precioAjustadoUSD * 1000 * cotizacionDolar;
+    }
 
     // Aplicar ajuste por kilometraje si está disponible
     if (formData.kilometraje && formData.año && precioBasePesos > 0) {

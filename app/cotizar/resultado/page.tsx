@@ -12,6 +12,7 @@ import {
   applyPriceAdjustment,
 } from "@/constants/priceAdjustments";
 import { calculatePriceByKilometers } from "@/lib/car-quote";
+import { getCustomPriceByModelName } from "@/lib/supabase-price-adjustments";
 
 interface QuoteData {
   marca: string;
@@ -111,37 +112,57 @@ export default function QuoteResultPage() {
       return 0;
     }
 
-    // 3. Aplicar ajuste de precio según marca, modelo y año
-    let precioAjustado = precioRaw;
-    if (quoteData?.marca && quoteData?.modelo && quoteData?.año) {
+    // 3. Verificar si hay un precio fijo configurado manualmente en Supabase
+    let precioEnPesos = 0;
+    if (quoteData?.modelo && quoteData?.año) {
       const año = parseInt(quoteData.año);
       if (!isNaN(año)) {
-        console.log(`💰 Precio que arroja la API: ${precioRaw} ARS`);
-
-        const adjustment = await getPriceAdjustment(
-          quoteData.marca,
-          quoteData.modelo,
-          año
-        );
-
-        if (adjustment !== null) {
-          console.log(
-            `📈 Porcentaje aplicado: ${adjustment > 0 ? "+" : ""}${adjustment}%`
-          );
-
-          const precioConAjuste = applyPriceAdjustment(precioRaw, adjustment);
-          if (precioConAjuste !== null) {
-            precioAjustado = precioConAjuste;
-            console.log(`✅ Precio con el % aplicado: ${precioAjustado} ARS`);
+        const customPrice = await getCustomPriceByModelName(quoteData.modelo, año);
+        if (customPrice !== null) {
+          if (customPrice.currency === "USD") {
+            const blue = dollarBlue?.venta || 0;
+            if (blue > 0) {
+              precioEnPesos = customPrice.amount * blue;
+              console.log(`💜 Precio fijo admin USD: ${customPrice.amount} USD → ${precioEnPesos.toLocaleString()} ARS`);
+            }
           } else {
-            return 0; // Modelo no disponible para ese rango
+            precioEnPesos = customPrice.amount;
+            console.log(`💜 Precio fijo admin ARS: ${precioEnPesos.toLocaleString()} ARS`);
           }
         }
       }
     }
 
-    // 4. Multiplicar por 1000 para obtener el precio real en pesos
-    let precioEnPesos = precioAjustado * 1000;
+    // 4. Si no hay precio fijo, usar InfoAuto + ajuste porcentual
+    if (precioEnPesos === 0) {
+      let precioAjustado = precioRaw;
+      if (quoteData?.marca && quoteData?.modelo && quoteData?.año) {
+        const año = parseInt(quoteData.año);
+        if (!isNaN(año)) {
+          console.log(`💰 Precio que arroja la API: ${precioRaw} ARS`);
+
+          const adjustment = await getPriceAdjustment(
+            quoteData.marca,
+            quoteData.modelo,
+            año
+          );
+
+          if (adjustment !== null) {
+            console.log(
+              `📈 Porcentaje aplicado: ${adjustment > 0 ? "+" : ""}${adjustment}%`
+            );
+            const precioConAjuste = applyPriceAdjustment(precioRaw, adjustment);
+            if (precioConAjuste !== null) {
+              precioAjustado = precioConAjuste;
+              console.log(`✅ Precio con el % aplicado: ${precioAjustado} ARS`);
+            } else {
+              return 0;
+            }
+          }
+        }
+      }
+      precioEnPesos = precioAjustado * 1000;
+    }
 
     // 5. Aplicar ajuste por kilometraje si está disponible
     if (quoteData?.kilometraje && quoteData?.año && precioEnPesos > 0) {

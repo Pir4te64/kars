@@ -22,7 +22,7 @@ export async function GET(request: Request) {
 
     let query = supabase
       .from("models")
-      .select("id, name, brand_id, codia, year_from, year_to, price_adjustments", { count: "exact" })
+      .select("id, name, brand_id, codia, year_from, year_to, price_adjustments, custom_prices", { count: "exact" })
       .order("name", { ascending: true });
 
     if (brand_id) {

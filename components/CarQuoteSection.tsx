@@ -12,7 +12,7 @@ import {
   getPriceAdjustment,
   applyPriceAdjustment,
 } from "@/constants/priceAdjustments";
-import { getCustomPriceByModelName } from "@/lib/supabase-price-adjustments";
+import { getCustomPriceFromSupabase } from "@/lib/supabase-price-adjustments";
 
 interface CarFormData {
   marca: string;
@@ -441,7 +441,7 @@ export default function CarQuoteSection() {
     if (formData.modelo && formData.año) {
       const añoNum = parseInt(formData.año);
       if (!isNaN(añoNum)) {
-        const customPrice = await getCustomPriceByModelName(formData.modelo, añoNum);
+        const customPrice = await getCustomPriceFromSupabase(formData.modelo, añoNum);
         if (customPrice !== null) {
           if (customPrice.currency === "USD") {
             const blue = dollarBlue?.venta || 0;

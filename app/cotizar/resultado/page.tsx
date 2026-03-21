@@ -102,70 +102,61 @@ export default function QuoteResultPage() {
   };
 
   // Convertir precio del modelo a precio real en pesos
-  // El precio viene de la API sin los últimos 3 ceros (ej: "7600" = 7,600,000 pesos)
+  // Prioridad: 1) Supabase custom_prices, 2) precio del formulario × 1000
   const obtenerPrecioBasePesos = async (): Promise<number> => {
-    // 1. Precio del modelo (ej: "7600")
-    const precioString = quoteData?.precio || "0";
-    const precioRaw = parseFloat(precioString);
-
-    // 2. Si el precio es 0, NaN, o no es un número válido, retornar 0
-    if (!precioRaw || precioRaw === 0 || isNaN(precioRaw)) {
-      return 0;
-    }
-
-    // 3. Verificar si hay un precio fijo configurado manualmente en Supabase
     let precioEnPesos = 0;
-    if (quoteData?.modelo && quoteData?.año) {
+
+    // 1. Buscar precio en Supabase (fuente principal)
+    if (quoteData?.año) {
       const año = parseInt(quoteData.año);
       if (!isNaN(año)) {
-        // Buscar primero por codia (exacto), luego por nombre (fallback)
+        // Buscar por codia (exacto) o por nombre (fallback)
         const customPrice = quoteData.codia
           ? await getCustomPriceFromSupabase(quoteData.codia, año)
-          : await getCustomPriceByModelName(quoteData.modelo, año);
+          : quoteData.modelo
+          ? await getCustomPriceByModelName(quoteData.modelo, año)
+          : null;
         if (customPrice !== null) {
           if (customPrice.currency === "USD") {
             const blue = dollarBlue?.venta || 0;
             if (blue > 0) {
               precioEnPesos = customPrice.amount * blue;
-              console.log(`💜 Precio fijo admin USD: ${customPrice.amount} USD → ${precioEnPesos.toLocaleString()} ARS`);
+              console.log(`💜 Precio Supabase USD: ${customPrice.amount} USD × ${blue} = ${precioEnPesos.toLocaleString()} ARS`);
             }
           } else {
             precioEnPesos = customPrice.amount;
-            console.log(`💜 Precio fijo admin ARS: ${precioEnPesos.toLocaleString()} ARS`);
+            console.log(`💜 Precio Supabase ARS: ${precioEnPesos.toLocaleString()} ARS`);
           }
         }
       }
     }
 
-    // 4. Si no hay precio fijo, usar InfoAuto + ajuste porcentual
+    // 2. Fallback: usar precio del formulario (viene en miles desde la API)
     if (precioEnPesos === 0) {
-      let precioAjustado = precioRaw;
-      if (quoteData?.marca && quoteData?.modelo && quoteData?.año) {
-        const año = parseInt(quoteData.año);
-        if (!isNaN(año)) {
-          console.log(`💰 Precio que arroja la API: ${precioRaw} ARS`);
-
-          const adjustment = await getPriceAdjustment(
-            quoteData.marca,
-            quoteData.modelo,
-            año
-          );
-
-          if (adjustment !== null) {
-            console.log(
-              `📈 Porcentaje aplicado: ${adjustment > 0 ? "+" : ""}${adjustment}%`
+      const precioString = quoteData?.precio || "0";
+      const precioRaw = parseFloat(precioString);
+      if (precioRaw && !isNaN(precioRaw) && precioRaw > 0) {
+        // Aplicar ajuste porcentual si existe
+        let precioAjustado = precioRaw;
+        if (quoteData?.marca && quoteData?.modelo && quoteData?.año) {
+          const año = parseInt(quoteData.año);
+          if (!isNaN(año)) {
+            const adjustment = await getPriceAdjustment(
+              quoteData.marca,
+              quoteData.modelo,
+              año
             );
-            const precioConAjuste = applyPriceAdjustment(precioRaw, adjustment);
-            if (precioConAjuste !== null) {
-              precioAjustado = precioConAjuste;
-              console.log(`✅ Precio con el % aplicado: ${precioAjustado} ARS`);
-            } else {
-              return 0;
+            if (adjustment !== null) {
+              const precioConAjuste = applyPriceAdjustment(precioRaw, adjustment);
+              if (precioConAjuste !== null) {
+                precioAjustado = precioConAjuste;
+              }
             }
           }
         }
+        precioEnPesos = precioAjustado * 1000;
+        console.log(`💰 Fallback precio formulario: ${precioRaw} × 1000 = ${precioEnPesos.toLocaleString()} ARS`);
       }
-      precioEnPesos = precioAjustado * 1000;
     }
 
     // 5. Aplicar ajuste por kilometraje si está disponible

@@ -12,7 +12,7 @@ import {
   applyPriceAdjustment,
 } from "@/constants/priceAdjustments";
 import { calculatePriceByKilometers } from "@/lib/car-quote";
-import { getCustomPriceByModelName } from "@/lib/supabase-price-adjustments";
+import { getCustomPriceByModelName, getCustomPriceFromSupabase } from "@/lib/supabase-price-adjustments";
 
 interface QuoteData {
   marca: string;
@@ -20,6 +20,7 @@ interface QuoteData {
   modelo: string;
   año: string;
   precio: string;
+  codia?: string;
   version?: string;
   kilometraje?: string;
   estado?: string;
@@ -117,7 +118,10 @@ export default function QuoteResultPage() {
     if (quoteData?.modelo && quoteData?.año) {
       const año = parseInt(quoteData.año);
       if (!isNaN(año)) {
-        const customPrice = await getCustomPriceByModelName(quoteData.modelo, año);
+        // Buscar primero por codia (exacto), luego por nombre (fallback)
+        const customPrice = quoteData.codia
+          ? await getCustomPriceFromSupabase(quoteData.codia, año)
+          : await getCustomPriceByModelName(quoteData.modelo, año);
         if (customPrice !== null) {
           if (customPrice.currency === "USD") {
             const blue = dollarBlue?.venta || 0;

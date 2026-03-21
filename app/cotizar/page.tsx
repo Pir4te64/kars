@@ -244,6 +244,7 @@ export default function CotizarPage() {
       );
       if (modelData) {
         updatedFormData.modelo = modelData.description;
+        updatedFormData.codia = modelData.codia;
       }
     }
 

@@ -119,17 +119,26 @@ async function main() {
   const brandMap = {};
   brands.forEach(b => { brandMap[b.id] = b.name; });
 
-  // 2. Obtener modelos
-  let query = supabase.from('models').select('id, name, codia, brand_id, year_from, year_to, custom_prices');
-  if (brandFilter) {
-    const brand = brands.find(b => b.name.toUpperCase() === brandFilter);
-    if (!brand) { console.error(`Marca "${brandFilter}" no encontrada`); return; }
-    query = query.eq('brand_id', brand.id);
+  // 2. Obtener modelos (paginado para superar límite de 1000)
+  let allModels = [];
+  const PAGE_SIZE = 1000;
+  let from = 0;
+  while (true) {
+    let query = supabase.from('models').select('id, name, codia, brand_id, year_from, year_to, custom_prices');
+    if (brandFilter) {
+      const brand = brands.find(b => b.name.toUpperCase() === brandFilter);
+      if (!brand) { console.error(`Marca "${brandFilter}" no encontrada`); return; }
+      query = query.eq('brand_id', brand.id);
+    }
+    query = query.order('name').range(from, from + PAGE_SIZE - 1);
+    const { data: page, error: pageErr } = await query;
+    if (pageErr) { console.error('Error:', pageErr); return; }
+    if (!page || page.length === 0) break;
+    allModels = allModels.concat(page);
+    if (page.length < PAGE_SIZE) break;
+    from += PAGE_SIZE;
   }
-  query = query.order('name');
-
-  const { data: models, error } = await query;
-  if (error) { console.error('Error:', error); return; }
+  const models = allModels;
 
   const toProcess = limitArg ? models.slice(0, limitArg) : models;
   console.log(`\n📦 ${toProcess.length} modelos a procesar (de ${models.length} total)\n`);

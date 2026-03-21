@@ -20,6 +20,8 @@ export async function GET(request: Request) {
     const limit = parseInt(searchParams.get("limit") || "50");
     const offset = (page - 1) * limit;
 
+    const showHidden = searchParams.get("show_hidden") === "true";
+
     let query = supabase
       .from("models")
       .select("id, name, brand_id, codia, year_from, year_to, price_adjustments, custom_prices", { count: "exact" })
@@ -37,6 +39,12 @@ export async function GET(request: Request) {
 
     const { data, error, count } = await query;
 
+    // Filter hidden client-side if the column exists, to avoid errors when column doesn't exist yet
+    let models = data || [];
+    if (!showHidden && models.length > 0 && "hidden" in models[0]) {
+      models = models.filter((m: Record<string, unknown>) => !m.hidden);
+    }
+
     if (error) {
       return NextResponse.json(
         { error: "Error al obtener modelos", details: error.message },
@@ -46,8 +54,8 @@ export async function GET(request: Request) {
 
     return NextResponse.json({
       success: true,
-      models: data,
-      total: count,
+      models,
+      total: !showHidden && data && data.length !== models.length ? models.length : count,
       page,
       limit,
     });
@@ -70,7 +78,7 @@ export async function OPTIONS() {
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
-    const { id, price_adjustments, custom_prices } = body;
+    const { id, price_adjustments, custom_prices, hidden } = body;
 
     if (!id) {
       return NextResponse.json(
@@ -79,7 +87,7 @@ export async function PATCH(request: Request) {
       );
     }
 
-    if (price_adjustments === undefined && custom_prices === undefined) {
+    if (price_adjustments === undefined && custom_prices === undefined && hidden === undefined) {
       return NextResponse.json(
         { error: "Faltan los datos a actualizar" },
         { status: 400 }
@@ -89,6 +97,7 @@ export async function PATCH(request: Request) {
     const updatePayload: Record<string, unknown> = {};
     if (price_adjustments !== undefined) updatePayload.price_adjustments = price_adjustments;
     if (custom_prices !== undefined) updatePayload.custom_prices = custom_prices;
+    if (hidden !== undefined) updatePayload.hidden = hidden;
 
     const { data, error } = await supabase
       .from("models")
@@ -107,6 +116,46 @@ export async function PATCH(request: Request) {
       success: true,
       model: data[0],
       message: "Actualizado correctamente",
+    });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: "Error interno del servidor",
+        details: error instanceof Error ? error.message : "Error desconocido",
+      },
+      { status: 500 }
+    );
+  }
+}
+
+// DELETE - Eliminar un modelo
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "Falta el ID del modelo" },
+        { status: 400 }
+      );
+    }
+
+    const { error } = await supabase
+      .from("models")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      return NextResponse.json(
+        { error: "Error al eliminar", details: error.message },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: "Modelo eliminado correctamente",
     });
   } catch (error) {
     return NextResponse.json(

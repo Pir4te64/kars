@@ -1,6 +1,12 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
+
 export default function WhatsAppButton() {
+  const pathname = usePathname()
+
+  if (pathname.startsWith('/admin')) return null
+
   const phoneNumber = '5491121596100' // Número de la agencia
   const message = encodeURIComponent('Hola! Estoy interesado en consultar sobre un vehículo.')
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`

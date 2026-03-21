@@ -44,8 +44,8 @@ export function useCarInfo(): UseCarInfoReturn {
   const getBrandsData = useCallback(async () => {
     setLoadingBrands(true);
     try {
-      // Usar proxy local de InfoAuto
-      const response = await fetch(`/api/infoauto?path=/brands/`);
+      // Leer marcas desde Supabase
+      const response = await fetch(`/api/catalog/brands`);
 
       if (!response.ok) throw new Error("Error al cargar marcas");
       const data = await response.json();
@@ -105,8 +105,8 @@ export function useCarInfo(): UseCarInfoReturn {
 
       setLoadingGroups(true);
       try {
-        const url = `/api/infoauto?path=/brands/${normalizedBrandId}/groups/`;
-        console.log("🔴 Llamando a InfoAuto:", url);
+        const url = `/api/catalog/brands/${normalizedBrandId}/groups`;
+        console.log("🔴 Cargando grupos:", url);
 
         const response = await fetch(url);
         if (!response.ok) throw new Error("Error al cargar grupos");
@@ -221,8 +221,8 @@ export function useCarInfo(): UseCarInfoReturn {
 
         // IMPORTANTE: Usar actualBrandId (que será 13 para JEEP/DODGE) en la URL
         // NUNCA usar -1 o -2 en la URL, siempre usar 13
-        const url = `/api/infoauto?path=/brands/${actualBrandId}/groups/${groupId}/models/`;
-        console.log("🔴 Llamando a InfoAuto para obtener modelos:", url);
+        const url = `/api/catalog/brands/${actualBrandId}/groups/${groupId}/models`;
+        console.log("🔴 Cargando modelos:", url);
         console.log(
           "🔴 BrandId usado en URL:",
           actualBrandId,
@@ -599,19 +599,24 @@ export function useCarInfo(): UseCarInfoReturn {
         actualBrandId = "13"; // CHRYSLER ID
       }
 
+      // Obtener modelos del grupo desde Supabase para extraer rango de años
       const response = await fetch(
-        `/api/infoauto?path=/brands/${actualBrandId}/groups/${groupId}/prices/`
+        `/api/catalog/brands/${actualBrandId}/groups/${groupId}/models`
       );
       if (!response.ok) throw new Error("Error al cargar años del grupo");
       const data = await response.json();
 
-      // Extraer años únicos del response, filtrar solo años >= 2008 y ordenarlos descendente
-      const years = Array.from(
-        new Set(data.map((item: any) => item.year))
-      )
-        .filter((year) => !isNaN(Number(year)))
-        .map((year) => Number(year))
-        .filter((year) => year >= 2008) // Solo años del 2008 en adelante
+      // Extraer años únicos de year_from/year_to de todos los modelos del grupo
+      const yearSet = new Set<number>();
+      data.forEach((model: any) => {
+        const from = model.year_from || model.prices_from;
+        const to = model.year_to || model.prices_to;
+        if (from && to) {
+          for (let y = from; y <= to; y++) yearSet.add(y);
+        }
+      });
+      const years = Array.from(yearSet)
+        .filter((year) => year >= 2008)
         .sort((a, b) => b - a);
 
       console.log("🟢 Años obtenidos para grupo (>= 2008):", years);

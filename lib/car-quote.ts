@@ -1,4 +1,4 @@
-const API_BASE_URL = "/api/infoauto?path=";
+const API_BASE_URL = "/api/catalog";
 
 interface Brand {
   id: number;

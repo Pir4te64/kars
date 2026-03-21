@@ -7,13 +7,21 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-} from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
+import { toast } from "sonner";
+import {
+  Search,
+  Trash2,
+  Mail,
+  Phone,
+  MapPin,
+  Car,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+  MessageCircle,
+} from "lucide-react";
 
 interface Lead {
   id: string;
@@ -28,412 +36,277 @@ interface Lead {
   kilometraje: string;
   precio: string;
   estado: string;
+  precio_consignacion_ars?: string;
+  precio_consignacion_usd?: string;
+  precio_permuta_ars?: string;
+  precio_permuta_usd?: string;
+  precio_inmediata_ars?: string;
+  precio_inmediata_usd?: string;
+  cotizacion_dolar?: string;
   created_at: string;
 }
 
+const ESTADOS = [
+  { value: "todos", label: "Todos" },
+  { value: "nuevo", label: "Nuevos", color: "bg-blue-100 text-blue-700" },
+  { value: "contactado", label: "Contactados", color: "bg-yellow-100 text-yellow-700" },
+  { value: "calificado", label: "Calificados", color: "bg-green-100 text-green-700" },
+  { value: "cerrado", label: "Cerrados", color: "bg-purple-100 text-purple-700" },
+  { value: "perdido", label: "Perdidos", color: "bg-red-100 text-red-700" },
+];
+
+function getEstadoStyle(estado: string) {
+  return ESTADOS.find((e) => e.value === estado)?.color || "bg-gray-100 text-gray-700";
+}
+
+function Pagination({ page, totalPages, onPageChange }: { page: number; totalPages: number; onPageChange: (p: number) => void }) {
+  if (totalPages <= 1) return null;
+  const pages: (number | "...")[] = [];
+  if (totalPages <= 7) {
+    for (let i = 1; i <= totalPages; i++) pages.push(i);
+  } else {
+    pages.push(1);
+    if (page > 3) pages.push("...");
+    for (let i = Math.max(2, page - 1); i <= Math.min(totalPages - 1, page + 1); i++) pages.push(i);
+    if (page < totalPages - 2) pages.push("...");
+    pages.push(totalPages);
+  }
+  return (
+    <div className="flex items-center gap-1">
+      <button onClick={() => onPageChange(1)} disabled={page === 1} className="p-1 rounded hover:bg-gray-100 disabled:opacity-30"><ChevronsLeft className="w-3.5 h-3.5" /></button>
+      <button onClick={() => onPageChange(page - 1)} disabled={page === 1} className="p-1 rounded hover:bg-gray-100 disabled:opacity-30"><ChevronLeft className="w-3.5 h-3.5" /></button>
+      {pages.map((p, i) => p === "..." ? <span key={`d${i}`} className="px-1 text-xs text-gray-400">...</span> : (
+        <button key={p} onClick={() => onPageChange(p)} className={`min-w-[24px] h-6 rounded text-xs font-medium ${p === page ? "bg-blue-600 text-white" : "hover:bg-gray-100 text-gray-600"}`}>{p}</button>
+      ))}
+      <button onClick={() => onPageChange(page + 1)} disabled={page === totalPages} className="p-1 rounded hover:bg-gray-100 disabled:opacity-30"><ChevronRight className="w-3.5 h-3.5" /></button>
+      <button onClick={() => onPageChange(totalPages)} disabled={page === totalPages} className="p-1 rounded hover:bg-gray-100 disabled:opacity-30"><ChevronsRight className="w-3.5 h-3.5" /></button>
+    </div>
+  );
+}
+
 export default function LeadsPage() {
-  const [leads, setLeads] = useState<Lead[]>([]);
-  const [allLeads, setAllLeads] = useState<Lead[]>([]); // Para los contadores
+  const [allLeads, setAllLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<string>("todos");
+  const [filter, setFilter] = useState("todos");
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const LIMIT = 50;
 
   useEffect(() => {
-    fetchLeads();
+    fetch("/api/leads")
+      .then((r) => r.json())
+      .then((d) => { if (d.success) setAllLeads(d.leads); })
+      .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
-    // Filtrar localmente cuando cambia el filtro
-    if (filter === "todos") {
-      setLeads(allLeads);
-    } else {
-      setLeads(allLeads.filter((lead) => lead.estado === filter));
+  const filtered = allLeads.filter((l) => {
+    if (filter !== "todos" && l.estado !== filter) return false;
+    if (search) {
+      const s = search.toLowerCase();
+      return (
+        l.nombre?.toLowerCase().includes(s) ||
+        l.email?.toLowerCase().includes(s) ||
+        l.marca?.toLowerCase().includes(s) ||
+        l.modelo?.toLowerCase().includes(s)
+      );
     }
-  }, [filter, allLeads]);
+    return true;
+  });
 
-  const fetchLeads = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch("/api/leads");
-      const data = await response.json();
+  const totalPages = Math.ceil(filtered.length / LIMIT);
+  const paged = filtered.slice((page - 1) * LIMIT, page * LIMIT);
 
-      if (data.success) {
-        setAllLeads(data.leads);
-        setLeads(data.leads);
-      }
-    } catch (error) {
-      console.error("Error fetching leads:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => { setPage(1); }, [filter, search]);
 
   const updateEstado = async (id: string, nuevoEstado: string) => {
-    try {
-      const response = await fetch("/api/leads", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, estado: nuevoEstado }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        // Actualizar ambas listas
-        const updateFn = (lead: Lead) =>
-          lead.id === id ? { ...lead, estado: nuevoEstado } : lead;
-
-        setAllLeads((prev) => prev.map(updateFn));
-        setLeads((prev) => prev.map(updateFn));
-      } else {
-        alert("Error al actualizar el estado");
-      }
-    } catch (error) {
-      console.error("Error updating lead:", error);
-      alert("Error al actualizar el estado");
+    const res = await fetch("/api/leads", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, estado: nuevoEstado }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      setAllLeads((prev) => prev.map((l) => (l.id === id ? { ...l, estado: nuevoEstado } : l)));
+      toast.success("Estado actualizado");
+    } else {
+      toast.error("Error al actualizar");
     }
   };
 
   const deleteLead = async (id: string) => {
-    if (!confirm("¿Estás seguro de eliminar este lead?")) {
-      return;
-    }
-
-    try {
-      const response = await fetch(`/api/leads?id=${id}`, {
-        method: "DELETE",
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        // Remover de ambas listas
-        setAllLeads((prev) => prev.filter((lead) => lead.id !== id));
-        setLeads((prev) => prev.filter((lead) => lead.id !== id));
-      } else {
-        alert("Error al eliminar el lead");
-      }
-    } catch (error) {
-      console.error("Error deleting lead:", error);
-      alert("Error al eliminar el lead");
+    if (!confirm("Eliminar este lead?")) return;
+    const res = await fetch(`/api/leads?id=${id}`, { method: "DELETE" });
+    const data = await res.json();
+    if (data.success) {
+      setAllLeads((prev) => prev.filter((l) => l.id !== id));
+      toast.success("Lead eliminado");
+    } else {
+      toast.error("Error al eliminar");
     }
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString("es-AR", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+  const fmtDate = (d: string) => {
+    const dt = new Date(d);
+    return dt.toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit" }) + " " + dt.toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" });
   };
 
-  const calculatePrices = (precioUSD: string) => {
-    const precioRaw = parseFloat(precioUSD);
-    if (isNaN(precioRaw) || precioRaw <= 0) {
-      return {
-        consignacion: "Consultar",
-        permuta: "Consultar",
-        inmediata: "Consultar",
-      };
-    }
-
-    // Aplicar misma lógica que en el cotizador y email (descontar 5%)
-    const precioBasePesos = precioRaw * 0.95 * 1000;
-    const precioConsignacion = precioBasePesos;
-    const precioPermuta = precioBasePesos * 0.95;
-    const precioInmediata = precioBasePesos * 0.90;
-
-    return {
-      consignacion: `$${precioConsignacion.toLocaleString("es-AR", {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      })}`,
-      permuta: `$${precioPermuta.toLocaleString("es-AR", {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      })}`,
-      inmediata: `$${precioInmediata.toLocaleString("es-AR", {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      })}`,
-    };
-  };
-
-  const getEstadoColor = (estado: string) => {
-    const colors: Record<string, string> = {
-      nuevo: "bg-blue-100 text-blue-800",
-      contactado: "bg-yellow-100 text-yellow-800",
-      calificado: "bg-green-100 text-green-800",
-      cerrado: "bg-purple-100 text-purple-800",
-      perdido: "bg-red-100 text-red-800",
-    };
-    return colors[estado] || "bg-gray-100 text-gray-800";
-  };
+  const counts = ESTADOS.filter((e) => e.value !== "todos").reduce(
+    (acc, e) => ({ ...acc, [e.value]: allLeads.filter((l) => l.estado === e.value).length }),
+    {} as Record<string, number>
+  );
 
   return (
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+        <header className="flex h-12 shrink-0 items-center gap-2 border-b bg-white px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbPage>Leads del Cotizador</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+          <h1 className="text-sm font-semibold text-gray-900">Leads del Cotizador</h1>
+          <span className="text-xs text-gray-400 ml-1">{allLeads.length} total</span>
         </header>
 
-        <div className="flex flex-1 flex-col gap-4 p-4">
-          <div className="max-w-7xl mx-auto w-full">
-            {/* Header */}
-            <div className="mb-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Leads del Cotizador
-              </h1>
-              <p className="text-gray-600">
-                Personas que completaron el cotizador y dejaron sus datos de contacto
-              </p>
+        <div className="flex flex-col h-[calc(100vh-48px)]">
+          {/* Toolbar */}
+          <div className="flex items-center gap-2 px-4 py-2 border-b bg-gray-50/80 flex-wrap">
+            {/* Stats pills */}
+            <div className="flex items-center gap-1">
+              {ESTADOS.map((e) => (
+                <button
+                  key={e.value}
+                  onClick={() => setFilter(e.value)}
+                  className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                    filter === e.value
+                      ? "bg-blue-600 text-white"
+                      : "bg-white border text-gray-600 hover:bg-gray-50"
+                  }`}
+                >
+                  {e.label}
+                  {e.value !== "todos" && (
+                    <span className="ml-1 opacity-70">{counts[e.value] || 0}</span>
+                  )}
+                </button>
+              ))}
             </div>
 
-        {/* Filters */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setFilter("todos")}
-              className={`px-4 py-2 rounded-lg font-medium transition ${
-                filter === "todos"
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              Todos ({allLeads.length})
-            </button>
-            <button
-              onClick={() => setFilter("nuevo")}
-              className={`px-4 py-2 rounded-lg font-medium transition ${
-                filter === "nuevo"
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              Nuevos ({allLeads.filter((l) => l.estado === "nuevo").length})
-            </button>
-            <button
-              onClick={() => setFilter("contactado")}
-              className={`px-4 py-2 rounded-lg font-medium transition ${
-                filter === "contactado"
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              Contactados ({allLeads.filter((l) => l.estado === "contactado").length})
-            </button>
-            <button
-              onClick={() => setFilter("calificado")}
-              className={`px-4 py-2 rounded-lg font-medium transition ${
-                filter === "calificado"
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              Calificados ({allLeads.filter((l) => l.estado === "calificado").length})
-            </button>
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <p className="text-sm text-gray-600">Total Cotizaciones</p>
-            <p className="text-2xl font-bold text-gray-900">{allLeads.length}</p>
-          </div>
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <p className="text-sm text-gray-600">Sin Contactar</p>
-            <p className="text-2xl font-bold text-blue-600">
-              {allLeads.filter((l) => l.estado === "nuevo").length}
-            </p>
-          </div>
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <p className="text-sm text-gray-600">Ya Contactados</p>
-            <p className="text-2xl font-bold text-yellow-600">
-              {allLeads.filter((l) => l.estado === "contactado").length}
-            </p>
-          </div>
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <p className="text-sm text-gray-600">Con Interés</p>
-            <p className="text-2xl font-bold text-green-600">
-              {allLeads.filter((l) => l.estado === "calificado").length}
-            </p>
-          </div>
-        </div>
-
-        {/* Leads Table */}
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-          {loading ? (
-            <div className="p-8 text-center">
-              <p className="text-gray-600">Cargando leads...</p>
+            <div className="relative ml-2">
+              <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+              <input
+                type="text"
+                className="border rounded-lg pl-7 pr-3 py-1.5 text-sm w-[180px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Buscar..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
             </div>
-          ) : leads.length === 0 ? (
-            <div className="p-8 text-center">
-              <p className="text-gray-600">
-                No hay cotizaciones aún. Los datos aparecerán cuando alguien complete el cotizador.
-              </p>
+
+            <div className="ml-auto flex items-center gap-2">
+              <span className="text-xs text-gray-400">{filtered.length} resultados</span>
+              <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
             </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-200">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Fecha
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Cliente
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Contacto
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Vehículo
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Precios ARS
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Estado
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Acciones
-                    </th>
+          </div>
+
+          {/* Loading */}
+          {loading && (
+            <div className="flex-1 flex items-center justify-center text-gray-400">
+              <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mr-2" />
+              Cargando...
+            </div>
+          )}
+
+          {/* Table */}
+          {!loading && (
+            <div className="flex-1 overflow-auto">
+              <table className="w-full text-xs border-collapse">
+                <thead className="sticky top-0 z-10 bg-gray-100">
+                  <tr className="border-b">
+                    <th className="text-left px-3 py-2 font-semibold text-gray-600 w-[110px]">Fecha</th>
+                    <th className="text-left px-3 py-2 font-semibold text-gray-600">Cliente</th>
+                    <th className="text-left px-3 py-2 font-semibold text-gray-600">Contacto</th>
+                    <th className="text-left px-3 py-2 font-semibold text-gray-600">Vehiculo</th>
+                    <th className="text-left px-3 py-2 font-semibold text-gray-600">Precios</th>
+                    <th className="text-center px-3 py-2 font-semibold text-gray-600 w-[100px]">Estado</th>
+                    <th className="text-center px-3 py-2 font-semibold text-gray-600 w-[90px]">Acc.</th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {leads.map((lead) => (
-                    <tr key={lead.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {formatDate(lead.created_at)}
+                <tbody>
+                  {paged.length === 0 && (
+                    <tr><td colSpan={7} className="text-center py-12 text-gray-400">No hay leads</td></tr>
+                  )}
+                  {paged.map((lead, idx) => (
+                    <tr key={lead.id} className={`border-b hover:bg-blue-50/30 transition-colors ${idx % 2 === 0 ? "bg-white" : "bg-gray-50/50"}`}>
+                      <td className="px-3 py-2 text-gray-500 whitespace-nowrap">{fmtDate(lead.created_at)}</td>
+                      <td className="px-3 py-2">
+                        <div className="font-medium text-gray-900">{lead.nombre || "—"}</div>
+                        {lead.ubicacion && (
+                          <div className="text-gray-400 flex items-center gap-0.5 mt-0.5">
+                            <MapPin className="w-3 h-3" />{lead.ubicacion}
+                          </div>
+                        )}
                       </td>
-                      <td className="px-6 py-4">
-                        <div className="text-sm font-medium text-gray-900">
-                          {lead.nombre}
+                      <td className="px-3 py-2">
+                        <div className="flex items-center gap-1 text-gray-700">
+                          <Mail className="w-3 h-3 text-gray-400 shrink-0" />
+                          <a href={`mailto:${lead.email}`} className="hover:text-blue-600 truncate max-w-[160px]">{lead.email}</a>
                         </div>
-                        <div className="text-sm text-gray-500">
-                          {lead.ubicacion}
-                        </div>
+                        {lead.telefono && (
+                          <div className="flex items-center gap-1 text-gray-500 mt-0.5">
+                            <Phone className="w-3 h-3 text-gray-400 shrink-0" />
+                            {lead.telefono}
+                          </div>
+                        )}
                       </td>
-                      <td className="px-6 py-4">
-                        <div className="text-sm text-gray-900">
-                          {lead.email}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          {lead.telefono}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="text-sm font-medium text-gray-900">
+                      <td className="px-3 py-2">
+                        <div className="flex items-center gap-1 font-medium text-gray-900">
+                          <Car className="w-3 h-3 text-gray-400 shrink-0" />
                           {lead.marca} {lead.modelo}
                         </div>
-                        <div className="text-sm text-gray-500">
-                          {lead.año} - {lead.kilometraje} km
+                        <div className="text-gray-400 mt-0.5">
+                          {lead.año} &middot; {lead.kilometraje || "?"} km
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-sm">
-                        {(() => {
-                          const precios = calculatePrices(lead.precio);
-                          return (
-                            <div className="space-y-1">
-                              <div className="font-medium text-green-700 text-xs">
-                                Consignación: {precios.consignacion}
-                              </div>
-                              <div className="text-blue-600 text-xs">
-                                Permuta -5%: {precios.permuta}
-                              </div>
-                              <div className="text-purple-600 text-xs">
-                                Inmediata -10%: {precios.inmediata}
-                              </div>
-                            </div>
-                          );
-                        })()}
+                      <td className="px-3 py-2">
+                        {lead.precio_consignacion_usd ? (
+                          <div className="space-y-0.5">
+                            <div className="text-green-700 font-medium">Cons: {lead.precio_consignacion_usd}</div>
+                            {lead.precio_permuta_usd && <div className="text-blue-600">Perm: {lead.precio_permuta_usd}</div>}
+                            {lead.precio_inmediata_usd && <div className="text-purple-600">Inm: {lead.precio_inmediata_usd}</div>}
+                          </div>
+                        ) : (
+                          <span className="text-gray-300">—</span>
+                        )}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span
-                          className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getEstadoColor(
-                            lead.estado
-                          )}`}
+                      <td className="px-3 py-2 text-center">
+                        <select
+                          value={lead.estado}
+                          onChange={(e) => updateEstado(lead.id, e.target.value)}
+                          className={`text-xs font-medium rounded-full px-2 py-0.5 border-0 cursor-pointer ${getEstadoStyle(lead.estado)}`}
                         >
-                          {lead.estado}
-                        </span>
+                          {ESTADOS.filter((e) => e.value !== "todos").map((e) => (
+                            <option key={e.value} value={e.value}>{e.label}</option>
+                          ))}
+                        </select>
                       </td>
-                      <td className="px-6 py-4 text-sm">
-                        <div className="flex flex-col gap-2">
-                          {/* Botones de contacto */}
-                          <div className="flex gap-2">
+                      <td className="px-3 py-2 text-center">
+                        <div className="flex items-center justify-center gap-1">
+                          {lead.telefono && (
                             <a
                               href={`https://wa.me/${lead.telefono.replace(/\D/g, "")}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-green-600 hover:text-green-900"
+                              className="p-1 rounded hover:bg-green-50 text-green-600"
+                              title="WhatsApp"
                             >
-                              WhatsApp
+                              <MessageCircle className="w-3.5 h-3.5" />
                             </a>
-                            <span className="text-gray-300">|</span>
-                            <a
-                              href={`mailto:${lead.email}`}
-                              className="text-blue-600 hover:text-blue-900"
-                            >
-                              Email
-                            </a>
-                          </div>
-
-                          {/* Botones de cambio de estado */}
-                          <div className="flex flex-col gap-1">
-                            {lead.estado === "nuevo" && (
-                              <button
-                                onClick={() => updateEstado(lead.id, "contactado")}
-                                className="text-left text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded hover:bg-yellow-200"
-                              >
-                                ✓ Marcar contactado
-                              </button>
-                            )}
-
-                            {lead.estado === "contactado" && (
-                              <>
-                                <button
-                                  onClick={() => updateEstado(lead.id, "calificado")}
-                                  className="text-left text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200"
-                                >
-                                  ✓ Marcar calificado
-                                </button>
-                                <button
-                                  onClick={() => updateEstado(lead.id, "nuevo")}
-                                  className="text-left text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded hover:bg-gray-200"
-                                >
-                                  ← Volver a nuevo
-                                </button>
-                              </>
-                            )}
-
-                            {lead.estado === "calificado" && (
-                              <>
-                                <button
-                                  onClick={() => updateEstado(lead.id, "contactado")}
-                                  className="text-left text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded hover:bg-gray-200"
-                                >
-                                  ← Volver a contactado
-                                </button>
-                                <button
-                                  onClick={() => deleteLead(lead.id)}
-                                  className="text-left text-xs bg-red-100 text-red-700 px-2 py-1 rounded hover:bg-red-200"
-                                >
-                                  🗑️ Eliminar
-                                </button>
-                              </>
-                            )}
-                          </div>
+                          )}
+                          <button
+                            onClick={() => deleteLead(lead.id)}
+                            className="p-1 rounded hover:bg-red-50 text-gray-400 hover:text-red-600 transition-colors"
+                            title="Eliminar"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -442,8 +315,16 @@ export default function LeadsPage() {
               </table>
             </div>
           )}
-        </div>
-          </div>
+
+          {/* Bottom pagination */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between px-4 py-2 border-t bg-gray-50/80">
+              <span className="text-xs text-gray-400">
+                {(page - 1) * LIMIT + 1}–{Math.min(page * LIMIT, filtered.length)} de {filtered.length}
+              </span>
+              <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
+            </div>
+          )}
         </div>
       </SidebarInset>
     </SidebarProvider>

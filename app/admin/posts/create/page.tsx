@@ -3,6 +3,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -653,10 +654,8 @@ export default function Page() {
 
     setLoadingFeatures(true);
     try {
-      const backendUrl =
-        process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
       const response = await fetch(
-        `${backendUrl}/api/models/${codia}/features`
+        `/api/infoauto?path=/models/${codia}/features/`
       );
 
       if (!response.ok) {
@@ -1173,64 +1172,36 @@ export default function Page() {
     }
   };
 
+  // Collapsible section state
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
+    general: true,
+    precio: true,
+    imagenes: true,
+  });
+  const toggleSection = (key: string) =>
+    setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
+
   // ---------- UI ----------
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-14 shrink-0 items-center gap-2 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="flex flex-1 items-center gap-2 px-2 sm:px-3 min-w-0">
-            <SidebarTrigger className="flex-shrink-0" />
-            <Separator
-              orientation="vertical"
-              className="mr-1 sm:mr-2 data-[orientation=vertical]:h-4 hidden sm:block"
-            />
-            <Breadcrumb className="min-w-0">
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbPage className="line-clamp-1 text-xs sm:text-sm">
-                    <span className="hidden sm:inline">
-                      Listado de Posts de Vehículos
-                    </span>
-                    <span className="sm:hidden">Posts</span>
-                  </BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
+        <header className="flex h-12 shrink-0 items-center gap-2 border-b bg-white px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+          <h1 className="text-sm font-semibold text-gray-900">Crear Post</h1>
+          <div className="ml-auto flex items-center gap-2">
+            <Link href="/admin/posts" className="text-xs text-gray-500 hover:text-gray-700 underline">
+              Volver a Posts
+            </Link>
           </div>
         </header>
 
-        <div className="w-full mx-auto p-3 sm:p-6 space-y-4 sm:space-y-6 overflow-auto">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <h1 className="text-xl sm:text-2xl font-bold">
-              Crear POST de Vehículo
-            </h1>
-            <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-              <span>
-                {authLoading
-                  ? "Autenticando…"
-                  : loggedEmail
-                  ? `Sesión: ${loggedEmail}`
-                  : "No autenticado"}
-              </span>
-              {loggedEmail ? (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleSignOut}
-                  disabled={signingOut}
-                  className="flex items-center gap-2">
-                  {signingOut ? (
-                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                  ) : null}
-                  <span>Cerrar sesión</span>
-                </Button>
-              ) : null}
-            </div>
-          </div>
+        <div className="flex-1 overflow-auto">
+          <div className="max-w-4xl mx-auto px-4 py-4 space-y-3">
 
           <Form {...form}>
-            <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+            <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
               {/* Selector de tipo de post */}
               <FormField
                 control={form.control}
@@ -1448,11 +1419,12 @@ export default function Page() {
               )}
 
               {/* Información General */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Información General</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
+              <div className="border rounded-lg bg-white">
+                <button type="button" onClick={() => toggleSection("general")} className="w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-gray-800 hover:bg-gray-50">
+                  Información General
+                  <span className="text-gray-400 text-xs">{openSections.general ? "▲" : "▼"}</span>
+                </button>
+                {openSections.general && <div className="px-4 pb-4 space-y-3 border-t">
                   {/* TÍTULO - COMENTADO: Se genera automáticamente desde marca + modelo + versión + año
                   <FormField
                     control={form.control}
@@ -1674,15 +1646,16 @@ export default function Page() {
                       </FormItem>
                     )}
                   />
-                </CardContent>
-              </Card>
+                </div>}
+              </div>
 
               {/* 🔧 MOTOR */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Motor</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
+              <div className="border rounded-lg bg-white">
+                <button type="button" onClick={() => toggleSection("motor")} className="w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-gray-800 hover:bg-gray-50">
+                  Motor
+                  <span className="text-gray-400 text-xs">{openSections.motor ? "▲" : "▼"}</span>
+                </button>
+                {openSections.motor && <div className="px-4 pb-4 space-y-3 border-t">
                   <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
                     <FormField
                       control={form.control}
@@ -1789,16 +1762,17 @@ export default function Page() {
                       )}
                     />
                   </div>
-                </CardContent>
-              </Card>
+                </div>}
+              </div>
 
               {/* 🚗 TRANSMISIÓN Y CHASIS */}
               {/* COMENTADO - No se muestra en el formulario
-              <Card>
-                <CardHeader>
-                  <CardTitle>Transmisión y Chasis</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
+              <div className="border rounded-lg bg-white">
+                <button type="button" onClick={() => toggleSection("chasis")} className="w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-gray-800 hover:bg-gray-50">
+                  Transmisión y Chasis
+                  <span className="text-gray-400 text-xs">{openSections.chasis ? "▲" : "▼"}</span>
+                </button>
+                {openSections.chasis && <div className="px-4 pb-4 space-y-3 border-t">
                   <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
                     <FormField
                       control={form.control}
@@ -1945,17 +1919,18 @@ export default function Page() {
                       )}
                     />
                   </div>
-                </CardContent>
-              </Card>
+                </div>}
+              </div>
               */}
 
               {/* 🎛️ CONFORT */}
               {/* COMENTADO - No se muestra en el formulario
-              <Card>
-                <CardHeader>
-                  <CardTitle>Confort</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
+              <div className="border rounded-lg bg-white">
+                <button type="button" onClick={() => toggleSection("confort")} className="w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-gray-800 hover:bg-gray-50">
+                  Confort
+                  <span className="text-gray-400 text-xs">{openSections.confort ? "▲" : "▼"}</span>
+                </button>
+                {openSections.confort && <div className="px-4 pb-4 space-y-3 border-t">
                   <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
                     <FormField
                       control={form.control}
@@ -2461,17 +2436,18 @@ export default function Page() {
                       )}
                     />
                   </div>
-                </CardContent>
-              </Card>
+                </div>}
+              </div>
               */}
 
               {/* 🛡️ SEGURIDAD */}
               {/* COMENTADO - No se muestra en el formulario
-              <Card>
-                <CardHeader>
-                  <CardTitle>Seguridad</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
+              <div className="border rounded-lg bg-white">
+                <button type="button" onClick={() => toggleSection("seguridad")} className="w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-gray-800 hover:bg-gray-50">
+                  Seguridad
+                  <span className="text-gray-400 text-xs">{openSections.seguridad ? "▲" : "▼"}</span>
+                </button>
+                {openSections.seguridad && <div className="px-4 pb-4 space-y-3 border-t">
                   <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
                     <FormField
                       control={form.control}
@@ -2906,17 +2882,18 @@ export default function Page() {
                       )}
                     />
                   </div>
-                </CardContent>
-              </Card>
+                </div>}
+              </div>
               */}
 
               {/* 📻 COMUNICACIÓN Y ENTRETENIMIENTO */}
               {/* COMENTADO - No se muestra en el formulario
-              <Card>
-                <CardHeader>
-                  <CardTitle>Comunicación y Entretenimiento</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
+              <div className="border rounded-lg bg-white">
+                <button type="button" onClick={() => toggleSection("entret")} className="w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-gray-800 hover:bg-gray-50">
+                  Comunicación y Entretenimiento
+                  <span className="text-gray-400 text-xs">{openSections.entret ? "▲" : "▼"}</span>
+                </button>
+                {openSections.entret && <div className="px-4 pb-4 space-y-3 border-t">
                   <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
                     <FormField
                       control={form.control}
@@ -3151,16 +3128,17 @@ export default function Page() {
                       />
                     </div>
                   )}
-                </CardContent>
-              </Card>
+                </div>}
+              </div>
               */}
 
               {/* 💰 PRECIO */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Precio</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
+              <div className="border rounded-lg bg-white">
+                <button type="button" onClick={() => toggleSection("precio")} className="w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-gray-800 hover:bg-gray-50">
+                  Precio
+                  <span className="text-gray-400 text-xs">{openSections.precio ? "▲" : "▼"}</span>
+                </button>
+                {openSections.precio && <div className="px-4 pb-4 space-y-3 border-t">
                   <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
                     <FormField
                       control={form.control}
@@ -3245,15 +3223,16 @@ export default function Page() {
                       )}
                     />
                   </div>
-                </CardContent>
-              </Card>
+                </div>}
+              </div>
 
               {/* 👤 VENDEDOR - COMENTADO COMPLETO
-              <Card>
-                <CardHeader>
-                  <CardTitle>Vendedor</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
+              <div className="border rounded-lg bg-white">
+                <button type="button" onClick={() => toggleSection("vendedor")} className="w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-gray-800 hover:bg-gray-50">
+                  Vendedor
+                  <span className="text-gray-400 text-xs">{openSections.vendedor ? "▲" : "▼"}</span>
+                </button>
+                {openSections.vendedor && <div className="px-4 pb-4 space-y-3 border-t">
                   <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
                     <FormField
                       control={form.control}
@@ -3336,16 +3315,17 @@ export default function Page() {
                       )}
                     />
                   </div>
-                </CardContent>
-              </Card>
+                </div>}
+              </div>
               */}
 
               {/* 📸 IMÁGENES (OBLIGATORIO) */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Imágenes del Vehículo *</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
+              <div className="border rounded-lg bg-white">
+                <button type="button" onClick={() => toggleSection("imagenes")} className="w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-gray-800 hover:bg-gray-50">
+                  Imágenes del Vehículo *
+                  <span className="text-gray-400 text-xs">{openSections.imagenes ? "▲" : "▼"}</span>
+                </button>
+                {openSections.imagenes && <div className="px-4 pb-4 space-y-3 border-t">
                   <input
                     ref={fileRef}
                     type="file"
@@ -3437,18 +3417,24 @@ export default function Page() {
                       ))}
                     </ul>
                   )}
-                </CardContent>
-              </Card>
+                </div>}
+              </div>
 
-              <div className="flex justify-end gap-3">
+              {/* Submit sticky */}
+              <div className="sticky bottom-0 bg-white border-t py-3 -mx-4 px-4 flex items-center justify-between">
+                <Link href="/admin/posts" className="text-xs text-gray-500 hover:text-gray-700">
+                  Cancelar
+                </Link>
                 <Button
                   type="submit"
-                  disabled={isSubmitting || uploading || authLoading}>
+                  disabled={isSubmitting || uploading || authLoading}
+                  className="px-6">
                   {uploading ? "Guardando…" : "Crear POST"}
                 </Button>
               </div>
             </form>
           </Form>
+          </div>
         </div>
       </SidebarInset>
     </SidebarProvider>

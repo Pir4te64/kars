@@ -349,11 +349,7 @@ export default function CarQuoteSection() {
     if (formData.modelo && formData.año) {
       try {
         const selectedYear = Number(formData.año);
-        const backendUrl =
-          process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
-        const response = await fetch(
-          `${backendUrl}/api/models/${formData.modelo}/list_price?year=${selectedYear}`
-        );
+        const response = await fetch(`/api/prices/${formData.modelo}`);
 
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));

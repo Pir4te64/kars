@@ -13,7 +13,7 @@ export default async function getModelHelper(
     console.log(`🔄 getModelHelper: Mapeando ${normalizedBrandId} (${normalizedBrandId === "-1" ? "JEEP" : "DODGE"}) → 13 (CHRYSLER)`);
   }
   
-  const url = `${process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001"}/api/brands/${actualBrandId}/groups/${groupId}/models`;
+  const url = `/api/infoauto?path=/brands/${actualBrandId}/groups/${groupId}/models/`;
   
   console.log("getModelHelper called with:", { 
     url, 

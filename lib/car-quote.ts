@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://kars-backend-y4w9.vercel.app/api";
+const API_BASE_URL = "/api/infoauto?path=";
 
 interface Brand {
   id: number;
@@ -116,16 +116,9 @@ export async function getPrice(
   token: string
 ): Promise<PriceResponse | null> {
   try {
-    const res = await fetch(
-      `${API_BASE_URL}/models/${codia}/prices?isNew=${isNew}&isOld=${isOld}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-      }
-    );
+    const res = await fetch(`/api/prices/${codia}`, {
+      cache: "no-store",
+    });
 
     if (!res.ok) {
       if (res.status === 401 || res.status === 403) {

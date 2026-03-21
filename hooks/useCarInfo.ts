@@ -44,12 +44,8 @@ export function useCarInfo(): UseCarInfoReturn {
   const getBrandsData = useCallback(async () => {
     setLoadingBrands(true);
     try {
-      // Usar el backend optimizado en lugar del frontend API route
-      const response = await fetch(
-        `${
-          process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001"
-        }/api/brands`
-      );
+      // Usar proxy local de InfoAuto
+      const response = await fetch(`/api/infoauto?path=/brands/`);
 
       if (!response.ok) throw new Error("Error al cargar marcas");
       const data = await response.json();
@@ -109,12 +105,9 @@ export function useCarInfo(): UseCarInfoReturn {
 
       setLoadingGroups(true);
       try {
-        const url = `${
-          process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001"
-        }/api/brands/${normalizedBrandId}/groups`;
-        console.log("🔴 Llamando al backend:", url);
+        const url = `/api/infoauto?path=/brands/${normalizedBrandId}/groups/`;
+        console.log("🔴 Llamando a InfoAuto:", url);
 
-        // Llamar al backend - el backend maneja el filtrado para JEEP (-1) y DODGE (-2)
         const response = await fetch(url);
         if (!response.ok) throw new Error("Error al cargar grupos");
         const data = await response.json();
@@ -228,10 +221,8 @@ export function useCarInfo(): UseCarInfoReturn {
 
         // IMPORTANTE: Usar actualBrandId (que será 13 para JEEP/DODGE) en la URL
         // NUNCA usar -1 o -2 en la URL, siempre usar 13
-        const url = `${
-          process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001"
-        }/api/brands/${actualBrandId}/groups/${groupId}/models`;
-        console.log("🔴 Llamando al backend para obtener modelos:", url);
+        const url = `/api/infoauto?path=/brands/${actualBrandId}/groups/${groupId}/models/`;
+        console.log("🔴 Llamando a InfoAuto para obtener modelos:", url);
         console.log(
           "🔴 BrandId usado en URL:",
           actualBrandId,
@@ -538,11 +529,7 @@ export function useCarInfo(): UseCarInfoReturn {
     setLoadingYears(true);
     try {
       console.log("🔵 Obteniendo precios para modelo codia:", codia);
-      const response = await fetch(
-        `${
-          process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001"
-        }/api/models/${codia}/prices?isNew=true&isOld=true`
-      );
+      const response = await fetch(`/api/prices/${codia}`);
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.message || "Error al cargar precios");
@@ -613,9 +600,7 @@ export function useCarInfo(): UseCarInfoReturn {
       }
 
       const response = await fetch(
-        `${
-          process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001"
-        }/api/brands/${actualBrandId}/groups/${groupId}/prices`
+        `/api/infoauto?path=/brands/${actualBrandId}/groups/${groupId}/prices/`
       );
       if (!response.ok) throw new Error("Error al cargar años del grupo");
       const data = await response.json();

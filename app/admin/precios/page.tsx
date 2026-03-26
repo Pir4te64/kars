@@ -12,13 +12,9 @@ import { toast } from "sonner";
 import {
   Search,
   DollarSign,
-  Check,
-  X,
-  Upload,
-  Download,
-  FileSpreadsheet,
+  Percent,
+  RefreshCw,
 } from "lucide-react";
-import * as XLSX from "xlsx";
 
 /* ───── types ───── */
 interface Brand {
@@ -37,72 +33,79 @@ interface Model {
   year_from: number;
   year_to: number;
   custom_prices: Record<string, CustomPriceEntry | number | null> | null;
+  price_adjustments: Record<string, number | null> | null;
+  infoauto_prices: Record<string, number | null> | null;
 }
 
 /* ───── helpers ───── */
-function getPrice(model: Model, year: number): number | null {
-  const val = model.custom_prices?.[year.toString()];
-  if (!val) return null;
-  if (typeof val === "number") return val;
-  if (typeof val === "object" && val.amount) return val.amount;
+function getInfoAutoPrice(model: Model, year: number): number | null {
+  const val = model.infoauto_prices?.[year.toString()];
+  if (typeof val === "number" && val > 0) return val;
   return null;
 }
 
-function getCurrency(model: Model, year: number): "ARS" | "USD" {
-  const val = model.custom_prices?.[year.toString()];
-  if (typeof val === "object" && val?.currency === "USD") return "USD";
-  return "ARS";
+function getAdjustment(model: Model, year: number): number | null {
+  const val = model.price_adjustments?.[year.toString()];
+  if (typeof val === "number") return val;
+  return null;
 }
 
-function fmtPrice(n: number | null, currency: "ARS" | "USD" = "ARS"): string {
-  if (n === null) return "";
-  if (currency === "USD") return "U$D " + Math.round(n).toLocaleString("es-AR");
+function calcFinalPrice(basePrice: number | null, adjustment: number | null): number | null {
+  if (basePrice === null) return null;
+  if (adjustment === null) return basePrice;
+  return Math.round(basePrice * (1 + adjustment / 100));
+}
+
+function fmtPrice(n: number | null): string {
+  if (n === null) return "—";
   return "$ " + Math.round(n).toLocaleString("es-AR");
 }
 
 const VISIBLE_YEARS = [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008];
 
 /* ═══════════════════════════════════════════════
-   EditableCell — celda de precio editable
+   AdjustmentCell — celda de porcentaje editable
    ═══════════════════════════════════════════════ */
-function EditableCell({
+function AdjustmentCell({
   model,
   year,
   onSave,
 }: {
   model: Model;
   year: number;
-  onSave: (modelId: number, year: number, amount: number | null, currency: "ARS" | "USD") => Promise<void>;
+  onSave: (modelId: number, year: number, percentage: number | null) => Promise<void>;
 }) {
-  const price = getPrice(model, year);
-  const currency = getCurrency(model, year);
+  const basePrice = getInfoAutoPrice(model, year);
+  const adjustment = getAdjustment(model, year);
+  const finalPrice = calcFinalPrice(basePrice, adjustment);
   const inRange = year >= model.year_from && year <= model.year_to;
 
   const [editing, setEditing] = useState(false);
   const [value, setValue] = useState("");
-  const [cur, setCur] = useState<"ARS" | "USD">(currency);
   const [saving, setSaving] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (editing) {
-      setValue(price !== null ? String(Math.round(price)) : "");
-      setCur(currency);
+      setValue(adjustment !== null ? String(adjustment) : "");
       setTimeout(() => inputRef.current?.select(), 0);
     }
-  }, [editing, price, currency]);
+  }, [editing, adjustment]);
 
   if (!inRange) return <td className="bg-gray-100 border-r border-b" />;
 
   const handleSave = async () => {
-    const clean = value.replace(/[^0-9]/g, "");
-    const num = clean ? parseInt(clean) : null;
-    if (clean && (!num || num <= 0)) {
-      toast.error("Número inválido");
-      return;
+    const clean = value.trim();
+    let num: number | null = null;
+    if (clean !== "") {
+      num = parseFloat(clean);
+      if (isNaN(num)) {
+        toast.error("Porcentaje inválido");
+        return;
+      }
     }
     setSaving(true);
-    await onSave(model.id, year, num, cur);
+    await onSave(model.id, year, num);
     setSaving(false);
     setEditing(false);
   };
@@ -110,29 +113,34 @@ function EditableCell({
   if (editing) {
     return (
       <td className="border-r border-b p-0 bg-blue-50">
-        <div className="flex items-center gap-0.5 px-1">
-          <button
-            onMouseDown={(e) => { e.preventDefault(); setCur(cur === "ARS" ? "USD" : "ARS"); }}
-            className={`text-[9px] font-bold px-1 py-0.5 rounded shrink-0 ${cur === "USD" ? "bg-green-600 text-white" : "bg-gray-200 text-gray-600"}`}
-            title="Click para cambiar moneda"
-          >
-            {cur === "USD" ? "U$D" : "$"}
-          </button>
-          <input
-            ref={inputRef}
-            type="text"
-            inputMode="numeric"
-            className="w-full border-0 bg-transparent text-xs text-right py-1 px-1 focus:outline-none"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") handleSave();
-              if (e.key === "Escape") setEditing(false);
-              if (e.key === "Tab") { e.preventDefault(); handleSave(); }
-            }}
-            onBlur={handleSave}
-          />
-          {saving && <div className="w-3 h-3 border border-blue-500 border-t-transparent rounded-full animate-spin shrink-0" />}
+        <div className="flex flex-col gap-0.5 px-1 py-0.5">
+          {basePrice !== null && (
+            <div className="text-[9px] text-gray-400 text-right">{fmtPrice(basePrice)}</div>
+          )}
+          <div className="flex items-center gap-0.5">
+            <input
+              ref={inputRef}
+              type="text"
+              inputMode="decimal"
+              className="w-full border border-gray-300 rounded bg-white text-xs text-right py-0.5 px-1 focus:outline-none focus:border-blue-400"
+              value={value}
+              placeholder="0"
+              onChange={(e) => setValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSave();
+                if (e.key === "Escape") setEditing(false);
+                if (e.key === "Tab") { e.preventDefault(); handleSave(); }
+              }}
+              onBlur={handleSave}
+            />
+            <span className="text-[9px] text-gray-500 shrink-0">%</span>
+            {saving && <div className="w-3 h-3 border border-blue-500 border-t-transparent rounded-full animate-spin shrink-0" />}
+          </div>
+          {basePrice !== null && (
+            <div className="text-[9px] text-blue-600 text-right font-medium">
+              {fmtPrice(calcFinalPrice(basePrice, value.trim() !== "" ? parseFloat(value) || 0 : null))}
+            </div>
+          )}
         </div>
       </td>
     );
@@ -140,117 +148,33 @@ function EditableCell({
 
   return (
     <td
-      className={`border-r border-b px-1.5 py-1 text-right text-xs cursor-pointer hover:bg-blue-50 transition-colors ${
-        price !== null
-          ? currency === "USD"
-            ? "text-green-700 font-medium"
-            : "text-gray-900"
-          : "text-gray-300 italic"
-      }`}
+      className={`border-r border-b px-1 py-0.5 cursor-pointer hover:bg-blue-50 transition-colors`}
       onClick={() => setEditing(true)}
-      title="Click para editar"
+      title="Click para editar porcentaje"
     >
-      {price !== null ? fmtPrice(price, currency) : "—"}
+      <div className="flex flex-col items-end gap-0">
+        {basePrice !== null ? (
+          <>
+            <span className="text-[9px] text-gray-400 leading-tight">{fmtPrice(basePrice)}</span>
+            <span className={`text-[10px] font-semibold leading-tight ${
+              adjustment !== null
+                ? adjustment > 0 ? "text-red-600" : adjustment < 0 ? "text-green-600" : "text-gray-500"
+                : "text-gray-300"
+            }`}>
+              {adjustment !== null ? `${adjustment > 0 ? "+" : ""}${adjustment}%` : "sin ajuste"}
+            </span>
+            <span className="text-xs text-gray-900 font-medium leading-tight">{fmtPrice(finalPrice)}</span>
+          </>
+        ) : (
+          <span className="text-gray-300 text-xs italic">—</span>
+        )}
+      </div>
     </td>
   );
 }
 
 /* ═══════════════════════════════════════════════
-   ExcelUpload
-   ═══════════════════════════════════════════════ */
-function ExcelUpload({ brandName, onDone }: { brandName: string; onDone: () => void }) {
-  const [uploading, setUploading] = useState(false);
-  const [preview, setPreview] = useState<{ modelo: string; año: number; precio: number; moneda: string }[]>([]);
-  const fileRef = useRef<HTMLInputElement>(null);
-
-  const downloadTemplate = () => {
-    const header = ["Modelo (nombre exacto)", ...VISIBLE_YEARS.map(String)];
-    const example = ["308 1.6 ALLURE NAV", "", "", "18500000", "17000000", "15500000"];
-    const ws = XLSX.utils.aoa_to_sheet([header, example]);
-    ws["!cols"] = [{ wch: 35 }, ...VISIBLE_YEARS.map(() => ({ wch: 14 }))];
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Precios");
-    XLSX.writeFile(wb, `precios_${brandName || "marca"}.xlsx`);
-  };
-
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      const data = new Uint8Array(ev.target?.result as ArrayBuffer);
-      const wb = XLSX.read(data, { type: "array" });
-      const ws = wb.Sheets[wb.SheetNames[0]];
-      const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(ws, { defval: "" });
-      const parsed: typeof preview = [];
-      for (const r of rows) {
-        const modelo = String(r["Modelo (nombre exacto)"] || r["Modelo"] || "").trim();
-        if (!modelo) continue;
-        for (const year of VISIBLE_YEARS) {
-          const val = r[String(year)];
-          if (!val) continue;
-          const num = parseInt(String(val).replace(/[^0-9]/g, ""));
-          if (num > 0) parsed.push({ modelo, año: year, precio: num, moneda: "ARS" });
-        }
-      }
-      setPreview(parsed);
-      toast.info(`${parsed.length} precios detectados`);
-    };
-    reader.readAsArrayBuffer(file);
-  };
-
-  const applyUpload = async () => {
-    if (!preview.length) return;
-    setUploading(true);
-    const byModel: Record<string, Record<string, CustomPriceEntry>> = {};
-    for (const row of preview) {
-      if (!byModel[row.modelo]) byModel[row.modelo] = {};
-      byModel[row.modelo][row.año.toString()] = { amount: row.precio, currency: row.moneda as "ARS" | "USD" };
-    }
-    let ok = 0, errors = 0;
-    for (const [modelName, prices] of Object.entries(byModel)) {
-      try {
-        const sr = await fetch(`/api/models?search=${encodeURIComponent(modelName)}&limit=100`);
-        const sd = await sr.json();
-        const match = sd.models?.find((m: Model) => m.name.toLowerCase() === modelName.toLowerCase());
-        if (!match) { errors++; continue; }
-        const updated = { ...(match.custom_prices || {}), ...prices };
-        const res = await fetch("/api/models", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: match.id, custom_prices: updated }) });
-        if ((await res.json()).success) ok++; else errors++;
-      } catch { errors++; }
-    }
-    toast.success(`${ok} modelos actualizados${errors ? `, ${errors} errores` : ""}`);
-    setPreview([]); setUploading(false);
-    if (fileRef.current) fileRef.current.value = "";
-    onDone();
-  };
-
-  return (
-    <div className="rounded-xl border bg-white p-4 space-y-3">
-      <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-gray-700 flex items-center gap-2"><FileSpreadsheet className="w-4 h-4" /> Carga masiva por Excel</h3>
-        <button onClick={downloadTemplate} className="flex items-center gap-1.5 text-xs text-blue-600 hover:text-blue-800 font-medium"><Download className="w-3.5 h-3.5" /> Template</button>
-      </div>
-      <label className="flex items-center gap-2 cursor-pointer border-2 border-dashed rounded-lg px-4 py-3 hover:bg-gray-50 justify-center">
-        <Upload className="w-4 h-4 text-gray-400" />
-        <span className="text-xs text-gray-500">Subir .xlsx</span>
-        <input ref={fileRef} type="file" accept=".xlsx,.xls,.csv" className="hidden" onChange={handleFile} />
-      </label>
-      {preview.length > 0 && (
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-500">{preview.length} precios</span>
-          <button onClick={applyUpload} disabled={uploading} className="flex items-center gap-1 bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-blue-700 disabled:opacity-50">
-            {uploading ? <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Check className="w-3 h-3" />} Aplicar
-          </button>
-          <button onClick={() => { setPreview([]); if (fileRef.current) fileRef.current.value = ""; }} className="px-3 py-1.5 border rounded-lg text-xs"><X className="w-3 h-3 inline" /></button>
-        </div>
-      )}
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════
-   Página principal — tabla tipo Excel
+   Página principal — tabla tipo Excel con %
    ═══════════════════════════════════════════════ */
 export default function PreciosPage() {
   const [brands, setBrands] = useState<Brand[]>([]);
@@ -258,6 +182,7 @@ export default function PreciosPage() {
   const [selectedBrand, setSelectedBrand] = useState<string>("");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
+  const [syncing, setSyncing] = useState(false);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const LIMIT = 30;
@@ -281,21 +206,64 @@ export default function PreciosPage() {
 
   useEffect(() => { fetchModels(); }, [fetchModels]);
 
-  const handleSave = async (modelId: number, year: number, amount: number | null, currency: "ARS" | "USD") => {
+  const handleSave = async (modelId: number, year: number, percentage: number | null) => {
     const model = models.find((m) => m.id === modelId);
     if (!model) return;
-    const updated = { ...(model.custom_prices || {}) };
-    if (amount === null) delete updated[year.toString()];
-    else updated[year.toString()] = { amount, currency };
+
+    // Actualizar price_adjustments
+    const updatedAdj = { ...(model.price_adjustments || {}) };
+    if (percentage === null) delete updatedAdj[year.toString()];
+    else updatedAdj[year.toString()] = percentage;
+
+    // Recalcular custom_prices basado en infoauto_prices + adjustments
+    const updatedPrices = { ...(model.custom_prices || {}) };
+    const basePrice = getInfoAutoPrice(model, year);
+    if (basePrice !== null) {
+      const finalPrice = calcFinalPrice(basePrice, percentage);
+      if (finalPrice !== null) {
+        updatedPrices[year.toString()] = { amount: finalPrice, currency: "ARS" };
+      }
+    } else if (percentage === null) {
+      delete updatedPrices[year.toString()];
+    }
 
     try {
-      const res = await fetch("/api/models", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: modelId, custom_prices: updated }) });
+      const res = await fetch("/api/models", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: modelId, price_adjustments: updatedAdj, custom_prices: updatedPrices }),
+      });
       const data = await res.json();
       if (data.success) {
-        toast.success(`${model.name} ${year} guardado`);
-        setModels((prev) => prev.map((m) => (m.id === modelId ? { ...m, custom_prices: updated } : m)));
+        toast.success(`${model.name} ${year} → ${percentage !== null ? percentage + "%" : "sin ajuste"}`);
+        setModels((prev) => prev.map((m) =>
+          m.id === modelId ? { ...m, price_adjustments: updatedAdj, custom_prices: updatedPrices } : m
+        ));
       } else toast.error(`Error: ${data.error}`);
     } catch { toast.error("Error de red"); }
+  };
+
+  const handleSyncPrices = async () => {
+    if (!selectedBrand) return;
+    const brandName = brands.find((b) => b.id.toString() === selectedBrand)?.name || "";
+    if (!confirm(`Sincronizar precios de InfoAuto para ${brandName}?\nEsto actualizará los precios base y recalculará con los porcentajes actuales.`)) return;
+
+    setSyncing(true);
+    try {
+      const res = await fetch("/api/cron/sync-prices", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ brand_id: parseInt(selectedBrand) }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success(`${data.updated} modelos actualizados, ${data.skipped} sin precio en InfoAuto`);
+        fetchModels();
+      } else {
+        toast.error(`Error: ${data.error}`);
+      }
+    } catch { toast.error("Error al sincronizar"); }
+    finally { setSyncing(false); }
   };
 
   const brandName = brands.find((b) => b.id.toString() === selectedBrand)?.name || "";
@@ -311,7 +279,7 @@ export default function PreciosPage() {
           <Separator orientation="vertical" className="mr-2 h-4" />
           <div>
             <h1 className="text-sm font-semibold text-gray-900">Precios por Modelo</h1>
-            <p className="text-xs text-gray-500 hidden sm:block">Click en cualquier celda para editar el precio</p>
+            <p className="text-xs text-gray-500 hidden sm:block">Ajustá el porcentaje sobre el precio base de InfoAuto</p>
           </div>
         </header>
 
@@ -331,16 +299,33 @@ export default function PreciosPage() {
                 <input type="text" className="border rounded-lg pl-8 pr-3 py-2 text-sm min-w-[200px]" placeholder="308, Partner, Amarok..." value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} />
               </div>
             </div>
+            {selectedBrand && (
+              <button
+                onClick={handleSyncPrices}
+                disabled={syncing}
+                className="flex items-center gap-1.5 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 disabled:opacity-50"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${syncing ? "animate-spin" : ""}`} />
+                {syncing ? "Sincronizando..." : "Sync InfoAuto"}
+              </button>
+            )}
             {selectedBrand && !loading && <span className="text-xs text-gray-400 pb-2">{total} modelos</span>}
           </div>
 
-          {selectedBrand && <ExcelUpload brandName={brandName} onDone={fetchModels} />}
+          {/* Leyenda */}
+          {selectedBrand && !loading && models.length > 0 && (
+            <div className="flex items-center gap-4 text-[10px] text-gray-500 bg-gray-50 rounded-lg px-3 py-2">
+              <span className="flex items-center gap-1"><span className="text-gray-400">Gris:</span> Precio base InfoAuto</span>
+              <span className="flex items-center gap-1"><Percent className="w-3 h-3" /> Porcentaje de ajuste</span>
+              <span className="flex items-center gap-1"><span className="font-semibold text-gray-900">Negro:</span> Precio final</span>
+            </div>
+          )}
 
           {!selectedBrand && (
             <div className="text-center py-20 text-gray-400">
               <DollarSign className="w-10 h-10 mx-auto mb-3 opacity-20" />
               <p className="text-base font-medium text-gray-500">Seleccioná una marca</p>
-              <p className="text-sm mt-1">Aparece la tabla con todos los precios por modelo y año.</p>
+              <p className="text-sm mt-1">Aparece la tabla con precios base de InfoAuto y porcentajes de ajuste.</p>
             </div>
           )}
 
@@ -358,7 +343,7 @@ export default function PreciosPage() {
                   <tr className="bg-gray-100">
                     <th className="text-left px-3 py-2 border-r border-b font-semibold text-gray-700 sticky left-0 bg-gray-100 z-10 min-w-[250px]">Modelo</th>
                     {yearsInUse.map((y) => (
-                      <th key={y} className="text-center px-2 py-2 border-r border-b font-semibold text-gray-600 min-w-[110px]">{y}</th>
+                      <th key={y} className="text-center px-2 py-2 border-r border-b font-semibold text-gray-600 min-w-[120px]">{y}</th>
                     ))}
                   </tr>
                 </thead>
@@ -370,7 +355,7 @@ export default function PreciosPage() {
                         <div className="text-[10px] text-gray-400 font-normal">{model.year_from}–{model.year_to}</div>
                       </td>
                       {yearsInUse.map((y) => (
-                        <EditableCell key={y} model={model} year={y} onSave={handleSave} />
+                        <AdjustmentCell key={y} model={model} year={y} onSave={handleSave} />
                       ))}
                     </tr>
                   ))}

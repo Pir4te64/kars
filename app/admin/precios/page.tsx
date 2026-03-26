@@ -428,7 +428,7 @@ export default function PreciosPage() {
                 <thead>
                   <tr className="bg-gray-100">
                     <th rowSpan={2} className="text-left px-3 py-2 border-r border-b font-semibold text-gray-700 sticky left-0 bg-gray-100 z-10 min-w-[250px]">Modelo</th>
-                    <th rowSpan={2} className="text-center px-1 py-2 border-r border-b font-semibold text-purple-600 min-w-[75px]" title="Porcentaje de depreciación cada 10,000 km (desde 50k km base)">% / 10k km</th>
+                    <th rowSpan={2} className="text-center px-1 py-2 border-r border-b font-semibold text-purple-600 min-w-[75px]" title="Porcentaje de depreciación cada 1,000 km (desde 50k km base)">% / 1k km</th>
                     {yearsInUse.map((y) => (
                       <th key={y} colSpan={2} className="text-center px-1 py-1 border-r border-b font-semibold text-gray-600">{y}</th>
                     ))}

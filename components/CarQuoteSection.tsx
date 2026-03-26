@@ -346,6 +346,7 @@ export default function CarQuoteSection() {
 
     // Obtener el precio del modelo para el año seleccionado desde la API
     let precioBaseUSD = 0;
+    let modelKmDep: number | null = null;
     if (formData.modelo && formData.año) {
       try {
         const selectedYear = Number(formData.año);
@@ -359,6 +360,11 @@ export default function CarQuoteSection() {
         }
 
         const data = await response.json();
+
+        // Extraer km_depreciation del modelo
+        if (data.model?.km_depreciation != null) {
+          modelKmDep = data.model.km_depreciation;
+        }
 
         if (
           data.success &&
@@ -467,7 +473,8 @@ export default function CarQuoteSection() {
         precioBasePesos,
         formData.kilometraje,
         formData.año,
-        formData.modelo
+        formData.modelo,
+        modelKmDep
       );
       precioBasePesos = precioConAjusteKm;
       console.log(

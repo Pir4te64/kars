@@ -27,7 +27,7 @@ export async function GET(
 
     const { data, error } = await supabase
       .from("models")
-      .select("id, name, codia, year_from, year_to, custom_prices")
+      .select("id, name, codia, year_from, year_to, custom_prices, km_depreciation")
       .eq("codia", codia)
       .limit(1);
 
@@ -67,6 +67,7 @@ export async function GET(
         codia: model.codia,
         year_from: model.year_from,
         year_to: model.year_to,
+        km_depreciation: model.km_depreciation ?? null,
       },
     });
   } catch (err) {

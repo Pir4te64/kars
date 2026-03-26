@@ -24,7 +24,7 @@ export async function GET(request: Request) {
 
     let query = supabase
       .from("models")
-      .select("id, name, brand_id, codia, year_from, year_to, price_adjustments, custom_prices, infoauto_prices", { count: "exact" })
+      .select("id, name, brand_id, codia, year_from, year_to, price_adjustments, custom_prices, infoauto_prices, km_depreciation", { count: "exact" })
       .order("name", { ascending: true });
 
     if (brand_id) {
@@ -78,7 +78,7 @@ export async function OPTIONS() {
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
-    const { id, price_adjustments, custom_prices, infoauto_prices, hidden } = body;
+    const { id, price_adjustments, custom_prices, infoauto_prices, km_depreciation, hidden } = body;
 
     if (!id) {
       return NextResponse.json(
@@ -87,7 +87,7 @@ export async function PATCH(request: Request) {
       );
     }
 
-    if (price_adjustments === undefined && custom_prices === undefined && infoauto_prices === undefined && hidden === undefined) {
+    if (price_adjustments === undefined && custom_prices === undefined && infoauto_prices === undefined && km_depreciation === undefined && hidden === undefined) {
       return NextResponse.json(
         { error: "Faltan los datos a actualizar" },
         { status: 400 }
@@ -98,6 +98,7 @@ export async function PATCH(request: Request) {
     if (price_adjustments !== undefined) updatePayload.price_adjustments = price_adjustments;
     if (custom_prices !== undefined) updatePayload.custom_prices = custom_prices;
     if (infoauto_prices !== undefined) updatePayload.infoauto_prices = infoauto_prices;
+    if (km_depreciation !== undefined) updatePayload.km_depreciation = km_depreciation;
     if (hidden !== undefined) updatePayload.hidden = hidden;
 
     const { data, error } = await supabase

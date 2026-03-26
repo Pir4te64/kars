@@ -34,6 +34,7 @@ interface Model {
   custom_prices: Record<string, CustomPriceEntry | number | null> | null;
   price_adjustments: Record<string, number | null> | null;
   infoauto_prices: Record<string, number | null> | null;
+  km_depreciation: number | null;
 }
 
 /* ───── helpers ───── */
@@ -177,6 +178,82 @@ function AdjustmentCell({
 }
 
 /* ═══════════════════════════════════════════════
+   KmDepCell — depreciación por km (por modelo)
+   ═══════════════════════════════════════════════ */
+function KmDepCell({
+  model,
+  onSave,
+}: {
+  model: Model;
+  onSave: (modelId: number, value: number | null) => Promise<void>;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [value, setValue] = useState("");
+  const [saving, setSaving] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (editing) {
+      setValue(model.km_depreciation !== null ? String(model.km_depreciation) : "");
+      setTimeout(() => inputRef.current?.select(), 0);
+    }
+  }, [editing, model.km_depreciation]);
+
+  const handleSave = async () => {
+    const clean = value.trim();
+    let num: number | null = null;
+    if (clean !== "") {
+      num = parseFloat(clean);
+      if (isNaN(num)) {
+        toast.error("Valor inválido");
+        return;
+      }
+    }
+    setSaving(true);
+    await onSave(model.id, num);
+    setSaving(false);
+    setEditing(false);
+  };
+
+  if (editing) {
+    return (
+      <td className="border-r border-b p-0 bg-purple-50">
+        <div className="flex items-center gap-0.5 px-1">
+          <input
+            ref={inputRef}
+            type="text"
+            inputMode="decimal"
+            className="w-full border-0 bg-transparent text-xs text-right py-1 px-1 focus:outline-none"
+            value={value}
+            placeholder="ej: 3.86"
+            onChange={(e) => setValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleSave();
+              if (e.key === "Escape") setEditing(false);
+              if (e.key === "Tab") { e.preventDefault(); handleSave(); }
+            }}
+            onBlur={handleSave}
+          />
+          {saving && <div className="w-3 h-3 border border-purple-500 border-t-transparent rounded-full animate-spin shrink-0" />}
+        </div>
+      </td>
+    );
+  }
+
+  return (
+    <td
+      className={`border-r border-b px-1.5 py-1 text-right text-xs cursor-pointer hover:bg-purple-50 transition-colors ${
+        model.km_depreciation !== null ? "text-purple-700 font-medium" : "text-gray-300 italic"
+      }`}
+      onClick={() => setEditing(true)}
+      title="Click para editar depreciación por km"
+    >
+      {model.km_depreciation !== null ? model.km_depreciation : "—"}
+    </td>
+  );
+}
+
+/* ═══════════════════════════════════════════════
    Página principal
    ═══════════════════════════════════════════════ */
 export default function PreciosPage() {
@@ -241,6 +318,23 @@ export default function PreciosPage() {
         setModels((prev) => prev.map((m) =>
           m.id === modelId ? { ...m, price_adjustments: updatedAdj, custom_prices: updatedPrices } : m
         ));
+      } else toast.error(`Error: ${data.error}`);
+    } catch { toast.error("Error de red"); }
+  };
+
+  const handleSaveKmDep = async (modelId: number, value: number | null) => {
+    const model = models.find((m) => m.id === modelId);
+    if (!model) return;
+    try {
+      const res = await fetch("/api/models", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: modelId, km_depreciation: value }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success(`${model.name} → Dep. km: ${value !== null ? value : "default"}`);
+        setModels((prev) => prev.map((m) => m.id === modelId ? { ...m, km_depreciation: value } : m));
       } else toast.error(`Error: ${data.error}`);
     } catch { toast.error("Error de red"); }
   };
@@ -334,6 +428,7 @@ export default function PreciosPage() {
                 <thead>
                   <tr className="bg-gray-100">
                     <th rowSpan={2} className="text-left px-3 py-2 border-r border-b font-semibold text-gray-700 sticky left-0 bg-gray-100 z-10 min-w-[250px]">Modelo</th>
+                    <th rowSpan={2} className="text-center px-1 py-2 border-r border-b font-semibold text-purple-600 min-w-[65px]" title="Depreciación por km (tasa x10⁶)">Dep. km</th>
                     {yearsInUse.map((y) => (
                       <th key={y} colSpan={2} className="text-center px-1 py-1 border-r border-b font-semibold text-gray-600">{y}</th>
                     ))}
@@ -354,6 +449,7 @@ export default function PreciosPage() {
                         <div className="truncate text-xs">{model.name}</div>
                         <div className="text-[10px] text-gray-400 font-normal">{model.year_from}–{model.year_to}</div>
                       </td>
+                      <KmDepCell model={model} onSave={handleSaveKmDep} />
                       {yearsInUse.map((y) => (
                         <React.Fragment key={y}>
                           <PriceCell model={model} year={y} />

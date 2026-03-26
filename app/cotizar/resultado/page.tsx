@@ -43,6 +43,8 @@ export default function QuoteResultPage() {
   );
   const whatsappUrl = `https://wa.me/541121596100?text=${encodedMessage}`;
 
+  const [kmDepreciation, setKmDepreciation] = useState<number | null>(null);
+
   const {
     dollarBlue,
     loading: dollarLoading,
@@ -75,6 +77,18 @@ export default function QuoteResultPage() {
 
     const data = getQuoteData();
     setQuoteData(data);
+
+    // Cargar km_depreciation del modelo si tiene codia
+    if (data.codia) {
+      fetch(`/api/prices/${data.codia}`)
+        .then((r) => r.json())
+        .then((d) => {
+          if (d.model?.km_depreciation != null) {
+            setKmDepreciation(d.model.km_depreciation);
+          }
+        })
+        .catch(() => {});
+    }
   }, []);
 
   const handleDownloadImage = async () => {
@@ -165,7 +179,8 @@ export default function QuoteResultPage() {
         precioEnPesos,
         quoteData.kilometraje,
         quoteData.año,
-        quoteData.modelo
+        quoteData.modelo,
+        kmDepreciation
       );
       precioEnPesos = precioConAjusteKm;
       console.log(`📏 Ajuste por kilometraje aplicado: ${quoteData.kilometraje} km`);

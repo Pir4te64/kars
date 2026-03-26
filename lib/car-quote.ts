@@ -161,7 +161,8 @@ export function calculatePriceByKilometers(
   basePrice: number,
   kilometraje: string | number,
   añoVehiculo?: number | string,
-  modelName?: string
+  modelName?: string,
+  customDepRate?: number | null
 ): number {
   if (!kilometraje || !basePrice) {
     console.log(
@@ -221,7 +222,10 @@ export function calculatePriceByKilometers(
   const esModerno = !isNaN(añoNum) && añoNum >= 2019;
 
   let deprecationRate: number;
-  if (!esModerno) {
+  if (customDepRate !== undefined && customDepRate !== null && customDepRate > 0) {
+    // Tasa custom del admin (guardada como valor x10⁶, ej: 3.86 → 0.00000386)
+    deprecationRate = customDepRate / 1000000;
+  } else if (!esModerno) {
     deprecationRate = 0.00000394; // 2008-2018: tasa original
   } else {
     const modelLower = (modelName || '').toLowerCase();

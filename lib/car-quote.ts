@@ -221,18 +221,24 @@ export function calculatePriceByKilometers(
   const añoNum = typeof añoVehiculo === 'string' ? parseInt(String(añoVehiculo)) : (añoVehiculo ?? 0);
   const esModerno = !isNaN(añoNum) && añoNum >= 2019;
 
-  let deprecationRate: number;
+  let adjustedPrice: number;
   if (customDepRate !== undefined && customDepRate !== null && customDepRate > 0) {
-    // Tasa custom del admin (guardada como valor x10⁶, ej: 3.86 → 0.00000386)
-    deprecationRate = customDepRate / 1000000;
-  } else if (!esModerno) {
-    deprecationRate = 0.00000394; // 2008-2018: tasa original
+    // Porcentaje directo del admin: X% cada 10,000 km desde base 50k
+    // Ej: 2 = 2% cada 10k km → a 100k km (50k sobre base) = -10%
+    const bloques = kmDiferencia / 10000;
+    const factor = 1 - (customDepRate / 100) * bloques;
+    adjustedPrice = basePrice * Math.max(factor, 0.1); // mínimo 10% del precio base
   } else {
-    const modelLower = (modelName || '').toLowerCase();
-    const esUtilitario = UTILITARIOS.some(u => modelLower.includes(u));
-    deprecationRate = esUtilitario ? 0.00000262 : 0.00000386;
+    let deprecationRate: number;
+    if (!esModerno) {
+      deprecationRate = 0.00000394; // 2008-2018: tasa original
+    } else {
+      const modelLower = (modelName || '').toLowerCase();
+      const esUtilitario = UTILITARIOS.some(u => modelLower.includes(u));
+      deprecationRate = esUtilitario ? 0.00000262 : 0.00000386;
+    }
+    adjustedPrice = basePrice * Math.exp(-deprecationRate * kmDiferencia);
   }
-  const adjustedPrice = basePrice * Math.exp(-deprecationRate * kmDiferencia);
   const diferenciaPrecio = adjustedPrice - basePrice;
   const porcentajeAjuste = (diferenciaPrecio / basePrice) * 100;
 

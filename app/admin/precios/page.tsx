@@ -124,7 +124,7 @@ function AdjustmentCell({
     const clean = value.trim();
     let num: number | null = null;
     if (clean !== "") {
-      num = parseFloat(clean);
+      num = parseFloat(clean.replace(",", "."));
       if (isNaN(num)) {
         toast.error("Porcentaje inválido");
         return;
@@ -203,7 +203,7 @@ function KmDepCell({
     const clean = value.trim();
     let num: number | null = null;
     if (clean !== "") {
-      num = parseFloat(clean);
+      num = parseFloat(clean.replace(",", "."));
       if (isNaN(num)) {
         toast.error("Valor inválido");
         return;
@@ -225,7 +225,7 @@ function KmDepCell({
             inputMode="decimal"
             className="w-full border-0 bg-transparent text-xs text-right py-1 px-1 focus:outline-none"
             value={value}
-            placeholder="ej: 3.86"
+            placeholder="ej: 2"
             onChange={(e) => setValue(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") handleSave();
@@ -248,7 +248,7 @@ function KmDepCell({
       onClick={() => setEditing(true)}
       title="Click para editar depreciación por km"
     >
-      {model.km_depreciation !== null ? model.km_depreciation : "—"}
+      {model.km_depreciation !== null ? `${model.km_depreciation}%` : "—"}
     </td>
   );
 }
@@ -428,7 +428,7 @@ export default function PreciosPage() {
                 <thead>
                   <tr className="bg-gray-100">
                     <th rowSpan={2} className="text-left px-3 py-2 border-r border-b font-semibold text-gray-700 sticky left-0 bg-gray-100 z-10 min-w-[250px]">Modelo</th>
-                    <th rowSpan={2} className="text-center px-1 py-2 border-r border-b font-semibold text-purple-600 min-w-[65px]" title="Depreciación por km (tasa x10⁶)">Dep. km</th>
+                    <th rowSpan={2} className="text-center px-1 py-2 border-r border-b font-semibold text-purple-600 min-w-[75px]" title="Porcentaje de depreciación cada 10,000 km (desde 50k km base)">% / 10k km</th>
                     {yearsInUse.map((y) => (
                       <th key={y} colSpan={2} className="text-center px-1 py-1 border-r border-b font-semibold text-gray-600">{y}</th>
                     ))}

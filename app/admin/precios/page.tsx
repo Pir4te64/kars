@@ -12,7 +12,6 @@ import { toast } from "sonner";
 import {
   Search,
   DollarSign,
-  Percent,
   RefreshCw,
 } from "lucide-react";
 
@@ -38,9 +37,15 @@ interface Model {
 }
 
 /* ───── helpers ───── */
-function getInfoAutoPrice(model: Model, year: number): number | null {
-  const val = model.infoauto_prices?.[year.toString()];
-  if (typeof val === "number" && val > 0) return val;
+function getBasePrice(model: Model, year: number): number | null {
+  // Primero intentar infoauto_prices, si no hay usar custom_prices como base
+  const iaVal = model.infoauto_prices?.[year.toString()];
+  if (typeof iaVal === "number" && iaVal > 0) return iaVal;
+
+  const cpVal = model.custom_prices?.[year.toString()];
+  if (!cpVal) return null;
+  if (typeof cpVal === "number" && cpVal > 0) return cpVal;
+  if (typeof cpVal === "object" && cpVal.amount > 0) return cpVal.amount;
   return null;
 }
 
@@ -64,7 +69,29 @@ function fmtPrice(n: number | null): string {
 const VISIBLE_YEARS = [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008];
 
 /* ═══════════════════════════════════════════════
-   AdjustmentCell — celda de porcentaje editable
+   PriceCell — celda de precio (solo lectura)
+   ═══════════════════════════════════════════════ */
+function PriceCell({ model, year }: { model: Model; year: number }) {
+  const inRange = year >= model.year_from && year <= model.year_to;
+  if (!inRange) return <td className="bg-gray-100 border-r border-b" />;
+
+  const basePrice = getBasePrice(model, year);
+  const adjustment = getAdjustment(model, year);
+  const finalPrice = calcFinalPrice(basePrice, adjustment);
+
+  return (
+    <td className="border-r border-b px-1.5 py-1 text-right text-xs">
+      {finalPrice !== null ? (
+        <span className="text-gray-900 font-medium">{fmtPrice(finalPrice)}</span>
+      ) : (
+        <span className="text-gray-300 italic">—</span>
+      )}
+    </td>
+  );
+}
+
+/* ═══════════════════════════════════════════════
+   AdjustmentCell — celda de % editable
    ═══════════════════════════════════════════════ */
 function AdjustmentCell({
   model,
@@ -75,10 +102,8 @@ function AdjustmentCell({
   year: number;
   onSave: (modelId: number, year: number, percentage: number | null) => Promise<void>;
 }) {
-  const basePrice = getInfoAutoPrice(model, year);
-  const adjustment = getAdjustment(model, year);
-  const finalPrice = calcFinalPrice(basePrice, adjustment);
   const inRange = year >= model.year_from && year <= model.year_to;
+  const adjustment = getAdjustment(model, year);
 
   const [editing, setEditing] = useState(false);
   const [value, setValue] = useState("");
@@ -113,34 +138,24 @@ function AdjustmentCell({
   if (editing) {
     return (
       <td className="border-r border-b p-0 bg-blue-50">
-        <div className="flex flex-col gap-0.5 px-1 py-0.5">
-          {basePrice !== null && (
-            <div className="text-[9px] text-gray-400 text-right">{fmtPrice(basePrice)}</div>
-          )}
-          <div className="flex items-center gap-0.5">
-            <input
-              ref={inputRef}
-              type="text"
-              inputMode="decimal"
-              className="w-full border border-gray-300 rounded bg-white text-xs text-right py-0.5 px-1 focus:outline-none focus:border-blue-400"
-              value={value}
-              placeholder="0"
-              onChange={(e) => setValue(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") handleSave();
-                if (e.key === "Escape") setEditing(false);
-                if (e.key === "Tab") { e.preventDefault(); handleSave(); }
-              }}
-              onBlur={handleSave}
-            />
-            <span className="text-[9px] text-gray-500 shrink-0">%</span>
-            {saving && <div className="w-3 h-3 border border-blue-500 border-t-transparent rounded-full animate-spin shrink-0" />}
-          </div>
-          {basePrice !== null && (
-            <div className="text-[9px] text-blue-600 text-right font-medium">
-              {fmtPrice(calcFinalPrice(basePrice, value.trim() !== "" ? parseFloat(value) || 0 : null))}
-            </div>
-          )}
+        <div className="flex items-center gap-0.5 px-1">
+          <input
+            ref={inputRef}
+            type="text"
+            inputMode="decimal"
+            className="w-full border-0 bg-transparent text-xs text-right py-1 px-1 focus:outline-none"
+            value={value}
+            placeholder="0"
+            onChange={(e) => setValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleSave();
+              if (e.key === "Escape") setEditing(false);
+              if (e.key === "Tab") { e.preventDefault(); handleSave(); }
+            }}
+            onBlur={handleSave}
+          />
+          <span className="text-[10px] text-gray-400 shrink-0">%</span>
+          {saving && <div className="w-3 h-3 border border-blue-500 border-t-transparent rounded-full animate-spin shrink-0" />}
         </div>
       </td>
     );
@@ -148,33 +163,21 @@ function AdjustmentCell({
 
   return (
     <td
-      className={`border-r border-b px-1 py-0.5 cursor-pointer hover:bg-blue-50 transition-colors`}
+      className={`border-r border-b px-1.5 py-1 text-right text-xs cursor-pointer hover:bg-blue-50 transition-colors ${
+        adjustment !== null
+          ? adjustment > 0 ? "text-red-600 font-semibold" : adjustment < 0 ? "text-green-600 font-semibold" : "text-gray-500"
+          : "text-gray-300 italic"
+      }`}
       onClick={() => setEditing(true)}
-      title="Click para editar porcentaje"
+      title="Click para editar %"
     >
-      <div className="flex flex-col items-end gap-0">
-        {basePrice !== null ? (
-          <>
-            <span className="text-[9px] text-gray-400 leading-tight">{fmtPrice(basePrice)}</span>
-            <span className={`text-[10px] font-semibold leading-tight ${
-              adjustment !== null
-                ? adjustment > 0 ? "text-red-600" : adjustment < 0 ? "text-green-600" : "text-gray-500"
-                : "text-gray-300"
-            }`}>
-              {adjustment !== null ? `${adjustment > 0 ? "+" : ""}${adjustment}%` : "sin ajuste"}
-            </span>
-            <span className="text-xs text-gray-900 font-medium leading-tight">{fmtPrice(finalPrice)}</span>
-          </>
-        ) : (
-          <span className="text-gray-300 text-xs italic">—</span>
-        )}
-      </div>
+      {adjustment !== null ? `${adjustment > 0 ? "+" : ""}${adjustment}%` : "—"}
     </td>
   );
 }
 
 /* ═══════════════════════════════════════════════
-   Página principal — tabla tipo Excel con %
+   Página principal
    ═══════════════════════════════════════════════ */
 export default function PreciosPage() {
   const [brands, setBrands] = useState<Brand[]>([]);
@@ -210,21 +213,20 @@ export default function PreciosPage() {
     const model = models.find((m) => m.id === modelId);
     if (!model) return;
 
-    // Actualizar price_adjustments
     const updatedAdj = { ...(model.price_adjustments || {}) };
     if (percentage === null) delete updatedAdj[year.toString()];
     else updatedAdj[year.toString()] = percentage;
 
-    // Recalcular custom_prices basado en infoauto_prices + adjustments
-    const updatedPrices = { ...(model.custom_prices || {}) };
-    const basePrice = getInfoAutoPrice(model, year);
-    if (basePrice !== null) {
-      const finalPrice = calcFinalPrice(basePrice, percentage);
-      if (finalPrice !== null) {
-        updatedPrices[year.toString()] = { amount: finalPrice, currency: "ARS" };
+    // Recalcular custom_prices para TODOS los años (no solo el editado)
+    const updatedPrices: Record<string, CustomPriceEntry> = {};
+    for (const y of VISIBLE_YEARS) {
+      const base = getBasePrice(model, y);
+      if (base === null) continue;
+      const adj = y === year ? percentage : getAdjustment(model, y);
+      const final_ = calcFinalPrice(base, adj);
+      if (final_ !== null) {
+        updatedPrices[y.toString()] = { amount: final_, currency: "ARS" };
       }
-    } else if (percentage === null) {
-      delete updatedPrices[year.toString()];
     }
 
     try {
@@ -245,8 +247,8 @@ export default function PreciosPage() {
 
   const handleSyncPrices = async () => {
     if (!selectedBrand) return;
-    const brandName = brands.find((b) => b.id.toString() === selectedBrand)?.name || "";
-    if (!confirm(`Sincronizar precios de InfoAuto para ${brandName}?\nEsto actualizará los precios base y recalculará con los porcentajes actuales.`)) return;
+    const bName = brands.find((b) => b.id.toString() === selectedBrand)?.name || "";
+    if (!confirm(`Sincronizar precios de InfoAuto para ${bName}?\nEsto actualizará los precios base y recalculará con los porcentajes actuales.`)) return;
 
     setSyncing(true);
     try {
@@ -266,7 +268,6 @@ export default function PreciosPage() {
     finally { setSyncing(false); }
   };
 
-  const brandName = brands.find((b) => b.id.toString() === selectedBrand)?.name || "";
   const totalPages = Math.ceil(total / LIMIT);
   const yearsInUse = VISIBLE_YEARS.filter((y) => models.some((m) => y >= m.year_from && y <= m.year_to));
 
@@ -279,7 +280,7 @@ export default function PreciosPage() {
           <Separator orientation="vertical" className="mr-2 h-4" />
           <div>
             <h1 className="text-sm font-semibold text-gray-900">Precios por Modelo</h1>
-            <p className="text-xs text-gray-500 hidden sm:block">Ajustá el porcentaje sobre el precio base de InfoAuto</p>
+            <p className="text-xs text-gray-500 hidden sm:block">Precio (solo lectura) + Porcentaje de ajuste (editable)</p>
           </div>
         </header>
 
@@ -312,20 +313,11 @@ export default function PreciosPage() {
             {selectedBrand && !loading && <span className="text-xs text-gray-400 pb-2">{total} modelos</span>}
           </div>
 
-          {/* Leyenda */}
-          {selectedBrand && !loading && models.length > 0 && (
-            <div className="flex items-center gap-4 text-[10px] text-gray-500 bg-gray-50 rounded-lg px-3 py-2">
-              <span className="flex items-center gap-1"><span className="text-gray-400">Gris:</span> Precio base InfoAuto</span>
-              <span className="flex items-center gap-1"><Percent className="w-3 h-3" /> Porcentaje de ajuste</span>
-              <span className="flex items-center gap-1"><span className="font-semibold text-gray-900">Negro:</span> Precio final</span>
-            </div>
-          )}
-
           {!selectedBrand && (
             <div className="text-center py-20 text-gray-400">
               <DollarSign className="w-10 h-10 mx-auto mb-3 opacity-20" />
               <p className="text-base font-medium text-gray-500">Seleccioná una marca</p>
-              <p className="text-sm mt-1">Aparece la tabla con precios base de InfoAuto y porcentajes de ajuste.</p>
+              <p className="text-sm mt-1">Aparece la tabla con precios y porcentajes de ajuste por modelo y año.</p>
             </div>
           )}
 
@@ -341,9 +333,17 @@ export default function PreciosPage() {
               <table className="w-full text-xs border-collapse">
                 <thead>
                   <tr className="bg-gray-100">
-                    <th className="text-left px-3 py-2 border-r border-b font-semibold text-gray-700 sticky left-0 bg-gray-100 z-10 min-w-[250px]">Modelo</th>
+                    <th rowSpan={2} className="text-left px-3 py-2 border-r border-b font-semibold text-gray-700 sticky left-0 bg-gray-100 z-10 min-w-[250px]">Modelo</th>
                     {yearsInUse.map((y) => (
-                      <th key={y} className="text-center px-2 py-2 border-r border-b font-semibold text-gray-600 min-w-[120px]">{y}</th>
+                      <th key={y} colSpan={2} className="text-center px-1 py-1 border-r border-b font-semibold text-gray-600">{y}</th>
+                    ))}
+                  </tr>
+                  <tr className="bg-gray-50">
+                    {yearsInUse.map((y) => (
+                      <React.Fragment key={y}>
+                        <th className="text-center px-1 py-1 border-r border-b text-[10px] font-medium text-gray-400 min-w-[90px]">Precio</th>
+                        <th className="text-center px-1 py-1 border-r border-b text-[10px] font-medium text-gray-400 min-w-[55px]">%</th>
+                      </React.Fragment>
                     ))}
                   </tr>
                 </thead>
@@ -355,7 +355,10 @@ export default function PreciosPage() {
                         <div className="text-[10px] text-gray-400 font-normal">{model.year_from}–{model.year_to}</div>
                       </td>
                       {yearsInUse.map((y) => (
-                        <AdjustmentCell key={y} model={model} year={y} onSave={handleSave} />
+                        <React.Fragment key={y}>
+                          <PriceCell model={model} year={y} />
+                          <AdjustmentCell model={model} year={y} onSave={handleSave} />
+                        </React.Fragment>
                       ))}
                     </tr>
                   ))}

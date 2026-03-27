@@ -101,6 +101,13 @@ export async function PATCH(request: Request) {
     if (km_depreciation !== undefined) updatePayload.km_depreciation = km_depreciation;
     if (hidden !== undefined) updatePayload.hidden = hidden;
 
+    // Obtener estado anterior para el log
+    const { data: prevData } = await supabase
+      .from("models")
+      .select("id, name, codia, custom_prices, price_adjustments, km_depreciation")
+      .eq("id", id)
+      .limit(1);
+
     const { data, error } = await supabase
       .from("models")
       .update(updatePayload)
@@ -112,6 +119,28 @@ export async function PATCH(request: Request) {
         { error: "Error al actualizar", details: error.message },
         { status: 500 }
       );
+    }
+
+    // Registrar cambio en price_changes_log (fire-and-forget)
+    if (prevData && prevData[0]) {
+      const prev = prevData[0];
+      Promise.resolve(
+        supabase
+          .from("price_changes_log")
+          .insert({
+            model_id: id,
+            model_name: prev.name,
+            codia: prev.codia,
+            field_changed: Object.keys(updatePayload).join(", "),
+            previous_value: {
+              custom_prices: prev.custom_prices,
+              price_adjustments: prev.price_adjustments,
+              km_depreciation: prev.km_depreciation,
+            },
+            new_value: updatePayload,
+            source: "admin",
+          })
+      ).catch(() => {});
     }
 
     return NextResponse.json({

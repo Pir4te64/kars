@@ -308,7 +308,7 @@ function SimulatorModal({
     if (selected.km_depreciation !== null && selected.km_depreciation > 0) {
       const bloques = kmDif / 1000;
       const factor = 1 - (selected.km_depreciation / 100) * bloques;
-      precioConKm = precioBasePesos * Math.max(factor, 0.1);
+      precioConKm = precioBasePesos * factor;
     } else {
       // Fórmula exponencial default
       const añoNum = year;

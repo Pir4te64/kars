@@ -316,7 +316,7 @@ function SimulatorModal({
     let precioConKm = precioBasePesos;
 
     if (depRate !== null && !isNaN(depRate) && depRate > 0) {
-      const bloques = kmDif / 1000;
+      const bloques = km / 1000;
       const factor = 1 - (depRate / 100) * bloques;
       precioConKm = precioBasePesos * factor;
     } else {
@@ -439,7 +439,7 @@ function SimulatorModal({
                   <span className="font-medium">{fmtPrice(result.precioBase)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Km: {parseInt(simKm.replace(/[.,]/g, "")).toLocaleString("es-AR")} ({result.kmDif > 0 ? "+" : ""}{result.kmDif.toLocaleString("es-AR")} vs 50k)</span>
+                  <span className="text-gray-500">Km: {parseInt(simKm.replace(/[.,]/g, "")).toLocaleString("es-AR")}</span>
                   <span className={`font-medium ${parseFloat(result.kmPct) > 0 ? "text-green-600" : parseFloat(result.kmPct) < 0 ? "text-red-600" : ""}`}>
                     {parseFloat(result.kmPct) > 0 ? "+" : ""}{result.kmPct}%
                   </span>

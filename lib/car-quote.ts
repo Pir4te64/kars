@@ -223,9 +223,9 @@ export function calculatePriceByKilometers(
 
   let adjustedPrice: number;
   if (customDepRate !== undefined && customDepRate !== null && customDepRate > 0) {
-    // Porcentaje directo del admin: X% cada 1,000 km desde base 50k
-    // Ej: 0.3 = 0.3% cada 1k km → a 100k km (50k sobre base) = -15%
-    const bloques = kmDiferencia / 1000;
+    // Porcentaje directo del admin: X% cada 1,000 km desde 0 km
+    // Ej: 0.3% cada 1k km con 50k km → 50 bloques → -15%
+    const bloques = km / 1000;
     const factor = 1 - (customDepRate / 100) * bloques;
     adjustedPrice = basePrice * factor;
   } else {

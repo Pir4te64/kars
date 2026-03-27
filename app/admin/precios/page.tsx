@@ -268,6 +268,7 @@ function SimulatorModal({
   const [simModel, setSimModel] = useState<string>("");
   const [simYear, setSimYear] = useState<string>("");
   const [simKm, setSimKm] = useState<string>("50000");
+  const [simDep, setSimDep] = useState<string>("");
   const [dollarBlue, setDollarBlue] = useState<number | null>(null);
   const [loadingDollar, setLoadingDollar] = useState(true);
 
@@ -279,6 +280,14 @@ function SimulatorModal({
   }, []);
 
   const selected = models.find((m) => m.id.toString() === simModel);
+
+  // Sincronizar dep del modelo seleccionado
+  useEffect(() => {
+    if (selected) {
+      setSimDep(selected.km_depreciation !== null ? String(selected.km_depreciation) : "");
+    }
+  }, [selected]);
+
   const yearsForModel = selected
     ? VISIBLE_YEARS.filter((y) => y >= selected.year_from && y <= selected.year_to)
     : [];
@@ -288,6 +297,7 @@ function SimulatorModal({
     if (!selected || !simYear) return null;
     const year = parseInt(simYear);
     const km = parseInt(simKm.replace(/[.,]/g, "")) || 50000;
+    const depRate = simDep.trim() !== "" ? parseFloat(simDep.replace(",", ".")) : null;
 
     // 1. Obtener custom_price (lo que lee el cotizador)
     const cpVal = selected.custom_prices?.[simYear];
@@ -305,14 +315,13 @@ function SimulatorModal({
     const kmDif = km - kmBase;
     let precioConKm = precioBasePesos;
 
-    if (selected.km_depreciation !== null && selected.km_depreciation > 0) {
+    if (depRate !== null && !isNaN(depRate) && depRate > 0) {
       const bloques = kmDif / 1000;
-      const factor = 1 - (selected.km_depreciation / 100) * bloques;
+      const factor = 1 - (depRate / 100) * bloques;
       precioConKm = precioBasePesos * factor;
     } else {
       // Fórmula exponencial default
-      const añoNum = year;
-      const esModerno = añoNum >= 2019;
+      const esModerno = year >= 2019;
       const UTILITARIOS = ['partner', 'berlingo', 'kangoo', 'doblo', 'fiorino', 'caddy', 'amarok', 'ranger', 'hilux', 'frontier', 'saveiro', 's10', 'alaskan', 'maverick', 'montana', 'sw4', 'fortuner', 'territory', 'bronco', 'sprinter', 'master', 'boxer', 'ducato', 'transit', 'daily', 'trafic', 'expert', 'jumpy', 'vito'];
       let rate: number;
       if (!esModerno) {
@@ -337,6 +346,7 @@ function SimulatorModal({
       precioConKm: Math.round(precioConKm),
       kmDif,
       kmPct: ((precioConKm - precioBasePesos) / precioBasePesos * 100).toFixed(1),
+      depUsada: depRate !== null && !isNaN(depRate) && depRate > 0 ? `${depRate}% / 1k km` : "default (exponencial)",
       consignacion: { ars: Math.round(consignacion), usd: Math.round(consignacion / blue) },
       inmediata: { ars: Math.round(inmediata), usd: Math.round(inmediata / blue) },
       permuta: { ars: Math.round(permuta), usd: Math.round(permuta / blue) },
@@ -347,13 +357,13 @@ function SimulatorModal({
   const result = calcResult();
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-between px-4 py-3 border-b">
+    <div className="fixed inset-0 bg-black/30 z-50 flex items-start justify-center pt-10 p-4">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto border">
+        <div className="flex items-center justify-between px-4 py-3 border-b sticky top-0 bg-white z-10">
           <h2 className="text-sm font-bold text-gray-900 flex items-center gap-2">
             <Calculator className="w-4 h-4" /> Simulador de cotización
           </h2>
-          <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded"><X className="w-4 h-4" /></button>
+          <button onClick={onClose} className="p-1.5 hover:bg-gray-100 rounded-lg"><X className="w-4 h-4" /></button>
         </div>
 
         <div className="p-4 space-y-3">
@@ -372,14 +382,29 @@ function SimulatorModal({
             </select>
           </div>
 
-          {/* Año */}
           {selected && (
-            <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Año</label>
-              <select className="w-full border rounded-lg px-3 py-2 text-sm" value={simYear} onChange={(e) => setSimYear(e.target.value)}>
-                <option value="">Seleccionar año...</option>
-                {yearsForModel.map((y) => <option key={y} value={y}>{y}</option>)}
-              </select>
+            <div className="grid grid-cols-2 gap-3">
+              {/* Año */}
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Año</label>
+                <select className="w-full border rounded-lg px-3 py-2 text-sm" value={simYear} onChange={(e) => setSimYear(e.target.value)}>
+                  <option value="">Año...</option>
+                  {yearsForModel.map((y) => <option key={y} value={y}>{y}</option>)}
+                </select>
+              </div>
+
+              {/* Dep km editable */}
+              <div>
+                <label className="block text-xs font-medium text-purple-600 mb-1">% dep. / 1k km</label>
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  className="w-full border border-purple-300 rounded-lg px-3 py-2 text-sm bg-purple-50 focus:outline-none focus:border-purple-500"
+                  value={simDep}
+                  onChange={(e) => setSimDep(e.target.value)}
+                  placeholder="vacío = default"
+                />
+              </div>
             </div>
           )}
 
@@ -410,18 +435,18 @@ function SimulatorModal({
             <div className="mt-4 space-y-3">
               <div className="bg-gray-50 rounded-lg p-3 space-y-1.5 text-xs">
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Precio base (custom_prices)</span>
+                  <span className="text-gray-500">Precio base</span>
                   <span className="font-medium">{fmtPrice(result.precioBase)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Ajuste km ({parseInt(simKm.replace(/[.,]/g, "")).toLocaleString("es-AR")} km → {result.kmDif > 0 ? "+" : ""}{result.kmDif.toLocaleString("es-AR")} km vs 50k base)</span>
+                  <span className="text-gray-500">Km: {parseInt(simKm.replace(/[.,]/g, "")).toLocaleString("es-AR")} ({result.kmDif > 0 ? "+" : ""}{result.kmDif.toLocaleString("es-AR")} vs 50k)</span>
                   <span className={`font-medium ${parseFloat(result.kmPct) > 0 ? "text-green-600" : parseFloat(result.kmPct) < 0 ? "text-red-600" : ""}`}>
                     {parseFloat(result.kmPct) > 0 ? "+" : ""}{result.kmPct}%
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Dep. km del modelo</span>
-                  <span className="font-medium text-purple-600">{selected?.km_depreciation !== null ? `${selected?.km_depreciation}% / 1k km` : "default (exponencial)"}</span>
+                  <span className="text-gray-500">Depreciación</span>
+                  <span className="font-medium text-purple-600">{result.depUsada}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Dólar Blue</span>

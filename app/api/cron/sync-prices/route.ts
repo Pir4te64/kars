@@ -113,7 +113,7 @@ export async function POST(request: NextRequest) {
 
     let query = supabase
       .from("models")
-      .select("id, name, codia, brand_id, price_adjustments, infoauto_prices")
+      .select("id, name, codia, brand_id, price_adjustments, infoauto_prices, custom_prices")
       .order("name");
 
     if (brandId) {
@@ -139,19 +139,36 @@ export async function POST(request: NextRequest) {
 
     for (const model of allModels) {
       try {
-        const prices = await getPricesForCodia(model.codia);
-        if (!prices) {
+        const newInfoautoPrices = await getPricesForCodia(model.codia);
+        if (!newInfoautoPrices) {
           skipped++;
           continue;
         }
 
-        const customPrices = calcFinalPrices(prices, model.price_adjustments);
+        // Recalcular custom_prices: InfoAuto nuevos + adjustments existentes
+        const recalculated = calcFinalPrices(newInfoautoPrices, model.price_adjustments);
+
+        // Preservar precios manuales que no vienen de InfoAuto
+        const existingCustom = (model as any).custom_prices || {};
+        const mergedCustomPrices: Record<string, any> = {};
+
+        // Primero: precios manuales existentes para años que InfoAuto NO tiene
+        for (const [year, val] of Object.entries(existingCustom)) {
+          if (!(year in newInfoautoPrices)) {
+            mergedCustomPrices[year] = val; // preservar precio manual
+          }
+        }
+
+        // Segundo: precios recalculados de InfoAuto (tienen prioridad)
+        for (const [year, val] of Object.entries(recalculated)) {
+          mergedCustomPrices[year] = val;
+        }
 
         const { error: updateErr } = await supabase
           .from("models")
           .update({
-            infoauto_prices: prices,
-            custom_prices: customPrices,
+            infoauto_prices: newInfoautoPrices,
+            custom_prices: mergedCustomPrices,
           })
           .eq("id", model.id);
 
@@ -198,7 +215,7 @@ export async function GET(request: NextRequest) {
   while (true) {
     const { data, error } = await supabase
       .from("models")
-      .select("id, name, codia, brand_id, price_adjustments, infoauto_prices")
+      .select("id, name, codia, brand_id, price_adjustments, infoauto_prices, custom_prices")
       .order("name")
       .range(from, from + PAGE_SIZE - 1);
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
@@ -214,19 +231,31 @@ export async function GET(request: NextRequest) {
 
   for (const model of allModels) {
     try {
-      const prices = await getPricesForCodia(model.codia);
-      if (!prices) {
+      const newInfoautoPrices = await getPricesForCodia(model.codia);
+      if (!newInfoautoPrices) {
         skipped++;
         continue;
       }
 
-      const customPrices = calcFinalPrices(prices, model.price_adjustments);
+      const recalculated = calcFinalPrices(newInfoautoPrices, model.price_adjustments);
+
+      // Preservar precios manuales de años que InfoAuto no tiene
+      const existingCustom = model.custom_prices || {};
+      const mergedCustomPrices: Record<string, any> = {};
+      for (const [year, val] of Object.entries(existingCustom)) {
+        if (!(year in newInfoautoPrices)) {
+          mergedCustomPrices[year] = val;
+        }
+      }
+      for (const [year, val] of Object.entries(recalculated)) {
+        mergedCustomPrices[year] = val;
+      }
 
       const { error: updateErr } = await supabase
         .from("models")
         .update({
-          infoauto_prices: prices,
-          custom_prices: customPrices,
+          infoauto_prices: newInfoautoPrices,
+          custom_prices: mergedCustomPrices,
         })
         .eq("id", model.id);
 

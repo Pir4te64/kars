@@ -13,6 +13,8 @@ import {
   Search,
   DollarSign,
   RefreshCw,
+  Calculator,
+  X,
 } from "lucide-react";
 
 /* ───── types ───── */
@@ -254,6 +256,226 @@ function KmDepCell({
 }
 
 /* ═══════════════════════════════════════════════
+   SimulatorModal — simula cotización igual que el cotizador público
+   ═══════════════════════════════════════════════ */
+function SimulatorModal({
+  models,
+  onClose,
+}: {
+  models: Model[];
+  onClose: () => void;
+}) {
+  const [simModel, setSimModel] = useState<string>("");
+  const [simYear, setSimYear] = useState<string>("");
+  const [simKm, setSimKm] = useState<string>("50000");
+  const [dollarBlue, setDollarBlue] = useState<number | null>(null);
+  const [loadingDollar, setLoadingDollar] = useState(true);
+
+  useEffect(() => {
+    fetch("https://dolarapi.com/v1/dolares/blue")
+      .then((r) => r.json())
+      .then((d) => { setDollarBlue(d.venta); setLoadingDollar(false); })
+      .catch(() => setLoadingDollar(false));
+  }, []);
+
+  const selected = models.find((m) => m.id.toString() === simModel);
+  const yearsForModel = selected
+    ? VISIBLE_YEARS.filter((y) => y >= selected.year_from && y <= selected.year_to)
+    : [];
+
+  // Calcular precio exactamente como lo hace el cotizador
+  const calcResult = () => {
+    if (!selected || !simYear) return null;
+    const year = parseInt(simYear);
+    const km = parseInt(simKm.replace(/[.,]/g, "")) || 50000;
+
+    // 1. Obtener custom_price (lo que lee el cotizador)
+    const cpVal = selected.custom_prices?.[simYear];
+    let precioBasePesos = 0;
+    if (cpVal && typeof cpVal === "object" && "amount" in cpVal) {
+      precioBasePesos = cpVal.amount;
+    } else if (typeof cpVal === "number") {
+      precioBasePesos = cpVal;
+    }
+
+    if (precioBasePesos === 0) return null;
+
+    // 2. Aplicar km depreciation (misma fórmula que car-quote.ts)
+    const kmBase = 50000;
+    const kmDif = km - kmBase;
+    let precioConKm = precioBasePesos;
+
+    if (selected.km_depreciation !== null && selected.km_depreciation > 0) {
+      const bloques = kmDif / 1000;
+      const factor = 1 - (selected.km_depreciation / 100) * bloques;
+      precioConKm = precioBasePesos * Math.max(factor, 0.1);
+    } else {
+      // Fórmula exponencial default
+      const añoNum = year;
+      const esModerno = añoNum >= 2019;
+      const UTILITARIOS = ['partner', 'berlingo', 'kangoo', 'doblo', 'fiorino', 'caddy', 'amarok', 'ranger', 'hilux', 'frontier', 'saveiro', 's10', 'alaskan', 'maverick', 'montana', 'sw4', 'fortuner', 'territory', 'bronco', 'sprinter', 'master', 'boxer', 'ducato', 'transit', 'daily', 'trafic', 'expert', 'jumpy', 'vito'];
+      let rate: number;
+      if (!esModerno) {
+        rate = 0.00000394;
+      } else {
+        const esUtil = UTILITARIOS.some((u) => selected.name.toLowerCase().includes(u));
+        rate = esUtil ? 0.00000262 : 0.00000386;
+      }
+      precioConKm = precioBasePesos * Math.exp(-rate * kmDif);
+    }
+
+    // 3. Calcular tipos de venta
+    const consignacion = precioConKm * 1.10;
+    const inmediata = precioConKm;
+    const permuta = precioConKm * 1.05;
+
+    // 4. Convertir a USD
+    const blue = dollarBlue || 1;
+
+    return {
+      precioBase: precioBasePesos,
+      precioConKm: Math.round(precioConKm),
+      kmDif,
+      kmPct: ((precioConKm - precioBasePesos) / precioBasePesos * 100).toFixed(1),
+      consignacion: { ars: Math.round(consignacion), usd: Math.round(consignacion / blue) },
+      inmediata: { ars: Math.round(inmediata), usd: Math.round(inmediata / blue) },
+      permuta: { ars: Math.round(permuta), usd: Math.round(permuta / blue) },
+      blue,
+    };
+  };
+
+  const result = calcResult();
+
+  return (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between px-4 py-3 border-b">
+          <h2 className="text-sm font-bold text-gray-900 flex items-center gap-2">
+            <Calculator className="w-4 h-4" /> Simulador de cotización
+          </h2>
+          <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded"><X className="w-4 h-4" /></button>
+        </div>
+
+        <div className="p-4 space-y-3">
+          {/* Modelo */}
+          <div>
+            <label className="block text-xs font-medium text-gray-600 mb-1">Modelo</label>
+            <select
+              className="w-full border rounded-lg px-3 py-2 text-sm"
+              value={simModel}
+              onChange={(e) => { setSimModel(e.target.value); setSimYear(""); }}
+            >
+              <option value="">Seleccionar modelo...</option>
+              {models.map((m) => (
+                <option key={m.id} value={m.id}>{m.name}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Año */}
+          {selected && (
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">Año</label>
+              <select className="w-full border rounded-lg px-3 py-2 text-sm" value={simYear} onChange={(e) => setSimYear(e.target.value)}>
+                <option value="">Seleccionar año...</option>
+                {yearsForModel.map((y) => <option key={y} value={y}>{y}</option>)}
+              </select>
+            </div>
+          )}
+
+          {/* Kilometraje */}
+          {selected && simYear && (
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">Kilometraje</label>
+              <input
+                type="text"
+                inputMode="numeric"
+                className="w-full border rounded-lg px-3 py-2 text-sm"
+                value={simKm}
+                onChange={(e) => setSimKm(e.target.value)}
+                placeholder="50000"
+              />
+              <div className="flex gap-1 mt-1">
+                {[10000, 25000, 50000, 75000, 100000, 150000].map((k) => (
+                  <button key={k} onClick={() => setSimKm(String(k))} className={`text-[10px] px-1.5 py-0.5 rounded border ${simKm === String(k) ? "bg-blue-100 border-blue-300" : "hover:bg-gray-50"}`}>
+                    {(k / 1000)}k
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Resultado */}
+          {result && (
+            <div className="mt-4 space-y-3">
+              <div className="bg-gray-50 rounded-lg p-3 space-y-1.5 text-xs">
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Precio base (custom_prices)</span>
+                  <span className="font-medium">{fmtPrice(result.precioBase)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Ajuste km ({parseInt(simKm.replace(/[.,]/g, "")).toLocaleString("es-AR")} km → {result.kmDif > 0 ? "+" : ""}{result.kmDif.toLocaleString("es-AR")} km vs 50k base)</span>
+                  <span className={`font-medium ${parseFloat(result.kmPct) > 0 ? "text-green-600" : parseFloat(result.kmPct) < 0 ? "text-red-600" : ""}`}>
+                    {parseFloat(result.kmPct) > 0 ? "+" : ""}{result.kmPct}%
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Dep. km del modelo</span>
+                  <span className="font-medium text-purple-600">{selected?.km_depreciation !== null ? `${selected?.km_depreciation}% / 1k km` : "default (exponencial)"}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Dólar Blue</span>
+                  <span className="font-medium">{loadingDollar ? "..." : `$${result.blue.toLocaleString("es-AR")}`}</span>
+                </div>
+              </div>
+
+              <div className="border rounded-lg divide-y">
+                <div className="flex justify-between items-center px-3 py-2.5">
+                  <div>
+                    <div className="text-xs font-semibold text-gray-900">Consignación (+10%)</div>
+                    <div className="text-[10px] text-gray-400">Cobras al vender</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm font-bold text-gray-900">{fmtPrice(result.consignacion.ars)}</div>
+                    <div className="text-[10px] text-green-600 font-medium">U$D {result.consignacion.usd.toLocaleString("es-AR")}</div>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center px-3 py-2.5">
+                  <div>
+                    <div className="text-xs font-semibold text-gray-900">Compra Inmediata</div>
+                    <div className="text-[10px] text-gray-400">Cobras hoy</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm font-bold text-gray-900">{fmtPrice(result.inmediata.ars)}</div>
+                    <div className="text-[10px] text-green-600 font-medium">U$D {result.inmediata.usd.toLocaleString("es-AR")}</div>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center px-3 py-2.5">
+                  <div>
+                    <div className="text-xs font-semibold text-gray-900">Permuta (+5%)</div>
+                    <div className="text-[10px] text-gray-400">Usás como parte de pago</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm font-bold text-gray-900">{fmtPrice(result.permuta.ars)}</div>
+                    <div className="text-[10px] text-green-600 font-medium">U$D {result.permuta.usd.toLocaleString("es-AR")}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {selected && simYear && !result && (
+            <div className="text-center py-4 text-xs text-gray-400">
+              No hay precio configurado para {selected.name} {simYear}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════
    Página principal
    ═══════════════════════════════════════════════ */
 export default function PreciosPage() {
@@ -263,6 +485,7 @@ export default function PreciosPage() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [syncing, setSyncing] = useState(false);
+  const [showSim, setShowSim] = useState(false);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const LIMIT = 30;
@@ -404,8 +627,19 @@ export default function PreciosPage() {
                 {syncing ? "Sincronizando..." : "Sync InfoAuto"}
               </button>
             )}
+            {selectedBrand && models.length > 0 && (
+              <button
+                onClick={() => setShowSim(true)}
+                className="flex items-center gap-1.5 px-3 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700"
+              >
+                <Calculator className="w-3.5 h-3.5" />
+                Simular
+              </button>
+            )}
             {selectedBrand && !loading && <span className="text-xs text-gray-400 pb-2">{total} modelos</span>}
           </div>
+
+          {showSim && <SimulatorModal models={models} onClose={() => setShowSim(false)} />}
 
           {!selectedBrand && (
             <div className="text-center py-20 text-gray-400">

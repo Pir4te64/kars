@@ -40,11 +40,15 @@ interface Model {
 }
 
 /* ───── helpers ───── */
-function getBasePrice(model: Model, year: number): number | null {
-  // Primero intentar infoauto_prices, si no hay usar custom_prices como base
-  const iaVal = model.infoauto_prices?.[year.toString()];
-  if (typeof iaVal === "number" && iaVal > 0) return iaVal;
+// Precio base puro de InfoAuto (NUNCA custom_prices, para evitar compounding)
+function getInfoAutoBase(model: Model, year: number): number | null {
+  const val = model.infoauto_prices?.[year.toString()];
+  if (typeof val === "number" && val > 0) return val;
+  return null;
+}
 
+// Precio final que se muestra (custom_prices = ya tiene el % aplicado)
+function getFinalPrice(model: Model, year: number): number | null {
   const cpVal = model.custom_prices?.[year.toString()];
   if (!cpVal) return null;
   if (typeof cpVal === "number" && cpVal > 0) return cpVal;
@@ -78,9 +82,7 @@ function PriceCell({ model, year }: { model: Model; year: number }) {
   const inRange = year >= model.year_from && year <= model.year_to;
   if (!inRange) return <td className="bg-gray-100 border-r border-b" />;
 
-  const basePrice = getBasePrice(model, year);
-  const adjustment = getAdjustment(model, year);
-  const finalPrice = calcFinalPrice(basePrice, adjustment);
+  const finalPrice = getFinalPrice(model, year);
 
   return (
     <td className="border-r border-b px-1.5 py-1 text-right text-xs">
@@ -542,15 +544,26 @@ export default function PreciosPage() {
     if (percentage === null) delete updatedAdj[year.toString()];
     else updatedAdj[year.toString()] = percentage;
 
-    // Recalcular custom_prices para TODOS los años (no solo el editado)
+    // Recalcular custom_prices usando SOLO infoauto_prices como base (evita compounding)
+    // Preservar precios manuales de años sin infoauto_prices
     const updatedPrices: Record<string, CustomPriceEntry> = {};
     for (const y of VISIBLE_YEARS) {
-      const base = getBasePrice(model, y);
-      if (base === null) continue;
-      const adj = y === year ? percentage : getAdjustment(model, y);
-      const final_ = calcFinalPrice(base, adj);
-      if (final_ !== null) {
-        updatedPrices[y.toString()] = { amount: final_, currency: "ARS" };
+      const iaBase = getInfoAutoBase(model, y);
+      if (iaBase !== null) {
+        // Tiene precio InfoAuto → recalcular con el % ajuste
+        const adj = y === year ? percentage : getAdjustment(model, y);
+        const final_ = calcFinalPrice(iaBase, adj);
+        if (final_ !== null) {
+          updatedPrices[y.toString()] = { amount: final_, currency: "ARS" };
+        }
+      } else {
+        // No tiene InfoAuto → preservar el custom_price existente tal cual
+        const existing = model.custom_prices?.[y.toString()];
+        if (existing) {
+          updatedPrices[y.toString()] = typeof existing === "object" && existing !== null && "amount" in existing
+            ? existing as CustomPriceEntry
+            : { amount: existing as number, currency: "ARS" };
+        }
       }
     }
 

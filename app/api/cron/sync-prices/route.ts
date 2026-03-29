@@ -106,10 +106,13 @@ function calcFinalPrices(
 }
 
 // POST — sincronizar una marca específica (llamado desde el admin)
+// Por defecto solo sincroniza modelos que tienen custom_prices o price_adjustments (los configurados)
+// Pasar force_all: true para sincronizar todos
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const brandId = body.brand_id;
+    const forceAll = body.force_all === true;
 
     let query = supabase
       .from("models")
@@ -118,6 +121,11 @@ export async function POST(request: NextRequest) {
 
     if (brandId) {
       query = query.eq("brand_id", brandId);
+    }
+
+    // Solo modelos configurados (con ajustes o precios) a menos que se fuerce
+    if (!forceAll) {
+      query = query.or("custom_prices.neq.null,price_adjustments.neq.null");
     }
 
     // Paginar para superar límite de 1000
@@ -149,17 +157,14 @@ export async function POST(request: NextRequest) {
         const recalculated = calcFinalPrices(newInfoautoPrices, model.price_adjustments);
 
         // Preservar precios manuales que no vienen de InfoAuto
-        const existingCustom = (model as any).custom_prices || {};
+        const existingCustom = model.custom_prices || {};
         const mergedCustomPrices: Record<string, any> = {};
 
-        // Primero: precios manuales existentes para años que InfoAuto NO tiene
         for (const [year, val] of Object.entries(existingCustom)) {
           if (!(year in newInfoautoPrices)) {
-            mergedCustomPrices[year] = val; // preservar precio manual
+            mergedCustomPrices[year] = val;
           }
         }
-
-        // Segundo: precios recalculados de InfoAuto (tienen prioridad)
         for (const [year, val] of Object.entries(recalculated)) {
           mergedCustomPrices[year] = val;
         }
@@ -178,8 +183,8 @@ export async function POST(request: NextRequest) {
           updated++;
         }
 
-        // Rate limit
-        await new Promise((r) => setTimeout(r, 100));
+        // Rate limit: 500ms entre requests para no saturar InfoAuto
+        await new Promise((r) => setTimeout(r, 500));
       } catch {
         errors++;
       }
@@ -208,7 +213,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // Sincronizar TODAS las marcas
+  // Solo sincronizar modelos configurados (con ajustes o precios)
   let allModels: any[] = [];
   let from = 0;
   const PAGE_SIZE = 1000;
@@ -216,6 +221,7 @@ export async function GET(request: NextRequest) {
     const { data, error } = await supabase
       .from("models")
       .select("id, name, codia, brand_id, price_adjustments, infoauto_prices, custom_prices")
+      .or("custom_prices.neq.null,price_adjustments.neq.null")
       .order("name")
       .range(from, from + PAGE_SIZE - 1);
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
@@ -262,7 +268,7 @@ export async function GET(request: NextRequest) {
       if (updateErr) errors++;
       else updated++;
 
-      await new Promise((r) => setTimeout(r, 100));
+      await new Promise((r) => setTimeout(r, 500));
     } catch {
       errors++;
     }
